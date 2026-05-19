@@ -199,39 +199,39 @@
       padding: 32mm 24mm 22mm;
       display: flex; flex-direction: column;
     }
-    /* Liseré supprimé — cover minimaliste sans décor */
-    /* Photo Paris — bandeau plus généreux, palette plus claire/chaleureuse, fondu doux en haut */
+    /* Photo Paris — bandeau cinéma plein bas, fondu blanc graduel (zéro trait, transition parfaite) */
     .pres-cover-photo-band {
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      width: 100%; height: 95mm;          /* élargie pour donner plus d'ampleur visuelle */
+      width: 100%; height: 115mm;            /* photo plus généreuse pour faire respirer la page */
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
+      background: #ffffff;                   /* fond blanc derrière la photo, supprime tout artefact */
     }
     .pres-cover-photo-band img {
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center 70%;        /* recadré plus haut pour révéler davantage la composition */
-      /* Saturation et luminosité augmentées pour une photo plus agréable, moins terne */
-      filter: saturate(1.15) contrast(0.96) brightness(1.18);
+      object-position: center 60%;
+      filter: saturate(1.2) contrast(0.94) brightness(1.18);
+      display: block;
     }
-    /* Fondu de blanc en haut → la photo se révèle progressivement et adoucit la transition avec le bloc meta */
+    /* Fondu blanc → photo, sur la moitié haute du bandeau, sans aucune cassure */
     .pres-cover-photo-band::before {
       content: "";
       position: absolute;
       left: 0; right: 0; top: 0;
-      height: 60%;
+      height: 65%;
       background: linear-gradient(to bottom,
-        rgba(255, 255, 255, 0.95) 0%,
-        rgba(255, 255, 255, 0.78) 35%,
-        rgba(255, 255, 255, 0.45) 65%,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.92) 30%,
+        rgba(255, 255, 255, 0.62) 60%,
+        rgba(255, 255, 255, 0.20) 85%,
         rgba(255, 255, 255, 0) 100%);
       display: block;
       z-index: 1;
       pointer-events: none;
     }
-    /* Trait au-dessus de la photo supprimé — fondu doux uniquement */
     /* Crédit photo discret */
     .pres-cover-photo-credit {
       position: absolute; right: 24mm; bottom: 6mm;
@@ -255,32 +255,58 @@
       letter-spacing: 0.28em; text-transform: uppercase;
       font-size: 9.5pt; font-weight: 600; color: #1c1917;
     }
-    .pres-cover-id {
+    /* === BLOC LOGO HAUT DE COVER === */
+    .pres-cover-brand {
+      display: flex; align-items: center; gap: 10mm;
+      padding-bottom: 5mm;
+      border-bottom: 0.5pt solid #e7e5e4;
+    }
+    .pres-cover-brand-logo {
+      display: flex; align-items: center; gap: 4mm;
+    }
+    .pres-cover-brand-name {
+      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-size: 16pt; font-weight: 600;
+      letter-spacing: 0.04em; color: #1c1917;
+      line-height: 1;
+    }
+    .pres-cover-brand-sub {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 8pt; letter-spacing: 0.22em; color: #78716c;
+      font-size: 6.5pt; letter-spacing: 0.32em; text-transform: uppercase;
+      color: #78716c; margin-top: 1.5mm;
+    }
+
+    .pres-cover-id {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt; letter-spacing: 0.22em; color: #78716c;
       text-align: right; text-transform: uppercase;
     }
     .pres-cover-id strong { color: #1c1917; font-weight: 600; }
 
     .pres-cover-mid {
-      margin-top: 22mm;
+      margin-top: 18mm;
     }
     .pres-cover-eyebrow {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9pt; letter-spacing: 0.32em; text-transform: uppercase;
-      color: #57534e; font-weight: 600; margin-bottom: 8mm;
+      font-size: 8pt; letter-spacing: 0.36em; text-transform: uppercase;
+      color: #DC2626; font-weight: 700; margin-bottom: 7mm;
+      display: inline-flex; align-items: center; gap: 4mm;
+    }
+    .pres-cover-eyebrow::before {
+      content: ""; display: inline-block;
+      width: 14mm; height: 0.6pt; background: #DC2626;
     }
     .pres-cover-title {
       font-family: 'Fraunces', 'Playfair Display', serif;
-      font-weight: 500; font-size: 48pt; line-height: 1.05;
-      letter-spacing: -0.025em; color: #1c1917;
+      font-weight: 400; font-size: 54pt; line-height: 1.02;
+      letter-spacing: -0.03em; color: #1c1917;
       margin: 0;
     }
     .pres-cover-title em {
       font-style: italic; font-weight: 400; color: #1c1917;
     }
     .pres-cover-rule {
-      /* Décor supprimé — espacement seul */
       height: 0; margin: 8mm 0 6mm 0;
     }
     .pres-cover-sub {
@@ -289,24 +315,36 @@
       line-height: 1.4; margin: 0;
     }
 
+    /* Bloc méta — carte blanche posée sur la photo, ombre subtile, séparateurs élégants */
     .pres-cover-meta-block {
-      margin-top: 14mm;
-      /* Plus de traits — look minimaliste sobre */
+      margin-top: 12mm;
+      background: #ffffff;
+      padding: 8mm 10mm 9mm;
+      border: 0.5pt solid #e7e5e4;
+      box-shadow: 0 2px 14px rgba(28, 25, 23, 0.06);
+      position: relative;
+    }
+    .pres-cover-meta-block::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0;
+      width: 4mm; height: 100%;
+      background: linear-gradient(180deg, #DC2626 0%, #b91c1c 100%);
     }
     .pres-cover-meta-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8mm 16mm;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 7mm 14mm;
     }
     .pres-cover-meta-k {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7.5pt; letter-spacing: 0.26em; text-transform: uppercase;
-      color: #78716c; font-weight: 600; margin-bottom: 3px;
+      font-size: 7pt; letter-spacing: 0.28em; text-transform: uppercase;
+      color: #78716c; font-weight: 600; margin-bottom: 2mm;
     }
     .pres-cover-meta-v {
       font-family: 'Fraunces', 'Playfair Display', serif;
       font-size: 13pt; font-weight: 500; color: #1c1917;
       letter-spacing: -0.005em; line-height: 1.3;
     }
-    .pres-cover-meta-v em { font-style: italic; color: #57534e; font-weight: 400; }
+    .pres-cover-meta-v em { font-style: italic; color: #57534e; font-weight: 400; font-size: 9pt; }
 
     /* Pagination en bas de page — UNE seule définition, sans border-top */
     .pres-cover-foot {
@@ -402,31 +440,43 @@
       gap: 0; padding-top: 4mm;
     }
     .pres-hyp-cell {
-      padding: 4mm 5mm; border-right: 1px solid rgba(10,9,8,0.08);
-      text-align: center;  /* centre tout le contenu dans la cellule */
-      /* justify-content: space-between → titres alignés en haut + valeurs alignées en bas */
+      padding: 4mm 3mm; border-right: 1px solid rgba(10,9,8,0.08);
+      text-align: center;
       display: flex; flex-direction: column; align-items: center; justify-content: space-between;
       gap: 4mm;
       min-height: 18mm;
+      min-width: 0;          /* indispensable pour permettre au flex enfant de rétrécir */
+      overflow: hidden;
     }
     .pres-hyp-cell:last-child { border-right: none; }
     .pres-hyp-k {
       font-family: 'JetBrains Mono', monospace;
       font-size: 6.5pt; letter-spacing: 0.22em; text-transform: uppercase;
       color: #57534e; font-weight: 600;
-      white-space: nowrap;  /* garde tous les titres sur 1 seule ligne pour aligner parfaitement */
+      white-space: nowrap;
     }
     .pres-hyp-v {
       font-family: 'Fraunces', 'Playfair Display', serif;
-      font-size: 13pt; font-weight: 700; color: #0a0908; line-height: 1;
+      font-size: 12pt; font-weight: 700; color: #0a0908; line-height: 1;
       letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
-      /* inline-flex pour que la valeur+unité forme un bloc qui se centre globalement dans la cellule */
       display: inline-flex; align-items: baseline; gap: 2px;
       max-width: 100%;
+      white-space: nowrap;
     }
+    /* Bloc « Total versé » mis en évidence : badge vert rempli + montant compact pour ne jamais déborder */
+    .pres-hyp-cell.highlight {
+      background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+      border-radius: 2mm;
+      border-right: none;
+      margin: -2mm 0;
+      padding: 4mm 3mm;
+    }
+    .pres-hyp-cell.highlight .pres-hyp-k { color: #047857; font-weight: 700; }
+    .pres-hyp-cell.highlight .pres-hyp-v { color: #047857; }
+    .pres-hyp-cell.highlight .pres-hyp-v .unit { color: #047857; opacity: 0.8; }
     .pres-hyp-v.gold { color: #57534e; }
     .pres-hyp-v .num-val { font-variant-numeric: tabular-nums; }
-    .pres-hyp-v .unit { font-size: 8pt; font-weight: 500; color: #78716c; }
+    .pres-hyp-v .unit { font-size: 7.5pt; font-weight: 500; color: #78716c; margin-left: 1px; }
 
     /* Comparison rows éditoriales */
     .pres-vs-block {
@@ -689,28 +739,69 @@
       display: flex; flex-direction: column; gap: 2mm;
     }
     .pres-alloc-card .al-supp-row {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 4px;
       font-size: 8.5pt;
+      white-space: nowrap;
     }
     .pres-alloc-card .al-supp-row .lft {
-      display: flex; align-items: center; gap: 5px;
+      display: inline-flex; align-items: center; gap: 5px;
+      flex-shrink: 1; min-width: 0;
     }
     .pres-alloc-card .al-supp-row .sw {
       width: 7px; height: 7px; border-radius: 50%;
+      flex-shrink: 0;
     }
-    .pres-alloc-card .al-supp-row .nm { color: #44403c; font-weight: 600; }
+    .pres-alloc-card .al-supp-row .nm {
+      color: #44403c; font-weight: 600;
+      overflow: hidden; text-overflow: ellipsis;
+    }
     .pres-alloc-card .al-supp-row .pc {
       font-family: 'Fraunces', 'Playfair Display', serif;
       font-size: 11pt; font-weight: 700; color: #0a0908;
       font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .pres-alloc-card .al-supp-row .pc .unit {
+      font-size: 8pt; color: #78716c; font-weight: 500; margin-left: 1px;
+    }
+    /* Bandeau SRI mis en valeur dans la carte allocation */
+    .pres-alloc-card .al-sri-banner {
+      margin-top: 3mm;
+      padding: 3mm 3mm;
+      background: linear-gradient(180deg, #f5f5f4 0%, #fafaf9 100%);
+      border: 0.5pt solid rgba(10,9,8,0.08);
+      border-radius: 2mm;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5mm;
+    }
+    .pres-alloc-card .al-sri-banner .sri-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6pt; letter-spacing: 0.22em; text-transform: uppercase;
+      color: #57534e; font-weight: 700;
+    }
+    .pres-alloc-card .al-sri-banner .sri-value {
+      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-size: 22pt; font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .pres-alloc-card .al-sri-banner .sri-max {
+      font-size: 10pt; color: #78716c; font-weight: 500;
+    }
+    .pres-alloc-card .al-sri-banner .sri-name {
+      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-size: 8.5pt; color: #44403c; font-style: italic; font-weight: 500;
     }
     .pres-alloc-card .al-rdt {
-      margin-top: 3mm; padding-top: 2.5mm; border-top: 1px solid rgba(10,9,8,0.08);
+      margin-top: 2mm; padding-top: 2mm; border-top: 1px solid rgba(10,9,8,0.08);
     }
     .pres-alloc-card .al-rdt-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 6pt; letter-spacing: 0.22em; text-transform: uppercase;
       color: #57534e; font-weight: 700; margin-bottom: 2mm;
+      text-align: center;
     }
     .pres-alloc-card .al-rdt-cells {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5mm;
@@ -4297,6 +4388,9 @@
       const isCapi = inputs.produit === "capi";
       const livretNom = isPER ? "PER + Réintégration" : isCapi ? "Compte à terme" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret");
       const N = Math.round(inputs.dureeAnnees);
+      // Ref pour le canvas Chart.js (page 2 print)
+      const printChartRef = useRef(null);
+      const printChartInst = useRef(null);
       const pessData = useMemo(() => projectionSeries(inputs, sim.rdtPess), [inputs, sim.rdtPess]);
       const medData  = useMemo(() => projectionSeries(inputs, sim.rdtMed),  [inputs, sim.rdtMed]);
       const optData  = useMemo(() => projectionSeries(inputs, sim.rdtOpt),  [inputs, sim.rdtOpt]);
@@ -4328,6 +4422,101 @@
       const reductionImpotAnnuelle = isPER ? (inputs.versementInitial / Math.max(1, inputs.dureeAnnees) + inputs.versementMensuel * 12) * inputs.tauxIR : 0;
 
       const today = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+      // === CHART.JS (page 2 print) — réplique du graphique de Step5Presentation ===
+      // Dessine sur le canvas printChartRef. Pas d'animation, pas de tooltip (print).
+      useEffect(() => {
+        if (!printChartRef.current || typeof Chart === 'undefined') return;
+        if (printChartInst.current) printChartInst.current.destroy();
+        const ctx = printChartRef.current.getContext('2d');
+        const labels = Array.from({length: N + 1}, (_, i) => i);
+        // Gradient fill sous la courbe médiane (solution)
+        const gradSol = ctx.createLinearGradient(0, 0, 0, 360);
+        gradSol.addColorStop(0, 'rgba(4, 120, 87, 0.20)');
+        gradSol.addColorStop(0.7, 'rgba(4, 120, 87, 0.04)');
+        gradSol.addColorStop(1, 'rgba(4, 120, 87, 0)');
+        // End-labels plugin : étiquette le bout de chaque courbe avec son nom + valeur, anti-chevauchement
+        const endLabels = {
+          id: 'endLabels',
+          afterDatasetsDraw(chart) {
+            const { ctx, chartArea } = chart;
+            const items = [];
+            chart.data.datasets.forEach((dataset, i) => {
+              if (dataset._noEndLabel) return;
+              const meta = chart.getDatasetMeta(i);
+              const lastPoint = meta.data[meta.data.length - 1];
+              if (!lastPoint) return;
+              const value = dataset.data[dataset.data.length - 1];
+              const suffix = dataset._endLabelSuffix || dataset.label || '';
+              const label = suffix ? `${fmtEURc(value)} · ${suffix}` : fmtEURc(value);
+              const isSoft = !!dataset._endLabelSoft;
+              ctx.save(); ctx.font = isSoft ? '600 9px Inter' : '700 11px Inter';
+              const tw = ctx.measureText(label).width; ctx.restore();
+              const padX = isSoft ? 5 : 7;
+              const w = tw + padX * 2;
+              const h = isSoft ? 16 : 20;
+              const x = lastPoint.x + (isSoft ? 5 : 7);
+              const yIdeal = lastPoint.y - h / 2;
+              items.push({ label, x, yIdeal, w, h, padX, isSoft, bg: isSoft ? (dataset._endLabelBg || dataset.borderColor) : dataset.borderColor });
+            });
+            items.sort((a, b) => a.yIdeal - b.yIdeal);
+            const margin = 2;
+            for (let i = 0; i < items.length; i++) {
+              items[i].y = i === 0 ? items[i].yIdeal : Math.max(items[i].yIdeal, items[i - 1].y + items[i - 1].h + margin);
+            }
+            if (items.length > 0) {
+              const lastBottom = items[items.length - 1].y + items[items.length - 1].h;
+              const over = lastBottom - chartArea.bottom;
+              if (over > 0) {
+                for (let i = items.length - 1; i >= 0; i--) {
+                  items[i].y -= over;
+                  if (i > 0 && items[i].y < items[i - 1].y + items[i - 1].h + margin) {
+                    items[i - 1].y -= (items[i - 1].y + items[i - 1].h + margin - items[i].y);
+                  }
+                }
+              }
+            }
+            items.forEach(it => {
+              ctx.save();
+              ctx.font = it.isSoft ? '600 9px Inter' : '700 11px Inter';
+              ctx.fillStyle = it.bg;
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(it.x, it.y, it.w, it.h, it.isSoft ? 8 : 10); ctx.fill(); }
+              else { ctx.fillRect(it.x, it.y, it.w, it.h); }
+              ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle';
+              ctx.fillText(it.label, it.x + it.padX, it.y + it.h / 2);
+              ctx.restore();
+            });
+          },
+        };
+        const datasets = [
+          // Optimiste (borne haute du tunnel)
+          { label: 'Optimiste', data: optData, borderColor: 'rgba(5,150,105,0.65)', backgroundColor: 'rgba(16,185,129,0.10)', borderDash: [5,4], borderWidth: 1.75, fill: 2, tension: 0.35, pointRadius: 0, _endLabelSoft: true, _endLabelBg: '#059669' },
+          // Médian (courbe principale)
+          { label: isPER ? 'PER seul' : 'Médian', data: medData, borderColor: '#047857', backgroundColor: gradSol, borderWidth: 4, fill: true, tension: 0.35, pointRadius: 0 },
+          // Pessimiste (borne basse du tunnel + remplissage blanc sous)
+          { label: 'Pessimiste', data: pessData, borderColor: 'rgba(180,83,9,0.65)', backgroundColor: '#ffffff', borderDash: [5,4], borderWidth: 1.75, fill: 3, tension: 0.35, pointRadius: 0, _endLabelSoft: true, _endLabelBg: '#b45309' },
+          // Référence (livret / PER+Réintégration)
+          { label: livretNom, data: livretData, borderColor: isPER ? '#0d9488' : '#a8a29e', borderDash: isPER ? [4,4] : [6,5], borderWidth: isPER ? 2.5 : 2, fill: false, tension: 0.35, pointRadius: 0, _endLabelBg: isPER ? '#0d9488' : '#78716c' },
+        ];
+        printChartInst.current = new Chart(ctx, {
+          type: 'line',
+          data: { labels, datasets },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: 'index', intersect: false },
+            layout: { padding: { right: 140, top: 12, bottom: 8, left: 8 } },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+              y: { ticks: { callback: v => fmtEURc(v), font: { family: 'Inter', size: 10, weight: '500' }, color: '#78716c', padding: 6 }, grid: { color: '#f5f5f4', drawBorder: false }, border: { display: false } },
+              x: { ticks: { callback: function(v, i) { return i % Math.ceil(N/8) === 0 || i === N ? `An ${this.getLabelForValue(v)}` : ''; }, font: { family: 'Inter', size: 10, weight: '500' }, color: '#78716c', padding: 6 }, grid: { display: false }, border: { display: false } },
+            },
+          },
+          plugins: [endLabels],
+        });
+        return () => printChartInst.current?.destroy();
+      }, [pessData, medData, optData, livretData, N, livretNom, isPER]);
 
       // === Mini-chart SVG (page 2) ===
       // padR augmenté pour accueillir les étiquettes longues comme "PER + RÉINTÉGRATION".
@@ -4425,16 +4614,15 @@
 
           <div className="sheets-stack">
 
-            {/* ============== PAGE 1 — COVER SOBRE BLANCHE ============== */}
+            {/* ============== PAGE 1 — COVER PRO ============== */}
             <div className="pres-sheet pres-cover">
-              {/* Photo panoramique de Paris en bandeau bas — Tour Eiffel (photo initiale restaurée) */}
+              {/* Photo panoramique bas de page */}
               <div className="pres-cover-photo-band">
                 <img
                   src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85"
                   alt=""
                   referrerPolicy="no-referrer"
                   onError={(e) => {
-                    // Fallback : si l'image ne charge pas, on tente un autre cliché parisien (Pont Alexandre III / Tour Eiffel en arrière-plan)
                     if (!e.target.dataset.fallback) {
                       e.target.dataset.fallback = "1";
                       e.target.src = "https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85";
@@ -4444,14 +4632,31 @@
               </div>
               <div className="pres-cover-photo-credit">Paris · Tour Eiffel</div>
 
-              {/* Top — référence d'étude (sans le symbole № qui rend avec un trait souligné en JetBrains Mono) */}
-              <div className="pres-cover-top" style={{justifyContent:'flex-end'}}>
+              {/* Brand bar : logo Figara + nom + référence étude */}
+              <div className="pres-cover-brand">
+                <div className="pres-cover-brand-logo">
+                  <svg width="34" height="34" viewBox="0 0 32 32" fill="none">
+                    <polygon points="16,1 17,15 16,16 15,15" fill="#DC2626"/>
+                    <polygon points="31,16 17,17 16,16 17,15" fill="#DC2626"/>
+                    <polygon points="16,31 15,17 16,16 17,17" fill="#DC2626"/>
+                    <polygon points="1,16 15,15 16,16 15,17" fill="#DC2626"/>
+                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(45 16 16)"/>
+                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(135 16 16)"/>
+                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(225 16 16)"/>
+                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(315 16 16)"/>
+                    <circle cx="16" cy="16" r="0.8" fill="#DC2626"/>
+                  </svg>
+                  <div>
+                    <div className="pres-cover-brand-name">Universel Patrimoine</div>
+                    <div className="pres-cover-brand-sub">Patrimoine · Études</div>
+                  </div>
+                </div>
                 <div className="pres-cover-id">
                   ÉTUDE <strong>{clientId(inputs)}</strong>
                 </div>
               </div>
 
-              {/* Mid — titre sobre, sans répéter le nom du client (présent dans le bloc méta plus bas) */}
+              {/* Mid — titre */}
               <div className="pres-cover-mid">
                 <div className="pres-cover-eyebrow">Étude personnalisée</div>
                 <h1 className="pres-cover-title">
@@ -4460,7 +4665,7 @@
                 </h1>
               </div>
 
-              {/* Bloc méta — informations essentielles */}
+              {/* Bloc méta — carte blanche, ombre, accent rouge */}
               <div className="pres-cover-meta-block">
                 <div className="pres-cover-meta-grid">
                   <div>
@@ -4473,7 +4678,7 @@
                   </div>
                   <div>
                     <div className="pres-cover-meta-k">Conseiller</div>
-                    <div className="pres-cover-meta-v">Sylvain Quéré<br/><em style={{fontSize:'9pt'}}>Conseiller en gestion de patrimoine</em></div>
+                    <div className="pres-cover-meta-v">Sylvain Quéré<br/><em>Conseiller en gestion de patrimoine</em></div>
                   </div>
                   <div>
                     <div className="pres-cover-meta-k">Référence</div>
@@ -4481,7 +4686,6 @@
                   </div>
                 </div>
               </div>
-
 
               {/* Footer page 1 — pagination seule, en bas */}
               <div className="pres-cover-foot" style={{justifyContent:'center'}}>
@@ -4510,11 +4714,23 @@
                 <div className="pres-hyp-row" style={{marginTop:'2mm'}}>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Versement initial</div>
-                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementInitial)}</span><span className="unit">€</span></div>
+                    <div className="pres-hyp-v">
+                      <span className="num-val">{inputs.versementInitial >= 1000000
+                        ? `${(inputs.versementInitial/1e6).toFixed(2).replace('.',',')} M`
+                        : inputs.versementInitial >= 100000
+                          ? `${Math.round(inputs.versementInitial/1000)} k`
+                          : new Intl.NumberFormat('fr-FR').format(inputs.versementInitial)}</span>
+                      <span className="unit">€</span>
+                    </div>
                   </div>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Versement mensuel</div>
-                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}</span><span className="unit">€/m</span></div>
+                    <div className="pres-hyp-v">
+                      <span className="num-val">{inputs.versementMensuel >= 100000
+                        ? `${Math.round(inputs.versementMensuel/1000)} k`
+                        : new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}</span>
+                      <span className="unit">€/m</span>
+                    </div>
                   </div>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Durée</div>
@@ -4524,16 +4740,27 @@
                     <div className="pres-hyp-k">Rendement médian</div>
                     <div className="pres-hyp-v gold"><span className="num-val">{(sim.rdtMed*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
                   </div>
-                  <div className="pres-hyp-cell">
+                  <div className="pres-hyp-cell highlight">
                     <div className="pres-hyp-k">Total versé</div>
-                    <div className="pres-hyp-v gold"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(totalVerseBrut)}</span><span className="unit">€</span></div>
+                    <div className="pres-hyp-v">
+                      <span className="num-val">{totalVerseBrut >= 1000000
+                        ? `${(totalVerseBrut/1e6).toFixed(2).replace('.',',')} M`
+                        : totalVerseBrut >= 100000
+                          ? `${Math.round(totalVerseBrut/1000)} k`
+                          : new Intl.NumberFormat('fr-FR').format(totalVerseBrut)}</span>
+                      <span className="unit">€</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Chart SVG — wrappé dans une carte cohérente avec les modules du bas */}
+              {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
               <div className="pres-cmp-card" style={{marginTop:'4mm', padding:'4mm 5mm 5mm'}}>
                 <div className="cmp-title">Évolution comparée · Capital & scenarii</div>
+                <div style={{width:'100%', height:'80mm', position:'relative'}}>
+                  <canvas ref={printChartRef}></canvas>
+                </div>
+                <div style={{display:'none'}}>
                 <svg viewBox={`0 0 ${chartW} ${chartH}`} style={{width:'100%', height:'auto', maxHeight:'80mm'}}>
                   {/* Gridlines horizontales (montants — niveaux d'amplitude sur l'axe Y) */}
                   {[0.25, 0.5, 0.75, 1].map((p, i) => (
@@ -4582,6 +4809,7 @@
                     );
                   })}
                 </svg>
+                </div>
               </div>
 
               {/* 3 modules dashboard : Multiplicateur · Allocation · (Rente AV/PER ou Net après IS Capi) — espacement homogène */}
@@ -4691,13 +4919,21 @@
                           {allocBar.map(s => (
                             <div key={s.id} className="al-supp-row">
                               <span className="lft"><span className="sw" style={{background: SUPPORT_META[s.type].color}}></span><span className="nm">{SUPPORT_META[s.type].label}</span></span>
-                              <span className="pc">{(s.poids*100).toFixed(0)}<span style={{fontSize:'8pt', color:'#78716c', fontWeight:500}}> %</span></span>
+                              <span className="pc">{(s.poids*100).toFixed(0)}<span className="unit">%</span></span>
                             </div>
                           ))}
                         </div>
                       </div>
+                      {/* Bandeau SRI mis en valeur — badge gros couleur selon niveau */}
+                      <div className="al-sri-banner">
+                        <div className="sri-label">SRI moyen pondéré</div>
+                        <div className="sri-value" style={{color: SRI_COLORS[Math.round(sim.sri)]}}>
+                          {sim.sri.toFixed(1)}<span className="sri-max">/7</span>
+                        </div>
+                        <div className="sri-name">{SRI_LABELS[Math.round(sim.sri)] || ""}</div>
+                      </div>
                       <div className="al-rdt">
-                        <div className="al-rdt-tag">Hypothèses de rendement · SRI {sim.sri.toFixed(1)}/7</div>
+                        <div className="al-rdt-tag">Hypothèses de rendement</div>
                         <div className="al-rdt-cells">
                           <div className="al-rdt-cell pess">
                             <div className="lab">Pess.</div>
@@ -5140,23 +5376,24 @@
                   </div>
                 ) : (
                   <div className="pres-cmp-card" style={{background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
-                    <div className="cmp-title" style={{color:'#047857'}}>Capital transmis & exonération</div>
-                    <div style={{display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:'3mm'}}>
-                      <span style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
+                    <div className="cmp-title" style={{color:'#047857', textAlign:'center'}}>Capital transmis & exonération</div>
+                    {/* Montant principal — centré horizontalement sur sa propre ligne */}
+                    <div style={{textAlign:'center', marginBottom:'2mm'}}>
+                      <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'30pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
                         {fmtEUR(sim.fisc.abattTotal)}
-                      </span>
-                    </div>
-                    <div style={{fontSize:'9pt', color:'#57534e', lineHeight:1.55, marginBottom:'3mm'}}>
-                      d'abattement total Assurance-Vie ({inputs.nbBeneficiaires} bénéficiaire{inputs.nbBeneficiaires>1?'s':''} × {fmtEUR(ABATT_AV_70)}).
-                    </div>
-                    <div style={{paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
-                      <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>Taxe AV</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(sim.fisc.taxe)}</div>
                       </div>
-                      <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1mm'}}>Net transmis</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>{fmtEURc(sim.fisc.direct)}</div>
+                      <div style={{fontSize:'9pt', color:'#57534e', lineHeight:1.5, marginTop:'2mm', fontStyle:'italic'}}>
+                        d'abattement total {isPER ? "PER (régime art. 990 I)" : "Assurance-Vie"} · {inputs.nbBeneficiaires} bénéficiaire{inputs.nbBeneficiaires>1?'s':''} × {fmtEUR(ABATT_AV_70)}
+                      </div>
+                    </div>
+                    <div style={{marginTop:'4mm', paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
+                      <div style={{textAlign:'center'}}>
+                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1.5mm'}}>Taxe AV</div>
+                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(sim.fisc.taxe)}</div>
+                      </div>
+                      <div style={{textAlign:'center'}}>
+                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1.5mm'}}>Net transmis</div>
+                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#047857'}}>{fmtEURc(sim.fisc.direct)}</div>
                       </div>
                     </div>
                   </div>
