@@ -1956,6 +1956,76 @@
     }
 
     // ============================================================
+    // Composant : champ de saisie rendement (% / an)
+    // Utilise un état local pour permettre la saisie libre (« 5.07 », « 7.5 », etc.)
+    // sans que le toFixed du parent ne ré-écrive l'input pendant la frappe.
+    // Valide et propage la valeur uniquement au blur ou à Entrée.
+    // ============================================================
+    function RendementInput({ value, onChange }) {
+      // value = rendement décimal (0.05 = 5 %). On affiche en pourcentage.
+      const toDisplay = (v) => {
+        if (v == null || isNaN(v)) return "";
+        const pct = v * 100;
+        // Affiche jusqu'à 2 décimales, sans virgule traînante (5.5 plutôt que 5.50)
+        return Number.isInteger(pct) ? String(pct) : pct.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+      };
+      const [text, setText] = useState(toDisplay(value));
+      const [focused, setFocused] = useState(false);
+      // Si le rendement change côté parent et qu'on n'est PAS en train d'éditer, on resynchronise
+      useEffect(() => {
+        if (!focused) setText(toDisplay(value));
+      }, [value, focused]);
+
+      const commit = () => {
+        // Tolère « 5,07 » (virgule française) → « 5.07 »
+        const cleaned = text.replace(",", ".").trim();
+        if (cleaned === "" || cleaned === "-") {
+          setText(toDisplay(value));    // restaure
+          return;
+        }
+        const num = parseFloat(cleaned);
+        if (isFinite(num)) {
+          const decimal = Math.max(0, Math.min(0.50, num / 100));  // borne 0–50 %
+          onChange(decimal);
+          setText(toDisplay(decimal));
+        } else {
+          setText(toDisplay(value));
+        }
+      };
+
+      return (
+        <input
+          type="text"
+          inputMode="decimal"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onFocus={(e) => { setFocused(true); e.target.select(); }}
+          onBlur={() => { setFocused(false); commit(); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") { e.target.blur(); }
+            else if (e.key === "ArrowUp") {
+              e.preventDefault();
+              const step = e.shiftKey ? 0.5 : 0.1;
+              const cur = parseFloat(text.replace(",", ".")) || 0;
+              const next = Math.min(50, cur + step);
+              setText(next.toFixed(2).replace(/0+$/, "").replace(/\.$/, ""));
+              onChange(Math.max(0, Math.min(0.50, next / 100)));
+            } else if (e.key === "ArrowDown") {
+              e.preventDefault();
+              const step = e.shiftKey ? 0.5 : 0.1;
+              const cur = parseFloat(text.replace(",", ".")) || 0;
+              const next = Math.max(0, cur - step);
+              setText(next.toFixed(2).replace(/0+$/, "").replace(/\.$/, ""));
+              onChange(Math.max(0, Math.min(0.50, next / 100)));
+            }
+          }}
+          placeholder="0"
+          className="num w-full px-3 py-2.5 text-right text-[16px] font-bold text-stone-900 bg-transparent focus:outline-none"
+        />
+      );
+    }
+
+    // ============================================================
     // STEP 3 — ALLOCATION (liste libre, dropdown de support, add/remove)
     // ============================================================
     function Step3Allocation({ inputs, updAllocItem, addAllocItem, removeAllocItem, changeAllocType, sim, totalP }) {
@@ -2076,13 +2146,14 @@
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 pt-3 border-t border-stone-100">
-                    {/* Rendement net */}
+                    {/* Rendement net — input à état local pour permettre la saisie libre (pas de toFixed pendant la frappe) */}
                     <div>
                       <label className="label" style={{marginBottom:6}}>Rendement net annuel</label>
                       <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200">
-                        <input type="number" value={(item.rendement*100).toFixed(2)} step={0.50}
-                          onChange={e=>updAllocItem(item.id, "rendement", parseFloat(e.target.value)/100||0)}
-                          className="num w-full px-3 py-2.5 text-right text-[16px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                        <RendementInput
+                          value={item.rendement}
+                          onChange={v => updAllocItem(item.id, "rendement", v)}
+                        />
                         <span className="px-3 text-[12px] text-stone-500 font-medium">% / an</span>
                       </div>
                     </div>
@@ -2257,7 +2328,8 @@
           subtitle: `Réductions d'impôt réinvesties à ${fmtPCT(sim.rdt)}`,
           capital: totalCap,
           versements: sim.proj.totVerseBrut,    // sortie de poche identique
-          plusValue: sim.proj.plusValue + auxPV,
+          // Plus-value affichée = capital total − versements bruts (cohérence visuelle)
+          plusValue: Math.max(0, totalCap - sim.proj.totVerseBrut),
           fraisSouscription: sim.proj.fraisSousPay,
           fraisDe: 0,
           rdt: sim.rdt,
@@ -2319,7 +2391,9 @@
           subtitle: `Rdt ${fmtPCT(sim.rdt)} · ${scenarioLvl === "med" ? "médian" : scenarioLvl === "pess" ? "pessimiste" : "optimiste"}`,
           capital: sim.proj.capitalFin,
           versements: sim.proj.totVerseBrut,
-          plusValue: sim.proj.plusValue,
+          // Plus-value affichée = capital final − versements bruts (cohérence visuelle : Épargne + Plus-value = Capital)
+          // Les frais de souscription sont déjà soustraits du capital final puisque le rendement s'applique au net.
+          plusValue: Math.max(0, sim.proj.capitalFin - sim.proj.totVerseBrut),
           fraisSouscription: sim.proj.fraisSousPay,
           rdt: sim.rdt,
           capitalDeces: sim.proj.capitalFin,
@@ -2355,7 +2429,7 @@
           isPER: sIsPER,
           capital: sSim.proj.capitalFin,
           versements: sSim.proj.totVerseBrut,
-          plusValue: sSim.proj.plusValue,
+          plusValue: Math.max(0, sSim.proj.capitalFin - sSim.proj.totVerseBrut),
           fraisSouscription: sSim.proj.fraisSousPay,
           rdt: sSim.rdt,
           capitalDeces: sSim.proj.capitalFin,
@@ -5704,7 +5778,7 @@
         subtitle: `Rdt ${fmtPCT(sim.rdt)}`,
         capital: sim.proj.capitalFin,
         versements: sim.proj.totVerseBrut,
-        plusValue: sim.proj.plusValue,
+        plusValue: Math.max(0, sim.proj.capitalFin - sim.proj.totVerseBrut),
         fraisSouscription: sim.proj.fraisSousPay,
         rdt: sim.rdt,
         capitalDeces: sim.proj.capitalFin,
