@@ -984,11 +984,40 @@
     const ABATT_AV_70 = 152500;
     const TX_AV_T1 = 0.20, PLAFOND_T1 = 700000, TX_AV_T2 = 0.3125;
     const ABATT_AV_APRES_70 = 30500;
-    const ABATT_SUCC_ENFANT = 100000;
+    const ABATT_SUCC_ENFANT = 100000;      // abattement par enfant, ligne directe
     const TX_SUCC_MOY = 0.20;
+    const TX_SUCC_INDIRECT = 0.60;         // tierce personne (hors ligne directe)
     const PFL_AV_8 = 0.075, PS = 0.172, PFU = 0.30;
     const ABATT_RENTE_CELIB = 4600, ABATT_RENTE_COUPLE = 9200;
     const FRAIS_SOUSC_MAX = 0.0475;
+
+    // === Barème droits de succession ligne directe 2026 ===
+    // Applicable après déduction de l'abattement de 100 000 € par enfant
+    const BAREME_DIRECTE = [
+      { seuil:       8072, taux: 0.05 },
+      { seuil:      12109, taux: 0.10 },
+      { seuil:      15932, taux: 0.15 },
+      { seuil:     552324, taux: 0.20 },
+      { seuil:     902838, taux: 0.30 },
+      { seuil:    1805677, taux: 0.40 },
+      { seuil: Infinity,   taux: 0.45 },
+    ];
+    function taxeBaremeDirecte(assiette) {
+      if (assiette <= 0) return 0;
+      let taxe = 0, prev = 0;
+      for (const { seuil, taux } of BAREME_DIRECTE) {
+        if (assiette <= prev) break;
+        taxe += (Math.min(assiette, seuil) - prev) * taux;
+        prev = seuil;
+        if (prev >= assiette) break;
+      }
+      return taxe;
+    }
+    // Taux marginal effectif pour affichage informatif
+    function tauxEffectifDirecte(assiette) {
+      if (assiette <= 0) return 0;
+      return taxeBaremeDirecte(assiette) / assiette;
+    }
 
     const SUPPORT_META = {
       fondsEuro:      { label: "Fonds en Euros",   color: "#047857", base: true,  rdtNetDef: 0.025, sriDef: 1 },
@@ -1089,10 +1118,15 @@
       return { capitalFin: cap, totVerseBrut: totBrut, totVerseNet: totNet, plusValue: cap - totNet, fraisSousPay: totBrut - totNet };
     }
 
-    function fiscaliteAV(cap, vNet, nb, age, txSucc = TX_SUCC_MOY) {
+    // fiscaliteAV — succession AV/PER en cas de décès
+    // successionLine : 'directe' (barème progressif + 100k€/enfant) | 'indirecte' (60% flat)
+    function fiscaliteAV(cap, vNet, nb, age, txSuccIndirect, vBrut, successionLine) {
+      const txIndirect = txSuccIndirect ?? TX_SUCC_INDIRECT;
+      const ligne = successionLine ?? 'directe';
       const av70 = age < 70;
       let taxe=0, partBenef=0, abattBenef=0, imposableBenef=0, taxeBenef=0, abattTotal=0, imposableTotal=0;
       if (av70) {
+        // Régime art. 990 I : abattement 152 500 € par bénéficiaire, puis 20 % / 31,25 %
         partBenef = cap / nb;
         abattBenef = ABATT_AV_70;
         abattTotal = abattBenef * nb;
@@ -1103,18 +1137,46 @@
         taxeBenef = t1*TX_AV_T1 + t2*TX_AV_T2;
         taxe = taxeBenef * nb;
       } else {
-        abattTotal = ABATT_AV_APRES_70;
-        imposableTotal = Math.max(0, vNet - abattTotal);
-        taxe = imposableTotal * txSucc;  // taux selon ligne directe/indirecte choisie par l'utilisateur
+        // Après 70 ans : seules les PRIMES versées après 70 ans entrent dans la succession
+        // (les gains sont exonérés). Abattement global de 30 500 € sur les primes.
+        // Puis droits de succession ordinaires (barème progressif pour ligne directe).
+        const primesBase = vBrut ?? vNet;   // versements bruts de préférence
+        abattTotal = ABATT_AV_APRES_70;     // 30 500 € global
+        const imposableGlobal = Math.max(0, primesBase - abattTotal);
+        imposableTotal = imposableGlobal;
+        if (ligne === 'indirecte') {
+          taxe = imposableGlobal * txIndirect;
+        } else {
+          // Ligne directe : 100 000 € par enfant + barème progressif
+          const partParEnfant = imposableGlobal / Math.max(1, nb);
+          const imposableParEnfant = Math.max(0, partParEnfant - ABATT_SUCC_ENFANT);
+          taxe = taxeBaremeDirecte(imposableParEnfant) * nb;
+          imposableTotal = imposableParEnfant * nb;
+          abattTotal += ABATT_SUCC_ENFANT * nb; // abatt. global + individuel
+        }
       }
       const direct = cap - taxe;
       return { av70, taxe, direct, abattTotal, abattBenef, partBenef, imposableBenef, imposableTotal, taxeBenef };
     }
 
-    function fiscaliteLivret(cap, nb, txSucc = TX_SUCC_MOY) {
-      // Pas d'abattement spécifique pour le livret : capital intégralement taxable au taux choisi (ligne directe/indirecte)
-      const droits = cap * txSucc;
-      return { abatt: 0, imp: cap, droits, net: cap - droits, abattParEnfant: 0 };
+    // fiscaliteLivret — droits de succession sur actifs ordinaires (livrets, CAT…)
+    // Ligne directe : abattement 100 000 € par enfant + barème progressif
+    // Ligne indirecte : 60 % flat (pas d'abattement pour tiers)
+    function fiscaliteLivret(cap, nb, successionLine, txSuccIndirect) {
+      const ligne = successionLine ?? 'directe';
+      const txIndirect = txSuccIndirect ?? TX_SUCC_INDIRECT;
+      if (ligne === 'indirecte') {
+        const droits = cap * txIndirect;
+        return { abatt: 0, abattTotal: 0, abattParEnfant: 0, imp: cap, imposableTotal: cap, droits, net: cap - droits };
+      }
+      // Ligne directe : abattement 100 000 € par enfant
+      const abattParEnfant = ABATT_SUCC_ENFANT;
+      const abattTotal = abattParEnfant * nb;
+      const partParEnfant = cap / Math.max(1, nb);
+      const imposableParEnfant = Math.max(0, partParEnfant - abattParEnfant);
+      const imposableTotal = imposableParEnfant * nb;
+      const droits = taxeBaremeDirecte(imposableParEnfant) * nb;
+      return { abatt: abattTotal, abattTotal, abattParEnfant, imp: imposableTotal, imposableTotal, droits, net: cap - droits };
     }
 
     // === Fiscalité PER — versements volontaires DÉDUITS à l'entrée ===
@@ -1210,33 +1272,63 @@
     }
 
     // === PER + Réintégration des réductions d'impôt ===
-    // Le client réinvestit chaque année sa réduction d'impôt (versements × TMI) dans un
-    // véhicule auxiliaire au même rendement que le PER. À terme, la "richesse totale" du
-    // PER avec réintégration = capital PER + capital auxiliaire (réductions capitalisées).
+    //
+    // MÉCANIQUE CORRECTE :
+    //  • Chaque année, le client verse ses contributions directes dans le PER.
+    //  • La réduction d'impôt perçue l'année suivante (remboursement IR) est réinvestie
+    //    dans le PER l'année d'après → elle génère elle-même une nouvelle réduction.
+    //  • Cela crée un effet de levier composé année après année.
+    //
+    // MODÈLE :
+    //  Année 1 :  versement direct V1 → réduction R1 = V1 × TMI
+    //  Année 2 :  versement direct V2 + réinvesti R1 → réduction R2 = (V2+R1) × TMI
+    //  Année y :  Vy + R(y-1) → Ry = (Vy + R(y-1)) × TMI
+    //
+    // auxCap : portion du capital PER financée par les réductions réinvesties.
+    // totReduc : somme de TOUTES les réductions générées (y compris sur les réinvestissements).
+    // totReinvesti : montant total effectivement réinvesti dans le PER (= totReduc - dernière année).
     function projPERReinvest(inp, rdtNet, tauxIR) {
       const Y = Math.round(inp.dureeAnnees);
       let auxCap = 0;
       let totReduc = 0;
+      let totReinvesti = 0;
+      let reducPrecedente = 0;  // réduction de l'année y-1, réinvestie en année y
       for (let y = 1; y <= Y; y++) {
-        const versementsY = (y === 1 ? inp.versementInitial : 0) + 12 * inp.versementMensuel;
-        const reducY = versementsY * tauxIR;
+        // Versements directs de l'investisseur cette année
+        const directY = (y === 1 ? inp.versementInitial : 0) + 12 * inp.versementMensuel;
+        // Réduction de l'année précédente, réinvestie dans le PER cette année
+        const reinvesteY = reducPrecedente;
+        totReinvesti += reinvesteY;
+        // Total versé dans le PER cette année (direct + réinvesti) — les deux sont déductibles
+        const totalVersY = directY + reinvesteY;
+        // Réduction d'impôt générée cette année (sur le total versé)
+        const reducY = totalVersY * tauxIR;
         totReduc += reducY;
-        // Réduction perçue en N+1, capitalisée ensuite jusqu'au terme : approximation
-        // simple = on l'ajoute en fin d'année puis on la fait croître au taux annuel net.
-        auxCap = auxCap * (1 + rdtNet) + reducY;
+        // Le capital auxiliaire (partie financée par les réinvestissements) grossit au taux net
+        // et reçoit le réinvestissement de cette année
+        auxCap = auxCap * (1 + rdtNet) + reinvesteY;
+        // La réduction de cette année sera réinvestie l'année prochaine
+        reducPrecedente = reducY;
       }
-      return { auxCap, totReduc, plusValue: auxCap - totReduc };
+      // La dernière réduction est générée mais non réinvestie (période terminée) :
+      // elle est disponible pour l'épargnant à la fin de la période.
+      const derniereReduc = reducPrecedente;
+      return { auxCap, totReduc, totReinvesti, derniereReduc, plusValue: Math.max(0, auxCap - totReinvesti) };
     }
 
-    /** Year-by-year auxiliary capital series for PER reinvest */
+    /** Year-by-year auxiliary capital series for PER reinvest (graphique) */
     function perReinvestSeries(inp, rdtNet, tauxIR) {
       const Y = Math.round(inp.dureeAnnees);
       let auxCap = 0;
+      let reducPrecedente = 0;
       const series = [0];
       for (let y = 1; y <= Y; y++) {
-        const versementsY = (y === 1 ? inp.versementInitial : 0) + 12 * inp.versementMensuel;
-        const reducY = versementsY * tauxIR;
-        auxCap = auxCap * (1 + rdtNet) + reducY;
+        const directY = (y === 1 ? inp.versementInitial : 0) + 12 * inp.versementMensuel;
+        const reinvesteY = reducPrecedente;
+        const totalVersY = directY + reinvesteY;
+        const reducY = totalVersY * tauxIR;
+        auxCap = auxCap * (1 + rdtNet) + reinvesteY;
+        reducPrecedente = reducY;
         series.push(auxCap);
       }
       return series;
@@ -1276,7 +1368,8 @@
       const rdtPess = rdtBrut - 0.01;
       const rdtOpt = rdtBrut + 0.01;
       const rdt = scenarioLvl === "pess" ? rdtPess : scenarioLvl === "opt" ? rdtOpt : rdtBrut;
-      const txSucc = inp.successionLine === 'indirecte' ? (inp.successionTauxIndirect ?? 0.60) : (inp.successionTauxDirect ?? 0.30);
+      const ligne = inp.successionLine ?? 'directe';
+      const txIndirect = inp.successionTauxIndirect ?? TX_SUCC_INDIRECT;
 
       const proj = projection(inp, rdt);
       // Dispatch fiscalité selon le produit choisi (AV / PER / Capi PM)
@@ -1284,26 +1377,24 @@
       if (inp.produit === "per") {
         const ageSortie = (inp.ageSouscripteur || 50) + (inp.dureeAnnees || 0);
         fiscPER = fiscalitePER(proj.capitalFin, proj.totVerseNet, proj.totVerseBrut, inp.tauxIR ?? 0.30, inp.perModeSortie ?? "capital", ageSortie);
-        // Pour les colonnes côté décès, on garde la mécanique AV (cas où décès intervient avant rachat ou pendant la phase d'épargne)
-        fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txSucc);
+        // Pour décès : PER assimilé AV — art. 990 I avant 70, droits succession après 70
+        fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txIndirect, proj.totVerseBrut, ligne);
       } else if (inp.produit === "capi") {
-        // IS sur intérêts uniquement : assiette = capital final − versements bruts payés
         fiscCapi = fiscaliteCapiPM(proj.capitalFin, proj.totVerseBrut, inp.tauxIS ?? 0.25);
-        // Pour Capi PM, pas de transmission individuelle ; on remplit le schéma fisc pour rester compat avec l'UI
         fisc = { av70: false, taxe: fiscCapi.taxeIS, direct: fiscCapi.netCapital, abattTotal: 0, abattBenef: 0, partBenef: 0, imposableBenef: 0, imposableTotal: fiscCapi.plusValue, taxeBenef: 0 };
       } else {
-        fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txSucc);
+        fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txIndirect, proj.totVerseBrut, ligne);
       }
       const r = rente(proj.capitalFin, proj.totVerseNet, rdt, inp.dureeAnnees, inp.situationFamiliale);
       const livret = projLivret(inp.versementInitial, inp.versementMensuel, inp.dureeAnnees, inp.livretTaux);
-      const livretFisc = fiscaliteLivret(livret.capitalFin, inp.nbBeneficiaires, txSucc);
+      const livretFisc = fiscaliteLivret(livret.capitalFin, inp.nbBeneficiaires, ligne, txIndirect);
       const livretRenteBrute = livret.capitalFin * inp.livretTaux;
       // PER + réintégration : capital auxiliaire issu du réinvestissement des réductions d'impôt
       const perReinvest = inp.produit === "per"
         ? projPERReinvest(inp, rdt, inp.tauxIR ?? 0.30)
         : null;
 
-      return { rdtBrut, rdtPess, rdtMed: rdtBrut, rdtOpt, sri, rdt, proj, fisc, fiscPER, fiscCapi, rente: r, livret, livretFisc, livretRenteBrute, perReinvest, txSucc };
+      return { rdtBrut, rdtPess, rdtMed: rdtBrut, rdtOpt, sri, rdt, proj, fisc, fiscPER, fiscCapi, rente: r, livret, livretFisc, livretRenteBrute, perReinvest, txSucc: txIndirect, ligne };
     }
 
     // === Formatters ===
@@ -2263,10 +2354,15 @@
       // Columns 3+: SCÉNARIOS — each scenario's inputs run at current scenario level
       const isPERProduit = inputs.produit === "per";
       const livretCol = useMemo(() => {
-        const txSucc = inputs.successionLine === 'indirecte' ? (inputs.successionTauxIndirect ?? 0.60) : (inputs.successionTauxDirect ?? 0.30);
+        const ligne = inputs.successionLine ?? 'directe';
+        const txIndirect = inputs.successionTauxIndirect ?? TX_SUCC_INDIRECT;
         const livretProj = projLivret(inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux);
-        const livretFisc = fiscaliteLivret(livretProj.capitalFin, inputs.nbBeneficiaires, txSucc);
+        const livretFisc = fiscaliteLivret(livretProj.capitalFin, inputs.nbBeneficiaires, ligne, txIndirect);
         const renteBruteAn = livretProj.capitalFin * inputs.livretTaux;
+        // Description abattement selon ligne
+        const abattDetail = ligne === 'directe'
+          ? `${ABATT_SUCC_ENFANT.toLocaleString('fr-FR')} € × ${inputs.nbBeneficiaires} enfant(s) + barème progressif`
+          : `Aucun abattement (ligne indirecte — 60 %)`;
         return {
           type: "livret",
           name: livretNom,
@@ -2279,9 +2375,9 @@
           rdt: inputs.livretTaux,
           // Succession
           capitalDeces: livretProj.capitalFin,
-          abattement: 0,
-          abattDetail: `Aucun abattement applicable`,
-          imposable: livretFisc.imp,
+          abattement: livretFisc.abattTotal,
+          abattDetail,
+          imposable: livretFisc.imposableTotal,
           taxe: livretFisc.droits,
           taxeLabel: "Droits de succession",
           netTransmis: livretFisc.net,
@@ -2294,46 +2390,47 @@
           // Réduction d'impôt (n/a livret)
           isPER: false,
           reductionImpotAnnuelle: 0,
+          reductionImpotAnnee1: 0,
           reductionImpotCumulee: 0,
           tauxIRPct: 0,
         };
-      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxDirect, inputs.successionTauxIndirect, livretNom]);
+      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, livretNom]);
 
       // === Colonne PER + Réintégration des réductions d'impôt ===
-      // Représente le SCÉNARIO BONUS où le client réinvestit chaque année sa réduction
-      // d'impôt dans un véhicule annexe au même rendement. Le capital total à terme =
-      // capital PER + capital auxiliaire issu des réductions capitalisées.
+      // L'épargnant réinvestit chaque année sa réduction d'impôt dans le PER.
+      // Ce réinvestissement génère lui-même une nouvelle réduction (effet levier composé).
       const perReinvestCol = useMemo(() => {
         if (!isPERProduit) return null;
-        const txSucc = inputs.successionLine === 'indirecte' ? (inputs.successionTauxIndirect ?? 0.60) : (inputs.successionTauxDirect ?? 0.30);
+        const ligne = inputs.successionLine ?? 'directe';
+        const txIndirect = inputs.successionTauxIndirect ?? TX_SUCC_INDIRECT;
         const auxCap = sim.perReinvest?.auxCap || 0;
-        const totReduc = sim.perReinvest?.totReduc || 0;
-        const auxPV = Math.max(0, auxCap - totReduc);
+        const totReduc = sim.perReinvest?.totReduc || 0;         // total réductions (y.c. sur réinvest.)
+        const totReinvesti = sim.perReinvest?.totReinvesti || 0; // montant total réinvesti dans PER
+        const auxPV = Math.max(0, auxCap - totReinvesti);
         const perCap = sim.proj.capitalFin;
         const totalCap = perCap + auxCap;
+        // Réduction d'impôt : année 1 (initial + mensuel) vs années suivantes
+        // Dans PER+Réintégration, la réduction de l'année précédente est réinvestie,
+        // ce qui génère une réduction supplémentaire → on utilise totReduc (compoundé).
+        const tmi = inputs.tauxIR || 0;
+        const redAnnee1 = (inputs.versementInitial + inputs.versementMensuel * 12) * tmi;
+        const redAnnuelleCourante = inputs.versementMensuel * 12 * tmi;
         // === Succession (cas décès) ===
-        // PER + véhicule auxiliaire (AV) → tous deux sous le régime art. 990 I :
-        // abattement 152 500 € par bénéficiaire avant 70 ans, abattement global après.
-        // On applique la même fiscalité que fiscaliteAV() sur le capital TOTAL.
-        const fiscSucc = fiscaliteAV(totalCap, sim.proj.totVerseNet + totReduc, inputs.nbBeneficiaires, inputs.ageSouscripteur, txSucc);
-        // === RENTE — formule cohérente avec solutionCol PER ===
-        // solutionCol PER utilise sim.rente.* (issu de rente(capPER, vNet, rdt, dur, sit)).
-        // Pour perReinvestCol, on applique la MÊME mécanique à `totalCap` (PER + aux),
-        // de sorte que la KPI « Rente nette » de la BenchmarkTable se compare proprement
-        // entre les deux colonnes : delta = (rente sur totalCap) − (rente sur capPER).
-        const renteRef = rente(totalCap, sim.proj.totVerseNet + totReduc, sim.rdt, inputs.dureeAnnees, inputs.situationFamiliale);
+        const fiscSucc = fiscaliteAV(totalCap, sim.proj.totVerseNet + totReinvesti, inputs.nbBeneficiaires, inputs.ageSouscripteur, txIndirect, sim.proj.totVerseBrut + totReinvesti, ligne);
+        const renteRef = rente(totalCap, sim.proj.totVerseNet + totReinvesti, sim.rdt, inputs.dureeAnnees, inputs.situationFamiliale);
         return {
           type: "perReinvest",
           name: "PER + Réintégration",
-          subtitle: `Réductions d'impôt réinvesties à ${fmtPCT(sim.rdt)}`,
+          subtitle: `Réductions réinvesties · levier fiscal composé`,
           capital: totalCap,
-          versements: sim.proj.totVerseBrut,    // sortie de poche identique
-          // Plus-value affichée = capital total − versements bruts (cohérence visuelle)
+          // L'épargnant verse ses contributions directes (identiques à Solution PER)
+          versements: sim.proj.totVerseBrut,
+          // Plus-value totale = capital PER + auxCap − versements directs bruts
           plusValue: Math.max(0, totalCap - sim.proj.totVerseBrut),
           fraisSouscription: sim.proj.fraisSousPay,
           fraisDe: 0,
           rdt: sim.rdt,
-          // Succession (PER + aux. AV) — régime art. 990 I sur capital total
+          // Succession
           capitalDeces: totalCap,
           abattement: fiscSucc.abattTotal,
           abattDetail: fiscSucc.av70 ? `${ABATT_AV_70.toLocaleString('fr-FR')} € × ${inputs.nbBeneficiaires} bénéf.` : `Abatt. global après 70 ans`,
@@ -2341,22 +2438,28 @@
           taxe: fiscSucc.taxe,
           taxeLabel: "Taxe PER+AV (art. 990 I)",
           netTransmis: fiscSucc.direct,
-          // Rente — mêmes champs / même formule que solutionCol (basée sur la fonction rente())
           renteBrute: renteRef.brute,
           renteImpot: renteRef.imp,
           renteNetteAn: renteRef.nette,
           renteNetteMois: renteRef.nette / 12,
-          renteRegime: renteRef.regime + " (sur PER + aux.)",
+          renteRegime: renteRef.regime + " (sur PER + réinvest.)",
           // PER reinvest specifics
           isPER: true,
           auxCap,
           totReduc,
+          totReinvesti,
           perCap,
-          reductionImpotAnnuelle: ((inputs.versementInitial / Math.max(1, inputs.dureeAnnees)) + inputs.versementMensuel * 12) * (inputs.tauxIR || 0),
-          reductionImpotCumulee: (sim.fiscPER?.ecoFiscEntree || 0),
-          tauxIRPct: inputs.tauxIR || 0,
+          // Réduction d'impôt : l'effet de levier composé génère PLUS de réductions que le PER seul
+          reductionImpotAnnee1: redAnnee1,
+          reductionImpotAnnuelle: redAnnuelleCourante,
+          reductionImpotCumulee: totReduc,    // total réductions (avec levier composé)
+          tauxIRPct: tmi,
+          // COÛT RÉEL : l'épargnant réinvestit ses réductions → il ne les "garde" pas
+          // Son effort net = versements directs bruts (les réductions alimentent le système)
+          coutReel: sim.proj.totVerseBrut,
+          coutReelLabel: "Versements directs (réductions réinvesties)",
         };
-      }, [isPERProduit, sim, inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.tauxIR, inputs.successionLine, inputs.successionTauxDirect, inputs.successionTauxIndirect, inputs.situationFamiliale]);
+      }, [isPERProduit, sim, inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.tauxIR, inputs.successionLine, inputs.successionTauxIndirect, inputs.ageSouscripteur, inputs.nbBeneficiaires, inputs.situationFamiliale]);
 
       const produitLabel = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : "Ass Vie";
       const solutionCol = useMemo(() => {
@@ -2379,10 +2482,19 @@
           taxeLabel = "Impôt sur les sociétés";
           netTransmis = sim.fiscCapi?.netCapital || sim.fisc.direct;
         }
-        // Réduction d'impôt PER : versements bruts × TMI, par an et cumulée
-        const versementAnnuelBrut = inputs.versementInitial / Math.max(1, inputs.dureeAnnees) + inputs.versementMensuel * 12;
-        const reductionImpotAnnuelle = isPER ? versementAnnuelBrut * inputs.tauxIR : 0;
-        const reductionImpotCumulee = isPER ? (sim.fiscPER?.ecoFiscEntree || 0) : 0;
+        // Réduction d'impôt PER :
+        //   • Année 1 : (versement initial + 12 × mensuel) × TMI — le versement initial est
+        //     déductible en totalité l'année de la souscription.
+        //   • Années suivantes : 12 × mensuel × TMI (versements récurrents uniquement).
+        //   • Cumulée : totVerseBrut × TMI (= ecoFiscEntree de fiscalitePER).
+        const tmi = isPER ? inputs.tauxIR : 0;
+        const reductionImpotAnnee1    = isPER ? (inputs.versementInitial + inputs.versementMensuel * 12) * tmi : 0;
+        const reductionImpotAnnuelle  = isPER ? (inputs.versementMensuel * 12) * tmi : 0;
+        const reductionImpotCumulee   = isPER ? (sim.fiscPER?.ecoFiscEntree || 0) : 0;
+        // COÛT RÉEL Solution PER : l'épargnant GARDE chaque année sa réduction d'impôt
+        // → son effort net = versements − réductions perçues sur la période.
+        const coutReel = isPER ? Math.max(0, sim.proj.totVerseBrut - reductionImpotCumulee) : sim.proj.totVerseBrut;
+        const coutReelLabel = isPER ? "Versements − réductions d'impôt perçues" : "Versements bruts";
         return ({
           type: "solution",
           isPER,
@@ -2391,8 +2503,6 @@
           subtitle: `Rdt ${fmtPCT(sim.rdt)} · ${scenarioLvl === "med" ? "médian" : scenarioLvl === "pess" ? "pessimiste" : "optimiste"}`,
           capital: sim.proj.capitalFin,
           versements: sim.proj.totVerseBrut,
-          // Plus-value affichée = capital final − versements bruts (cohérence visuelle : Épargne + Plus-value = Capital)
-          // Les frais de souscription sont déjà soustraits du capital final puisque le rendement s'applique au net.
           plusValue: Math.max(0, sim.proj.capitalFin - sim.proj.totVerseBrut),
           fraisSouscription: sim.proj.fraisSousPay,
           rdt: sim.rdt,
@@ -2408,17 +2518,22 @@
           renteNetteAn: isPER && sim.fiscPER?.modeSortie === "rente" ? sim.fiscPER.renteNetteAn : sim.rente.nette,
           renteNetteMois: (isPER && sim.fiscPER?.modeSortie === "rente" ? sim.fiscPER.renteNetteAn : sim.rente.nette) / 12,
           renteRegime: isPER ? "RVTO (PER)" : isCapi ? "Non applicable (PM)" : sim.rente.regime,
-          // Réduction d'impôt PER (avantage fiscal à l'entrée)
+          reductionImpotAnnee1,
           reductionImpotAnnuelle,
           reductionImpotCumulee,
-          tauxIRPct: isPER ? inputs.tauxIR : 0,
+          tauxIRPct: tmi,
+          coutReel,
+          coutReelLabel,
         });
       }, [sim, scenarioLvl, inputs.nbBeneficiaires, inputs.produit, inputs.tauxIR, inputs.tauxIS, inputs.perModeSortie, inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, produitLabel]);
 
       const scenarioCols = useMemo(() => scenarios.map((s, idx) => {
         const sSim = runSimulation(s.inputs, scenarioLvl);
         const sIsPER = s.inputs.produit === "per";
-        const sVersAnnuel = s.inputs.versementInitial / Math.max(1, s.inputs.dureeAnnees) + s.inputs.versementMensuel * 12;
+        const sTmi = sIsPER ? (s.inputs.tauxIR || 0) : 0;
+        const sRedAnnee1   = sIsPER ? (s.inputs.versementInitial + s.inputs.versementMensuel * 12) * sTmi : 0;
+        const sRedAnnuelle = sIsPER ? (s.inputs.versementMensuel * 12) * sTmi : 0;
+        const sRedCumulee  = sIsPER ? (sSim.fiscPER?.ecoFiscEntree || 0) : 0;
         return {
           type: "scenario",
           colorIndex: (idx % 4) + 1,
@@ -2444,9 +2559,12 @@
           renteNetteAn: sSim.rente.nette,
           renteNetteMois: sSim.rente.nette / 12,
           renteRegime: sSim.rente.regime,
-          reductionImpotAnnuelle: sIsPER ? sVersAnnuel * (s.inputs.tauxIR || 0) : 0,
-          reductionImpotCumulee: sIsPER ? (sSim.fiscPER?.ecoFiscEntree || 0) : 0,
-          tauxIRPct: sIsPER ? (s.inputs.tauxIR || 0) : 0,
+          reductionImpotAnnee1: sRedAnnee1,
+          reductionImpotAnnuelle: sRedAnnuelle,
+          reductionImpotCumulee: sRedCumulee,
+          tauxIRPct: sTmi,
+          coutReel: sIsPER ? Math.max(0, sSim.proj.totVerseBrut - sRedCumulee) : sSim.proj.totVerseBrut,
+          coutReelLabel: sIsPER ? "Versements − réductions d'impôt perçues" : "Versements bruts",
         };
       }), [scenarios, scenarioLvl]);
 
@@ -2631,21 +2749,26 @@
                       Ligne indirecte
                     </button>
                   </div>
-                  <span className="text-[11px] text-stone-500">Taux applicable</span>
-                  <select value={inputs.successionLine === 'directe' ? inputs.successionTauxDirect : inputs.successionTauxIndirect}
-                    onChange={e => {
-                      const v = parseFloat(e.target.value);
-                      if (inputs.successionLine === 'directe') upd('successionTauxDirect', v);
-                      else upd('successionTauxIndirect', v);
-                    }}
-                    className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
-                    {[0.20, 0.30, 0.40, 0.45, 0.50, 0.60].map(r => (
-                      <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
-                    ))}
-                  </select>
+                  {/* Ligne directe : barème progressif automatique */}
+                  {inputs.successionLine === 'directe' ? (
+                    <span className="text-[11px] font-semibold text-stone-600 bg-stone-100 px-3 py-2 rounded-lg border border-stone-200">
+                      Barème progressif 5–45 % · abatt. 100 k€/enfant
+                    </span>
+                  ) : (
+                    <>
+                      <span className="text-[11px] text-stone-500">Taux forfaitaire</span>
+                      <select value={inputs.successionTauxIndirect ?? 0.60}
+                        onChange={e => upd('successionTauxIndirect', parseFloat(e.target.value))}
+                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                        {[0.35, 0.45, 0.55, 0.60].map(r => (
+                          <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
+                        ))}
+                      </select>
+                    </>
+                  )}
                 </div>
                 <div className="text-[10px] text-stone-400">
-                  Défaut : <span className="font-semibold">directe 30 %</span> · indirecte 60 %
+                  Directe : <span className="font-semibold">barème progressif légal</span> · Indirecte : taux forfaitaire
                 </div>
               </div>
             )}
@@ -2932,10 +3055,22 @@
             { key: 'pv',       label: 'Plus-value',          sub: 'capitalisée sur la durée',   getValue: c => Math.max(0, c.capital - c.versements), suffix: '' },
             { key: 'netIS',    label: 'Net après IS',        sub: 'trésorerie disponible',      getValue: c => c.netTransmis,    suffix: '' },
           ]
+        : inputs.produit === 'per'
+        ? [
+            { key: 'capital',       label: 'Capital final',            sub: 'à terme du contrat',    getValue: c => c.capital,                  suffix: '', barOverride: null },
+            { key: 'transmis',      label: 'Transmission nette',       sub: 'aux bénéficiaires',     getValue: c => c.netTransmis,              suffix: '', barOverride: null },
+            { key: 'rente',         label: 'Rente nette',              sub: 'à vie, par mois',       getValue: c => c.renteNetteMois,           suffix: '/mois', barOverride: null },
+            { key: 'reduc',         label: 'Réduction d\'impôt totale',sub: 'sur toute la période',  getValue: c => c.reductionImpotCumulee || 0, suffix: '',
+              barOverride: (col) => col.type === 'livret' ? 'linear-gradient(135deg, #a8a29e, #78716c)'
+                : col.type === 'perReinvest' ? 'linear-gradient(135deg, #f59e0b, #d97706)'   // amber — levier composé
+                : col.type === 'solution'    ? 'linear-gradient(135deg, #fb923c, #ea580c)'   // orange — solution PER
+                : 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+            },
+          ]
         : [
-            { key: 'capital',  label: 'Capital final',         sub: 'à terme du contrat',   getValue: c => c.capital,        suffix: '' },
-            { key: 'transmis', label: 'Transmission nette',    sub: 'aux bénéficiaires',    getValue: c => c.netTransmis,    suffix: '' },
-            { key: 'rente',    label: 'Rente nette',           sub: 'à vie, par mois', getValue: c => c.renteNetteMois, suffix: '/mois' },
+            { key: 'capital',  label: 'Capital final',         sub: 'à terme du contrat',   getValue: c => c.capital,        suffix: '', barOverride: null },
+            { key: 'transmis', label: 'Transmission nette',    sub: 'aux bénéficiaires',    getValue: c => c.netTransmis,    suffix: '', barOverride: null },
+            { key: 'rente',    label: 'Rente nette',           sub: 'à vie, par mois', getValue: c => c.renteNetteMois, suffix: '/mois', barOverride: null },
           ];
       // Palette riche, gradients pour les barres ; couleur unie pour les pastilles de légende
       const colBar = (col) => col.type === 'livret' ? 'linear-gradient(135deg, #a8a29e, #78716c)'
@@ -3014,11 +3149,12 @@
                       const ratio = livretValue > 0 ? val / livretValue : null;
                       const isLivret = col.type === 'livret';
                       const isPerRef = col.type === 'perReinvest';
-                      const isReference = isLivret;  // perReinvest est positif, traité comme un winner possible
+                      const isReference = isLivret;
                       const isWinner = inputs.produit === 'per'
-                        ? (val === winnerVal && allCols.length > 1)
+                        ? (val === winnerVal && allCols.length > 1 && val > 0)
                         : (!isLivret && val === winnerVal && allCols.length > 1 && val > livretValue);
-                      const bg = colBar(col);
+                      // Utiliser la couleur spécifique au KPI si définie (ex. jauge réduction d'impôt)
+                      const bg = kpi.barOverride ? kpi.barOverride(col) : colBar(col);
 
                       const deltaColor = delta > 0 ? 'text-emerald-700' : delta < 0 ? 'text-red-600' : 'text-stone-500';
                       return (
@@ -3225,8 +3361,9 @@
     }
 
     // Contrôles succession compacts (intégrés dans le titre dark "En cas de décès")
+    // Ligne directe → barème progressif FR (5-45 %) + abattement 100 k€/enfant (auto)
+    // Ligne indirecte → taux forfaitaire sélectionnable (60 % par défaut)
     function SuccessionControls({ inputs, upd }) {
-      const activeRate = inputs.successionLine === 'directe' ? inputs.successionTauxDirect : inputs.successionTauxIndirect;
       return (
         <div className="inline-flex items-center gap-2 flex-wrap bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 ring-1 ring-white/15">
           <span className="text-[10px] uppercase tracking-wider text-stone-200 font-bold">Droits succession</span>
@@ -3240,18 +3377,22 @@
               Indirecte
             </button>
           </div>
-          <select
-            value={activeRate}
-            onChange={e => {
-              const v = parseFloat(e.target.value);
-              if (inputs.successionLine === 'directe') upd('successionTauxDirect', v);
-              else upd('successionTauxIndirect', v);
-            }}
-            className="text-[11px] font-bold text-stone-900 px-2 py-1 bg-white border border-stone-200 rounded focus:outline-none">
-            {[0.20, 0.30, 0.40, 0.45, 0.50, 0.60].map(r => (
-              <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
-            ))}
-          </select>
+          {/* Ligne directe : barème progressif automatique — pas de taux à saisir */}
+          {inputs.successionLine === 'directe' ? (
+            <span className="text-[11px] font-bold text-white/80 bg-white/10 px-2 py-1 rounded">
+              Barème 5–45 % · abatt. 100 k€/enfant
+            </span>
+          ) : (
+            /* Ligne indirecte : taux forfaitaire (60 % par défaut) */
+            <select
+              value={inputs.successionTauxIndirect ?? 0.60}
+              onChange={e => upd('successionTauxIndirect', parseFloat(e.target.value))}
+              className="text-[11px] font-bold text-stone-900 px-2 py-1 bg-white border border-stone-200 rounded focus:outline-none">
+              {[0.35, 0.45, 0.55, 0.60].map(r => (
+                <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
+              ))}
+            </select>
+          )}
         </div>
       );
     }
@@ -3263,7 +3404,8 @@
       const isSolution = col.type === 'solution';
       const isScenario = col.type === 'scenario';
       // Plus-value sur réductions d'impôt (uniquement colonne PER + Réintégration)
-      const auxPV = isPerRef ? Math.max(0, (col.auxCap || 0) - (col.totReduc || 0)) : 0;
+      // = auxCap (portion PER financée par réinvestissements) − totReinvesti (montant effectivement réinvesti)
+      const auxPV = isPerRef ? Math.max(0, (col.auxCap || 0) - (col.totReinvesti || 0)) : 0;
       // Plus-value « pure » à afficher : pour PER seul = sim.proj.plusValue ; pour PER+Réintégration on garde
       // sim.proj.plusValue (la PV du PER) et on affiche séparément la plus-value sur réductions.
       const pvCorePER = isPerRef ? Math.max(0, (col.perCap || 0) - col.versements) : col.plusValue;
@@ -3321,20 +3463,58 @@
             </div>
           </div>
 
-          {/* Encarts mis en valeur — pour PER : Coût réel + Avantage fiscal
-              Le montant occupe sa propre ligne, gros et gras, parfaitement centré */}
+          {/* Encarts PER : Coût réel + Avantage fiscal — différenciés selon la stratégie */}
           {col.isPER && col.reductionImpotCumulee > 0 && (
             <div style={{marginTop:'auto'}}>
-              <div className={`mt-3 pt-3 border-t ${colDivider(col)} rounded-md bg-amber-50/70 px-3 py-3 ring-1 ring-amber-200/60`} style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
-                <div className={`text-[9px] uppercase tracking-widest font-bold text-amber-800`} style={{marginBottom:'6px'}}>Coût réel pour l'épargnant</div>
-                <div className={`num font-extrabold text-amber-800 leading-none`} style={{fontSize:'26px', textAlign:'center', width:'100%'}}>{fmtEUR(Math.max(0, col.versements - col.reductionImpotCumulee))}</div>
-                <div className={`text-[10px] text-amber-800/70`} style={{marginTop:'6px'}}>Versements bruts − réductions d'impôt</div>
+              {/* Coût réel — différent selon Solution PER (réduc gardée) vs PER+Réintégration (réduc réinvestie) */}
+              <div className={`mt-3 pt-3 border-t ${colDivider(col)} rounded-md px-3 py-3 ring-1 ${isPerRef ? 'bg-sky-50/70 ring-sky-200/60' : 'bg-amber-50/70 ring-amber-200/60'}`}
+                style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
+                <div className={`text-[9px] uppercase tracking-widest font-bold ${isPerRef ? 'text-sky-800' : 'text-amber-800'}`} style={{marginBottom:'6px'}}>
+                  {isPerRef ? 'Effort de l\'épargnant' : 'Coût réel pour l\'épargnant'}
+                </div>
+                <div className={`num font-extrabold leading-none ${isPerRef ? 'text-sky-800' : 'text-amber-800'}`} style={{fontSize:'26px', textAlign:'center', width:'100%'}}>
+                  {fmtEUR(col.coutReel ?? Math.max(0, col.versements - col.reductionImpotCumulee))}
+                </div>
+                <div className={`text-[10px] mt-1.5 ${isPerRef ? 'text-sky-700/70' : 'text-amber-800/70'}`}>
+                  {isPerRef
+                    ? <>Versements directs<br/><span className="italic">réductions réinvesties, non conservées</span></>
+                    : <>Versements − réductions d'impôt<br/><span className="italic">réductions conservées par l'épargnant</span></>
+                  }
+                </div>
               </div>
-              <div className={`mt-2 rounded-md bg-emerald-50/60 px-3 py-3 ring-1 ring-emerald-200/60`} style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
-                <div className={`text-[9px] uppercase tracking-widest font-bold text-emerald-700`} style={{marginBottom:'6px'}}>Avantage fiscal PER</div>
-                <div className={`num font-extrabold text-emerald-700 leading-none`} style={{fontSize:'26px', textAlign:'center', width:'100%'}}>{fmtEUR(col.reductionImpotCumulee)}</div>
-                <div className={`text-[10px] text-emerald-700/70`} style={{marginTop:'6px'}}>Versements × TMI {(col.tauxIRPct*100).toFixed(0)}%</div>
+              {/* Réduction d'impôt cumulée */}
+              <div className={`mt-2 rounded-md px-3 py-3 ring-1 ${isPerRef ? 'bg-teal-50/60 ring-teal-200/60' : 'bg-emerald-50/60 ring-emerald-200/60'}`}
+                style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', textAlign:'center'}}>
+                <div className={`text-[9px] uppercase tracking-widest font-bold ${isPerRef ? 'text-teal-700' : 'text-emerald-700'}`} style={{marginBottom:'6px'}}>
+                  {isPerRef ? 'Réductions générées (levier composé)' : 'Avantage fiscal PER'}
+                </div>
+                <div className={`num font-extrabold leading-none ${isPerRef ? 'text-teal-700' : 'text-emerald-700'}`} style={{fontSize:'26px', textAlign:'center', width:'100%'}}>
+                  {fmtEUR(col.reductionImpotCumulee)}
+                </div>
+                <div className={`text-[10px] mt-1.5 ${isPerRef ? 'text-teal-700/70' : 'text-emerald-700/70'}`}>
+                  {isPerRef
+                    ? `TMI ${(col.tauxIRPct*100).toFixed(0)}% · y.c. réductions sur réinvestissements`
+                    : `Versements × TMI ${(col.tauxIRPct*100).toFixed(0)}%`
+                  }
+                </div>
               </div>
+              {/* Réduction année 1 vs années suivantes */}
+              {col.reductionImpotAnnee1 > 0 && (
+                <div className="mt-2 rounded-md bg-stone-50 px-3 py-2.5 ring-1 ring-stone-200/60 text-center">
+                  <div className="text-[9px] uppercase tracking-widest font-bold text-stone-500 mb-1.5">Réduction annuelle</div>
+                  <div className="flex justify-around text-center gap-2">
+                    <div>
+                      <div className="num font-bold text-stone-800 text-[13px]">{fmtEUR(col.reductionImpotAnnee1)}</div>
+                      <div className="text-[9px] text-stone-400">année 1</div>
+                    </div>
+                    <div className="text-stone-300">|</div>
+                    <div>
+                      <div className="num font-bold text-stone-800 text-[13px]">{fmtEUR(col.reductionImpotAnnuelle)}/an</div>
+                      <div className="text-[9px] text-stone-400">années suivantes</div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </ColCard>
@@ -5163,10 +5343,11 @@
                       // Transmission nette : abattement AV art. 990 I appliqué sur capital total
                       // → fiscaliteAV calculée dans perReinvestCol pour PER+Réintégration
                       const succReinv = (() => {
-                        const txSucc = inputs.successionLine === 'indirecte' ? (inputs.successionTauxIndirect ?? 0.60) : (inputs.successionTauxDirect ?? 0.30);
+                        const ligne = inputs.successionLine ?? 'directe';
+                        const txIndirect = inputs.successionTauxIndirect ?? TX_SUCC_INDIRECT;
                         const auxCap = sim.perReinvest?.auxCap || 0;
-                        const totReduc = sim.perReinvest?.totReduc || 0;
-                        const f = fiscaliteAV(finalSolution + auxCap, sim.proj.totVerseNet + totReduc, inputs.nbBeneficiaires, inputs.ageSouscripteur, txSucc);
+                        const totReinvesti = sim.perReinvest?.totReinvesti || 0;
+                        const f = fiscaliteAV(finalSolution + auxCap, sim.proj.totVerseNet + totReinvesti, inputs.nbBeneficiaires, inputs.ageSouscripteur, txIndirect, sim.proj.totVerseBrut + totReinvesti, ligne);
                         return f.direct;
                       })();
                       return (
