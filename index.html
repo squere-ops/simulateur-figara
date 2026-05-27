@@ -2398,6 +2398,7 @@
           reductionImpotAnnee1: 0,
           reductionImpotCumulee: 0,
           tauxIRPct: 0,
+          coutReel: livretProj.totVerse,  // pas d'avantage fiscal — coût = versements
         };
       }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, livretNom]);
 
@@ -2755,14 +2756,20 @@
                       Ligne indirecte
                     </button>
                   </div>
-                  {/* Ligne directe : barème progressif automatique */}
+                  {/* Ligne directe : dropdown taux barème + abatt. 100 k€/enfant */}
                   {inputs.successionLine === 'directe' ? (
-                    <span className="text-[11px] font-semibold text-stone-600 bg-stone-100 px-3 py-2 rounded-lg border border-stone-200">
-                      Barème progressif 5–45 % · abatt. 100 k€/enfant
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <select value={inputs.successionTauxDirect ?? 0.30}
+                        onChange={e => upd('successionTauxDirect', parseFloat(e.target.value))}
+                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                        {[0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.45].map(r => (
+                          <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
+                        ))}
+                      </select>
+                      <span className="text-[11px] text-stone-500">abatt. 100 k€/enfant</span>
+                    </div>
                   ) : (
-                    <>
-                      <span className="text-[11px] text-stone-500">Taux forfaitaire</span>
+                    <div className="flex items-center gap-2">
                       <select value={inputs.successionTauxIndirect ?? 0.60}
                         onChange={e => upd('successionTauxIndirect', parseFloat(e.target.value))}
                         className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
@@ -2770,11 +2777,12 @@
                           <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
                         ))}
                       </select>
-                    </>
+                      <span className="text-[11px] text-stone-500">taux forfaitaire</span>
+                    </div>
                   )}
                 </div>
                 <div className="text-[10px] text-stone-400">
-                  Directe : <span className="font-semibold">barème progressif légal</span> · Indirecte : taux forfaitaire
+                  Directe : <span className="font-semibold">taux barème + abatt. 100 k€/enfant</span> · Indirecte : taux forfaitaire
                 </div>
               </div>
             )}
@@ -3063,15 +3071,23 @@
           ]
         : inputs.produit === 'per'
         ? [
-            { key: 'capital',       label: 'Capital final',            sub: 'à terme du contrat',    getValue: c => c.capital,                  suffix: '', barOverride: null },
-            { key: 'transmis',      label: 'Transmission nette',       sub: 'aux bénéficiaires',     getValue: c => c.netTransmis,              suffix: '', barOverride: null },
-            { key: 'rente',         label: 'Rente nette',              sub: 'à vie, par mois',       getValue: c => c.renteNetteMois,           suffix: '/mois', barOverride: null },
-            { key: 'reduc',         label: 'Réduction d\'impôt totale',sub: 'sur toute la période',  getValue: c => c.reductionImpotCumulee || 0, suffix: '',
-              barOverride: (col) => col.type === 'livret' ? 'linear-gradient(135deg, #a8a29e, #78716c)'
-                : col.type === 'perReinvest' ? 'linear-gradient(135deg, #f59e0b, #d97706)'   // amber — levier composé
-                : col.type === 'solution'    ? 'linear-gradient(135deg, #fb923c, #ea580c)'   // orange — solution PER
-                : 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+            { key: 'capital',   label: 'Capital final',              sub: 'à terme du contrat',         getValue: c => c.capital,                    suffix: '', barOverride: null },
+            { key: 'coutReel',  label: 'Effort net de l\'épargnant', sub: 'versements − avantage fiscal (↓ mieux)',
+              getValue: c => c.coutReel ?? c.versements, suffix: '',
+              lowerIsBetter: true,
+              pctOf: c => c.capital > 0 ? (c.coutReel ?? c.versements) / c.capital : null,
+              barOverride: (col) => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
+                : col.type === 'perReinvest' ? 'linear-gradient(135deg, #94a3b8, #64748b)'
+                : col.type === 'solution'    ? 'linear-gradient(135deg, #57534e, #44403c)'
+                : 'linear-gradient(135deg, #9ca3af, #6b7280)',
             },
+            { key: 'reduc',     label: 'Réduction d\'impôt',         sub: 'économie fiscale cumulée',   getValue: c => c.reductionImpotCumulee || 0, suffix: '',
+              barOverride: (col) => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
+                : col.type === 'perReinvest' ? 'linear-gradient(135deg, #7c3aed, #6d28d9)'
+                : col.type === 'solution'    ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)'
+                : 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
+            },
+            { key: 'rente',     label: 'Rente nette',                sub: 'à vie, par mois',           getValue: c => c.renteNetteMois,             suffix: '/mois', barOverride: null },
           ]
         : [
             { key: 'capital',  label: 'Capital final',         sub: 'à terme du contrat',   getValue: c => c.capital,        suffix: '', barOverride: null },
@@ -3197,10 +3213,27 @@
                             )}
                           </div>
 
-                          {/* Bloc droit unifié : trophée + delta pour le gagnant ; delta pour les autres ; rien pour la référence livret */}
+                          {/* Bloc droit : % du capital pour coût réel ; trophée+delta pour les autres */}
                           <div className="w-44 md:w-60 flex-shrink-0 flex justify-end items-center">
-                            {(!isLivret || inputs.produit === 'per') && (
-                              isWinner ? (
+                            {(!isLivret || inputs.produit === 'per') && (() => {
+                              // KPI "coût réel" → affiche % du capital en badge coloré
+                              if (kpi.pctOf) {
+                                const pctNum = kpi.pctOf(col);
+                                const pctPct = pctNum !== null ? Math.round(pctNum * 100) : null;
+                                const pctColor = pctPct !== null
+                                  ? (pctPct < 40 ? 'text-emerald-700' : pctPct < 60 ? 'text-amber-700' : 'text-stone-500')
+                                  : 'text-stone-400';
+                                return (
+                                  <div className="text-right">
+                                    <div className={`num font-extrabold text-[17px] ${pctColor} leading-none`}>
+                                      {pctPct !== null ? `${pctPct}%` : '—'}
+                                    </div>
+                                    <div className="text-[10px] text-stone-400 mt-0.5">du capital final</div>
+                                  </div>
+                                );
+                              }
+                              // KPI standard → trophée + delta
+                              return isWinner ? (
                                 <div className="inline-flex items-center gap-2 px-2 py-1.5 rounded-lg bg-gradient-to-r from-amber-50 via-amber-50/70 to-emerald-50/70 border border-amber-300 shadow-sm">
                                   <span className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded-md bg-white border-2 border-stone-900 text-stone-900 text-[10px] font-black uppercase tracking-wide whitespace-nowrap shadow-sm" title="Meilleur sur ce critère">
                                     <I.trophy/>
@@ -3216,8 +3249,8 @@
                                   <div className={`num font-bold text-[13px] ${deltaColor}`}>{delta > 0 ? '+' : ''}{fmtEUR(delta)}</div>
                                   <div className="text-[10px] text-stone-400">{ratio !== null ? `×${ratio.toFixed(2)} vs ${inputs.produit === "per" ? "PER seul" : inputs.produit === "capi" ? "CAT" : "livret"}` : `vs ${inputs.produit === "per" ? "PER seul" : inputs.produit === "capi" ? "CAT" : "livret"}`}</div>
                                 </div>
-                              )
-                            )}
+                              );
+                            })()}
                           </div>
                         </div>
                       );
@@ -3440,28 +3473,45 @@
               : <>Hypothèse de rendement <span className="num font-semibold">{fmtPCT(col.rdt)}</span></>}
           </div>
 
-          {/* Données En cas de vie — Ordre : Épargne · Plus-value · Réduction d'impôt · (PV sur réductions)
-              Note : en mode PER, on ajoute une ligne placeholder dans la colonne « PER seul » pour aligner
-              l'item « Capital + intérêts » horizontalement avec la colonne « PER + Réintégration ». */}
-          <div className={`mt-4 pt-3 border-t ${colDivider(col)} space-y-2.5`}>
+          {/* Données En cas de vie — Épargne · Plus-value · Mini-carte Réduction d'impôt */}
+          <div className={`mt-4 pt-3 border-t ${colDivider(col)} space-y-2`}>
             <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)} lbl="Épargne investie" val={fmtEUR(col.versements)} />
             <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)} lbl="Plus-value" val={`+${fmtEUR(pvCorePER)}`} positive />
-            {col.isPER && col.reductionImpotCumulee > 0 && (
-              <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)}
-                lbl={`Réduction d'impôt (TMI ${(col.tauxIRPct*100).toFixed(0)}%)`}
-                val={`+${fmtEUR(col.reductionImpotCumulee)}`} positive />
-            )}
-            {isPerRef && (
-              <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)}
-                lbl="Plus-value sur réduction d'impôt"
-                val={auxPV > 0 ? `+${fmtEUR(auxPV)}` : '—'} positive={auxPV > 0} />
-            )}
-            {/* Placeholder invisible dans la colonne « Solution PER » pour caler le hero Capital + intérêts
-                sur la même ligne que la colonne « PER + Réintégration » qui contient une ligne PV sup. */}
-            {col.type === 'solution' && col.isPER && (
-              <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)}
-                lbl={<span style={{visibility:'hidden'}}>Plus-value sur réduction d'impôt</span>}
-                val={<span style={{visibility:'hidden'}}>—</span>} />
+            {/* Mini-carte réduction d'impôt — mise en valeur avec couleur violet brand */}
+            {col.isPER && col.reductionImpotCumulee > 0 ? (
+              <div className="rounded-xl overflow-hidden" style={{background:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', outline:'1.5px solid #c4b5fd'}}>
+                {/* Header violet */}
+                <div className="px-3 pt-2.5 pb-2" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
+                  <div className="flex items-center justify-between">
+                    <div className="text-[9px] uppercase tracking-widest font-bold text-white/80" style={{letterSpacing:'0.12em'}}>
+                      Réduction d'impôt · TMI {(col.tauxIRPct*100).toFixed(0)} %
+                    </div>
+                    <div className="num text-[15px] font-extrabold text-white leading-none">
+                      +{fmtEUR(col.reductionImpotCumulee)}
+                    </div>
+                  </div>
+                  {isPerRef && (
+                    <div className="text-[9px] italic text-violet-200 mt-0.5">
+                      levier composé sur réinvestissements
+                    </div>
+                  )}
+                </div>
+                {/* Détail année 1 / années suivantes */}
+                <div className="flex items-stretch gap-0 px-2 py-2">
+                  <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
+                    <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnee1)}</div>
+                    <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>année 1</div>
+                  </div>
+                  <div className="flex items-center px-1" style={{color:'#c4b5fd', fontSize:'14px'}}>│</div>
+                  <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
+                    <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnuelle)}<span className="text-[10px] font-medium">/an</span></div>
+                    <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>années suivantes</div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Colonne non-PER : rien à afficher ici */
+              <div style={{height:'0'}}></div>
             )}
           </div>
 
@@ -3477,10 +3527,9 @@
             </div>
           </div>
 
-          {/* Encarts PER : Transmission nette + Réduction annuelle */}
-          {col.isPER && col.reductionImpotCumulee > 0 && (
+          {/* Encart bas PER : Transmission nette */}
+          {col.isPER && (
             <div style={{marginTop:'auto'}}>
-              {/* Transmission nette — valeur après droits de succession */}
               <div className={`mt-3 pt-3 border-t ${colDivider(col)}`}>
                 <div className="rounded-xl px-3 py-3 ring-1 ring-slate-200/70 bg-slate-50/80 text-center"
                   style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
@@ -3495,25 +3544,6 @@
                   </div>
                 </div>
               </div>
-              {/* Réduction année 1 vs années suivantes — sobre et chic */}
-              {col.reductionImpotAnnee1 > 0 && (
-                <div className="mt-2 rounded-xl bg-white px-3 py-2.5 ring-1 ring-slate-200/60 text-center">
-                  <div className="text-[9px] uppercase tracking-widest font-semibold text-slate-400 mb-2" style={{letterSpacing:'0.10em'}}>
-                    Réduction d'impôt annuelle
-                  </div>
-                  <div className="flex justify-around items-center text-center gap-2">
-                    <div>
-                      <div className="num font-bold text-slate-700 text-[13px]">{fmtEUR(col.reductionImpotAnnee1)}</div>
-                      <div className="text-[9px] text-slate-400 mt-0.5">année 1</div>
-                    </div>
-                    <div className="text-slate-200 text-sm">│</div>
-                    <div>
-                      <div className="num font-bold text-slate-700 text-[13px]">{fmtEUR(col.reductionImpotAnnuelle)}/an</div>
-                      <div className="text-[9px] text-slate-400 mt-0.5">années suivantes</div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </ColCard>
