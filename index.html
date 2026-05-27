@@ -2034,11 +2034,6 @@
                 <div className="text-right flex-shrink-0">
                   <div className="num text-2xl font-bold text-emerald-700 tracking-tightest leading-none">−{(reductionPCT*100).toFixed(0)} %</div>
                   <div className="text-[12px] text-stone-600 mt-1">soit une économie de <span className="num font-bold text-emerald-700">{fmtEUR(reductionCommerciale)}</span></div>
-                  {inputs.produit === 'per' && fraisActuels > 0 && inputs.tauxIR > 0 && (
-                    <div className="text-[11px] text-violet-700 mt-1">
-                      + une réduction d'impôt de <span className="num font-bold">{fmtEUR(fraisActuels * inputs.tauxIR)}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
@@ -3075,10 +3070,7 @@
                 key: 'coutReel', label: 'Coût réel pour l\'épargnant',
                 getValue: c => c.coutReel ?? c.versements,
                 pctOf: c => c.capital > 0 ? (c.coutReel ?? c.versements) / c.capital : null,
-                barOverride: col => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
-                  : col.type === 'perReinvest' ? 'linear-gradient(135deg, #94a3b8, #64748b)'
-                  : col.type === 'solution'    ? 'linear-gradient(135deg, #57534e, #44403c)'
-                  : 'linear-gradient(135deg, #9ca3af, #6b7280)',
+                barOverride: () => 'linear-gradient(135deg, #c4bfbb, #a8a29e)',
               },
             },
             { key: 'reduc', label: 'Réduction d\'impôt', sub: 'économie fiscale cumulée',
@@ -3519,19 +3511,17 @@
             {/* Mini-carte réduction d'impôt — mise en valeur avec couleur violet brand */}
             {col.isPER && col.reductionImpotCumulee > 0 ? (
               <div className="rounded-xl overflow-hidden" style={{background:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', outline:'1.5px solid #c4b5fd'}}>
-                {/* Header violet */}
-                <div className="px-3 pt-2.5 pb-2" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="text-[11px] font-extrabold text-white uppercase tracking-wide flex-1 text-center">
+                {/* Header violet — centré : libellé + montant en colonne */}
+                <div className="px-3 pt-2.5 pb-2.5" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
+                  <div className="flex flex-col items-center gap-0.5 text-center">
+                    <div className="text-[10px] font-extrabold text-white uppercase tracking-widest">
                       Réduction d'impôt
                     </div>
-                    <div className="text-right flex-shrink-0">
-                      <div className="num text-[17px] font-extrabold text-white leading-none">
-                        +{fmtEUR(col.reductionImpotCumulee)}
-                      </div>
-                      <div className="text-[9px] text-violet-200 font-normal mt-0.5">
-                        TMI {(col.tauxIRPct*100).toFixed(0)} %{isPerRef ? ' · levier composé' : ''}
-                      </div>
+                    <div className="num text-[20px] font-extrabold text-white leading-none">
+                      +{fmtEUR(col.reductionImpotCumulee)}
+                    </div>
+                    <div className="text-[9px] text-violet-200 font-normal">
+                      TMI {(col.tauxIRPct*100).toFixed(0)} %{isPerRef ? ' · levier composé' : ''}
                     </div>
                   </div>
                 </div>
