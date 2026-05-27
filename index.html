@@ -1119,7 +1119,7 @@
     }
 
     // fiscaliteAV — succession AV/PER en cas de décès
-    // successionLine : 'directe' (taux forfaitaire barème + 100k€/enfant) | 'indirecte' (60% flat)
+    // successionLine : 'directe' (taux forfaitaire barème) | 'indirecte' (60% flat)
     // txSuccDirect : taux forfaitaire ligne directe (30 % par défaut)
     function fiscaliteAV(cap, vNet, nb, age, txSuccIndirect, vBrut, successionLine, txSuccDirect) {
       const txIndirect = txSuccIndirect ?? TX_SUCC_INDIRECT;
@@ -1149,12 +1149,9 @@
         if (ligne === 'indirecte') {
           taxe = imposableGlobal * txIndirect;
         } else {
-          // Ligne directe : 100 000 € par enfant + taux forfaitaire barème
-          const partParEnfant = imposableGlobal / Math.max(1, nb);
-          const imposableParEnfant = Math.max(0, partParEnfant - ABATT_SUCC_ENFANT);
-          taxe = imposableParEnfant * txDirect * nb;
-          imposableTotal = imposableParEnfant * nb;
-          abattTotal += ABATT_SUCC_ENFANT * nb; // abatt. global + individuel
+          // Ligne directe : taux forfaitaire barème sur capital imposable (après abatt. global 30 500 € AV)
+          taxe = imposableGlobal * txDirect;
+          imposableTotal = imposableGlobal;
         }
       }
       const direct = cap - taxe;
@@ -1162,7 +1159,7 @@
     }
 
     // fiscaliteLivret — droits de succession sur actifs ordinaires (livrets, CAT…)
-    // Ligne directe : abattement 100 000 € par enfant + taux forfaitaire barème (30 % par défaut)
+    // Ligne directe : taux forfaitaire barème appliqué sur le capital brut (sans abattement)
     // Ligne indirecte : 60 % flat (pas d'abattement pour tiers)
     function fiscaliteLivret(cap, nb, successionLine, txSuccIndirect, txSuccDirect) {
       const ligne = successionLine ?? 'directe';
@@ -1172,14 +1169,9 @@
         const droits = cap * txIndirect;
         return { abatt: 0, abattTotal: 0, abattParEnfant: 0, imp: cap, imposableTotal: cap, droits, net: cap - droits };
       }
-      // Ligne directe : abattement 100 000 € par enfant + taux forfaitaire barème
-      const abattParEnfant = ABATT_SUCC_ENFANT;
-      const abattTotal = abattParEnfant * nb;
-      const partParEnfant = cap / Math.max(1, nb);
-      const imposableParEnfant = Math.max(0, partParEnfant - abattParEnfant);
-      const imposableTotal = imposableParEnfant * nb;
-      const droits = imposableParEnfant * txDirect * nb;
-      return { abatt: abattTotal, abattTotal, abattParEnfant, imp: imposableTotal, imposableTotal, droits, net: cap - droits };
+      // Ligne directe : taux forfaitaire sur capital brut (sans abattement individuel)
+      const droits = cap * txDirect;
+      return { abatt: 0, abattTotal: 0, abattParEnfant: 0, imp: cap, imposableTotal: cap, droits, net: cap - droits };
     }
 
     // === Fiscalité PER — versements volontaires DÉDUITS à l'entrée ===
@@ -2366,7 +2358,7 @@
         const renteBruteAn = livretProj.capitalFin * inputs.livretTaux;
         // Description abattement selon ligne
         const abattDetail = ligne === 'directe'
-          ? `${ABATT_SUCC_ENFANT.toLocaleString('fr-FR')} € × ${inputs.nbBeneficiaires} enfant(s) · taux ${((txDirect)*100).toFixed(0)} %`
+          ? `Taux forfaitaire ${((txDirect)*100).toFixed(0)} % sur capital brut (ligne directe)`
           : `Aucun abattement (ligne indirecte — ${((txIndirect)*100).toFixed(0)} %)`;
         return {
           type: "livret",
@@ -2756,7 +2748,7 @@
                       Ligne indirecte
                     </button>
                   </div>
-                  {/* Ligne directe : dropdown taux barème + abatt. 100 k€/enfant */}
+                  {/* Ligne directe : dropdown taux barème */}
                   {inputs.successionLine === 'directe' ? (
                     <div className="flex items-center gap-2">
                       <select value={inputs.successionTauxDirect ?? 0.30}
@@ -2766,7 +2758,7 @@
                           <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
                         ))}
                       </select>
-                      <span className="text-[11px] text-stone-500">abatt. 100 k€/enfant</span>
+                      <span className="text-[11px] text-stone-500">taux barème ligne directe</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
@@ -2782,7 +2774,7 @@
                   )}
                 </div>
                 <div className="text-[10px] text-stone-400">
-                  Directe : <span className="font-semibold">taux barème + abatt. 100 k€/enfant</span> · Indirecte : taux forfaitaire
+                  Directe : <span className="font-semibold">taux barème forfaitaire</span> · Indirecte : taux forfaitaire
                 </div>
               </div>
             )}
@@ -2998,12 +2990,12 @@
                       </>
                     ) : inputs.produit === "per" && perReinvestCol ? (
                       <>
-                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Réductions capitalisées</div>
+                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Rente brute à vie</div>
                         <div className="num text-3xl md:text-[34px] font-bold tracking-tightest text-white leading-none">
-                          +{fmtEUR(perReinvestCol.auxCap || 0)}
+                          {fmtEUR(perReinvestCol.renteNetteMois)}<span className="text-lg font-normal text-stone-400">/mois</span>
                         </div>
                         <div className="text-[11px] text-stone-400 mt-2 leading-relaxed">
-                          {fmtEUR(perReinvestCol.totReduc || 0)} de réductions × rdt {fmtPCT(sim.rdt)}
+                          PER + IR · capital {fmtEUR(perReinvestCol.capital)}
                         </div>
                       </>
                     ) : (
@@ -3034,15 +3026,15 @@
                       </>
                     ) : inputs.produit === "per" && perReinvestCol ? (
                       <>
-                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Richesse totale à terme</div>
+                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Rente brute / mois</div>
                         <div className="num text-3xl md:text-[34px] font-bold tracking-tightest text-white leading-none">
-                          {fmtEUR(perReinvestCol.capital)}
+                          {fmtEUR(solutionCol.renteNetteMois)}<span className="text-lg font-normal text-stone-400">/mois</span>
                         </div>
-                        <div className="text-[11px] text-stone-400 mt-2 leading-relaxed">PER + réductions capitalisées</div>
+                        <div className="text-[11px] text-stone-400 mt-2 leading-relaxed">PER seul · capital {fmtEUR(solutionCol.capital)}</div>
                       </>
                     ) : (
                       <>
-                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Rente nette / mois</div>
+                        <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 mb-2">Rente brute / mois</div>
                         <div className="num text-3xl md:text-[34px] font-bold tracking-tightest text-white leading-none">
                           {(solutionCol.renteNetteMois - livretCol.renteNetteMois) >= 0 ? '+' : ''}{fmtEUR(solutionCol.renteNetteMois - livretCol.renteNetteMois)}
                         </div>
@@ -3071,28 +3063,32 @@
           ]
         : inputs.produit === 'per'
         ? [
-            { key: 'capital',   label: 'Capital final',              sub: 'à terme du contrat',         getValue: c => c.capital,                    suffix: '', barOverride: null },
-            { key: 'coutReel',  label: 'Effort net de l\'épargnant', sub: 'versements − avantage fiscal (↓ mieux)',
-              getValue: c => c.coutReel ?? c.versements, suffix: '',
-              lowerIsBetter: true,
-              pctOf: c => c.capital > 0 ? (c.coutReel ?? c.versements) / c.capital : null,
-              barOverride: (col) => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
-                : col.type === 'perReinvest' ? 'linear-gradient(135deg, #94a3b8, #64748b)'
-                : col.type === 'solution'    ? 'linear-gradient(135deg, #57534e, #44403c)'
-                : 'linear-gradient(135deg, #9ca3af, #6b7280)',
+            { key: 'capital', label: 'Capital final', sub: 'dont coût réel pour l\'épargnant (barre inférieure)',
+              getValue: c => c.capital, suffix: '', barOverride: null,
+              // Barre secondaire : coût réel sur la même échelle que le capital
+              secondary: {
+                key: 'coutReel', label: 'Coût réel pour l\'épargnant',
+                getValue: c => c.coutReel ?? c.versements,
+                pctOf: c => c.capital > 0 ? (c.coutReel ?? c.versements) / c.capital : null,
+                barOverride: col => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
+                  : col.type === 'perReinvest' ? 'linear-gradient(135deg, #94a3b8, #64748b)'
+                  : col.type === 'solution'    ? 'linear-gradient(135deg, #57534e, #44403c)'
+                  : 'linear-gradient(135deg, #9ca3af, #6b7280)',
+              },
             },
-            { key: 'reduc',     label: 'Réduction d\'impôt',         sub: 'économie fiscale cumulée',   getValue: c => c.reductionImpotCumulee || 0, suffix: '',
-              barOverride: (col) => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
+            { key: 'reduc', label: 'Réduction d\'impôt', sub: 'économie fiscale cumulée',
+              getValue: c => c.reductionImpotCumulee || 0, suffix: '',
+              barOverride: col => col.type === 'livret'     ? 'linear-gradient(135deg, #a8a29e, #78716c)'
                 : col.type === 'perReinvest' ? 'linear-gradient(135deg, #7c3aed, #6d28d9)'
                 : col.type === 'solution'    ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)'
                 : 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
             },
-            { key: 'rente',     label: 'Rente nette',                sub: 'à vie, par mois',           getValue: c => c.renteNetteMois,             suffix: '/mois', barOverride: null },
+            { key: 'rente', label: 'Rente brute', sub: 'à vie, par mois', getValue: c => c.renteNetteMois, suffix: '/mois', barOverride: null },
           ]
         : [
             { key: 'capital',  label: 'Capital final',         sub: 'à terme du contrat',   getValue: c => c.capital,        suffix: '', barOverride: null },
             { key: 'transmis', label: 'Transmission nette',    sub: 'aux bénéficiaires',    getValue: c => c.netTransmis,    suffix: '', barOverride: null },
-            { key: 'rente',    label: 'Rente nette',           sub: 'à vie, par mois', getValue: c => c.renteNetteMois, suffix: '/mois', barOverride: null },
+            { key: 'rente',    label: 'Rente brute',           sub: 'à vie, par mois', getValue: c => c.renteNetteMois, suffix: '/mois', barOverride: null },
           ];
       // Palette riche, gradients pour les barres ; couleur unie pour les pastilles de légende
       const colBar = (col) => col.type === 'livret' ? 'linear-gradient(135deg, #a8a29e, #78716c)'
@@ -3190,45 +3186,76 @@
                             </div>
                           </div>
 
-                          {/* Bar avec graduations 0/25/50/75/100 % */}
-                          <div className="flex-1 relative h-9 rounded-lg overflow-hidden bg-gradient-to-r from-stone-50 to-stone-100 ring-1 ring-stone-200/60">
-                            <div className="absolute inset-0 flex pointer-events-none">
-                              {[0,1,2,3].map(t => (
-                                <div key={t} className="flex-1 border-l border-stone-300/50" style={{borderLeftStyle: t === 0 ? 'none' : 'solid'}}></div>
-                              ))}
-                            </div>
-                            <div className="absolute inset-y-0 left-0 transition-all duration-500 flex items-center justify-end pr-2.5 shadow-sm"
-                              style={{ width: `${Math.max(2, pct)}%`, background: bg }}>
-                              {pct >= 35 && (
-                                <span className="num text-[12px] font-bold text-white whitespace-nowrap drop-shadow-sm">
+                          {/* Bar(s) — barre principale + éventuelle barre secondaire (coût réel) */}
+                          <div className="flex-1 flex flex-col gap-1">
+                            {/* Barre principale */}
+                            <div className="relative h-9 rounded-lg overflow-hidden bg-gradient-to-r from-stone-50 to-stone-100 ring-1 ring-stone-200/60">
+                              <div className="absolute inset-0 flex pointer-events-none">
+                                {[0,1,2,3].map(t => (
+                                  <div key={t} className="flex-1 border-l border-stone-300/50" style={{borderLeftStyle: t === 0 ? 'none' : 'solid'}}></div>
+                                ))}
+                              </div>
+                              <div className="absolute inset-y-0 left-0 transition-all duration-500 flex items-center justify-end pr-2.5 shadow-sm"
+                                style={{ width: `${Math.max(2, pct)}%`, background: bg }}>
+                                {pct >= 35 && (
+                                  <span className="num text-[12px] font-bold text-white whitespace-nowrap drop-shadow-sm">
+                                    {fmtEUR(val)}{kpi.suffix}
+                                  </span>
+                                )}
+                              </div>
+                              {pct < 35 && (
+                                <span className="num absolute top-1/2 -translate-y-1/2 text-[12px] font-bold text-stone-900 whitespace-nowrap"
+                                  style={{ left: `calc(${Math.max(2, pct)}% + 8px)` }}>
                                   {fmtEUR(val)}{kpi.suffix}
                                 </span>
                               )}
                             </div>
-                            {pct < 35 && (
-                              <span className="num absolute top-1/2 -translate-y-1/2 text-[12px] font-bold text-stone-900 whitespace-nowrap"
-                                style={{ left: `calc(${Math.max(2, pct)}% + 8px)` }}>
-                                {fmtEUR(val)}{kpi.suffix}
-                              </span>
-                            )}
+                            {/* Barre secondaire (coût réel) — même échelle que la barre principale */}
+                            {kpi.secondary && (() => {
+                              const secVal = kpi.secondary.getValue(col);
+                              const secPct = (secVal / max) * 100;
+                              const secBg = kpi.secondary.barOverride ? kpi.secondary.barOverride(col) : colBar(col);
+                              return (
+                                <div className="relative h-5 rounded-md overflow-hidden ring-1 ring-stone-200/40" style={{background:'#f8f7f6'}}>
+                                  <div className="absolute inset-0 flex pointer-events-none">
+                                    {[0,1,2,3].map(t => (
+                                      <div key={t} className="flex-1 border-l border-stone-200/40" style={{borderLeftStyle: t === 0 ? 'none' : 'solid'}}></div>
+                                    ))}
+                                  </div>
+                                  <div className="absolute inset-y-0 left-0 flex items-center justify-end pr-2"
+                                    style={{width:`${Math.max(1, secPct)}%`, background: secBg}}>
+                                    {secPct >= 35 && (
+                                      <span className="num text-[10px] font-bold text-white whitespace-nowrap">{fmtEUR(secVal)}</span>
+                                    )}
+                                  </div>
+                                  {secPct < 35 && (
+                                    <span className="num absolute top-1/2 -translate-y-1/2 text-[10px] font-semibold text-stone-500 whitespace-nowrap"
+                                      style={{left:`calc(${Math.max(1, secPct)}% + 5px)`}}>
+                                      {fmtEUR(secVal)}
+                                    </span>
+                                  )}
+                                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[8px] text-white/80 font-bold uppercase tracking-wider pointer-events-none" style={{display: secPct >= 60 ? 'block' : 'none'}}>coût réel</span>
+                                </div>
+                              );
+                            })()}
                           </div>
 
-                          {/* Bloc droit : % du capital pour coût réel ; trophée+delta pour les autres */}
+                          {/* Bloc droit : % coût réel/capital pour KPI avec secondary ; trophée+delta pour les autres */}
                           <div className="w-44 md:w-60 flex-shrink-0 flex justify-end items-center">
                             {(!isLivret || inputs.produit === 'per') && (() => {
-                              // KPI "coût réel" → affiche % du capital en badge coloré
-                              if (kpi.pctOf) {
-                                const pctNum = kpi.pctOf(col);
-                                const pctPct = pctNum !== null ? Math.round(pctNum * 100) : null;
-                                const pctColor = pctPct !== null
-                                  ? (pctPct < 40 ? 'text-emerald-700' : pctPct < 60 ? 'text-amber-700' : 'text-stone-500')
+                              // KPI avec barre secondaire (capital + coût réel) → affiche % du capital en badge coloré
+                              if (kpi.secondary) {
+                                const secVal = kpi.secondary.getValue(col);
+                                const pctNum = col.capital > 0 ? Math.round(secVal / col.capital * 100) : null;
+                                const pctColor = pctNum !== null
+                                  ? (pctNum < 40 ? 'text-emerald-700' : pctNum < 60 ? 'text-amber-700' : 'text-stone-500')
                                   : 'text-stone-400';
                                 return (
                                   <div className="text-right">
                                     <div className={`num font-extrabold text-[17px] ${pctColor} leading-none`}>
-                                      {pctPct !== null ? `${pctPct}%` : '—'}
+                                      {pctNum !== null ? `${pctNum}%` : '—'}
                                     </div>
-                                    <div className="text-[10px] text-stone-400 mt-0.5">du capital final</div>
+                                    <div className="text-[10px] text-stone-400 mt-0.5">coût réel / capital</div>
                                   </div>
                                 );
                               }
@@ -3400,7 +3427,7 @@
     }
 
     // Contrôles succession compacts (intégrés dans le titre dark "En cas de décès")
-    // Ligne directe → taux forfaitaire barème (30 % par défaut) + abattement 100 k€/enfant
+    // Ligne directe → taux forfaitaire barème (30 % par défaut)
     // Ligne indirecte → taux forfaitaire sélectionnable (60 % par défaut)
     function SuccessionControls({ inputs, upd }) {
       return (
@@ -3416,7 +3443,7 @@
               Indirecte
             </button>
           </div>
-          {/* Ligne directe : taux du barème (30 % par défaut) + abatt. 100 k€/enfant */}
+          {/* Ligne directe : taux du barème (30 % par défaut) */}
           {inputs.successionLine === 'directe' ? (
             <div className="flex items-center gap-1.5">
               <select
@@ -3427,7 +3454,7 @@
                   <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
                 ))}
               </select>
-              <span className="text-[10px] text-white/70 italic">abatt. 100 k€/enfant</span>
+              <span className="text-[10px] text-white/70 italic">taux barème ligne directe</span>
             </div>
           ) : (
             /* Ligne indirecte : taux forfaitaire (60 % par défaut) */
@@ -3482,19 +3509,19 @@
               <div className="rounded-xl overflow-hidden" style={{background:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', outline:'1.5px solid #c4b5fd'}}>
                 {/* Header violet */}
                 <div className="px-3 pt-2.5 pb-2" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
-                  <div className="flex items-center justify-between">
-                    <div className="text-[9px] uppercase tracking-widest font-bold text-white/80" style={{letterSpacing:'0.12em'}}>
-                      Réduction d'impôt · TMI {(col.tauxIRPct*100).toFixed(0)} %
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="text-[11px] font-extrabold text-white uppercase tracking-wide flex-1 text-center">
+                      Réduction d'impôt
                     </div>
-                    <div className="num text-[15px] font-extrabold text-white leading-none">
-                      +{fmtEUR(col.reductionImpotCumulee)}
+                    <div className="text-right flex-shrink-0">
+                      <div className="num text-[15px] font-normal text-white leading-none">
+                        +{fmtEUR(col.reductionImpotCumulee)}
+                      </div>
+                      <div className="text-[9px] text-violet-200 font-normal mt-0.5">
+                        TMI {(col.tauxIRPct*100).toFixed(0)} %{isPerRef ? ' · levier composé' : ''}
+                      </div>
                     </div>
                   </div>
-                  {isPerRef && (
-                    <div className="text-[9px] italic text-violet-200 mt-0.5">
-                      levier composé sur réinvestissements
-                    </div>
-                  )}
                 </div>
                 {/* Détail année 1 / années suivantes */}
                 <div className="flex items-stretch gap-0 px-2 py-2">
@@ -3680,9 +3707,9 @@
                   negative={targetFiscMois > 0.5}
                   muted={targetFiscMois <= 0.5} />
 
-                {/* Rente nette — encadré émeraude prominent, label MIS EN VALEUR */}
+                {/* Rente brute — encadré émeraude prominent, label MIS EN VALEUR */}
                 <div className={`rounded-xl px-4 py-3.5 text-center border-2 ${isDark ? 'bg-emerald-900/40 border-emerald-700/60' : 'bg-emerald-50 border-emerald-200'}`}>
-                  <div className={`text-[12px] uppercase tracking-widest font-extrabold ${isDark ? 'text-white' : 'text-emerald-900'} mb-1.5`}>Rente mensuelle nette</div>
+                  <div className={`text-[12px] uppercase tracking-widest font-extrabold ${isDark ? 'text-white' : 'text-emerald-900'} mb-1.5`}>Rente mensuelle brute</div>
                   <div className={`num text-[30px] md:text-[32px] font-extrabold tracking-tightest ${isDark ? 'text-white' : 'text-emerald-700'} leading-none`}>
                     {fmtEUR(targetNetMois)}<span className={`text-sm font-medium ${isDark ? 'text-emerald-400/70' : 'text-emerald-600/80'}`}> /mois</span>
                   </div>
@@ -4385,7 +4412,7 @@
                         (fiscalité dépend du RFR du foyer, non chiffrable simplement) */}
                     {inputs.produit !== "capi" && !isPER && (
                       <ComparisonCard
-                        title={`${produitNomComplet} VS Livret · Rente nette /mois`}
+                        title={`${produitNomComplet} VS Livret · Rente brute /mois`}
                         valSolution={renteSolMois}
                         valLivret={renteLivMois}
                         gain={renteGainMois}
@@ -4405,19 +4432,19 @@
                         sub={`${inputs.nbBeneficiaires} bénéf.`}
                       />
                     )}
-                    {/* Pour PER : carte dédiée Réductions capitalisées */}
+                    {/* Pour PER : carte dédiée Rente brute */}
                     {isPER && sim.perReinvest && (
                       <ComparisonCard
-                        title="Réductions d'impôt capitalisées"
-                        solutionLabel="Capital aux. à terme"
-                        livretLabel="Réductions versées"
-                        victoireLabel="Plus-value sur réductions"
-                        valSolution={sim.perReinvest.auxCap}
-                        valLivret={sim.perReinvest.totReduc}
-                        gain={sim.perReinvest.auxCap - sim.perReinvest.totReduc}
-                        gainPct={sim.perReinvest.totReduc > 0 ? (sim.perReinvest.auxCap - sim.perReinvest.totReduc) / sim.perReinvest.totReduc : null}
-                        valFmt={fmtEURc}
-                        sub={`au rdt ${fmtPCT(sim.rdtMed)}`}
+                        title="PER + IR VS PER Seul · Rente brute /mois"
+                        solutionLabel="PER + IR"
+                        livretLabel="PER Seul"
+                        victoireLabel="Gain rente mensuelle"
+                        valSolution={renteLivMois}
+                        valLivret={renteSolMois}
+                        gain={renteLivMois - renteSolMois}
+                        gainPct={renteSolMois > 0 ? (renteLivMois - renteSolMois) / renteSolMois : null}
+                        valFmt={fmtEUR}
+                        sub={`${fmtEUR(renteLivMois*12)}/an vs ${fmtEUR(renteSolMois*12)}/an`}
                       />
                     )}
                   </>
@@ -4552,7 +4579,7 @@
                 // AV : rente nette précise (calcul forfaitaire classique)
                 return (
                   <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-2xl p-4 shadow-sm">
-                    <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-700 mb-2 text-center">Rente nette à vie</div>
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-700 mb-2 text-center">Rente brute à vie</div>
                     <div className="num text-[28px] font-extrabold text-emerald-700 leading-none tracking-tightest text-center">{fmtEUR(renteMois)}</div>
                     <div className="text-[10px] text-stone-500 mt-0.5 text-center">/mois · capital préservé</div>
                     <div className="mt-3 pt-2 border-t border-emerald-100 grid grid-cols-2 gap-2 text-[10px] text-center">
@@ -5055,7 +5082,7 @@
                     { v: finalOpt, lbl: 'OPTIMISTE', color: 'rgba(4, 120, 87, 0.9)' },
                     { v: finalSolution, lbl: isPER ? 'PER SEUL' : 'MÉDIAN', color: '#0a0908', bold: true },
                     { v: finalPess, lbl: 'PESSIMISTE', color: 'rgba(180, 83, 9, 0.9)' },
-                    { v: finalLivret, lbl: isPER ? 'PER + RÉINTÉGR.' : livretNom.toUpperCase(), color: isPER ? '#047857' : '#78716c', bold: isPER },
+                    { v: finalLivret, lbl: isPER ? 'PER + IR' : livretNom.toUpperCase(), color: isPER ? '#047857' : '#78716c', bold: isPER },
                   ].sort((a,b) => ys(a.v) - ys(b.v)).map((it, i, arr) => {
                     let y = ys(it.v);
                     if (i > 0) {
@@ -5094,42 +5121,36 @@
                       <div className="pres-donut-card" style={{display:'flex', flexDirection:'column'}}>
                         <div className="dn-tag" style={{textAlign:'center'}}>Multiplicateur</div>
                         <FigaraRule style={{margin:'0 0 3mm'}}/>
-                        {/* 2 donuts alignés via grille explicite : ligne 1 = labels (auto), ligne 2 = donuts (62px fixe)
-                            → garantie d'alignement vertical parfait, labels et cercles sur exactement la même base */}
-                        <div style={{
-                          display:'grid',
-                          gridTemplateColumns:'1fr 1fr',
-                          gridTemplateRows:'auto 62px',
-                          rowGap:'1.5mm',
-                          columnGap:'4mm',
-                          marginTop:'1mm',
-                          alignItems:'center',
-                          justifyItems:'center',
-                        }}>
-                          {/* Row 1 — labels */}
-                          <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#57534e', textAlign:'center', lineHeight:1}}>PER seul</div>
-                          <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857', textAlign:'center', lineHeight:1}}>+ Réintégr.</div>
-                          {/* Row 2 — donuts (62×62 chacun, centrés dans leur cellule) */}
-                          <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
-                            <g transform="rotate(-90 50 50)">
-                              <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
-                              <circle cx="50" cy="50" r={r} fill="none" stroke="#57534e" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct1/100)*c} ${c}`}/>
-                            </g>
-                            <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
-                              fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#0a0908" letterSpacing="-0.5">×{multipleSeul.toFixed(2)}</text>
-                          </svg>
-                          <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
-                            <g transform="rotate(-90 50 50)">
-                              <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
-                              <circle cx="50" cy="50" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct2/100)*c} ${c}`}/>
-                            </g>
-                            <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
-                              fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#047857" letterSpacing="-0.5">×{multipleReinv.toFixed(2)}</text>
-                          </svg>
+                        {/* 2 donuts — label + donut dans la même colonne, côte à côte */}
+                        <div style={{display:'flex', gap:'4mm', justifyContent:'center', alignItems:'flex-end', marginTop:'1mm'}}>
+                          {/* PER seul */}
+                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1.5mm'}}>
+                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#57534e', textAlign:'center', lineHeight:1}}>PER seul</div>
+                            <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
+                              <g transform="rotate(-90 50 50)">
+                                <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
+                                <circle cx="50" cy="50" r={r} fill="none" stroke="#57534e" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct1/100)*c} ${c}`}/>
+                              </g>
+                              <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
+                                fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#0a0908" letterSpacing="-0.5">×{multipleSeul.toFixed(2)}</text>
+                            </svg>
+                          </div>
+                          {/* PER + IR */}
+                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1.5mm'}}>
+                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857', textAlign:'center', lineHeight:1}}>PER + IR</div>
+                            <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
+                              <g transform="rotate(-90 50 50)">
+                                <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
+                                <circle cx="50" cy="50" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct2/100)*c} ${c}`}/>
+                              </g>
+                              <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
+                                fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#047857" letterSpacing="-0.5">×{multipleReinv.toFixed(2)}</text>
+                            </svg>
+                          </div>
                         </div>
                         <div className="dn-foot" style={{marginTop:'auto', paddingTop:'3mm', textAlign:'center', fontSize:'7.5pt', lineHeight:1.5}}>
                           Pour <strong style={{color:'#0a0908'}}>{fmtEURc(totalVerseBrut)}</strong> versés :<br/>
-                          PER : <strong style={{color:'#0a0908'}}>{fmtEURc(finalSolution)}</strong> · + Réinvest. : <strong style={{color:'#047857'}}>{fmtEURc(finalLivret)}</strong>
+                          PER : <strong style={{color:'#0a0908'}}>{fmtEURc(finalSolution)}</strong> · PER + IR : <strong style={{color:'#047857'}}>{fmtEURc(finalLivret)}</strong>
                         </div>
                       </div>
                     );
@@ -5231,14 +5252,14 @@
                       <div className="pres-rente-card" style={{display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center'}}>
                         <div className="rt-tag" style={{textAlign:'center'}}>Rente à vie</div>
                         <FigaraRule style={{width:'100%', margin:'0 0 3mm'}}/>
-                        {/* Deux blocs verticaux compacts (au lieu de côte à côte) — évite le découpage */}
+                        {/* Deux blocs verticaux compacts — valeurs centrées */}
                         <div style={{display:'flex', flexDirection:'column', gap:'2mm', width:'100%', marginTop:'1mm'}}>
-                          <div style={{padding:'2.5mm 3mm', border:'1px solid rgba(120,113,108,0.30)', borderRadius:'1.5mm', background:'rgba(245,245,244,0.45)', display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:'2mm'}}>
+                          <div style={{padding:'2.5mm 3mm', border:'1px solid rgba(120,113,108,0.30)', borderRadius:'1.5mm', background:'rgba(245,245,244,0.45)', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:'1mm'}}>
                             <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#57534e'}}>PER seul</div>
                             <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'14pt', fontWeight:800, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteSeulMois)}<span style={{fontSize:'7pt', color:'#78716c', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
-                          <div style={{padding:'2.5mm 3mm', border:'2px solid #047857', borderRadius:'1.5mm', background:'linear-gradient(180deg, rgba(236,253,245,0.65) 0%, #ffffff 100%)', display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:'2mm'}}>
-                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857'}}>+ Réintégr.</div>
+                          <div style={{padding:'2.5mm 3mm', border:'2px solid #047857', borderRadius:'1.5mm', background:'linear-gradient(180deg, rgba(236,253,245,0.65) 0%, #ffffff 100%)', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:'1mm'}}>
+                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857'}}>PER + IR</div>
                             <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'14pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteReinvMois)}<span style={{fontSize:'7pt', color:'#047857', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
                         </div>
@@ -5254,7 +5275,7 @@
                   const rente20 = renteAn * 20;
                   return (
                     <div className="pres-rente-card" style={{display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center'}}>
-                      <div className="rt-tag">Rente nette à vie</div>
+                      <div className="rt-tag">Rente brute à vie</div>
                       <FigaraRule style={{width:'100%', margin:'0 0 4mm'}}/>
                       <div style={{marginTop:'5mm', textAlign:'center'}}>
                         <span className="rt-num">{fmtEUR(renteMois)}</span>
@@ -5423,7 +5444,7 @@
                     return (
                       <>
                         <CmpCard title="Capital à terme" valSol={finalSolution} valLiv={finalLivret} fmt={fmtEURc} gainPct={gainPCT} sub={`Capital supplémentaire à horizon ${N} ans, scénario médian.`}/>
-                        <CmpCard title="Rente nette /mois" valSol={renteSolM} valLiv={renteLivM} fmt={fmtEUR} sub={`Rente perpétuelle à vie · ${fmtEUR(renteSolM*12)} / an vs ${fmtEUR(renteLivM*12)} / an.`}/>
+                        <CmpCard title="Rente brute /mois" valSol={renteSolM} valLiv={renteLivM} fmt={fmtEUR} sub={`Rente perpétuelle à vie · ${fmtEUR(renteSolM*12)} / an vs ${fmtEUR(renteLivM*12)} / an.`}/>
                         <CmpCard title="Transmission nette" valSol={succSol} valLiv={succLiv} fmt={fmtEURc} sub={`${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires>1?'s':''} · abattement ${fmtEUR(ABATT_AV_70)} par personne · plafond tous contrats AV confondus.`}/>
                       </>
                     );
