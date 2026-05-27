@@ -2034,6 +2034,11 @@
                 <div className="text-right flex-shrink-0">
                   <div className="num text-2xl font-bold text-emerald-700 tracking-tightest leading-none">−{(reductionPCT*100).toFixed(0)} %</div>
                   <div className="text-[12px] text-stone-600 mt-1">soit une économie de <span className="num font-bold text-emerald-700">{fmtEUR(reductionCommerciale)}</span></div>
+                  {inputs.produit === 'per' && fraisActuels > 0 && inputs.tauxIR > 0 && (
+                    <div className="text-[11px] text-violet-700 mt-1">
+                      + une réduction d'impôt de <span className="num font-bold">{fmtEUR(fraisActuels * inputs.tauxIR)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -3228,13 +3233,20 @@
                                       <span className="num text-[10px] font-bold text-white whitespace-nowrap">{fmtEUR(secVal)}</span>
                                     )}
                                   </div>
+                                  {/* Valeur + libellé hors barre */}
                                   {secPct < 35 && (
-                                    <span className="num absolute top-1/2 -translate-y-1/2 text-[10px] font-semibold text-stone-500 whitespace-nowrap"
+                                    <span className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap flex items-baseline gap-1"
                                       style={{left:`calc(${Math.max(1, secPct)}% + 5px)`}}>
-                                      {fmtEUR(secVal)}
+                                      <span className="num text-[10px] font-semibold text-stone-700">{fmtEUR(secVal)}</span>
+                                      <span className="text-[9px] text-stone-400 font-normal">coût réel pour l'épargnant</span>
                                     </span>
                                   )}
-                                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-[8px] text-white/80 font-bold uppercase tracking-wider pointer-events-none" style={{display: secPct >= 60 ? 'block' : 'none'}}>coût réel</span>
+                                  {secPct >= 35 && (
+                                    <span className="absolute top-1/2 -translate-y-1/2 whitespace-nowrap"
+                                      style={{left:`calc(${Math.max(1, secPct)}% + 5px)`}}>
+                                      <span className="text-[9px] text-stone-400 font-normal">coût réel pour l'épargnant</span>
+                                    </span>
+                                  )}
                                 </div>
                               );
                             })()}
@@ -3514,7 +3526,7 @@
                       Réduction d'impôt
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <div className="num text-[15px] font-normal text-white leading-none">
+                      <div className="num text-[17px] font-extrabold text-white leading-none">
                         +{fmtEUR(col.reductionImpotCumulee)}
                       </div>
                       <div className="text-[9px] text-violet-200 font-normal mt-0.5">
@@ -3560,7 +3572,7 @@
               <div className={`mt-3 pt-3 border-t ${colDivider(col)}`}>
                 <div className="rounded-xl px-3 py-3 ring-1 ring-slate-200/70 bg-slate-50/80 text-center"
                   style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-                  <div className="text-[9px] uppercase tracking-widest font-bold text-slate-400" style={{marginBottom:'6px', letterSpacing:'0.12em'}}>
+                  <div className="text-[10px] uppercase tracking-widest font-extrabold text-slate-700" style={{marginBottom:'6px', letterSpacing:'0.10em'}}>
                     Transmission nette
                   </div>
                   <div className="num font-extrabold text-slate-800 leading-none" style={{fontSize:'26px', textAlign:'center', width:'100%'}}>
