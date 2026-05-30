@@ -4362,7 +4362,7 @@
                 };
 
                 // Carte premium pour PER : header sombre + 2 colonnes chiffres + badge gain
-                const PERCard = ({ title, subtitle, solLabel, livLabel, solVal, livVal, gainVal, gainPct, fmt, gainLabel, gainSub }) => {
+                const PERCard = ({ title, subtitle, solLabel, livLabel, solVal, livVal, gainVal, gainPct, fmt, gainLabel, gainSub, suffix }) => {
                   const max = Math.max(solVal, livVal, 1);
                   const wSol = (solVal / max) * 100;
                   const wLiv = (livVal / max) * 100;
@@ -4379,7 +4379,7 @@
                           {/* Gagnant : PER + IR */}
                           <div className="rounded-xl p-3 text-center" style={{background:'linear-gradient(160deg,#f0fdf4,#dcfce7)'}}>
                             <div className="text-[8.5px] uppercase tracking-widest font-bold text-emerald-700 mb-1.5">{solLabel}</div>
-                            <div className="num text-[18px] font-extrabold text-emerald-800 leading-none tracking-tightest">{fmt(solVal)}</div>
+                            <div className="num text-[18px] font-extrabold text-emerald-800 leading-none tracking-tightest">{fmt(solVal)}{suffix && <span className="text-[11px] font-medium text-emerald-600 ml-0.5">{suffix}</span>}</div>
                             <div className="h-1.5 rounded-full overflow-hidden mt-2.5" style={{background:'#bbf7d0'}}>
                               <div className="h-full rounded-full" style={{width:`${wSol}%`, background:'linear-gradient(90deg,#10b981,#059669)', transition:'width 0.6s ease-out'}}></div>
                             </div>
@@ -4387,7 +4387,7 @@
                           {/* Référence : PER seul */}
                           <div className="rounded-xl p-3 text-center" style={{background:'#f7f6f5'}}>
                             <div className="text-[8.5px] uppercase tracking-widest font-bold text-stone-500 mb-1.5">{livLabel}</div>
-                            <div className="num text-[18px] font-extrabold text-stone-600 leading-none tracking-tightest">{fmt(livVal)}</div>
+                            <div className="num text-[18px] font-extrabold text-stone-600 leading-none tracking-tightest">{fmt(livVal)}{suffix && <span className="text-[11px] font-medium text-stone-400 ml-0.5">{suffix}</span>}</div>
                             <div className="h-1.5 rounded-full overflow-hidden mt-2.5" style={{background:'#e7e5e4'}}>
                               <div className="h-full rounded-full" style={{width:`${wLiv}%`, background:'#a8a29e', transition:'width 0.6s ease-out'}}></div>
                             </div>
@@ -4499,6 +4499,7 @@
                         fmt={fmtEUR}
                         gainLabel="Gain rente mensuelle"
                         gainSub={`${fmtEUR(renteLivMois*12)}/an vs ${fmtEUR(renteSolMois*12)}/an`}
+                        suffix="/mois"
                       />
                     )}
                   </>
