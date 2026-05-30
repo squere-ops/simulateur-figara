@@ -5404,26 +5404,26 @@
                       return (
                         <div style={{display:'flex', alignItems:'center', gap:'0', border:'1px solid rgba(10,9,8,0.10)', borderRadius:'3mm', overflow:'hidden', background:'#fff', minHeight:'18mm'}}>
                           {/* Colonne 1 — Titre */}
-                          <div style={{width:'42mm', flexShrink:0, padding:'3mm 5mm', borderRight:'2px solid #d6d3d1', background:'linear-gradient(135deg,#1c1917,#44403c)', display:'flex', alignItems:'center'}}>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'9pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em'}}>{title}</div>
+                          <div style={{width:'36mm', flexShrink:0, margin:'2.5mm 0 2.5mm 2.5mm', borderRadius:'2mm', background:'rgba(28,25,23,0.82)', display:'flex', alignItems:'center', justifyContent:'center', padding:'2.5mm 4mm'}}>
+                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'8.5pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em', textAlign:'center'}}>{title}</div>
                           </div>
                           {/* Colonne 2 — Barres comparatives */}
-                          <div style={{flex:1, padding:'3mm 5mm', display:'flex', flexDirection:'column', gap:'1.5mm', borderRight:'1px solid rgba(10,9,8,0.07)'}}>
-                            {/* Barre PER + Réintégration */}
+                          <div style={{flex:1, padding:'3mm 5mm', display:'flex', flexDirection:'column', gap:'2mm', borderRight:'1px solid rgba(10,9,8,0.07)'}}>
+                            {/* Barre PER + Réintégration — valeur mise en avant */}
                             <div style={{display:'flex', alignItems:'center', gap:'2.5mm'}}>
                               <div style={{width:'28mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#047857', fontWeight:700, letterSpacing:'0.05em'}}>{solLabel || produitNomComplet}</div>
-                              <div style={{flex:1, height:'4px', borderRadius:'2px', background:'#d1fae5', position:'relative'}}>
-                                <div style={{position:'absolute', inset:'0', borderRadius:'2px', background:'linear-gradient(90deg,#059669,#10b981)', width:`${wSol}%`}}></div>
+                              <div style={{flex:1, height:'6px', borderRadius:'3px', background:'#d1fae5', position:'relative'}}>
+                                <div style={{position:'absolute', inset:'0', borderRadius:'3px', background:'linear-gradient(90deg,#059669,#10b981)', width:`${wSol}%`, boxShadow:'0 1px 4px rgba(5,150,105,0.35)'}}></div>
                               </div>
-                              <div style={{width:'18mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'11pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em'}}>{fmt(valSol)}</div>
+                              <div style={{width:'20mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valSol)}</div>
                             </div>
                             {/* Barre PER seul */}
-                            <div style={{display:'flex', alignItems:'center', gap:'2.5mm'}}>
+                            <div style={{display:'flex', alignItems:'center', gap:'2.5mm', opacity:0.7}}>
                               <div style={{width:'28mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#78716c', fontWeight:600, letterSpacing:'0.05em'}}>{livLabel || livretNom}</div>
                               <div style={{flex:1, height:'4px', borderRadius:'2px', background:'#e7e5e4', position:'relative'}}>
                                 <div style={{position:'absolute', inset:'0', borderRadius:'2px', background:'#a8a29e', width:`${wLiv}%`}}></div>
                               </div>
-                              <div style={{width:'18mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'11pt', fontWeight:800, color:'#57534e', letterSpacing:'-0.02em'}}>{fmt(valLiv)}</div>
+                              <div style={{width:'20mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'10pt', fontWeight:700, color:'#78716c', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valLiv)}</div>
                             </div>
                           </div>
                           {/* Colonne 3 — Gain */}
