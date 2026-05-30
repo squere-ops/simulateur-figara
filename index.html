@@ -4361,6 +4361,54 @@
                   );
                 };
 
+                // Carte premium pour PER : header sombre + 2 colonnes chiffres + badge gain
+                const PERCard = ({ title, subtitle, solLabel, livLabel, solVal, livVal, gainVal, gainPct, fmt, gainLabel, gainSub }) => {
+                  const max = Math.max(solVal, livVal, 1);
+                  const wSol = (solVal / max) * 100;
+                  const wLiv = (livVal / max) * 100;
+                  return (
+                    <div className="rounded-2xl overflow-hidden shadow-md" style={{border:'1px solid #e7e5e4'}}>
+                      {/* Header sombre */}
+                      <div className="px-4 py-3" style={{background:'linear-gradient(135deg,#1c1917 0%,#292524 100%)'}}>
+                        <div className="text-[9px] uppercase tracking-widest font-bold text-stone-500 mb-0.5">{subtitle || 'Comparatif PER'}</div>
+                        <div className="text-[13px] font-bold text-white leading-tight">{title}</div>
+                      </div>
+                      {/* Corps : 2 colonnes */}
+                      <div className="bg-white px-4 pt-4 pb-3">
+                        <div className="grid grid-cols-2 gap-2 mb-3">
+                          {/* Gagnant : PER + IR */}
+                          <div className="rounded-xl p-3 text-center" style={{background:'linear-gradient(160deg,#f0fdf4,#dcfce7)'}}>
+                            <div className="text-[8.5px] uppercase tracking-widest font-bold text-emerald-700 mb-1.5">{solLabel}</div>
+                            <div className="num text-[18px] font-extrabold text-emerald-800 leading-none tracking-tightest">{fmt(solVal)}</div>
+                            <div className="h-1.5 rounded-full overflow-hidden mt-2.5" style={{background:'#bbf7d0'}}>
+                              <div className="h-full rounded-full" style={{width:`${wSol}%`, background:'linear-gradient(90deg,#10b981,#059669)', transition:'width 0.6s ease-out'}}></div>
+                            </div>
+                          </div>
+                          {/* Référence : PER seul */}
+                          <div className="rounded-xl p-3 text-center" style={{background:'#f7f6f5'}}>
+                            <div className="text-[8.5px] uppercase tracking-widest font-bold text-stone-500 mb-1.5">{livLabel}</div>
+                            <div className="num text-[18px] font-extrabold text-stone-600 leading-none tracking-tightest">{fmt(livVal)}</div>
+                            <div className="h-1.5 rounded-full overflow-hidden mt-2.5" style={{background:'#e7e5e4'}}>
+                              <div className="h-full rounded-full" style={{width:`${wLiv}%`, background:'#a8a29e', transition:'width 0.6s ease-out'}}></div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* Badge gain */}
+                        <div className="flex items-center justify-between rounded-xl px-3 py-2.5" style={{background:'linear-gradient(135deg,#ecfdf5,#f0fdf4)', border:'1px solid #a7f3d0'}}>
+                          <div>
+                            <div className="text-[9px] uppercase tracking-widest font-extrabold text-emerald-800">{gainLabel || 'Gain réintégration'}</div>
+                            {gainSub && <div className="text-[9px] text-emerald-600 mt-0.5">{gainSub}</div>}
+                          </div>
+                          <div className="text-right">
+                            <div className="num text-[18px] font-extrabold text-emerald-700 leading-none">+{fmt(gainVal)}</div>
+                            {gainPct != null && <div className="text-[9px] font-bold text-emerald-600 mt-0.5">+{(gainPct*100).toFixed(0)} %</div>}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                };
+
                 // === Calculs comparatifs ===
                 // Pour PER : finalLivret = PER + Réintégration (le scénario premium, qui gagne)
                 //            finalSolution = PER seul (le scénario baseline)
@@ -4388,18 +4436,31 @@
 
                 return (
                   <>
-                    <ComparisonCard
-                      title={isPERMode ? "PER + Réintégration · Capital total" : `${produitNomComplet} VS Livret · Capital`}
-                      solutionLabel={isPERMode ? "PER + Réinvest." : produitNomComplet}
-                      livretLabel={isPERMode ? "PER seul" : livretNom}
-                      victoireLabel={isPERMode ? "Bonus réintégration" : `Victoire ${produitNomComplet}`}
-                      valSolution={capSol}
-                      valLivret={capLiv}
-                      gain={capGain}
-                      gainPct={capGainPct}
-                      valFmt={fmtEURc}
-                      sub="à terme"
-                    />
+                    {isPERMode ? (
+                      <PERCard
+                        title="Capital à terme"
+                        subtitle="PER + IR vs PER Seul"
+                        solLabel="PER + IR"
+                        livLabel="PER Seul"
+                        solVal={capSol}
+                        livVal={capLiv}
+                        gainVal={capGain}
+                        gainPct={capGainPct}
+                        fmt={fmtEURc}
+                        gainLabel="Bonus réintégration"
+                        gainSub="capital supplémentaire à terme"
+                      />
+                    ) : (
+                      <ComparisonCard
+                        title={`${produitNomComplet} VS Livret · Capital`}
+                        valSolution={capSol}
+                        valLivret={capLiv}
+                        gain={capGain}
+                        gainPct={capGainPct}
+                        valFmt={fmtEURc}
+                        sub="à terme"
+                      />
+                    )}
                     {/* Rente comparison — masquée pour Capi (sans objet) ET pour PER
                         (fiscalité dépend du RFR du foyer, non chiffrable simplement) */}
                     {inputs.produit !== "capi" && !isPER && (
@@ -4424,19 +4485,20 @@
                         sub={`${inputs.nbBeneficiaires} bénéf.`}
                       />
                     )}
-                    {/* Pour PER : carte dédiée Rente brute */}
+                    {/* Pour PER : carte dédiée Rente brute premium */}
                     {isPER && sim.perReinvest && (
-                      <ComparisonCard
-                        title="PER + IR VS PER Seul · Rente brute /mois"
-                        solutionLabel="PER + IR"
-                        livretLabel="PER Seul"
-                        victoireLabel="Gain rente mensuelle"
-                        valSolution={renteLivMois}
-                        valLivret={renteSolMois}
-                        gain={renteLivMois - renteSolMois}
+                      <PERCard
+                        title="Rente brute à vie"
+                        subtitle="PER + IR vs PER Seul · /mois"
+                        solLabel="PER + IR"
+                        livLabel="PER Seul"
+                        solVal={renteLivMois}
+                        livVal={renteSolMois}
+                        gainVal={renteLivMois - renteSolMois}
                         gainPct={renteSolMois > 0 ? (renteLivMois - renteSolMois) / renteSolMois : null}
-                        valFmt={fmtEUR}
-                        sub={`${fmtEUR(renteLivMois*12)}/an vs ${fmtEUR(renteSolMois*12)}/an`}
+                        fmt={fmtEUR}
+                        gainLabel="Gain rente mensuelle"
+                        gainSub={`${fmtEUR(renteLivMois*12)}/an vs ${fmtEUR(renteSolMois*12)}/an`}
                       />
                     )}
                   </>
