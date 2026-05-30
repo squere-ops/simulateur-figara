@@ -365,6 +365,7 @@
       color: #1c1917;
       padding: 18mm 16mm 14mm;
       display: flex; flex-direction: column;
+      height: 297mm; box-sizing: border-box;
     }
     .pres-spread::before {
       content: ""; position: absolute; top: 0; left: 16mm; right: 16mm; height: 1px;
@@ -5617,7 +5618,7 @@
                         </svg>
                       </div>
                       <div className="dn-amount" style={{color:'#047857', fontSize:'18pt', marginTop:'2mm', textAlign:'center'}}>{fmtEUR(reductionImpotCumulee)}</div>
-                      <div className="dn-foot">de réduction d'impôt cumulée<br/>TMI {(inputs.tauxIR*100).toFixed(0)} % · versements déductibles</div>
+                      <div className="dn-foot"><strong style={{color:'#047857'}}>réduction d'impôt cumulée</strong><br/>TMI {(inputs.tauxIR*100).toFixed(0)} % · versements déductibles</div>
                     </div>
                   );
                 })() : isCapi ? (() => {
