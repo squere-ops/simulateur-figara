@@ -637,7 +637,7 @@
       background: #ffffff;
       border: 1px solid rgba(10,9,8,0.10);
       border-radius: 12px;
-      padding: 4mm 4mm 5mm;
+      padding: 3mm 3mm 3mm;
       text-align: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       page-break-inside: avoid;
@@ -681,7 +681,7 @@
       background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
       border: 1px solid #a7f3d0;
       border-radius: 12px;
-      padding: 5mm 5mm;
+      padding: 3mm 4mm;
       page-break-inside: avoid;
     }
     .pres-rente-card .rt-tag {
@@ -5162,7 +5162,7 @@
               </div>
 
               {/* 3 modules dashboard : Multiplicateur · Allocation · (Rente AV/PER ou Net après IS Capi) — espacement homogène */}
-              <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'10mm', marginBottom:'4mm'}}>
+              <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'4mm', marginBottom:'2mm'}}>
                 {/* DONUT Multiplicateur — cercle agrandi + ligne Figara + chiffres plus gros */}
                 {(() => {
                   // En mode PER : on affiche le multiplicateur avec ET sans réintégration
@@ -5175,13 +5175,13 @@
                     return (
                       <div className="pres-donut-card" style={{display:'flex', flexDirection:'column'}}>
                         <div className="dn-tag" style={{textAlign:'center'}}>Multiplicateur</div>
-                        <FigaraRule style={{margin:'0 0 3mm'}}/>
+                        <FigaraRule style={{margin:'0 0 2mm'}}/>
                         {/* 2 donuts — label + donut dans la même colonne, côte à côte */}
-                        <div style={{display:'flex', gap:'4mm', justifyContent:'center', alignItems:'flex-end', marginTop:'1mm'}}>
+                        <div style={{display:'flex', gap:'3mm', justifyContent:'center', alignItems:'center', marginTop:'0'}}>
                           {/* PER seul */}
-                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1.5mm'}}>
-                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#57534e', textAlign:'center', lineHeight:1}}>PER seul</div>
-                            <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
+                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1mm'}}>
+                            <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#57534e', textAlign:'center', lineHeight:1}}>PER seul</div>
+                            <svg width="54" height="54" viewBox="0 0 100 100" style={{display:'block'}}>
                               <g transform="rotate(-90 50 50)">
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#57534e" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct1/100)*c} ${c}`}/>
@@ -5191,9 +5191,9 @@
                             </svg>
                           </div>
                           {/* PER + IR */}
-                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1.5mm'}}>
-                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857', textAlign:'center', lineHeight:1}}>PER + IR</div>
-                            <svg width="62" height="62" viewBox="0 0 100 100" style={{display:'block'}}>
+                          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'1mm'}}>
+                            <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#047857', textAlign:'center', lineHeight:1}}>PER + IR</div>
+                            <svg width="54" height="54" viewBox="0 0 100 100" style={{display:'block'}}>
                               <g transform="rotate(-90 50 50)">
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct2/100)*c} ${c}`}/>
@@ -5203,7 +5203,7 @@
                             </svg>
                           </div>
                         </div>
-                        <div className="dn-foot" style={{marginTop:'auto', paddingTop:'3mm', textAlign:'center', fontSize:'7.5pt', lineHeight:1.5}}>
+                        <div className="dn-foot" style={{marginTop:'2mm', paddingTop:'2mm', textAlign:'center', fontSize:'6.5pt', lineHeight:1.4}}>
                           Pour <strong style={{color:'#0a0908'}}>{fmtEURc(totalVerseBrut)}</strong> versés :<br/>
                           PER : <strong style={{color:'#0a0908'}}>{fmtEURc(finalSolution)}</strong> · PER + IR : <strong style={{color:'#047857'}}>{fmtEURc(finalLivret)}</strong>
                         </div>
@@ -5306,21 +5306,20 @@
                     return (
                       <div className="pres-rente-card" style={{display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center'}}>
                         <div className="rt-tag" style={{textAlign:'center'}}>Rente à vie</div>
-                        <FigaraRule style={{width:'100%', margin:'0 0 3mm'}}/>
+                        <FigaraRule style={{width:'100%', margin:'0 0 2mm'}}/>
                         {/* Deux blocs verticaux compacts — valeurs centrées */}
-                        <div style={{display:'flex', flexDirection:'column', gap:'2mm', width:'100%', marginTop:'1mm'}}>
-                          <div style={{padding:'2.5mm 3mm', border:'1px solid rgba(120,113,108,0.30)', borderRadius:'1.5mm', background:'rgba(245,245,244,0.45)', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:'1mm'}}>
-                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#57534e'}}>PER seul</div>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'14pt', fontWeight:800, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteSeulMois)}<span style={{fontSize:'7pt', color:'#78716c', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
+                        <div style={{display:'flex', flexDirection:'column', gap:'1.5mm', width:'100%', marginTop:'1mm'}}>
+                          <div style={{padding:'1.5mm 2.5mm', border:'1px solid rgba(120,113,108,0.30)', borderRadius:'1.5mm', background:'rgba(245,245,244,0.45)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'2mm'}}>
+                            <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#57534e'}}>PER seul</div>
+                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteSeulMois)}<span style={{fontSize:'6.5pt', color:'#78716c', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
-                          <div style={{padding:'2.5mm 3mm', border:'2px solid #047857', borderRadius:'1.5mm', background:'linear-gradient(180deg, rgba(236,253,245,0.65) 0%, #ffffff 100%)', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:'1mm'}}>
-                            <div style={{fontSize:'7pt', textTransform:'uppercase', letterSpacing:'0.12em', fontWeight:700, color:'#047857'}}>PER + IR</div>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'14pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteReinvMois)}<span style={{fontSize:'7pt', color:'#047857', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
+                          <div style={{padding:'1.5mm 2.5mm', border:'2px solid #047857', borderRadius:'1.5mm', background:'linear-gradient(180deg, rgba(236,253,245,0.65) 0%, #ffffff 100%)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'2mm'}}>
+                            <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#047857'}}>PER + IR</div>
+                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteReinvMois)}<span style={{fontSize:'6.5pt', color:'#047857', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
                         </div>
-                        <div style={{marginTop:'auto', paddingTop:'3mm', width:'100%', fontSize:'7.5pt', color:'#57534e', textAlign:'center', fontStyle:'italic', lineHeight:1.4}}>
-                          Annuel : {fmtEUR(renteSeulMois*12)} vs <strong style={{color:'#047857', fontStyle:'normal'}}>{fmtEUR(renteReinvMois*12)}</strong><br/>
-                          Capital préservé · perpétuelle
+                        <div style={{marginTop:'2mm', paddingTop:'1.5mm', width:'100%', fontSize:'6.5pt', color:'#57534e', textAlign:'center', fontStyle:'italic', lineHeight:1.4, borderTop:'1px solid rgba(167,243,208,0.6)'}}>
+                          Annuel : {fmtEUR(renteSeulMois*12)} vs <strong style={{color:'#047857', fontStyle:'normal'}}>{fmtEUR(renteReinvMois*12)}</strong> · Capital préservé
                         </div>
                       </div>
                     );
