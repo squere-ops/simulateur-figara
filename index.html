@@ -2423,10 +2423,10 @@
           name: "PER + Réintégration",
           subtitle: `Réductions réinvesties · levier fiscal composé`,
           capital: totalCap,
-          // L'épargnant verse ses contributions directes (identiques à Solution PER)
-          versements: sim.proj.totVerseBrut,
-          // Plus-value totale = capital PER + auxCap − versements directs bruts
-          plusValue: Math.max(0, totalCap - sim.proj.totVerseBrut),
+          // Total physiquement investi dans le PER = contributions directes + réductions réinvesties
+          versements: sim.proj.totVerseBrut + totReinvesti,
+          // Plus-value réelle = capital total − tout ce qui a été versé (direct + réinvesti)
+          plusValue: Math.max(0, totalCap - sim.proj.totVerseBrut - totReinvesti),
           fraisSouscription: sim.proj.fraisSousPay,
           fraisDe: 0,
           rdt: sim.rdt,
@@ -3477,7 +3477,7 @@
       const auxPV = isPerRef ? Math.max(0, (col.auxCap || 0) - (col.totReinvesti || 0)) : 0;
       // Plus-value « pure » à afficher : pour PER seul = sim.proj.plusValue ; pour PER+Réintégration on garde
       // sim.proj.plusValue (la PV du PER) et on affiche séparément la plus-value sur réductions.
-      const pvCorePER = isPerRef ? Math.max(0, (col.perCap || 0) - col.versements) : col.plusValue;
+      const pvCorePER = isPerRef ? Math.max(0, col.capital - col.versements) : col.plusValue;
       return (
         <ColCard col={col} className="text-center relative" style={{height:'100%', display:'flex', flexDirection:'column'}}>
           {isScenario && onRemove && (
@@ -3813,7 +3813,7 @@
             {col.isPER && col.reductionImpotCumulee > 0 && (
               <Row textPrimary={textPrimary} textSecondary={textSecondary}
                 lbl="Coût réel pour l'épargnant"
-                val={<span style={{whiteSpace:'nowrap'}}>{fmtEUR(Math.max(0, col.versements - col.reductionImpotCumulee))} <span className="font-normal text-[9px] opacity-60">(cap.−réduc.)</span></span>} bold />
+                val={<span style={{whiteSpace:'nowrap'}}>{fmtEUR(col.coutReel ?? Math.max(0, col.versements - col.reductionImpotCumulee))} <span className="font-normal text-[9px] opacity-60">(cap.−réduc.)</span></span>} bold />
             )}
             <Row textPrimary={textPrimary} textSecondary={textSecondary} lbl="Plus-value" val={`+${fmtEUR(col.plusValue)}`} positive />
             <Row textPrimary={textPrimary} textSecondary={textSecondary} lbl="Capital + intérêts" val={fmtEUR(col.capital)} bold />
