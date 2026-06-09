@@ -1070,6 +1070,7 @@
       mode: "select",
       clientSelected: null,
       clientNom: "", clientPrenom: "", clientTel: "", clientEmail: "", clientType: "particulier",
+      conseillerNom: "", cabinetNom: "",
       produit: "av",
       dureeAnnees: 15,
       nbBeneficiaires: 2,
@@ -1508,7 +1509,16 @@
     // ============================================================
     function App() {
       const [step, setStep] = useState(1);
-      const [inputs, setInputs] = useState(DEFAULT_INPUTS);
+      const [clients, setClients] = useState(() => {
+        try { return JSON.parse(localStorage.getItem('figara_clients')) || CLIENTS_EXISTANTS; }
+        catch { return CLIENTS_EXISTANTS; }
+      });
+      const [inputs, setInputs] = useState(() => {
+        try {
+          const saved = JSON.parse(localStorage.getItem('figara_conseiller') || '{}');
+          return { ...DEFAULT_INPUTS, conseillerNom: saved.conseillerNom || '', cabinetNom: saved.cabinetNom || '' };
+        } catch { return DEFAULT_INPUTS; }
+      });
       const [scenarios, setScenarios] = useState([]);
       const [scenarioLvl, setScenarioLvl] = useState("med");
       const [builderOpen, setBuilderOpen] = useState(false);
@@ -1538,7 +1548,21 @@
         5: true,
       };
 
-      const upd = (k,v) => setInputs(p => ({...p, [k]: v}));
+      const upd = (k,v) => {
+        setInputs(p => {
+          const next = {...p, [k]: v};
+          // persister le nom du conseiller/cabinet en temps réel
+          if (k === 'conseillerNom' || k === 'cabinetNom') {
+            try { localStorage.setItem('figara_conseiller', JSON.stringify({ conseillerNom: next.conseillerNom, cabinetNom: next.cabinetNom })); } catch {}
+          }
+          return next;
+        });
+      };
+      const saveNewClient = (client) => {
+        const updated = [...clients, client];
+        setClients(updated);
+        try { localStorage.setItem('figara_clients', JSON.stringify(updated)); } catch {}
+      };
 
       // Allocation : liste libre. Le poids est borné pour que la somme ne dépasse jamais 100 %.
       const updAllocItem = (id, field, v) => {
@@ -1582,7 +1606,23 @@
         }));
       };
 
-      const next = () => setStep(s => Math.min(5, s+1));
+      const next = () => {
+        if (step === 1 && inputs.mode === 'create' && inputs.clientNom.trim()) {
+          const year = new Date().getFullYear();
+          const id = 'AV-' + year + '-' + String(clients.length + 1).padStart(4, '0');
+          const today = new Date().toLocaleDateString('fr-FR');
+          saveNewClient({
+            id,
+            nom: inputs.clientNom.trim().toUpperCase(),
+            prenom: inputs.clientPrenom.trim(),
+            tel: inputs.clientTel.trim(),
+            email: inputs.clientEmail.trim(),
+            type: inputs.clientType,
+            lastSim: today,
+          });
+        }
+        setStep(s => Math.min(5, s+1));
+      };
       const prev = () => setStep(s => Math.max(1, s-1));
 
       const openBuilder = (sourceInputs) => {
@@ -1659,7 +1699,7 @@
           </div>
 
           <main className="flex-1 py-12 px-6 relative" style={{zIndex: 10}}>
-            {step === 1 && <Step1Identite inputs={inputs} upd={upd} key="s1"/>}
+            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} key="s1"/>}
             {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} key="s4"/>}
@@ -1687,10 +1727,11 @@
     // ============================================================
     // STEP 1 — IDENTITÉ (inchangé)
     // ============================================================
-    function Step1Identite({ inputs, upd }) {
+    function Step1Identite({ inputs, upd, clients }) {
       const [search, setSearch] = useState("");
       const [open, setOpen] = useState(false);
-      const filtered = CLIENTS_EXISTANTS.filter(c => {
+      const allClients = clients || CLIENTS_EXISTANTS;
+      const filtered = allClients.filter(c => {
         const q = search.toLowerCase();
         return c.nom.toLowerCase().includes(q) || c.prenom.toLowerCase().includes(q) || c.id.toLowerCase().includes(q);
       });
@@ -1758,6 +1799,21 @@
               )}
             </div>
           )}
+
+          {/* === SECTION CONSEILLER (toujours visible) === */}
+          <div className="mt-10 pt-8 border-t border-stone-200">
+            <div className="text-[11px] tracking-widest font-semibold text-stone-500 uppercase mb-5">Vos informations</div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="label">Nom du conseiller</label>
+                <input type="text" value={inputs.conseillerNom} onChange={e=>upd("conseillerNom", e.target.value)} className="field" placeholder="Prénom NOM" />
+              </div>
+              <div>
+                <label className="label">Cabinet / Structure</label>
+                <input type="text" value={inputs.cabinetNom} onChange={e=>upd("cabinetNom", e.target.value)} className="field" placeholder="Figara Patrimoine" />
+              </div>
+            </div>
+          </div>
 
           {inputs.mode === "create" && (
             <div className="space-y-5 page-enter">
@@ -5028,7 +5084,7 @@
                   </div>
                   <div>
                     <div className="pres-cover-meta-k">Conseiller</div>
-                    <div className="pres-cover-meta-v">Sylvain Quéré<br/><em>Conseiller en gestion de patrimoine</em></div>
+                    <div className="pres-cover-meta-v">{inputs.conseillerNom || 'Votre conseiller'}{inputs.cabinetNom ? <><br/><em>{inputs.cabinetNom}</em></> : null}</div>
                   </div>
                   <div>
                     <div className="pres-cover-meta-k">Référence</div>
