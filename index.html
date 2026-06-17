@@ -1700,13 +1700,15 @@
       const prev = () => setStep(s => Math.max(1, s-1));
 
       // Archivage Supabase : une ligne par simulation présentée au client.
-      // member_id = utilisateur connecté ; visible par lui-même et par le super-admin (policies RLS).
+      // Pas de compte requis : cabinet_nom/conseiller_nom (auto-déclarés dans "Vos informations")
+      // servent d'identifiant d'usage. member_id reste rempli si un super-admin est connecté.
       const archiveSimulation = async () => {
-        if (!session) return;
         try {
           const { cabinetLogo, ...inputsArchives } = inputs;
           await supabase.from('simulations').insert({
-            member_id: session.user.id,
+            member_id: session?.user?.id || null,
+            cabinet_nom: inputs.cabinetNom || null,
+            conseiller_nom: inputs.conseillerNom || null,
             client_nom: inputs.clientNom || null,
             client_prenom: inputs.clientPrenom || null,
             client_email: inputs.clientEmail || null,
@@ -6621,7 +6623,6 @@
 
     function SuperAdminDashboard({ onBack, onLogout }) {
       const [rows, setRows] = useState([]);
-      const [profiles, setProfiles] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState("");
       const [search, setSearch] = useState("");
@@ -6630,43 +6631,49 @@
         let active = true;
         (async () => {
           setLoading(true);
-          const [simRes, profRes] = await Promise.all([
-            supabase.from('simulations').select('*, profiles:member_id(email,nom,cabinet_nom)').order('created_at', { ascending: false }),
-            supabase.from('profiles').select('*').order('created_at', { ascending: true }),
-          ]);
+          // Pas de compte requis pour les cabinets : cabinet_nom/conseiller_nom (auto-déclarés)
+          // sont les colonnes texte sur simulations. Le join profiles ne sert que pour
+          // les lignes historiques archivées avant le passage en accès sans login.
+          const { data, error } = await supabase.from('simulations').select('*, profiles:member_id(email,nom,cabinet_nom)').order('created_at', { ascending: false });
           if (!active) return;
-          if (simRes.error) setError(simRes.error.message);
-          else setRows(simRes.data || []);
-          setProfiles(profRes.data || []);
+          if (error) setError(error.message);
+          else setRows(data || []);
           setLoading(false);
         })();
         return () => { active = false; };
       }, []);
 
+      const cabinetOf = r => r.cabinet_nom || r.profiles?.cabinet_nom || "Cabinet non renseigné";
+      const conseillerOf = r => r.conseiller_nom || r.profiles?.nom || r.profiles?.email || "—";
+
       const filtered = rows.filter(r => {
         if (!search) return true;
         const s = search.toLowerCase();
-        return [r.client_nom, r.client_prenom, r.client_email, r.produit, r.profiles?.email, r.profiles?.nom, r.profiles?.cabinet_nom]
+        return [r.client_nom, r.client_prenom, r.client_email, r.produit, cabinetOf(r), conseillerOf(r)]
           .filter(Boolean).some(v => String(v).toLowerCase().includes(s));
       });
 
-      // Stats d'usage : comptes, répartition par cabinet/membre, par produit, activité dans le temps
+      // Stats d'usage : cabinets, répartition par cabinet/conseiller, par produit, activité dans le temps
       const stats = useMemo(() => {
-        const byMember = {};
-        profiles.forEach(p => { byMember[p.id] = { profile: p, count: 0, last: null }; });
+        const byCabinet = {};
         const byProduit = {};
         const byDay = {};
         rows.forEach(r => {
-          const mid = r.member_id;
-          if (!byMember[mid]) byMember[mid] = { profile: r.profiles || null, count: 0, last: null };
-          byMember[mid].count += 1;
-          if (!byMember[mid].last || r.created_at > byMember[mid].last) byMember[mid].last = r.created_at;
+          const cab = cabinetOf(r);
+          if (!byCabinet[cab]) byCabinet[cab] = { cabinet: cab, conseillers: new Set(), count: 0, last: null };
+          byCabinet[cab].count += 1;
+          const cons = r.conseiller_nom || r.profiles?.nom || r.profiles?.email;
+          if (cons) byCabinet[cab].conseillers.add(cons);
+          if (!byCabinet[cab].last || r.created_at > byCabinet[cab].last) byCabinet[cab].last = r.created_at;
           const p = r.produit || "autre";
           byProduit[p] = (byProduit[p] || 0) + 1;
           const day = (r.created_at || "").slice(0, 10);
           if (day) byDay[day] = (byDay[day] || 0) + 1;
         });
-        const memberStats = Object.values(byMember).sort((a, b) => b.count - a.count);
+        const cabinetStats = Object.values(byCabinet)
+          .map(c => ({ ...c, conseillers: Array.from(c.conseillers) }))
+          .sort((a, b) => b.count - a.count);
+        const conseillersDistincts = new Set(rows.map(r => r.conseiller_nom || r.profiles?.nom || r.profiles?.email).filter(Boolean)).size;
         const produitStats = Object.entries(byProduit).sort((a, b) => b[1] - a[1]);
         const dayEntries = Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0])).slice(-30);
         const maxDay = dayEntries.reduce((m, [, n]) => Math.max(m, n), 0);
@@ -6674,8 +6681,8 @@
           const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
           return rows.filter(r => r.created_at && new Date(r.created_at) >= cutoff).length;
         })();
-        return { memberStats, produitStats, dayEntries, maxDay, last7 };
-      }, [rows, profiles]);
+        return { cabinetStats, conseillersDistincts, produitStats, dayEntries, maxDay, last7 };
+      }, [rows]);
 
       return (
         <div className="min-h-screen bg-stone-50">
@@ -6697,12 +6704,12 @@
                 {/* Cartes de synthèse */}
                 <div className="grid grid-cols-4 gap-3 mb-5">
                   <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
-                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Comptes créés</div>
-                    <div className="text-[22px] font-bold text-stone-900">{profiles.length}</div>
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Cabinets actifs</div>
+                    <div className="text-[22px] font-bold text-stone-900">{stats.cabinetStats.length}</div>
                   </div>
                   <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
-                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Cabinets distincts</div>
-                    <div className="text-[22px] font-bold text-stone-900">{new Set(profiles.map(p => p.cabinet_nom).filter(Boolean)).size}</div>
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Conseillers actifs</div>
+                    <div className="text-[22px] font-bold text-stone-900">{stats.conseillersDistincts}</div>
                   </div>
                   <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
                     <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Simulations totales</div>
@@ -6715,28 +6722,28 @@
                 </div>
 
                 <div className="grid grid-cols-3 gap-5">
-                  {/* Par cabinet / membre */}
+                  {/* Par cabinet */}
                   <div className="bg-white border border-stone-200 rounded-xl p-4 col-span-2">
-                    <div className="text-[11px] uppercase tracking-wide text-stone-400 font-semibold mb-3">Utilisation par cabinet / conseiller</div>
-                    {stats.memberStats.length === 0 ? (
-                      <div className="text-[12px] text-stone-400">Aucun compte.</div>
+                    <div className="text-[11px] uppercase tracking-wide text-stone-400 font-semibold mb-3">Utilisation par cabinet</div>
+                    {stats.cabinetStats.length === 0 ? (
+                      <div className="text-[12px] text-stone-400">Aucune donnée.</div>
                     ) : (
                       <table className="w-full text-[12px]">
                         <thead>
                           <tr className="text-stone-400 uppercase text-[10px] tracking-wide border-b border-stone-100">
-                            <th className="text-left py-1.5">Conseiller</th>
                             <th className="text-left py-1.5">Cabinet</th>
+                            <th className="text-left py-1.5">Conseiller(s)</th>
                             <th className="text-right py-1.5">Simulations</th>
                             <th className="text-right py-1.5">Dernière activité</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {stats.memberStats.map((m, i) => (
+                          {stats.cabinetStats.map((c, i) => (
                             <tr key={i} className="border-b border-stone-50">
-                              <td className="py-1.5 text-stone-900 font-medium">{m.profile?.nom || m.profile?.email || "—"}</td>
-                              <td className="py-1.5 text-stone-600">{m.profile?.cabinet_nom || "—"}</td>
-                              <td className="py-1.5 text-right num font-semibold text-stone-900">{m.count}</td>
-                              <td className="py-1.5 text-right text-stone-500">{m.last ? new Date(m.last).toLocaleDateString('fr-FR') : "—"}</td>
+                              <td className="py-1.5 text-stone-900 font-medium">{c.cabinet}</td>
+                              <td className="py-1.5 text-stone-600">{c.conseillers.length ? c.conseillers.join(", ") : "—"}</td>
+                              <td className="py-1.5 text-right num font-semibold text-stone-900">{c.count}</td>
+                              <td className="py-1.5 text-right text-stone-500">{c.last ? new Date(c.last).toLocaleDateString('fr-FR') : "—"}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -6803,7 +6810,7 @@
                   <thead>
                     <tr className="bg-stone-50 border-b border-stone-200 text-stone-500 uppercase text-[10px] tracking-wide">
                       <th className="text-left px-4 py-2.5">Date</th>
-                      <th className="text-left px-4 py-2.5">Membre</th>
+                      <th className="text-left px-4 py-2.5">Conseiller</th>
                       <th className="text-left px-4 py-2.5">Cabinet</th>
                       <th className="text-left px-4 py-2.5">Client</th>
                       <th className="text-left px-4 py-2.5">Produit</th>
@@ -6815,8 +6822,8 @@
                     {filtered.map(r => (
                       <tr key={r.id} className="border-b border-stone-100 hover:bg-stone-50">
                         <td className="px-4 py-2.5 text-stone-600 whitespace-nowrap">{new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
-                        <td className="px-4 py-2.5 text-stone-900 font-medium">{r.profiles?.nom || r.profiles?.email || "—"}</td>
-                        <td className="px-4 py-2.5 text-stone-600">{r.profiles?.cabinet_nom || "—"}</td>
+                        <td className="px-4 py-2.5 text-stone-900 font-medium">{conseillerOf(r)}</td>
+                        <td className="px-4 py-2.5 text-stone-600">{cabinetOf(r)}</td>
                         <td className="px-4 py-2.5 text-stone-900">{[r.client_prenom, r.client_nom].filter(Boolean).join(" ") || "—"}</td>
                         <td className="px-4 py-2.5 text-stone-600">{r.produit || "—"}</td>
                         <td className="px-4 py-2.5 text-right num font-semibold text-stone-900">{fmtEUR(r.resume?.capitalFinal)}</td>
@@ -6833,7 +6840,70 @@
     }
 
     // ============================================================
+    // IDENTIFICATION LÉGÈRE — Cabinet + Conseiller, sans mot de passe ni compte.
+    // Demandé une seule fois par navigateur (stocké en localStorage), sert d'identifiant
+    // d'usage pour les statistiques super-admin. Pas d'authentification pour l'usage normal.
+    // ============================================================
+    function IdentityGate() {
+      const readSaved = () => {
+        try { return JSON.parse(localStorage.getItem('figara_conseiller') || '{}'); } catch { return {}; }
+      };
+      const [identified, setIdentified] = useState(() => {
+        const s = readSaved();
+        return !!(s.cabinetNom && s.conseillerNom);
+      });
+      const [cabinetNom, setCabinetNom] = useState("");
+      const [conseillerNom, setConseillerNom] = useState("");
+      const [touched, setTouched] = useState(false);
+
+      if (identified) return <App/>;
+
+      const submit = (e) => {
+        e.preventDefault();
+        setTouched(true);
+        if (!cabinetNom.trim() || !conseillerNom.trim()) return;
+        try {
+          const prev = readSaved();
+          localStorage.setItem('figara_conseiller', JSON.stringify({
+            ...prev, cabinetNom: cabinetNom.trim(), conseillerNom: conseillerNom.trim(),
+            cabinetLogo: prev.cabinetLogo || '', afficherFigara: prev.afficherFigara !== undefined ? prev.afficherFigara : true,
+          }));
+        } catch {}
+        setIdentified(true);
+      };
+
+      return (
+        <div className="min-h-screen bg-stone-950 flex items-center justify-center px-4 relative overflow-hidden">
+          <FigaraDecor/>
+          <div className="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
+            <div className="flex items-center gap-2.5 mb-6">
+              <I.logo/>
+              <div className="text-[15px] font-extrabold tracking-tight text-stone-900">Simulateur FIGARA</div>
+            </div>
+            <p className="text-[12px] text-stone-500 mb-5">Renseignez votre cabinet et votre nom — demandé une seule fois sur cet appareil.</p>
+            <form onSubmit={submit}>
+              <div className="mb-3">
+                <label className="label">Cabinet</label>
+                <input type="text" value={cabinetNom} onChange={e => setCabinetNom(e.target.value)} placeholder="Figara Patrimoine"
+                  className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
+                {touched && !cabinetNom.trim() && <div className="mt-1 text-[11px] text-red-600">Champ requis.</div>}
+              </div>
+              <div className="mb-4">
+                <label className="label">Votre nom</label>
+                <input type="text" value={conseillerNom} onChange={e => setConseillerNom(e.target.value)} placeholder="Prénom NOM"
+                  className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
+                {touched && !conseillerNom.trim() && <div className="mt-1 text-[11px] text-red-600">Champ requis.</div>}
+              </div>
+              <button type="submit" className="btn btn-dark w-full justify-center">Accéder au simulateur</button>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    // ============================================================
     // AUTH GATE — session Supabase + routage App / SuperAdminDashboard
+    // Accessible uniquement via #admin : réservé au super-admin pour consulter les stats d'usage.
     // ============================================================
     function AuthGate() {
       const [session, setSession] = useState(undefined); // undefined = chargement, null = déconnecté
@@ -6874,7 +6944,22 @@
       return <App session={session} isSuperAdmin={isSuperAdmin} onOpenAdmin={() => setView("admin")} onLogout={onLogout}/>;
     }
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<AuthGate />);
+    // ============================================================
+    // ROOT — usage normal (cabinets) : pas de login, juste l'identification légère.
+    // Accès admin (vous) : ajouter #admin à l'URL → login Supabase → tableau de bord.
+    // ============================================================
+    function Root() {
+      const [hash, setHash] = useState(window.location.hash);
+      useEffect(() => {
+        const onHash = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', onHash);
+        return () => window.removeEventListener('hashchange', onHash);
+      }, []);
+      if (hash === '#admin') return <AuthGate/>;
+      return <IdentityGate/>;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<Root />);
   </script>
 </body>
 </html>
