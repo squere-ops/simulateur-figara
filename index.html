@@ -1295,10 +1295,15 @@
       return { brute, imp, nette: brute - imp, regime, qpv };
     }
 
-    function projLivret(vi, vm, dur, taux) {
-      const N = Math.round(dur*12); const tm = Math.pow(1+taux, 1/12)-1;
-      let cap = vi, tot = vi;
-      for (let m=1; m<=N; m++) { cap = (cap+vm)*(1+tm); tot += vm; }
+    function projLivret(inp) {
+      const N = Math.round(inp.dureeAnnees*12); const tm = Math.pow(1+inp.livretTaux, 1/12)-1;
+      const compMois = complementairesParMois(inp, 0, N); // livret/CAT : pas de frais d'entrée
+      let cap = inp.versementInitial, tot = inp.versementInitial;
+      for (let m=1; m<=N; m++) {
+        cap = (cap+inp.versementMensuel)*(1+tm);
+        tot += inp.versementMensuel;
+        if (compMois[m]) { cap += compMois[m]; tot += compMois[m]; }
+      }
       return { capitalFin: cap, totVerse: tot, plusValue: cap - tot };
     }
 
@@ -1385,10 +1390,12 @@
     function livretSeries(inp) {
       const N = Math.round(inp.dureeAnnees);
       const tm = Math.pow(1 + inp.livretTaux, 1/12) - 1;
+      const compMois = complementairesParMois(inp, 0, N*12); // livret/CAT : pas de frais d'entrée
       let cap = inp.versementInitial;
       const series = [inp.versementInitial];
       for (let m = 1; m <= N*12; m++) {
         cap = (cap + inp.versementMensuel) * (1 + tm);
+        if (compMois[m]) cap += compMois[m];
         if (m % 12 === 0) series.push(cap);
       }
       return series;
@@ -1420,7 +1427,7 @@
         fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txIndirect, proj.totVerseBrut, ligne, txDirect);
       }
       const r = rente(proj.capitalFin, proj.totVerseNet, rdt, inp.dureeAnnees, inp.situationFamiliale);
-      const livret = projLivret(inp.versementInitial, inp.versementMensuel, inp.dureeAnnees, inp.livretTaux);
+      const livret = projLivret(inp);
       const livretFisc = fiscaliteLivret(livret.capitalFin, inp.nbBeneficiaires, ligne, txIndirect, txDirect);
       const livretRenteBrute = livret.capitalFin * inp.livretTaux;
       // PER + réintégration : capital auxiliaire issu du réinvestissement des réductions d'impôt
@@ -2579,7 +2586,7 @@
         const ligne = inputs.successionLine ?? 'directe';
         const txIndirect = inputs.successionTauxIndirect ?? TX_SUCC_INDIRECT;
         const txDirect = inputs.successionTauxDirect ?? 0.30;
-        const livretProj = projLivret(inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux);
+        const livretProj = projLivret(inputs);
         const livretFisc = fiscaliteLivret(livretProj.capitalFin, inputs.nbBeneficiaires, ligne, txIndirect, txDirect);
         const renteBruteAn = livretProj.capitalFin * inputs.livretTaux;
         // Description abattement selon ligne
@@ -2618,7 +2625,7 @@
           tauxIRPct: 0,
           coutReel: livretProj.totVerse,  // pas d'avantage fiscal — coût = versements
         };
-      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, livretNom]);
+      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, inputs.versementsComplementaires, livretNom]);
 
       // === Colonne PER + Réintégration des réductions d'impôt ===
       // L'épargnant réinvestit chaque année sa réduction d'impôt dans le PER.
@@ -6283,7 +6290,7 @@
       const reductionPCT = FRAIS_SOUSC_MAX > 0 ? (FRAIS_SOUSC_MAX - b.fraisSouscription) / FRAIS_SOUSC_MAX : 0;
 
       // Build preview column
-      const previewLivret = projLivret(b.versementInitial, b.versementMensuel, b.dureeAnnees, b.livretTaux);
+      const previewLivret = projLivret(b);
       const previewLivretFisc = fiscaliteLivret(previewLivret.capitalFin, b.nbBeneficiaires);
       const previewCol = {
         type: "scenario", colorIndex: 1,
