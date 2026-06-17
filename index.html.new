@@ -46,10 +46,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700;1,9..144,800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
-  <script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -265,14 +264,9 @@
     .pres-cover-brand-logo {
       display: flex; align-items: center; gap: 4mm;
     }
-    .pres-cover-brand-group {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 6.5pt; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
-      color: #78716c; line-height: 1; margin-bottom: 1.5mm;
-    }
     .pres-cover-brand-name {
       font-family: 'Fraunces', 'Playfair Display', serif;
-      font-size: 13pt; font-weight: 600;
+      font-size: 16pt; font-weight: 600;
       letter-spacing: 0.04em; color: #1c1917;
       line-height: 1;
     }
@@ -281,15 +275,9 @@
       font-size: 6.5pt; letter-spacing: 0.32em; text-transform: uppercase;
       color: #78716c; margin-top: 1.5mm;
     }
-    .pres-cover-brand-right {
-      margin-left: auto;
-      display: flex; flex-direction: column; align-items: flex-end; gap: 3mm;
-    }
-    .pres-cover-cabinet-logo {
-      height: 48px; max-width: 220px; object-fit: contain;
-    }
 
     .pres-cover-id {
+      margin-left: auto;
       font-family: 'JetBrains Mono', monospace;
       font-size: 7.5pt; letter-spacing: 0.22em; color: #78716c;
       text-align: right; text-transform: uppercase;
@@ -992,15 +980,6 @@
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
-    // SUPABASE — backend partagé (comptes membres + archivage des simulations)
-    // Clé publishable : sans risque à exposer côté client, la sécurité est
-    // assurée par les policies RLS définies côté serveur (table profiles / simulations).
-    // ============================================================
-    const SUPABASE_URL = "https://rzmexrvynpteqwswtzhh.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1kMpyh7u4yfZXc8j2-v3ng_Ui1SjCY0";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-    // ============================================================
     // FISCALITÉ FR 2026
     // ============================================================
     const ABATT_AV_70 = 152500;
@@ -1091,7 +1070,7 @@
       mode: "select",
       clientSelected: null,
       clientNom: "", clientPrenom: "", clientTel: "", clientEmail: "", clientType: "particulier",
-      conseillerNom: "", cabinetNom: "", cabinetLogo: "",
+      conseillerNom: "", cabinetNom: "",
       produit: "av",
       dureeAnnees: 15,
       nbBeneficiaires: 2,
@@ -1099,9 +1078,6 @@
       situationFamiliale: "couple",
       versementInitial: 100000,
       versementMensuel: 500,
-      // Versements complémentaires programmés : [{ id, annee, montant }]
-      // "annee" = nombre d'années après la souscription (peut être décimal, ex: 2.5)
-      versementsComplementaires: [],
       fraisSouscription: 0.0475,
       // Allocation sous forme de liste : ajout/suppression dynamique, dropdown de type.
       // Par défaut une seule ligne (Fonds Euros à 100 %) ; le conseiller ajoute des lignes selon les besoins.
@@ -1130,38 +1106,17 @@
       const w = a.reduce((s, x) => s + x.poids * x.sri, 0);
       return t > 0 ? w / t : 0;
     }
-    // Somme brute des versements complémentaires programmés
-    function totalComplementaires(inp) {
-      return (inp.versementsComplementaires || []).reduce((s, v) => s + (v.montant || 0), 0);
-    }
-    // Regroupe les versements complémentaires par mois (m = annee*12), nets de frais d'entrée,
-    // pour injection dans les boucles de capitalisation mensuelles.
-    function complementairesParMois(inp, fraisEntree, Nmois) {
-      const map = {};
-      (inp.versementsComplementaires || []).forEach(v => {
-        const m = Math.round((v.annee || 0) * 12);
-        if (m >= 1 && m <= Nmois) {
-          map[m] = (map[m] || 0) + (v.montant || 0) * (1 - fraisEntree);
-        }
-      });
-      return map;
-    }
 
     function projection(inp, rdtNet) {
       const N = Math.round(inp.dureeAnnees * 12);
       const tm = Math.pow(1 + rdtNet, 1/12) - 1;
       const vIN = inp.versementInitial * (1 - inp.fraisSouscription);
       const vMN = inp.versementMensuel * (1 - inp.fraisSouscription);
-      const compMois = complementairesParMois(inp, inp.fraisSouscription, N);
       let cap = vIN, totBrut = inp.versementInitial, totNet = vIN;
       for (let m=1; m<=N; m++) {
         cap = (cap + vMN) * (1 + tm);
         totBrut += inp.versementMensuel; totNet += vMN;
-        if (compMois[m]) cap += compMois[m];
       }
-      const compBrut = totalComplementaires(inp);
-      totBrut += compBrut;
-      totNet += compBrut * (1 - inp.fraisSouscription);
       return { capitalFin: cap, totVerseBrut: totBrut, totVerseNet: totNet, plusValue: cap - totNet, fraisSousPay: totBrut - totNet };
     }
 
@@ -1306,15 +1261,10 @@
       return { brute, imp, nette: brute - imp, regime, qpv };
     }
 
-    function projLivret(inp) {
-      const N = Math.round(inp.dureeAnnees*12); const tm = Math.pow(1+inp.livretTaux, 1/12)-1;
-      const compMois = complementairesParMois(inp, 0, N); // livret/CAT : pas de frais d'entrée
-      let cap = inp.versementInitial, tot = inp.versementInitial;
-      for (let m=1; m<=N; m++) {
-        cap = (cap+inp.versementMensuel)*(1+tm);
-        tot += inp.versementMensuel;
-        if (compMois[m]) { cap += compMois[m]; tot += compMois[m]; }
-      }
+    function projLivret(vi, vm, dur, taux) {
+      const N = Math.round(dur*12); const tm = Math.pow(1+taux, 1/12)-1;
+      let cap = vi, tot = vi;
+      for (let m=1; m<=N; m++) { cap = (cap+vm)*(1+tm); tot += vm; }
       return { capitalFin: cap, totVerse: tot, plusValue: cap - tot };
     }
 
@@ -1387,12 +1337,10 @@
       const tm = Math.pow(1 + rdtNet, 1/12) - 1;
       const vIN = inp.versementInitial * (1 - inp.fraisSouscription);
       const vMN = inp.versementMensuel * (1 - inp.fraisSouscription);
-      const compMois = complementairesParMois(inp, inp.fraisSouscription, N*12);
       let cap = vIN;
       const series = [vIN];
       for (let m = 1; m <= N*12; m++) {
         cap = (cap + vMN) * (1 + tm);
-        if (compMois[m]) cap += compMois[m];
         if (m % 12 === 0) series.push(cap);
       }
       return series;
@@ -1401,12 +1349,10 @@
     function livretSeries(inp) {
       const N = Math.round(inp.dureeAnnees);
       const tm = Math.pow(1 + inp.livretTaux, 1/12) - 1;
-      const compMois = complementairesParMois(inp, 0, N*12); // livret/CAT : pas de frais d'entrée
       let cap = inp.versementInitial;
       const series = [inp.versementInitial];
       for (let m = 1; m <= N*12; m++) {
         cap = (cap + inp.versementMensuel) * (1 + tm);
-        if (compMois[m]) cap += compMois[m];
         if (m % 12 === 0) series.push(cap);
       }
       return series;
@@ -1438,7 +1384,7 @@
         fisc = fiscaliteAV(proj.capitalFin, proj.totVerseNet, inp.nbBeneficiaires, inp.ageSouscripteur, txIndirect, proj.totVerseBrut, ligne, txDirect);
       }
       const r = rente(proj.capitalFin, proj.totVerseNet, rdt, inp.dureeAnnees, inp.situationFamiliale);
-      const livret = projLivret(inp);
+      const livret = projLivret(inp.versementInitial, inp.versementMensuel, inp.dureeAnnees, inp.livretTaux);
       const livretFisc = fiscaliteLivret(livret.capitalFin, inp.nbBeneficiaires, ligne, txIndirect, txDirect);
       const livretRenteBrute = livret.capitalFin * inp.livretTaux;
       // PER + réintégration : capital auxiliaire issu du réinvestissement des réductions d'impôt
@@ -1561,7 +1507,7 @@
     // ============================================================
     // APP
     // ============================================================
-    function App({ session, onOpenAdmin, isSuperAdmin, onLogout }) {
+    function App() {
       const [step, setStep] = useState(1);
       const [clients, setClients] = useState(() => {
         try { return JSON.parse(localStorage.getItem('figara_clients')) || CLIENTS_EXISTANTS; }
@@ -1570,7 +1516,7 @@
       const [inputs, setInputs] = useState(() => {
         try {
           const saved = JSON.parse(localStorage.getItem('figara_conseiller') || '{}');
-          return { ...DEFAULT_INPUTS, conseillerNom: saved.conseillerNom || '', cabinetNom: saved.cabinetNom || '', cabinetLogo: saved.cabinetLogo || '' };
+          return { ...DEFAULT_INPUTS, conseillerNom: saved.conseillerNom || '', cabinetNom: saved.cabinetNom || '' };
         } catch { return DEFAULT_INPUTS; }
       });
       const [scenarios, setScenarios] = useState([]);
@@ -1588,7 +1534,7 @@
       const sim = useMemo(() => runSimulation(inputs, scenarioLvl), [inputs, scenarioLvl]);
 
       const totalP = useMemo(() => inputs.allocation.reduce((s,v)=>s+v.poids, 0), [inputs.allocation]);
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees;
       const reductionCommerciale = (FRAIS_SOUSC_MAX - inputs.fraisSouscription) * totalVerseBrut;
       const reductionPCT = FRAIS_SOUSC_MAX > 0 ? (FRAIS_SOUSC_MAX - inputs.fraisSouscription) / FRAIS_SOUSC_MAX : 0;
       const fraisAuTarifMax = FRAIS_SOUSC_MAX * totalVerseBrut;
@@ -1605,9 +1551,9 @@
       const upd = (k,v) => {
         setInputs(p => {
           const next = {...p, [k]: v};
-          // persister le nom du conseiller/cabinet (+ logo) en temps réel
-          if (k === 'conseillerNom' || k === 'cabinetNom' || k === 'cabinetLogo') {
-            try { localStorage.setItem('figara_conseiller', JSON.stringify({ conseillerNom: next.conseillerNom, cabinetNom: next.cabinetNom, cabinetLogo: next.cabinetLogo })); } catch {}
+          // persister le nom du conseiller/cabinet en temps réel
+          if (k === 'conseillerNom' || k === 'cabinetNom') {
+            try { localStorage.setItem('figara_conseiller', JSON.stringify({ conseillerNom: next.conseillerNom, cabinetNom: next.cabinetNom })); } catch {}
           }
           return next;
         });
@@ -1660,27 +1606,6 @@
         }));
       };
 
-      // Versements complémentaires : liste libre {id, annee, montant}
-      const addVersementComp = () => {
-        setInputs(p => {
-          const list = p.versementsComplementaires || [];
-          const newId = (list.length ? Math.max(...list.map(x => x.id)) : 0) + 1;
-          return { ...p, versementsComplementaires: [...list, { id: newId, annee: 1, montant: 10000 }] };
-        });
-      };
-      const updVersementComp = (id, field, v) => {
-        setInputs(p => ({
-          ...p,
-          versementsComplementaires: (p.versementsComplementaires || []).map(item => item.id === id ? { ...item, [field]: v } : item)
-        }));
-      };
-      const removeVersementComp = (id) => {
-        setInputs(p => ({
-          ...p,
-          versementsComplementaires: (p.versementsComplementaires || []).filter(item => item.id !== id)
-        }));
-      };
-
       const next = () => {
         if (step === 1 && inputs.mode === 'create' && inputs.clientNom.trim()) {
           const year = new Date().getFullYear();
@@ -1699,32 +1624,6 @@
         setStep(s => Math.min(5, s+1));
       };
       const prev = () => setStep(s => Math.max(1, s-1));
-
-      // Archivage Supabase : une ligne par simulation présentée au client.
-      // member_id = utilisateur connecté ; visible par lui-même et par le super-admin (policies RLS).
-      const archiveSimulation = async () => {
-        if (!session) return;
-        try {
-          const { cabinetLogo, ...inputsArchives } = inputs;
-          await supabase.from('simulations').insert({
-            member_id: session.user.id,
-            client_nom: inputs.clientNom || null,
-            client_prenom: inputs.clientPrenom || null,
-            client_email: inputs.clientEmail || null,
-            produit: inputs.produit,
-            inputs: inputsArchives,
-            resume: {
-              totalVerseBrut,
-              capitalFinal: sim?.proj?.capitalFin ?? null,
-              plusValue: sim?.proj?.plusValue ?? null,
-              dureeAnnees: inputs.dureeAnnees,
-            },
-          });
-        } catch (e) {
-          console.error("Archivage de la simulation échoué :", e);
-        }
-      };
-      const handleOpenPrint = () => { archiveSimulation(); setPrintMode(true); };
 
       const openBuilder = (sourceInputs) => {
         setBuilderInitial(JSON.parse(JSON.stringify(sourceInputs || inputs)));
@@ -1791,17 +1690,7 @@
                     </>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  {isSuperAdmin && (
-                    <button onClick={onOpenAdmin} className="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-white/10 text-white hover:bg-white/20 transition">
-                      Vue Super-Admin
-                    </button>
-                  )}
-                  <button onClick={onLogout} className="px-3 py-1.5 text-[11px] font-semibold rounded-lg border border-white/20 text-stone-300 hover:text-white hover:border-white/40 transition">
-                    Déconnexion
-                  </button>
-                  <button className="text-stone-400 hover:text-white transition"><I.close/></button>
-                </div>
+                <button className="text-stone-400 hover:text-white transition"><I.close/></button>
               </div>
             </header>
             <div className="py-5 relative">
@@ -1811,10 +1700,10 @@
 
           <main className="flex-1 py-12 px-6 relative" style={{zIndex: 10}}>
             {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} key="s1"/>}
-            {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
+            {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} key="s4"/>}
-            {step === 5 && <Step5Presentation inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} key="s5"/>}
+            {step === 5 && <Step5Presentation inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={() => setPrintMode(true)} key="s5"/>}
           </main>
 
           <footer className="border-t border-white/10 backdrop-blur py-5 px-6 no-print relative" style={{zIndex: 10, background: 'linear-gradient(0deg, rgba(28, 25, 23, 0.95) 0%, rgba(41, 37, 36, 0.92) 100%)'}}>
@@ -1824,7 +1713,7 @@
               {step < 5 ? (
                 <button onClick={next} disabled={!completable[step]} className="btn btn-dark">{step===4?"Présenter":"Continuer"} <I.arrow/></button>
               ) : (
-                <button onClick={handleOpenPrint} className="btn btn-dark"><I.printer/> Présentation client</button>
+                <button onClick={() => setPrintMode(true)} className="btn btn-dark"><I.printer/> Présentation client</button>
               )}
             </div>
           </footer>
@@ -1924,39 +1813,6 @@
                 <input type="text" value={inputs.cabinetNom} onChange={e=>upd("cabinetNom", e.target.value)} className="field" placeholder="Figara Patrimoine" />
               </div>
             </div>
-
-            <div className="mt-4">
-              <label className="label">Logo du cabinet</label>
-              <div className="flex items-center gap-4">
-                {inputs.cabinetLogo ? (
-                  <div className="relative">
-                    <img src={inputs.cabinetLogo} alt="Logo cabinet" className="h-14 w-auto max-w-[180px] object-contain bg-white border border-stone-200 rounded-lg p-2" />
-                    <button onClick={() => upd("cabinetLogo", "")} title="Retirer le logo"
-                      className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-stone-700 text-white flex items-center justify-center hover:bg-red-600 transition">
-                      <I.x/>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="h-14 w-28 flex items-center justify-center bg-stone-50 border border-dashed border-stone-300 rounded-lg text-[10px] text-stone-400">
-                    Aucun logo
-                  </div>
-                )}
-                <label className="px-4 py-2 text-[12px] font-semibold text-stone-600 border border-stone-300 rounded-lg hover:border-red-400 hover:text-red-600 transition cursor-pointer">
-                  {inputs.cabinetLogo ? "Changer le logo" : "Charger un logo"}
-                  <input type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" className="hidden"
-                    onChange={e => {
-                      const file = e.target.files && e.target.files[0];
-                      if (!file) return;
-                      if (file.size > 2 * 1024 * 1024) { alert("Le logo doit faire moins de 2 Mo."); return; }
-                      const reader = new FileReader();
-                      reader.onload = () => upd("cabinetLogo", reader.result);
-                      reader.readAsDataURL(file);
-                      e.target.value = "";
-                    }} />
-                </label>
-              </div>
-              <p className="mt-1.5 text-[11px] text-stone-400">PNG, JPG, SVG ou WebP — utilisé dans la présentation et le PDF client.</p>
-            </div>
           </div>
 
           {inputs.mode === "create" && (
@@ -2005,7 +1861,7 @@
     // ============================================================
     // STEP 2 — PRODUIT (avec économie en € et %)
     // ============================================================
-    function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp }) {
+    function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels }) {
       return (
         <div className="max-w-2xl mx-auto page-enter">
           <div className="text-center mb-10">
@@ -2204,49 +2060,6 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* VERSEMENTS COMPLÉMENTAIRES : liste libre, illimitée */}
-          <div className="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
-            <div className="flex items-end justify-between mb-3">
-              <div>
-                <label className="label" style={{marginBottom:4}}>Versements complémentaires</label>
-                <p className="text-[11px] text-stone-500">Versements ponctuels programmés à une date future (ex. +20 000 € dans 3 ans).</p>
-              </div>
-              {(inputs.versementsComplementaires || []).length > 0 && (
-                <div className="text-right flex-shrink-0">
-                  <div className="num text-lg font-bold text-stone-900 tracking-tightest leading-none">{fmtEUR(totalComplementaires(inputs))}</div>
-                  <div className="text-[10px] text-stone-500">total programmé</div>
-                </div>
-              )}
-            </div>
-
-            {(inputs.versementsComplementaires || []).map(item => (
-              <div key={item.id} className="flex items-center gap-3 mb-2 bg-stone-50 rounded-lg border border-stone-200 px-3 py-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] text-stone-500">Année</span>
-                  <input type="number" min="0" max={inputs.dureeAnnees} step="1"
-                    value={item.annee}
-                    onChange={e => updVersementComp(item.id, "annee", parseFloat(e.target.value) || 0)}
-                    className="num w-16 px-2 py-1.5 text-right text-[13px] font-bold text-stone-900 bg-white border border-stone-200 rounded-md focus:outline-none" />
-                </div>
-                <div className="flex items-center bg-white rounded-lg border border-stone-200 flex-1">
-                  <input type="text" inputMode="numeric"
-                    value={new Intl.NumberFormat('fr-FR').format(item.montant)}
-                    onChange={e => updVersementComp(item.id, "montant", parseFloat(e.target.value.replace(/[^\d]/g,'')) || 0)}
-                    className="num w-full px-3 py-1.5 text-right text-[14px] font-bold text-stone-900 bg-transparent focus:outline-none" />
-                  <span className="px-3 text-[11px] text-stone-500 font-medium">€</span>
-                </div>
-                <button onClick={() => removeVersementComp(item.id)} className="p-1.5 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Supprimer ce versement">
-                  <I.x/>
-                </button>
-              </div>
-            ))}
-
-            <button onClick={() => addVersementComp()}
-              className="mt-1 w-full py-2.5 text-[12px] font-semibold text-stone-600 border border-dashed border-stone-300 rounded-lg hover:border-red-400 hover:text-red-600 transition">
-              + Ajouter un versement complémentaire
-            </button>
           </div>
 
           {/* FRAIS DE SOUSCRIPTION + ÉCONOMIE COMMERCIALE EN AVANT */}
@@ -2570,7 +2383,7 @@
       const isCapiProduit = inputs.produit === "capi";
       const refLabel = isCapiProduit ? "Compte à terme" : "Livret";
       const livretNom = isCapiProduit ? "Compte à terme" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret");
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees;
 
       // Mesure dynamique de la hauteur du bandeau "Hypothèse principale" pour positionner exactement le bandeau "Détail" juste en dessous (sans chevauchement, sans gap)
       const hypotheseRef = useRef(null);
@@ -2597,7 +2410,7 @@
         const ligne = inputs.successionLine ?? 'directe';
         const txIndirect = inputs.successionTauxIndirect ?? TX_SUCC_INDIRECT;
         const txDirect = inputs.successionTauxDirect ?? 0.30;
-        const livretProj = projLivret(inputs);
+        const livretProj = projLivret(inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux);
         const livretFisc = fiscaliteLivret(livretProj.capitalFin, inputs.nbBeneficiaires, ligne, txIndirect, txDirect);
         const renteBruteAn = livretProj.capitalFin * inputs.livretTaux;
         // Description abattement selon ligne
@@ -2636,7 +2449,7 @@
           tauxIRPct: 0,
           coutReel: livretProj.totVerse,  // pas d'avantage fiscal — coût = versements
         };
-      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, inputs.versementsComplementaires, livretNom]);
+      }, [inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.livretTaux, inputs.nbBeneficiaires, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, livretNom]);
 
       // === Colonne PER + Réintégration des réductions d'impôt ===
       // L'épargnant réinvestit chaque année sa réduction d'impôt dans le PER.
@@ -2879,7 +2692,7 @@
 
               {/* Lignes scénarios — même format que la base, chacun avec sa couleur d'accent */}
               {scenarios.map((s, idx) => {
-                const t = s.inputs.versementInitial + s.inputs.versementMensuel * 12 * s.inputs.dureeAnnees + totalComplementaires(s.inputs);
+                const t = s.inputs.versementInitial + s.inputs.versementMensuel * 12 * s.inputs.dureeAnnees;
                 const color = ['#6366f1','#ec4899','#f59e0b','#06b6d4'][idx % 4];
                 const colorBg = ['#eef2ff','#fdf2f8','#fffbeb','#ecfeff'][idx % 4];
                 const colorRing = ['#c7d2fe','#fbcfe8','#fde68a','#a5f3fc'][idx % 4];
@@ -4234,7 +4047,7 @@
       const gainPCT = isPER_Step5
         ? (finalSolution > 0 ? gainEUR / finalSolution : 0)
         : (finalLivret > 0 ? gainEUR / finalLivret : 0);
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees;
 
       useEffect(() => {
         if (!chartRef.current || typeof Chart === 'undefined') return;
@@ -5228,7 +5041,7 @@
               </div>
               <div className="pres-cover-photo-credit">Paris · Tour Eiffel</div>
 
-              {/* Brand bar : logo Figara (étoile rouge) + nom Figara + logo cabinet/référence étude (haut droite) */}
+              {/* Brand bar : logo Figara (étoile rouge) + nom Figara + référence étude */}
               <div className="pres-cover-brand">
                 <div className="pres-cover-brand-logo">
                   <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -5242,19 +5055,10 @@
                     <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(315 16 16)"/>
                     <circle cx="16" cy="16" r="0.8" fill="#DC2626"/>
                   </svg>
-                  <div>
-                    <div className="pres-cover-brand-group">Groupement</div>
-                    <div className="pres-cover-brand-name">Figara</div>
-                  </div>
+                  <div className="pres-cover-brand-name">Figara</div>
                 </div>
-                <div className="pres-cover-brand-right">
-                  {inputs.cabinetLogo && (
-                    <img src={inputs.cabinetLogo} alt={inputs.cabinetNom || "Logo cabinet"}
-                      className="pres-cover-cabinet-logo" />
-                  )}
-                  <div className="pres-cover-id">
-                    ÉTUDE <strong>{clientId(inputs)}</strong>
-                  </div>
+                <div className="pres-cover-id">
+                  ÉTUDE <strong>{clientId(inputs)}</strong>
                 </div>
               </div>
 
@@ -6301,12 +6105,12 @@
       const totalP = b.allocation.reduce((s,v)=>s+v.poids, 0);
       const isOK = Math.abs(totalP - 1) < 0.001;
 
-      const totalVerseBrut = b.versementInitial + b.versementMensuel * 12 * b.dureeAnnees + totalComplementaires(b);
+      const totalVerseBrut = b.versementInitial + b.versementMensuel * 12 * b.dureeAnnees;
       const reductionCommerciale = (FRAIS_SOUSC_MAX - b.fraisSouscription) * totalVerseBrut;
       const reductionPCT = FRAIS_SOUSC_MAX > 0 ? (FRAIS_SOUSC_MAX - b.fraisSouscription) / FRAIS_SOUSC_MAX : 0;
 
       // Build preview column
-      const previewLivret = projLivret(b);
+      const previewLivret = projLivret(b.versementInitial, b.versementMensuel, b.dureeAnnees, b.livretTaux);
       const previewLivretFisc = fiscaliteLivret(previewLivret.capitalFin, b.nbBeneficiaires);
       const previewCol = {
         type: "scenario", colorIndex: 1,
@@ -6522,228 +6326,7 @@
       );
     }
 
-    // ============================================================
-    // LOGIN SCREEN — email/password (Supabase Auth)
-    // ============================================================
-    function LoginScreen() {
-      const [mode, setMode] = useState("login"); // "login" | "signup"
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
-      const [nom, setNom] = useState("");
-      const [cabinetNom, setCabinetNom] = useState("");
-      const [loading, setLoading] = useState(false);
-      const [error, setError] = useState("");
-      const [info, setInfo] = useState("");
-
-      const submit = async (e) => {
-        e.preventDefault();
-        setError(""); setInfo(""); setLoading(true);
-        try {
-          if (mode === "login") {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-          } else {
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) throw error;
-            if (data.user) {
-              await supabase.from('profiles').update({ nom, cabinet_nom: cabinetNom }).eq('id', data.user.id);
-            }
-            if (!data.session) {
-              setInfo("Compte créé. Vérifiez votre boîte mail pour confirmer votre adresse, puis connectez-vous.");
-              setMode("login");
-            }
-          }
-        } catch (err) {
-          setError(err.message || "Une erreur est survenue.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      return (
-        <div className="min-h-screen bg-stone-950 flex items-center justify-center px-4 relative overflow-hidden">
-          <FigaraDecor/>
-          <div className="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-8">
-            <div className="flex items-center gap-2.5 mb-6">
-              <I.logo/>
-              <div className="text-[15px] font-extrabold tracking-tight text-stone-900">Simulateur FIGARA</div>
-            </div>
-            <div className="flex mb-6 bg-stone-100 rounded-lg p-1">
-              <button type="button" onClick={() => { setMode("login"); setError(""); setInfo(""); }}
-                className={`flex-1 py-1.5 text-[12px] font-semibold rounded-md transition ${mode === "login" ? "bg-white text-stone-900 shadow-sm" : "text-stone-500"}`}>Connexion</button>
-              <button type="button" onClick={() => { setMode("signup"); setError(""); setInfo(""); }}
-                className={`flex-1 py-1.5 text-[12px] font-semibold rounded-md transition ${mode === "signup" ? "bg-white text-stone-900 shadow-sm" : "text-stone-500"}`}>Créer un compte</button>
-            </div>
-            <form onSubmit={submit}>
-              {mode === "signup" && (
-                <>
-                  <div className="mb-3">
-                    <label className="label">Nom</label>
-                    <input type="text" value={nom} onChange={e => setNom(e.target.value)} required
-                      className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="label">Cabinet</label>
-                    <input type="text" value={cabinetNom} onChange={e => setCabinetNom(e.target.value)}
-                      className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
-                  </div>
-                </>
-              )}
-              <div className="mb-3">
-                <label className="label">Email</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email"
-                  className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
-              </div>
-              <div className="mb-4">
-                <label className="label">Mot de passe</label>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6}
-                  autoComplete={mode === "login" ? "current-password" : "new-password"}
-                  className="w-full px-3 py-2 text-[13px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400" />
-              </div>
-              {error && <div className="mb-3 text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</div>}
-              {info && <div className="mb-3 text-[12px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">{info}</div>}
-              <button type="submit" disabled={loading} className="btn btn-dark w-full justify-center disabled:opacity-50">
-                <I.lock/> {loading ? "Veuillez patienter…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
-              </button>
-            </form>
-          </div>
-        </div>
-      );
-    }
-
-    // ============================================================
-    // SUPER-ADMIN DASHBOARD — toutes les simulations, tous les membres
-    // ============================================================
-    function SuperAdminDashboard({ onBack, onLogout }) {
-      const [rows, setRows] = useState([]);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState("");
-      const [search, setSearch] = useState("");
-
-      useEffect(() => {
-        let active = true;
-        (async () => {
-          setLoading(true);
-          const { data, error } = await supabase
-            .from('simulations')
-            .select('*, profiles:member_id(email,nom,cabinet_nom)')
-            .order('created_at', { ascending: false });
-          if (!active) return;
-          if (error) setError(error.message);
-          else setRows(data || []);
-          setLoading(false);
-        })();
-        return () => { active = false; };
-      }, []);
-
-      const filtered = rows.filter(r => {
-        if (!search) return true;
-        const s = search.toLowerCase();
-        return [r.client_nom, r.client_prenom, r.client_email, r.produit, r.profiles?.email, r.profiles?.nom, r.profiles?.cabinet_nom]
-          .filter(Boolean).some(v => String(v).toLowerCase().includes(s));
-      });
-
-      return (
-        <div className="min-h-screen bg-stone-50">
-          <header className="sticky top-0 z-20 bg-stone-950 px-6 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <I.logo/>
-              <div className="text-[14px] font-extrabold text-white tracking-tight">Vue Super-Admin — toutes les simulations</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button onClick={onBack} className="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-white/10 text-white hover:bg-white/20 transition">Retour au simulateur</button>
-              <button onClick={onLogout} className="px-3 py-1.5 text-[11px] font-semibold rounded-lg border border-white/20 text-stone-300 hover:text-white hover:border-white/40 transition">Déconnexion</button>
-            </div>
-          </header>
-          <div className="max-w-6xl mx-auto px-6 py-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="text-[13px] text-stone-500">{filtered.length} simulation{filtered.length !== 1 ? "s" : ""} archivée{filtered.length !== 1 ? "s" : ""}</div>
-              <input type="text" placeholder="Rechercher (client, membre, cabinet, produit…)" value={search} onChange={e => setSearch(e.target.value)}
-                className="w-80 px-3 py-2 text-[12px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400 bg-white" />
-            </div>
-            {error && <div className="mb-4 text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">Erreur : {error}</div>}
-            {loading ? (
-              <div className="text-[13px] text-stone-400 py-12 text-center">Chargement…</div>
-            ) : filtered.length === 0 ? (
-              <div className="text-[13px] text-stone-400 py-12 text-center">Aucune simulation archivée.</div>
-            ) : (
-              <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
-                <table className="w-full text-[12px]">
-                  <thead>
-                    <tr className="bg-stone-50 border-b border-stone-200 text-stone-500 uppercase text-[10px] tracking-wide">
-                      <th className="text-left px-4 py-2.5">Date</th>
-                      <th className="text-left px-4 py-2.5">Membre</th>
-                      <th className="text-left px-4 py-2.5">Cabinet</th>
-                      <th className="text-left px-4 py-2.5">Client</th>
-                      <th className="text-left px-4 py-2.5">Produit</th>
-                      <th className="text-right px-4 py-2.5">Capital final</th>
-                      <th className="text-right px-4 py-2.5">Durée</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map(r => (
-                      <tr key={r.id} className="border-b border-stone-100 hover:bg-stone-50">
-                        <td className="px-4 py-2.5 text-stone-600 whitespace-nowrap">{new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
-                        <td className="px-4 py-2.5 text-stone-900 font-medium">{r.profiles?.nom || r.profiles?.email || "—"}</td>
-                        <td className="px-4 py-2.5 text-stone-600">{r.profiles?.cabinet_nom || "—"}</td>
-                        <td className="px-4 py-2.5 text-stone-900">{[r.client_prenom, r.client_nom].filter(Boolean).join(" ") || "—"}</td>
-                        <td className="px-4 py-2.5 text-stone-600">{r.produit || "—"}</td>
-                        <td className="px-4 py-2.5 text-right num font-semibold text-stone-900">{fmtEUR(r.resume?.capitalFinal)}</td>
-                        <td className="px-4 py-2.5 text-right text-stone-600">{r.resume?.dureeAnnees ? `${r.resume.dureeAnnees} ans` : "—"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    // ============================================================
-    // AUTH GATE — session Supabase + routage App / SuperAdminDashboard
-    // ============================================================
-    function AuthGate() {
-      const [session, setSession] = useState(undefined); // undefined = chargement, null = déconnecté
-      const [profile, setProfile] = useState(null);
-      const [view, setView] = useState("app"); // "app" | "admin"
-
-      useEffect(() => {
-        let active = true;
-        supabase.auth.getSession().then(({ data }) => { if (active) setSession(data.session ?? null); });
-        const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
-          setSession(sess);
-          if (!sess) setProfile(null);
-        });
-        return () => { active = false; sub.subscription.unsubscribe(); };
-      }, []);
-
-      useEffect(() => {
-        if (!session) return;
-        let active = true;
-        supabase.from('profiles').select('*').eq('id', session.user.id).single().then(({ data }) => {
-          if (active) setProfile(data || null);
-        });
-        return () => { active = false; };
-      }, [session]);
-
-      if (session === undefined) {
-        return <div className="min-h-screen bg-stone-950 flex items-center justify-center text-stone-400 text-[13px]">Chargement…</div>;
-      }
-      if (!session) {
-        return <LoginScreen/>;
-      }
-      const isSuperAdmin = profile?.role === 'super_admin';
-      const onLogout = () => supabase.auth.signOut();
-
-      if (view === "admin" && isSuperAdmin) {
-        return <SuperAdminDashboard onBack={() => setView("app")} onLogout={onLogout}/>;
-      }
-      return <App session={session} isSuperAdmin={isSuperAdmin} onOpenAdmin={() => setView("admin")} onLogout={onLogout}/>;
-    }
-
-    ReactDOM.createRoot(document.getElementById("root")).render(<AuthGate />);
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
 </body>
 </html>
