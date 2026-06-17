@@ -286,7 +286,7 @@
       display: flex; flex-direction: column; align-items: flex-end; gap: 3mm;
     }
     .pres-cover-cabinet-logo {
-      height: 150px; max-width: 420px; object-fit: contain;
+      height: 220px; max-width: 560px; object-fit: contain;
     }
 
     .pres-cover-id {
@@ -1091,7 +1091,7 @@
       mode: "select",
       clientSelected: null,
       clientNom: "", clientPrenom: "", clientTel: "", clientEmail: "", clientType: "particulier",
-      conseillerNom: "", cabinetNom: "", cabinetLogo: "",
+      conseillerNom: "", cabinetNom: "", cabinetLogo: "", afficherFigara: true,
       produit: "av",
       dureeAnnees: 15,
       nbBeneficiaires: 2,
@@ -1570,7 +1570,7 @@
       const [inputs, setInputs] = useState(() => {
         try {
           const saved = JSON.parse(localStorage.getItem('figara_conseiller') || '{}');
-          return { ...DEFAULT_INPUTS, conseillerNom: saved.conseillerNom || '', cabinetNom: saved.cabinetNom || '', cabinetLogo: saved.cabinetLogo || '' };
+          return { ...DEFAULT_INPUTS, conseillerNom: saved.conseillerNom || '', cabinetNom: saved.cabinetNom || '', cabinetLogo: saved.cabinetLogo || '', afficherFigara: saved.afficherFigara !== undefined ? saved.afficherFigara : true };
         } catch { return DEFAULT_INPUTS; }
       });
       const [scenarios, setScenarios] = useState([]);
@@ -1606,8 +1606,8 @@
         setInputs(p => {
           const next = {...p, [k]: v};
           // persister le nom du conseiller/cabinet (+ logo) en temps réel
-          if (k === 'conseillerNom' || k === 'cabinetNom' || k === 'cabinetLogo') {
-            try { localStorage.setItem('figara_conseiller', JSON.stringify({ conseillerNom: next.conseillerNom, cabinetNom: next.cabinetNom, cabinetLogo: next.cabinetLogo })); } catch {}
+          if (k === 'conseillerNom' || k === 'cabinetNom' || k === 'cabinetLogo' || k === 'afficherFigara') {
+            try { localStorage.setItem('figara_conseiller', JSON.stringify({ conseillerNom: next.conseillerNom, cabinetNom: next.cabinetNom, cabinetLogo: next.cabinetLogo, afficherFigara: next.afficherFigara })); } catch {}
           }
           return next;
         });
@@ -1957,6 +1957,11 @@
               </div>
               <p className="mt-1.5 text-[11px] text-stone-400">PNG, JPG, SVG ou WebP — utilisé dans la présentation et le PDF client.</p>
             </div>
+
+            <label className="mt-4 flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" checked={inputs.afficherFigara !== false} onChange={e=>upd("afficherFigara", e.target.checked)} className="w-4 h-4 accent-red-600" />
+              <span className="text-[12px] text-stone-600">Afficher le logo Figara sur les simulations</span>
+            </label>
           </div>
 
           {inputs.mode === "create" && (
@@ -5230,23 +5235,25 @@
 
               {/* Brand bar : logo Figara (étoile rouge) + nom Figara + logo cabinet/référence étude (haut droite) */}
               <div className="pres-cover-brand">
-                <div className="pres-cover-brand-logo">
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <polygon points="16,1 17,15 16,16 15,15" fill="#DC2626"/>
-                    <polygon points="31,16 17,17 16,16 17,15" fill="#DC2626"/>
-                    <polygon points="16,31 15,17 16,16 17,17" fill="#DC2626"/>
-                    <polygon points="1,16 15,15 16,16 15,17" fill="#DC2626"/>
-                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(45 16 16)"/>
-                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(135 16 16)"/>
-                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(225 16 16)"/>
-                    <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(315 16 16)"/>
-                    <circle cx="16" cy="16" r="0.8" fill="#DC2626"/>
-                  </svg>
-                  <div>
-                    <div className="pres-cover-brand-group">Groupement</div>
-                    <div className="pres-cover-brand-name">Figara</div>
+                {inputs.afficherFigara !== false && (
+                  <div className="pres-cover-brand-logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                      <polygon points="16,1 17,15 16,16 15,15" fill="#DC2626"/>
+                      <polygon points="31,16 17,17 16,16 17,15" fill="#DC2626"/>
+                      <polygon points="16,31 15,17 16,16 17,17" fill="#DC2626"/>
+                      <polygon points="1,16 15,15 16,16 15,17" fill="#DC2626"/>
+                      <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(45 16 16)"/>
+                      <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(135 16 16)"/>
+                      <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(225 16 16)"/>
+                      <polygon points="16,5 17,15 16,16 15,15" fill="#DC2626" transform="rotate(315 16 16)"/>
+                      <circle cx="16" cy="16" r="0.8" fill="#DC2626"/>
+                    </svg>
+                    <div>
+                      <div className="pres-cover-brand-group">Groupement</div>
+                      <div className="pres-cover-brand-name">Figara</div>
+                    </div>
                   </div>
-                </div>
+                )}
                 {inputs.cabinetLogo && (
                   <div className="pres-cover-brand-right">
                     <img src={inputs.cabinetLogo} alt={inputs.cabinetNom || "Logo cabinet"}
