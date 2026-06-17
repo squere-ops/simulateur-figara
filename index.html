@@ -6617,8 +6617,11 @@
     // ============================================================
     // SUPER-ADMIN DASHBOARD — toutes les simulations, tous les membres
     // ============================================================
+    const PRODUIT_LABELS_ADMIN = { av: "Assurance-Vie", per: "PER", capi: "Capitalisation" };
+
     function SuperAdminDashboard({ onBack, onLogout }) {
       const [rows, setRows] = useState([]);
+      const [profiles, setProfiles] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState("");
       const [search, setSearch] = useState("");
@@ -6627,13 +6630,14 @@
         let active = true;
         (async () => {
           setLoading(true);
-          const { data, error } = await supabase
-            .from('simulations')
-            .select('*, profiles:member_id(email,nom,cabinet_nom)')
-            .order('created_at', { ascending: false });
+          const [simRes, profRes] = await Promise.all([
+            supabase.from('simulations').select('*, profiles:member_id(email,nom,cabinet_nom)').order('created_at', { ascending: false }),
+            supabase.from('profiles').select('*').order('created_at', { ascending: true }),
+          ]);
           if (!active) return;
-          if (error) setError(error.message);
-          else setRows(data || []);
+          if (simRes.error) setError(simRes.error.message);
+          else setRows(simRes.data || []);
+          setProfiles(profRes.data || []);
           setLoading(false);
         })();
         return () => { active = false; };
@@ -6645,6 +6649,33 @@
         return [r.client_nom, r.client_prenom, r.client_email, r.produit, r.profiles?.email, r.profiles?.nom, r.profiles?.cabinet_nom]
           .filter(Boolean).some(v => String(v).toLowerCase().includes(s));
       });
+
+      // Stats d'usage : comptes, répartition par cabinet/membre, par produit, activité dans le temps
+      const stats = useMemo(() => {
+        const byMember = {};
+        profiles.forEach(p => { byMember[p.id] = { profile: p, count: 0, last: null }; });
+        const byProduit = {};
+        const byDay = {};
+        rows.forEach(r => {
+          const mid = r.member_id;
+          if (!byMember[mid]) byMember[mid] = { profile: r.profiles || null, count: 0, last: null };
+          byMember[mid].count += 1;
+          if (!byMember[mid].last || r.created_at > byMember[mid].last) byMember[mid].last = r.created_at;
+          const p = r.produit || "autre";
+          byProduit[p] = (byProduit[p] || 0) + 1;
+          const day = (r.created_at || "").slice(0, 10);
+          if (day) byDay[day] = (byDay[day] || 0) + 1;
+        });
+        const memberStats = Object.values(byMember).sort((a, b) => b.count - a.count);
+        const produitStats = Object.entries(byProduit).sort((a, b) => b[1] - a[1]);
+        const dayEntries = Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0])).slice(-30);
+        const maxDay = dayEntries.reduce((m, [, n]) => Math.max(m, n), 0);
+        const last7 = (() => {
+          const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+          return rows.filter(r => r.created_at && new Date(r.created_at) >= cutoff).length;
+        })();
+        return { memberStats, produitStats, dayEntries, maxDay, last7 };
+      }, [rows, profiles]);
 
       return (
         <div className="min-h-screen bg-stone-50">
@@ -6659,12 +6690,109 @@
             </div>
           </header>
           <div className="max-w-6xl mx-auto px-6 py-6">
+            {error && <div className="mb-4 text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">Erreur : {error}</div>}
+
+            {!loading && (
+              <div className="mb-8">
+                {/* Cartes de synthèse */}
+                <div className="grid grid-cols-4 gap-3 mb-5">
+                  <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Comptes créés</div>
+                    <div className="text-[22px] font-bold text-stone-900">{profiles.length}</div>
+                  </div>
+                  <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Cabinets distincts</div>
+                    <div className="text-[22px] font-bold text-stone-900">{new Set(profiles.map(p => p.cabinet_nom).filter(Boolean)).size}</div>
+                  </div>
+                  <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">Simulations totales</div>
+                    <div className="text-[22px] font-bold text-stone-900">{rows.length}</div>
+                  </div>
+                  <div className="bg-white border border-stone-200 rounded-xl px-4 py-3">
+                    <div className="text-[10px] uppercase tracking-wide text-stone-400 font-semibold mb-1">7 derniers jours</div>
+                    <div className="text-[22px] font-bold text-stone-900">{stats.last7}</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-5">
+                  {/* Par cabinet / membre */}
+                  <div className="bg-white border border-stone-200 rounded-xl p-4 col-span-2">
+                    <div className="text-[11px] uppercase tracking-wide text-stone-400 font-semibold mb-3">Utilisation par cabinet / conseiller</div>
+                    {stats.memberStats.length === 0 ? (
+                      <div className="text-[12px] text-stone-400">Aucun compte.</div>
+                    ) : (
+                      <table className="w-full text-[12px]">
+                        <thead>
+                          <tr className="text-stone-400 uppercase text-[10px] tracking-wide border-b border-stone-100">
+                            <th className="text-left py-1.5">Conseiller</th>
+                            <th className="text-left py-1.5">Cabinet</th>
+                            <th className="text-right py-1.5">Simulations</th>
+                            <th className="text-right py-1.5">Dernière activité</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {stats.memberStats.map((m, i) => (
+                            <tr key={i} className="border-b border-stone-50">
+                              <td className="py-1.5 text-stone-900 font-medium">{m.profile?.nom || m.profile?.email || "—"}</td>
+                              <td className="py-1.5 text-stone-600">{m.profile?.cabinet_nom || "—"}</td>
+                              <td className="py-1.5 text-right num font-semibold text-stone-900">{m.count}</td>
+                              <td className="py-1.5 text-right text-stone-500">{m.last ? new Date(m.last).toLocaleDateString('fr-FR') : "—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+
+                  {/* Répartition par produit */}
+                  <div className="bg-white border border-stone-200 rounded-xl p-4">
+                    <div className="text-[11px] uppercase tracking-wide text-stone-400 font-semibold mb-3">Répartition par produit</div>
+                    {stats.produitStats.length === 0 ? (
+                      <div className="text-[12px] text-stone-400">Aucune donnée.</div>
+                    ) : (
+                      <div className="space-y-2.5">
+                        {stats.produitStats.map(([p, n]) => {
+                          const pct = rows.length ? Math.round((n / rows.length) * 100) : 0;
+                          return (
+                            <div key={p}>
+                              <div className="flex justify-between text-[12px] mb-1">
+                                <span className="text-stone-700">{PRODUIT_LABELS_ADMIN[p] || p}</span>
+                                <span className="text-stone-500 num">{n} ({pct}%)</span>
+                              </div>
+                              <div className="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                                <div className="h-full bg-red-500 rounded-full" style={{ width: `${pct}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Activité dans le temps (pics) */}
+                <div className="bg-white border border-stone-200 rounded-xl p-4 mt-5">
+                  <div className="text-[11px] uppercase tracking-wide text-stone-400 font-semibold mb-3">Activité — 30 derniers jours avec simulations</div>
+                  {stats.dayEntries.length === 0 ? (
+                    <div className="text-[12px] text-stone-400">Aucune donnée.</div>
+                  ) : (
+                    <div className="flex items-end gap-1 h-24">
+                      {stats.dayEntries.map(([day, n]) => (
+                        <div key={day} className="flex-1 flex flex-col items-center justify-end h-full group relative" title={`${day} : ${n} simulation${n > 1 ? "s" : ""}`}>
+                          <div className="w-full bg-red-500 rounded-t-sm hover:bg-red-600 transition" style={{ height: `${stats.maxDay ? (n / stats.maxDay) * 100 : 0}%`, minHeight: '3px' }} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="mb-4 flex items-center justify-between">
               <div className="text-[13px] text-stone-500">{filtered.length} simulation{filtered.length !== 1 ? "s" : ""} archivée{filtered.length !== 1 ? "s" : ""}</div>
               <input type="text" placeholder="Rechercher (client, membre, cabinet, produit…)" value={search} onChange={e => setSearch(e.target.value)}
                 className="w-80 px-3 py-2 text-[12px] border border-stone-200 rounded-lg focus:outline-none focus:border-stone-400 bg-white" />
             </div>
-            {error && <div className="mb-4 text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">Erreur : {error}</div>}
             {loading ? (
               <div className="text-[13px] text-stone-400 py-12 text-center">Chargement…</div>
             ) : filtered.length === 0 ? (
