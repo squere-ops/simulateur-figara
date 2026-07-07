@@ -848,11 +848,12 @@
       border-left: 2px solid #1c1917;
       font-size: 7.5pt; line-height: 1.55; color: #57534e;
     }
-    .pres-fineprint strong {
+    .pres-fineprint .fp-title {
       font-family: 'JetBrains Mono', monospace;
       font-size: 7pt; letter-spacing: 0.22em; text-transform: uppercase;
       color: #1c1917; font-weight: 700; display: block; margin-bottom: 2mm;
     }
+    .pres-fineprint strong { color: #1c1917; font-weight: 700; white-space: nowrap; }
 
     /* Footer signature */
     .pres-signature {
@@ -1275,17 +1276,15 @@
     // L'IS s'applique uniquement à la fraction de plus-value du contrat (cap - versements bruts),
     // pas sur le capital total. La fraction "principal" remboursée n'est pas imposable.
     function fiscaliteCapiPM(cap, vBrut, tauxIS) {
-      // Plus-value = différence entre le capital récupéré et les versements bruts payés
-      // (= les intérêts générés par le contrat, base imposable à l'IS)
+      // L'IS n'est PAS géré ici : le contrat de capitalisation est présenté en capital brut à terme
+      // (la fiscalité IS est latente et dépend de la sortie effective — hors périmètre de la simulation).
       const plusValue = Math.max(0, cap - vBrut);
-      const taxeIS = plusValue * tauxIS;
       return {
         plusValue,
-        taxeIS,
-        principal: vBrut,     // remboursement du capital — non imposable
-        netCapital: cap - taxeIS,  // capital total − IS sur intérêts
-        // mapping pour col schema
-        taxe: taxeIS, direct: cap - taxeIS, abattTotal: 0, imposableTotal: plusValue,
+        taxeIS: 0,
+        principal: vBrut,
+        netCapital: cap,       // capital brut à terme — aucun IS déduit
+        taxe: 0, direct: cap, abattTotal: 0, imposableTotal: plusValue,
       };
     }
 
@@ -1393,7 +1392,9 @@
       const vMN = inp.versementMensuel * (1 - inp.fraisSouscription);
       const compMois = complementairesParMois(inp, inp.fraisSouscription, N*12);
       let cap = vIN;
-      const series = [vIN];
+      // Point de départ affiché = versement initial BRUT (comme le comparateur livret/CAT),
+      // pour que toutes les courbes partent du même montant à t0 ; les frais d'entrée jouent ensuite sur la pente.
+      const series = [inp.versementInitial];
       for (let m = 1; m <= N*12; m++) {
         cap = (cap + vMN) * (1 + tm);
         if (compMois[m]) cap += compMois[m];
@@ -1585,6 +1586,9 @@
       const [builderOpen, setBuilderOpen] = useState(false);
       const [builderInitial, setBuilderInitial] = useState(null);
       const [printMode, setPrintMode] = useState(false);
+      // Scénario « prime périodique majorée » — partagé entre la présentation interactive et le PDF
+      const [presPrime, setPresPrime] = useState(inputs.versementMensuel);
+      const [presComparOn, setPresComparOn] = useState(false);
 
       // Remonte automatiquement en haut de page à chaque changement d'étape
       useEffect(() => {
@@ -1757,7 +1761,7 @@
 
       // Mode présentation client imprimable — overlay plein écran
       if (printMode) {
-        return <ClientPresentationPrint inputs={inputs} sim={sim} scenarios={scenarios} clientLabel={clientLabel} totalVerseBrut={totalVerseBrut} autreAV={autreAV} onClose={() => setPrintMode(false)} />;
+        return <ClientPresentationPrint inputs={inputs} sim={sim} scenarios={scenarios} clientLabel={clientLabel} totalVerseBrut={totalVerseBrut} autreAV={autreAV} presPrime={presComparOn ? presPrime : null} scenarioLvl={scenarioLvl} onClose={() => setPrintMode(false)} />;
       }
 
       return (
@@ -1823,7 +1827,7 @@
             {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
-            {step === 5 && <Step5Presentation inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} autreAV={autreAV} key="s5"/>}
+            {step === 5 && <Step5Presentation inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} autreAV={autreAV} prime={presPrime} setPrime={setPresPrime} comparOn={presComparOn} setComparOn={setPresComparOn} key="s5"/>}
           </main>
 
           <footer className="border-t border-white/10 backdrop-blur py-5 px-6 no-print relative" style={{zIndex: 10, background: 'linear-gradient(0deg, rgba(28, 25, 23, 0.95) 0%, rgba(41, 37, 36, 0.92) 100%)'}}>
@@ -1920,7 +1924,9 @@
             </div>
           )}
 
-          {/* === SITUATION FAMILIALE (mise en avant) — pilote l'abattement rachat AV 4 600 / 9 200 === */}
+          {/* === SITUATION FAMILIALE (mise en avant) — pilote l'abattement rachat AV 4 600 / 9 200 ===
+              Masquée pour un client entreprise / personne morale (pas de situation familiale). */}
+          {(inputs.mode === "select" && inputs.clientSelected ? inputs.clientSelected.type : inputs.clientType) !== "entreprise" && inputs.produit !== "capi" && (
           <div className="mt-10 rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/70 to-white p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-teal-600 text-white flex-shrink-0">
@@ -1945,6 +1951,7 @@
             </div>
             <p className="mt-3 text-[11px] text-stone-500 leading-snug">Après 8 ans, exonération d'impôt sur les plus-values de rachat dans la limite de cet abattement annuel (seuls les prélèvements sociaux 17,2 % restent dus).</p>
           </div>
+          )}
 
           {/* === SECTION CONSEILLER (toujours visible) === */}
           <div className="mt-10 pt-8 border-t border-stone-200">
@@ -2046,6 +2053,16 @@
     // STEP 2 — PRODUIT (avec économie en € et %)
     // ============================================================
     function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp }) {
+      // Type de client effectif (client sélectionné ou saisi)
+      const effType = inputs.mode === "select" && inputs.clientSelected ? inputs.clientSelected.type : inputs.clientType;
+      const isEntreprise = effType === "entreprise";
+      // Entreprise → uniquement Capitalisation. Particulier → AV / PER (pas de capi PM).
+      const dispoFor = p => p.dispo && (isEntreprise ? p.id === "capi" : p.id !== "capi");
+      const resetAlloc = () => upd("allocation", [{ id: 1, type: "fondsEuro", poids: 1, rendement: SUPPORT_META.fondsEuro.rdtNetDef, sri: SUPPORT_META.fondsEuro.sriDef }]);
+      useEffect(() => {
+        if (isEntreprise && inputs.produit !== "capi") { upd("produit", "capi"); resetAlloc(); }
+        else if (!isEntreprise && inputs.produit === "capi") { upd("produit", "av"); resetAlloc(); }
+      }, [isEntreprise]);
       return (
         <div className="max-w-2xl mx-auto page-enter">
           <div className="text-center mb-10">
@@ -2058,12 +2075,13 @@
             <label className="label">Enveloppe</label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
               {PRODUITS.map(p => (
-                <div key={p.id} onClick={()=> p.dispo && upd("produit", p.id)}
-                  className={`opt-card ${inputs.produit===p.id ? 'selected' : ''} ${!p.dispo ? 'disabled' : ''}`}>
+                <div key={p.id} onClick={()=> { if (dispoFor(p) && p.id !== inputs.produit) { upd("produit", p.id); resetAlloc(); } }}
+                  className={`opt-card ${inputs.produit===p.id ? 'selected' : ''} ${!dispoFor(p) ? 'disabled' : ''}`}>
                   <div className="flex items-start justify-between mb-1.5">
                     <div className="text-[14px] font-bold text-stone-900">{p.label}</div>
-                    {!p.dispo && <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">Bientôt</span>}
-                    {inputs.produit===p.id && p.dispo && <span className="w-5 h-5 rounded-full bg-stone-900 text-white inline-flex items-center justify-center"><I.check/></span>}
+                    {!p.dispo ? <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">Bientôt</span>
+                      : !dispoFor(p) && <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">{isEntreprise ? "Particulier" : "Entreprise"}</span>}
+                    {inputs.produit===p.id && dispoFor(p) && <span className="w-5 h-5 rounded-full bg-stone-900 text-white inline-flex items-center justify-center"><I.check/></span>}
                   </div>
                   <div className="text-[12px] text-stone-500 leading-relaxed">{p.desc}</div>
                 </div>
@@ -2099,17 +2117,7 @@
           {inputs.produit === "per" && (
             <div className="mb-8 bg-white border border-stone-200 rounded-xl px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
               <div>
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-0.5">Paramètres PER · Réduction d'impôt</div>
-                <div className="text-[11px] text-stone-500">
-                  Versements déductibles du revenu imposable
-                </div>
-                <div className="text-[12px] text-stone-700 mt-1">
-                  ≈ <span className="num font-semibold text-emerald-700">{fmtEUR((inputs.versementInitial / Math.max(1, inputs.dureeAnnees) + inputs.versementMensuel * 12) * inputs.tauxIR)}</span>
-                  <span className="text-stone-500"> /an</span>
-                  {' · '}
-                  <span className="num font-semibold text-emerald-700">{fmtEUR((inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees) * inputs.tauxIR)}</span>
-                  <span className="text-stone-500"> cumulé sur {inputs.dureeAnnees} ans</span>
-                </div>
+                <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">Paramètres PER</div>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
@@ -2124,22 +2132,7 @@
             </div>
           )}
 
-          {/* Bloc Capi PM — taux IS */}
-          {inputs.produit === "capi" && (
-            <div className="mb-8 bg-white border border-stone-200 rounded-xl px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
-              <div>
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-0.5">Paramètres Capi PM</div>
-                <div className="text-[11px] text-stone-500">Trésorerie d'entreprise — IS appliqué sur les plus-values lors du rachat</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">Taux IS</span>
-                <select value={inputs.tauxIS} onChange={e => upd("tauxIS", parseFloat(e.target.value))}
-                  className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
-                  {IS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </select>
-              </div>
-            </div>
-          )}
+          {/* Capi PM : l'IS n'est pas géré dans la simulation (capital brut à terme) → pas de sélecteur IS */}
 
           <div className="space-y-5 mb-8">
             <div className={`grid gap-5 ${inputs.produit === "capi" ? "grid-cols-1" : "grid-cols-2"}`}>
@@ -2774,7 +2767,7 @@
           taxeLabel = "Taxe PER (art. 990 I)";
         } else if (isCapi) {
           abattement = 0;
-          abattDetail = `Personne morale — IS ${(inputs.tauxIS*100).toFixed(0)} % sur plus-values`;
+          abattDetail = `Personne morale — capital brut à terme`;
           taxeLabel = "Impôt sur les sociétés";
           netTransmis = sim.fiscCapi?.netCapital || sim.fisc.direct;
         }
@@ -2878,7 +2871,7 @@
       const [avPop, setAvPop] = useState(false);
       const [livretActive, setLivretActive] = useState(true);
       const autreAVCol = useMemo(() => {
-        if (!autreAV.active) return null;
+        if (!autreAV.active || isPERProduit || isCapiProduit) return null;
         const aInputs = {
           ...inputs,
           produit: 'av',
@@ -2925,6 +2918,9 @@
       // Dans les autres produits, l'ordre historique reste : référence (livret/CAT) à gauche.
       const autreAVArr = autreAVCol ? [autreAVCol] : [];
       const livretArr = livretActive ? [referenceCol] : [];
+      // Comparateur actif pour le tableau benchmark : livret si coché, sinon l'assurance vie concurrence, sinon le livret par défaut.
+      const benchRefCol = isPERProduit ? referenceCol : (livretActive ? livretCol : (autreAVCol || livretCol));
+      const benchRefLabel = isPERProduit ? "PER seul" : (livretActive ? (isCapiProduit ? "CAT" : "livret") : (autreAVCol ? "ass. vie concurrence" : (isCapiProduit ? "CAT" : "livret")));
       const allCols = isPERProduit
         ? [solutionCol, referenceCol, ...autreAVArr, ...scenarioCols]
         : [...livretArr, ...autreAVArr, solutionCol, ...scenarioCols];
@@ -3088,10 +3084,10 @@
           </div>
 
           {/* Top toolbar: scenario level + livret + droits succession + add scenario */}
-          <div className="bg-white border border-stone-200 rounded-2xl p-4 mb-4 no-print">
-            <div className="flex items-start justify-between flex-wrap gap-4">
+          <div className="bg-white border border-stone-200 rounded-2xl px-4 py-3 mb-3 no-print">
+            <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-2">
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500 mr-2">Niveau marché</div>
+                <div className="text-[11px] uppercase tracking-wider font-bold text-stone-800 mr-2">Niveau marché</div>
                 <div className="inline-flex bg-stone-100 rounded-lg p-1">
                   {[
                     {id:"pess", label:"Pessimiste"},
@@ -3106,29 +3102,69 @@
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 flex-wrap">
-                {isPERProduit ? (
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-50 border border-teal-200">
-                    <span className="text-[11px] uppercase tracking-wider font-bold text-teal-700">PER + Réintégration</span>
-                    <span className="text-[10px] text-teal-700/70">réductions réinvesties à {fmtPCT(sim.rdt)}</span>
+              {/* Droits de succession — à côté du niveau de marché */}
+              {inputs.produit !== "capi" && (
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-stone-800">Droits de succession</span>
+                  <div className="inline-flex bg-stone-100 rounded-lg p-1">
+                    <button onClick={()=>upd('successionLine', 'directe')}
+                      className={`px-3 py-1.5 rounded-md text-[12px] font-semibold transition ${inputs.successionLine === 'directe' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-900'}`}>
+                      Ligne directe
+                    </button>
+                    <button onClick={()=>upd('successionLine', 'indirecte')}
+                      className={`px-3 py-1.5 rounded-md text-[12px] font-semibold transition ${inputs.successionLine === 'indirecte' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-900'}`}>
+                      Ligne indirecte
+                    </button>
                   </div>
-                ) : (
-                  <div className="rounded-xl border border-stone-200 bg-white p-3 min-w-[320px]">
-                    <div className="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-2">Comparatif</div>
-                    <div className="space-y-1.5">
+                  {inputs.successionLine === 'directe' ? (
+                    <select value={inputs.successionTauxDirect ?? 0.30}
+                      onChange={e => upd('successionTauxDirect', parseFloat(e.target.value))}
+                      className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                      {[0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.45].map(r => (
+                        <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <select value={inputs.successionTauxIndirect ?? 0.60}
+                      onChange={e => upd('successionTauxIndirect', parseFloat(e.target.value))}
+                      className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                      {[0.35, 0.45, 0.55, 0.60].map(r => (
+                        <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              )}
+
+              <div className="border-l border-stone-200 pl-3">
+                <button onClick={()=>openBuilder()} className="btn btn-dark" style={{padding:'7px 14px'}}><I.plus/> Ajouter un scénario</button>
+              </div>
+            </div>
+
+            {/* Ligne 2 — Comparatif : deux options de largeur ÉGALE, même traitement visuel */}
+            <div className="mt-3 pt-3 border-t border-stone-100">
+              {isPERProduit ? (
+                <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-50 border border-teal-200">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-teal-700">PER + Réintégration</span>
+                  <span className="text-[10px] text-teal-700/70">réductions réinvesties à {fmtPCT(sim.rdt)}</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500 flex-shrink-0">Comparatif</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-w-0">
                     {/* Option LIVRET — exclusive avec l'autre AV */}
-                    <div className={`flex items-center gap-2 rounded-lg px-2.5 py-2 transition ${livretActive ? 'bg-stone-50 ring-1 ring-stone-300' : ''}`}>
+                    <div className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition ${livretActive ? 'bg-stone-50 border-stone-400 ring-1 ring-stone-300' : 'border-stone-200'}`}>
                       <input type="checkbox" checked={livretActive}
                         onChange={e => { if (e.target.checked) { setLivretActive(true); setAutreAV(p=>({...p, active:false})); setAvPop(false); } else setLivretActive(false); }}
                         className="w-4 h-4 accent-stone-800 cursor-pointer flex-shrink-0" />
-                      <span className="text-[12px] font-semibold text-stone-700 flex-1 whitespace-nowrap">Compte sur livret</span>
+                      <span className="text-[12px] font-bold text-stone-800 flex-1 whitespace-nowrap">{isCapiProduit ? "Compte à terme" : "Compte sur livret"}</span>
                       {!isCapiProduit && (
                         <select value={inputs.livretId} disabled={!livretActive} onChange={e => { upd("livretId", e.target.value); upd("livretTaux", LIVRETS.find(p=>p.id===e.target.value).taux); }}
-                          className="text-[11px] font-semibold text-stone-700 px-2 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900 disabled:opacity-40 disabled:cursor-not-allowed">
+                          className="text-[11px] font-semibold text-stone-700 px-2 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900 disabled:opacity-60 disabled:cursor-not-allowed">
                           {LIVRETS.map(p => <option key={p.id} value={p.id}>{p.nom} — {(p.taux*100).toFixed(2)}%</option>)}
                         </select>
                       )}
-                      <div className={`flex items-center bg-white border border-stone-200 rounded-lg ${livretActive ? '' : 'opacity-40'}`}>
+                      <div className={`flex items-center bg-white border border-stone-200 rounded-lg ${livretActive ? '' : 'opacity-60'}`}>
                         <input type="number" value={(inputs.livretTaux*100).toFixed(2)} disabled={!livretActive} onChange={e => upd("livretTaux", parseFloat(e.target.value)/100||0)} step={0.05}
                           className="num w-14 px-2 py-1.5 text-right text-[12px] font-bold bg-transparent focus:outline-none disabled:cursor-not-allowed" />
                         <span className="px-1.5 text-[10px] text-stone-400">%</span>
@@ -3138,13 +3174,13 @@
                     {/* Option ASSURANCE VIE CONCURRENCE — cocher décoche le livret */}
                     {!isCapiProduit && (
                       <div className="relative">
-                        <div className={`flex items-center gap-2 rounded-lg px-2.5 py-2 transition ${autreAV.active ? 'bg-slate-50 ring-1 ring-slate-300' : ''}`}>
+                        <div className={`flex items-center gap-2 rounded-lg border px-3 py-2 transition ${autreAV.active ? 'bg-slate-50 border-slate-400 ring-1 ring-slate-300' : 'border-stone-200'}`}>
                           <input type="checkbox" checked={autreAV.active}
                             onChange={e => { if (e.target.checked) { setAutreAV(p=>({...p, active:true})); setLivretActive(false); setAvPop(true); } else { setAutreAV(p=>({...p, active:false})); setAvPop(false); } }}
                             className="w-4 h-4 accent-slate-700 cursor-pointer flex-shrink-0" />
-                          <span className="text-[12px] font-semibold text-slate-700 flex-1 whitespace-nowrap">Assurance vie concurrence</span>
+                          <span className="text-[12px] font-bold text-slate-800 flex-1 whitespace-nowrap">Assurance vie concurrence</span>
                           <button type="button" onClick={()=>{ if(!autreAV.active){ setAutreAV(p=>({...p, active:true})); setLivretActive(false); } setAvPop(v=>!v); }}
-                            className={`flex items-center gap-1 bg-white border rounded-lg px-2.5 py-1.5 transition ${autreAV.active ? 'border-slate-300 hover:border-slate-500' : 'border-stone-200 opacity-40'}`}>
+                            className={`flex items-center gap-1 bg-white border rounded-lg px-2.5 py-1.5 transition ${autreAV.active ? 'border-slate-300 hover:border-slate-500' : 'border-stone-200 opacity-60'}`}>
                             <span className="num text-[12px] font-bold text-slate-800">{(autreAV.rdt*100).toFixed(2).replace('.',',')}</span>
                             <span className="text-[10px] text-slate-400">%</span>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400 ml-0.5"><polyline points="6 9 12 15 18 9"/></svg>
@@ -3188,67 +3224,16 @@
                             </div>
                           </>
                         )}
-                        </div>
+                      </div>
                     )}
-                    </div>
                   </div>
-                )}
-
-                <div className="border-l border-stone-200 pl-3">
-                  <button onClick={()=>openBuilder()} className="btn btn-dark" style={{padding:'7px 14px'}}><I.plus/> Ajouter un scénario</button>
                 </div>
-              </div>
+              )}
             </div>
-
-            {/* Bandeau succession — uniquement pour particuliers (AV/PER) */}
-            {inputs.produit !== "capi" && (
-              <div className="mt-4 pt-4 border-t border-stone-100 flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">Droits de succession</span>
-                  <div className="inline-flex bg-stone-100 rounded-lg p-1">
-                    <button onClick={()=>upd('successionLine', 'directe')}
-                      className={`px-3 py-1.5 rounded-md text-[12px] font-semibold transition ${inputs.successionLine === 'directe' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-900'}`}>
-                      Ligne directe
-                    </button>
-                    <button onClick={()=>upd('successionLine', 'indirecte')}
-                      className={`px-3 py-1.5 rounded-md text-[12px] font-semibold transition ${inputs.successionLine === 'indirecte' ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-900'}`}>
-                      Ligne indirecte
-                    </button>
-                  </div>
-                  {/* Ligne directe : dropdown taux barème */}
-                  {inputs.successionLine === 'directe' ? (
-                    <div className="flex items-center gap-2">
-                      <select value={inputs.successionTauxDirect ?? 0.30}
-                        onChange={e => upd('successionTauxDirect', parseFloat(e.target.value))}
-                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
-                        {[0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.45].map(r => (
-                          <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
-                        ))}
-                      </select>
-                      <span className="text-[11px] text-stone-500">taux barème ligne directe</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <select value={inputs.successionTauxIndirect ?? 0.60}
-                        onChange={e => upd('successionTauxIndirect', parseFloat(e.target.value))}
-                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
-                        {[0.35, 0.45, 0.55, 0.60].map(r => (
-                          <option key={r} value={r}>{(r*100).toFixed(0)} %</option>
-                        ))}
-                      </select>
-                      <span className="text-[11px] text-stone-500">taux forfaitaire</span>
-                    </div>
-                  )}
-                </div>
-                <div className="text-[10px] text-stone-400">
-                  Directe : <span className="font-semibold">taux barème forfaitaire</span> · Indirecte : taux forfaitaire
-                </div>
-              </div>
-            )}
           </div>
 
           {/* TABLEAU COMPARATIF — vue d'ensemble visuelle */}
-          <BenchmarkTable allCols={allCols} livretCol={referenceCol} inputs={inputs} scenarioLvl={scenarioLvl} />
+          <BenchmarkTable allCols={allCols} livretCol={benchRefCol} refLabel={benchRefLabel} inputs={inputs} scenarioLvl={scenarioLvl} />
 
           {/* DÉTAIL PAR SOLUTION — chaque phase (Vie · Décès · Rente) est wrappée dans son propre conteneur
               avec son sticky bandeau qui se libère naturellement à la fin de la phase. */}
@@ -3318,7 +3303,7 @@
               <>
                 {/* ────── PHASE VIE ────── */}
                 <div className="mt-5">
-                  <PhaseStickyBandeau title="Détail par solution en cas de vie" controls={null} />
+                  <PhaseStickyBandeau title={isCapiProduit ? "Détail par solution" : "Détail par solution en cas de vie"} controls={null} />
                   <div className="overflow-x-auto -mx-2 px-2 mb-2">
                     <div style={innerMinWidth}>
                       <div className="grid gap-6 pt-3 items-stretch" style={gridStyle}>
@@ -3462,7 +3447,7 @@
       if (isPERProduit) { s_taxeLabel = "Taxe PER (art. 990 I)"; }
       else if (isCapiProduit) {
         s_abattement = 0;
-        s_abattDetail = `Personne morale — IS ${(inputs.tauxIS*100).toFixed(0)} % sur plus-values`;
+        s_abattDetail = `Personne morale — capital brut à terme`;
         s_taxeLabel = "Impôt sur les sociétés";
         s_netTransmis = sim.fiscCapi?.netCapital || sim.fisc.direct;
       }
@@ -3513,8 +3498,13 @@
     // contexte d'empilement du simulateur (sinon le header/breadcrumb traverse).
     // ============================================================
     const WOW_GOLD = "#b8924e", WOW_INK = "#1d2735", WOW_TEAL = "#0f766e", WOW_SUB = "#6b7280";
-    function ClientWowScreen({ inputs, sim, scenarios, scenarioLvl, onClose, autreAV }) {
+    function ClientWowScreen({ inputs, sim, scenarios, scenarioLvl, onClose, autreAV, prime, setPrime, comparOn, setComparOn }) {
       const [i, setI] = useState(0);
+      // Scénario « prime périodique majorée » — état remonté (App) pour être partagé avec le PDF
+      // Toggles de la projection — remontés ici pour ne PAS se réinitialiser à chaque re-rendu (ProjSlide est recréé)
+      const [showReint, setShowReint] = useState(false);
+      const [showLivret, setShowLivret] = useState(true);
+      const [showScen, setShowScen] = useState(true);
       const cb = buildComparatifCols(inputs, sim, scenarios, scenarioLvl);
       const { isPERProduit, isCapiProduit, produitLabel, livretNom, livretCol, perReinvestCol, solutionCol, referenceCol } = cb;
 
@@ -3533,9 +3523,31 @@
           abattDetail: aSim.fisc.av70 ? `${ABATT_AV_70.toLocaleString('fr-FR')} € × ${inputs.nbBeneficiaires} bénéf.` : 'Abatt. global après 70 ans',
         };
       })() : null;
-      const win = isPERProduit ? perReinvestCol : solutionCol;
+      // En PER, « PER + réintégration IR » n'est la solution que si l'utilisateur coche le toggle (showReint).
+      // Sinon la solution mise en avant = PER seul (cohérent avec la courbe de projection).
+      const perReint = isPERProduit && showReint;
+      const win = isPERProduit ? (perReint ? perReinvestCol : solutionCol) : solutionCol;
+      // Réduction d'impôt PER (cumulée) — pour l'afficher dans la présentation
+      const reductionPER = isPERProduit ? ((solutionCol && solutionCol.reductionImpotCumulee) || (win && win.reductionImpotCumulee) || 0) : 0;
       const refCol = isPERProduit ? solutionCol : (useAutreAV ? autreAVColP : livretCol);
       const refNom = isPERProduit ? "PER seul" : (useAutreAV ? "Assurance vie client" : livretNom);
+      // Nom de la solution mise en avant
+      const winNom = isPERProduit ? (perReint ? "PER + réintégration IR" : "PER") : produitNom;
+      // Colonne « prime majorée » — même solution recalculée avec le versement mensuel choisi dans la projection
+      const baseMensuelWow = inputs.versementMensuel;
+      const primeActive = comparOn && prime > 0 && Math.round(prime) !== Math.round(baseMensuelWow);
+      const primeCol = primeActive ? (() => {
+        const pInputs = { ...inputs, versementMensuel: prime };
+        const pSim = runSimulation(pInputs, scenarioLvl);
+        const pcb = buildComparatifCols(pInputs, pSim, [], scenarioLvl);
+        return isPERProduit ? (perReint ? pcb.perReinvestCol : pcb.solutionCol) : pcb.solutionCol;
+      })() : null;
+      const primeNom = `Prime ${fmtEUR(prime)}/mois`;
+      const basePP = `PP ${fmtEUR(inputs.versementMensuel)}/mois`;   // prime périodique de base
+      const primePP = `PP ${fmtEUR(prime)}/mois`;                     // prime périodique majorée
+      // La colonne de référence (livret / assurance vie client) n'apparaît sur décès/rente/synthèse
+      // QUE si l'utilisateur a coché le comparatif correspondant. En PER, la référence (PER seul) est intrinsèque.
+      const showRef = isPERProduit ? perReint : showLivret;
       const gainCapital = win.capital - refCol.capital;
       const gainNet = win.netTransmis - refCol.netTransmis;
       const gainRente = win.renteNetteMois - refCol.renteNetteMois;
@@ -3563,7 +3575,8 @@
       const medF = lastOf(S.med) || win.capital, pessF = lastOf(S.pess), optF = lastOf(S.opt), livF = lastOf(S.livret) || refCol.capital;
 
       const isAV = !isPERProduit && !isCapiProduit;
-      const slideDefs = [["cover", "Couverture"], ...(isAV ? [["piliers", "Pourquoi"]] : []), ["projet", "Le projet"], ["alloc", "Allocation"], ["proj", "Projection"], ["succ", "Décès"], ["rente", "Rente"], ["synth", "Synthèse"]];
+      // Capi (personne morale / entreprise) = placement pur : pas de transmission (décès) ni de rente viagère.
+      const slideDefs = [["cover", "Couverture"], ...(isAV ? [["piliers", "Pourquoi"]] : []), ["projet", "Le projet"], ["alloc", "Allocation"], ["proj", "Projection"], ...(isCapiProduit ? [] : [["succ", "Décès"], ["rente", "Rente"]]), ["synth", "Synthèse"]];
       const titles = slideDefs.map(d => d[1]);
       const N = slideDefs.length;
       const skey = slideDefs[i] ? slideDefs[i][0] : "cover";
@@ -3602,24 +3615,32 @@
         );
       };
 
-      const ProjChart = ({ height = 360 }) => {
-        const all = [S.med, S.pess, S.opt, S.livret].filter(a => a && a.length >= 2);
+      const ProjChart = ({ height = 360, series, refLabel, heroLabel, comparLabel, scenLabel, medSub, comparSub }) => {
+        const Sx = series || { med: S.med, pess: S.pess, opt: S.opt, ref: S.livret };
+        const rLabel = refLabel || refNom;
+        const hLabel = heroLabel || "ASSURANCE-VIE";
+        const lastOf2 = a => (a && a.length ? a[a.length - 1] : 0);
+        const medF2 = lastOf2(Sx.med), pessF2 = lastOf2(Sx.pess), optF2 = lastOf2(Sx.opt), refF2 = lastOf2(Sx.ref), comparF2 = lastOf2(Sx.compar);
+        const all = [Sx.med, Sx.pess, Sx.opt, Sx.ref, Sx.compar].filter(a => a && a.length >= 2);
         if (!all.length) return null;
         const n = Math.max(...all.map(a => a.length));
         const maxV = (Math.max(...all.flatMap(a => a)) || 1) * 1.06;
-        const W = 820, Hh = height, pl = 56, pr = 132, pt = 30, pb = 34;
+        const W = 820, Hh = height, pl = 56, pr = 250, pt = 30, pb = 34;
         const x = idx => pl + (idx / (n - 1)) * (W - pl - pr);
         const y = v => Hh - pb - (v / maxV) * (Hh - pt - pb);
         const poly = d => d.map((v, idx) => `${x(idx).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
         const area = d => `${x(0)},${Hh - pb} ${poly(d)} ${x(d.length - 1)},${Hh - pb}`;
-        const tunnel = (S.opt.length >= 2 && S.pess.length >= 2) ? `${poly(S.opt)} ${S.pess.map((v, idx) => `${x(S.pess.length - 1 - idx).toFixed(1)},${y(S.pess[S.pess.length - 1 - idx]).toFixed(1)}`).join(" ")}` : null;
+        const tunnel = (Sx.opt && Sx.opt.length >= 2 && Sx.pess && Sx.pess.length >= 2) ? `${poly(Sx.opt)} ${Sx.pess.map((v, idx) => `${x(Sx.pess.length - 1 - idx).toFixed(1)},${y(Sx.pess[Sx.pess.length - 1 - idx]).toFixed(1)}`).join(" ")}` : null;
         const labels = [];
-        if (S.med.length) labels.push({ v: medF, t: "Médian", c: WOW_TEAL, b: true });
-        if (S.opt.length) labels.push({ v: optF, t: "Optimiste", c: "#16a34a" });
-        if (S.pess.length) labels.push({ v: pessF, t: "Prudent", c: "#b45309" });
-        if (S.livret.length) labels.push({ v: livF, t: refNom, c: "#9a948c" });
-        labels.sort((a, b) => b.v - a.v); let prevY = -Infinity;
-        const placed = labels.map(l => { let yy = y(l.v); if (yy < prevY + 42) yy = prevY + 42; prevY = yy; return { ...l, yy }; });
+        if (Sx.compar && Sx.compar.length) labels.push({ v: comparF2, t: scenLabel || comparLabel || "Médian", pp: comparSub, c: WOW_GOLD, b: true });
+        if (Sx.med && Sx.med.length) labels.push({ v: medF2, t: scenLabel || "Médian", pp: medSub, c: WOW_TEAL, b: true });
+        if (Sx.opt && Sx.opt.length) labels.push({ v: optF2, t: "Optimiste", c: "#16a34a", sec: true });
+        if (Sx.pess && Sx.pess.length) labels.push({ v: pessF2, t: "Prudent", c: "#b45309", sec: true });
+        if (Sx.ref && Sx.ref.length) labels.push({ v: refF2, t: rLabel, c: "#9a948c" });
+        // Placement anti-chevauchement SÉPARÉ pour chaque colonne (primaire = médian/comparatif ; secondaire = optimiste/prudent, décalés à droite)
+        const place = (arr) => { arr.sort((a, b) => b.v - a.v); let pv = -Infinity; return arr.map(l => { let yy = y(l.v); const gap = 44; if (yy < pv + gap) yy = pv + gap; pv = yy; return { ...l, yy }; }); };
+        const placed = [...place(labels.filter(l => !l.sec)), ...place(labels.filter(l => l.sec))];
+        const hasSec = labels.some(l => l.sec);   // scénarios (opt/prudent) affichés → zone droite occupée
         const yticks = [0, 0.5, 1];
         return (
           <svg viewBox={`0 0 ${W} ${Hh}`} className="w-full" style={{ maxHeight: height + 10 }}>
@@ -3628,21 +3649,122 @@
             <circle cx={W - pr} cy={Hh - pb} r="2.5" fill={WOW_SUB} />
             <text x={W - pr} y={Hh - 8} textAnchor="middle" fontSize="12" fill={WOW_SUB}>{inputs.dureeAnnees} ans</text>
             {tunnel && <polygon points={tunnel} fill="rgba(15,118,110,0.07)" />}
-            {S.med.length >= 2 && <polygon points={area(S.med)} fill="url(#wgrad)" />}
-            {S.livret.length >= 2 && <polyline points={poly(S.livret)} fill="none" stroke="#b8b2a8" strokeWidth="2.2" strokeDasharray="7 5" />}
-            {S.opt.length >= 2 && <polyline points={poly(S.opt)} fill="none" stroke="#16a34a" strokeWidth="1.6" strokeDasharray="2 4" opacity="0.7" />}
-            {S.pess.length >= 2 && <polyline points={poly(S.pess)} fill="none" stroke="#b45309" strokeWidth="1.6" strokeDasharray="2 4" opacity="0.7" />}
-            {S.med.length >= 2 && <polyline points={poly(S.med)} fill="none" stroke={WOW_TEAL} strokeWidth="4" strokeLinejoin="round" />}
-            {S.med.length >= 2 && <g><circle cx={x(0)} cy={y(S.med[0])} r="4.5" fill={WOW_INK} stroke="#fdfbf6" strokeWidth="1.5" /><text x={pl - 10} y={y(S.med[0]) + 4} textAnchor="end" fontSize="13" fontWeight="700" fill={WOW_INK} className="num">{fmtEUR(inputs.versementInitial)}</text></g>}
-            {placed.length > 0 && <text x={x(n - 1) + 19} y={Math.max(14, placed[0].yy - 18)} fontSize="10" fontWeight="800" fill={WOW_TEAL} letterSpacing="0.5">ASSURANCE-VIE</text>}
-            {placed.map((l, k) => (<g key={k}><circle cx={x(n - 1)} cy={y(l.v)} r="4" fill={l.c} stroke="#fdfbf6" strokeWidth="1.5" /><line x1={x(n - 1) + 4} y1={y(l.v)} x2={x(n - 1) + 16} y2={l.yy} stroke={l.c} strokeWidth="1" opacity="0.45" /><text x={x(n - 1) + 19} y={l.yy - 1} fontSize="13" fontWeight={l.b ? "800" : "600"} fill={l.c} className="num">{fmtEUR(l.v)}</text><text x={x(n - 1) + 19} y={l.yy + 12} fontSize="9.5" fill={WOW_SUB}>{l.t}</text></g>))}
+            {Sx.med && Sx.med.length >= 2 && <polygon points={area(Sx.med)} fill="url(#wgrad)" />}
+            {Sx.ref && Sx.ref.length >= 2 && <polyline points={poly(Sx.ref)} fill="none" stroke="#b8b2a8" strokeWidth="2.2" strokeDasharray="7 5" />}
+            {Sx.opt && Sx.opt.length >= 2 && <polyline points={poly(Sx.opt)} fill="none" stroke="#16a34a" strokeWidth="1.6" strokeDasharray="2 4" opacity="0.7" />}
+            {Sx.pess && Sx.pess.length >= 2 && <polyline points={poly(Sx.pess)} fill="none" stroke="#b45309" strokeWidth="1.6" strokeDasharray="2 4" opacity="0.7" />}
+            {Sx.med && Sx.med.length >= 2 && <polyline points={poly(Sx.med)} fill="none" stroke={WOW_TEAL} strokeWidth="4" strokeLinejoin="round" />}
+            {Sx.compar && Sx.compar.length >= 2 && <polyline points={poly(Sx.compar)} fill="none" stroke={WOW_GOLD} strokeWidth="4" strokeLinejoin="round" />}
+            {Sx.med && Sx.med.length >= 2 && <g><circle cx={x(0)} cy={y(Sx.med[0])} r="4.5" fill={WOW_INK} stroke="#fdfbf6" strokeWidth="1.5" /><text x={pl - 10} y={y(Sx.med[0]) + 4} textAnchor="end" fontSize="13" fontWeight="700" fill={WOW_INK} className="num">{fmtEUR(inputs.versementInitial)}</text></g>}
+            {placed.map((l, k) => {
+              const tx = l.sec ? x(n - 1) + 150 : x(n - 1) + 19;
+              return (<g key={k}>
+                <circle cx={x(n - 1)} cy={y(l.v)} r="4" fill={l.c} stroke="#fdfbf6" strokeWidth="1.5" />
+                <line x1={x(n - 1) + 4} y1={y(l.v)} x2={x(n - 1) + 16} y2={l.yy} stroke={l.c} strokeWidth="1" opacity="0.45" />
+                {l.sec && <line x1={x(n - 1) + 20} y1={l.yy} x2={tx - 6} y2={l.yy} stroke={l.c} strokeWidth="1.2" strokeDasharray="1.5 3" opacity="0.55" />}
+                <text x={tx} y={l.yy - 1} fontSize="13" fontWeight={l.b ? "800" : "600"} fill={l.c} className="num">{fmtEUR(l.v)}</text>
+                <text x={tx} y={l.yy + 12} fontSize="9.5" fontWeight="700" fill={l.b ? l.c : WOW_SUB}>{l.t}</text>
+                {l.pp && (hasSec
+                  ? <text x={tx} y={l.yy + 23} fontSize="10" fontWeight="800" fill={l.c} className="num">{l.pp}</text>
+                  : <>
+                      <line x1={tx + 96} y1={l.yy - 4} x2={W - 96} y2={l.yy - 4} stroke={l.c} strokeWidth="1.2" strokeDasharray="1.5 3" opacity="0.6" />
+                      <text x={W - 8} y={l.yy} textAnchor="end" fontSize="12.5" fontWeight="800" fill={l.c} className="num">{l.pp}</text>
+                    </>
+                )}
+              </g>);
+            })}
           </svg>
+        );
+      };
+
+      // Slide Projection interactive : rappel des versements + comparatif prime périodique (courbe en +) + (PER) réintégration
+      const ProjSlide = () => {
+        const baseMensuel = inputs.versementMensuel;
+        // showReint / showLivret / showScen remontés dans ClientWowScreen (persistent entre re-rendus)
+        // Courbes de BASE (versement mensuel réel, inchangé)
+        const med = projectionSeries(inputs, sim.rdtMed ?? sim.rdt) || [];
+        const pess = showScen ? (projectionSeries(inputs, sim.rdtPess ?? sim.rdt) || []) : [];
+        const opt = showScen ? (projectionSeries(inputs, sim.rdtOpt ?? sim.rdt) || []) : [];
+        let ref = [];
+        let refLabel = useAutreAV ? "Assurance vie client" : livretNom;
+        if (isPERProduit) {
+          if (showReint) {
+            const aux = perReinvestSeries(inputs, sim.rdtMed ?? sim.rdt, inputs.tauxIR ?? 0.30) || [];
+            ref = med.map((v, i) => v + (aux[i] || 0));
+            refLabel = "PER + Réintégration";
+          }
+        } else {
+          ref = showLivret ? ((useAutreAV ? projectionSeries(inputs, autreAV.rdt) : livretSeries(inputs)) || []) : [];
+        }
+        // Courbe COMPARATIVE : si le client verse plus, une courbe SUPPLÉMENTAIRE apparaît (on garde la base)
+        const comparActive = comparOn && prime > 0 && Math.round(prime) !== Math.round(baseMensuel);
+        const compar = comparActive ? (projectionSeries({ ...inputs, versementMensuel: prime }, sim.rdtMed ?? sim.rdt) || []) : [];
+        const medFinal = med.length ? med[med.length - 1] : 0;
+        const comparFinal = compar.length ? compar[compar.length - 1] : 0;
+        const heroLabel = isPERProduit ? "PER" : "ASSURANCE-VIE";
+        return (
+          <div>
+            <Eyebrow>Projection &amp; hypothèses de rendement</Eyebrow>
+            <H className="text-4xl md:text-5xl mb-3">L'évolution de votre capital</H>
+            {/* Rappel des versements sous le titre */}
+            <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1 mb-5 text-[13.5px]" style={{ color: WOW_SUB }}>
+              <span>Versement initial <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(inputs.versementInitial)}</span></span>
+              <span>· versement mensuel <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(baseMensuel)}</span>/mois</span>
+              <span>· durée <span className="num font-bold" style={{ color: WOW_INK }}>{inputs.dureeAnnees} ans</span></span>
+              <span>· hypothèse de rendement médian <span className="num font-bold" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</span></span>
+            </div>
+            {/* Contrôles — deux blocs homogènes, chacun cochable */}
+            <div className="text-[10px] uppercase tracking-widest font-bold mb-2" style={{ color: WOW_SUB }}>Comparer avec (cochez au choix)</div>
+            <div className="flex flex-wrap items-stretch gap-3 mb-4">
+              {/* Bloc 1 — Comparatif prime périodique */}
+              <div className="inline-flex items-center gap-3 rounded-xl px-4 py-3 transition" style={comparOn ? { background: "rgba(184,146,78,0.12)", border: `1.5px solid ${WOW_GOLD}` } : { background: "rgba(255,255,255,0.62)", border: "1px solid rgba(29,39,53,0.15)" }}>
+                <label className="inline-flex items-center gap-2.5 cursor-pointer select-none">
+                  <input type="checkbox" checked={comparOn} onChange={e => { setComparOn(e.target.checked); if (e.target.checked && Math.round(prime) === Math.round(baseMensuel)) setPrime(Math.round((baseMensuel + 100) / 50) * 50); }} className="w-4 h-4 cursor-pointer" style={{ accentColor: WOW_GOLD }} />
+                  <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: comparOn ? WOW_GOLD : WOW_SUB }}>Prime périodique majorée</span>
+                </label>
+                {comparOn && (
+                  <div className="flex items-center bg-white rounded-lg border" style={{ borderColor: "rgba(29,39,53,0.15)" }}>
+                    <input type="number" defaultValue={Math.round(prime)} step={50} min={0} inputMode="numeric"
+                      key={`prime-${Math.round(prime)}`}
+                      onBlur={e => setPrime(Math.max(0, parseFloat(e.target.value) || 0))}
+                      onKeyDown={e => { if (e.key === 'Enter') e.currentTarget.blur(); }}
+                      className="num w-20 px-2 py-1 text-right text-[14px] font-bold bg-transparent focus:outline-none" style={{ color: WOW_INK }} />
+                    <span className="px-2 text-[10px]" style={{ color: WOW_SUB }}>€/mois</span>
+                  </div>
+                )}
+              </div>
+              {/* Bloc 2 — Livret (AV) ou PER + réintégration (PER) */}
+              {isPERProduit ? (
+                <label className="inline-flex items-center gap-2.5 rounded-xl px-4 py-3 cursor-pointer select-none transition" style={showReint ? { background: "rgba(15,118,110,0.12)", border: `1.5px solid ${WOW_TEAL}` } : { background: "rgba(255,255,255,0.62)", border: "1px solid rgba(29,39,53,0.15)" }}>
+                  <input type="checkbox" checked={showReint} onChange={e => setShowReint(e.target.checked)} className="w-4 h-4 cursor-pointer" style={{ accentColor: WOW_TEAL }} />
+                  <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: showReint ? WOW_TEAL : WOW_SUB }}>PER + réintégration</span>
+                </label>
+              ) : !isCapiProduit && (
+                <label className="inline-flex items-center gap-2.5 rounded-xl px-4 py-3 cursor-pointer select-none transition" style={showLivret ? { background: "rgba(120,113,108,0.14)", border: "1.5px solid #78716c" } : { background: "rgba(255,255,255,0.62)", border: "1px solid rgba(29,39,53,0.15)" }}>
+                  <input type="checkbox" checked={showLivret} onChange={e => setShowLivret(e.target.checked)} className="w-4 h-4 cursor-pointer" style={{ accentColor: "#78716c" }} />
+                  <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: showLivret ? "#57534e" : WOW_SUB }}>{useAutreAV ? "Assurance vie client" : livretNom}</span>
+                </label>
+              )}
+              {/* Bloc 3 — Scénarios prudent / optimiste (décochables pour alléger) */}
+              <label className="inline-flex items-center gap-2.5 rounded-xl px-4 py-3 cursor-pointer select-none transition" style={showScen ? { background: "rgba(22,163,74,0.10)", border: "1.5px solid #16a34a" } : { background: "rgba(255,255,255,0.62)", border: "1px solid rgba(29,39,53,0.15)" }}>
+                <input type="checkbox" checked={showScen} onChange={e => setShowScen(e.target.checked)} className="w-4 h-4 cursor-pointer" style={{ accentColor: "#16a34a" }} />
+                <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: showScen ? "#15803d" : WOW_SUB }}>Prudent · Optimiste</span>
+              </label>
+            </div>
+            {comparActive && (
+              <div className="mb-3 rounded-xl px-4 py-2.5 inline-block" style={{ background: "rgba(184,146,78,0.12)", border: `1px solid ${WOW_GOLD}66` }}>
+                <span className="text-[13px]" style={{ color: WOW_INK }}>En passant à <span className="num font-bold" style={{ color: WOW_GOLD }}>{fmtEUR(prime)}/mois</span>, votre capital atteint <span className="num font-bold" style={{ color: WOW_GOLD }}>{fmtEUR(comparFinal)}</span> — soit <span className="num font-extrabold" style={{ color: WOW_GOLD }}>+{fmtEUR(comparFinal - medFinal)}</span> au terme.</span>
+              </div>
+            )}
+            <div className={`${soft} p-6`} style={softStyle}><ProjChart height={400} series={{ med, pess, opt, ref, compar }} refLabel={refLabel} heroLabel={heroLabel} scenLabel={`${isPERProduit ? 'PER' : 'Ass. vie'} — médian`} medSub={comparActive ? `PP ${fmtEUR(baseMensuel)}/mois` : undefined} comparSub={comparActive ? `PP ${fmtEUR(prime)}/mois` : undefined} /></div>
+            <div className="mt-3 text-[12.5px]" style={{ color: WOW_SUB }}>Courbes <span className="font-bold" style={{ color: WOW_TEAL }}>{produitNom}</span> (médian · optimiste · prudent){comparActive ? <>, et en <span className="font-bold" style={{ color: WOW_GOLD }}>doré</span> la projection si vous versez {fmtEUR(prime)}/mois</> : ''}{isPERProduit ? (showReint ? <>, avec <span className="font-semibold">PER + réintégration</span> (pointillés).</> : <>. Active « PER + réintégration » pour l'effet du réinvestissement des réductions.</>) : (showLivret ? <>, comparées à <span className="font-semibold">{refLabel.toLowerCase()}</span> (pointillés gris).</> : '.')}</div>
+          </div>
         );
       };
 
       // Carte rente ajustable — portage fidèle de la cellule rente du comparatif
       // (rente brute + curseur + fiscalité/CSG + rente nette + durée de distribution)
-      const RenteAdjust = ({ col, nom, accent, primary, hero }) => {
+      const RenteAdjust = ({ col, nom, accent, primary, hero, pp }) => {
         const rm = col.capital > 0 && col.rdt > 0 ? Math.pow(1 + col.rdt, 1/12) - 1 : 0;
         const perp = col.capital * rm;
         const [r, setR] = useState(perp);
@@ -3681,7 +3803,10 @@
             {hero && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-white text-[10px] font-extrabold uppercase tracking-widest shadow-md whitespace-nowrap" style={{ background: `linear-gradient(135deg,#0f766e,#12897f)` }}>★ Solution proposée</div>
             )}
-            <div className={`text-[11px] uppercase tracking-widest font-bold truncate text-center ${hero ? 'mt-2 mb-3' : 'mb-3'}`} style={{ color: hero ? WOW_TEAL : accent }}>{nom}</div>
+            <div className="text-center mt-2 mb-3 rounded-xl px-2.5 py-2" style={{ background: hero ? "rgba(15,118,110,0.14)" : `${accent}22`, border: `1px solid ${hero ? "rgba(15,118,110,0.35)" : `${accent}55`}` }}>
+              <div className="text-[13px] uppercase tracking-wide font-extrabold leading-tight" style={{ color: hero ? WOW_TEAL : accent }}>{nom}</div>
+              {pp && <div className="text-[13px] uppercase tracking-widest font-extrabold mt-1" style={{ color: hero ? WOW_TEAL : accent }}>{pp}</div>}
+            </div>
             {/* Rente brute */}
             <div className="text-center">
               <div className="text-[10.5px] uppercase tracking-widest font-bold" style={{ color: WOW_SUB }}>Rente mensuelle brute</div>
@@ -3693,30 +3818,29 @@
               className="slider w-full mt-4"
               style={{ background: `linear-gradient(to right, ${WOW_TEAL} 0%, #34d399 ${rMax > rMin ? ((Math.min(Math.max(r, rMin), rMax) - rMin) / (rMax - rMin)) * 100 : 0}%, #e7e5e4 ${rMax > rMin ? ((Math.min(Math.max(r, rMin), rMax) - rMin) / (rMax - rMin)) * 100 : 0}%, #e7e5e4 100%)` }} />
             <div className="flex justify-between text-[10px] mt-1.5" style={{ color: WOW_SUB }}><span>à vie</span><span className="num">{fmtEUR(rMax)} /mois</span></div>
-            {/* Fiscalité + CSG/RDS — compact */}
-            <div className="flex items-stretch gap-2 mt-3">
-              <div className="flex-1 rounded-lg px-3 py-1.5" style={{ background: "rgba(29,39,53,0.04)" }}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11.5px]" style={{ color: WOW_SUB }}>Fiscalité</span>
-                  <span className="num font-bold text-[13px]" style={{ color: WOW_INK }}>{irMois <= 0.5 ? '0 €' : `−${fmtEUR(irMois * 12)} /an`}</span>
+            {/* Fiscalité + CSG/RDS + rente nette — masqués en PER (rente brute indicative uniquement, comme le simulateur) */}
+            {!col.isPER && (<>
+              <div className="flex items-stretch gap-2 mt-3">
+                <div className="flex-1 rounded-lg px-3 py-1.5" style={{ background: "rgba(29,39,53,0.04)" }}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11.5px]" style={{ color: WOW_SUB }}>Fiscalité</span>
+                    <span className="num font-bold text-[13px]" style={{ color: WOW_INK }}>{irMois <= 0.5 ? '0 €' : `−${fmtEUR(irMois * 12)} /an`}</span>
+                  </div>
+                  <div className="text-[9.5px] font-bold leading-snug" style={{ color: WOW_INK, minHeight: '13px' }}>{col.rentePlus8 && irMois <= 0.5 ? `Exonéré — abattement ${fmtEUR(ab)}/an` : ' '}</div>
                 </div>
-                {col.rentePlus8 && irMois <= 0.5 && (
-                  <div className="text-[9.5px] font-bold leading-snug" style={{ color: WOW_INK }}>Exonéré — abattement {fmtEUR(ab)}/an</div>
-                )}
+                <div className="flex items-center font-bold text-[15px]" style={{ color: WOW_SUB }}>+</div>
+                <div className="rounded-lg px-3 py-1.5 flex flex-col justify-center text-center" style={{ background: "rgba(29,39,53,0.04)" }}>
+                  <span className="text-[11px] leading-none" style={{ color: WOW_SUB }}>CSG/RDS</span>
+                  <span className="num font-bold text-[12px] leading-none mt-0.5" style={{ color: WOW_INK }}>17,2 %</span>
+                </div>
               </div>
-              <div className="flex items-center font-bold text-[15px]" style={{ color: WOW_SUB }}>+</div>
-              <div className="rounded-lg px-3 py-1.5 flex flex-col justify-center text-center" style={{ background: "rgba(29,39,53,0.04)" }}>
-                <span className="text-[11px] leading-none" style={{ color: WOW_SUB }}>CSG/RDS</span>
-                <span className="num font-bold text-[12px] leading-none mt-0.5" style={{ color: WOW_INK }}>17,2 %</span>
+              <div className="rounded-lg px-4 py-1.5 text-center mt-2 border" style={{ background: primary ? "rgba(15,118,110,0.10)" : "rgba(29,39,53,0.03)", borderColor: primary ? "rgba(15,118,110,0.35)" : "rgba(29,39,53,0.12)" }}>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: primary ? WOW_TEAL : WOW_SUB }}>Rente nette</span>
+                  <span className="num font-bold tracking-tightest" style={{ color: primary ? WOW_TEAL : WOW_INK, fontSize: 22 }}>{fmtEUR(netMois)}<span className="text-xs font-medium" style={{ color: WOW_SUB }}> /mois</span></span>
+                </div>
               </div>
-            </div>
-            {/* Rente nette — compact */}
-            <div className="rounded-lg px-4 py-1.5 text-center mt-2 border" style={{ background: primary ? "rgba(15,118,110,0.10)" : "rgba(29,39,53,0.03)", borderColor: primary ? "rgba(15,118,110,0.35)" : "rgba(29,39,53,0.12)" }}>
-              <div className="flex items-baseline justify-center gap-2">
-                <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: primary ? WOW_TEAL : WOW_SUB }}>Rente nette</span>
-                <span className="num font-bold tracking-tightest" style={{ color: primary ? WOW_TEAL : WOW_INK, fontSize: 22 }}>{fmtEUR(netMois)}<span className="text-xs font-medium" style={{ color: WOW_SUB }}> /mois</span></span>
-              </div>
-            </div>
+            </>)}
             {/* Durée de distribution + érosion du capital — MIS EN VALEUR */}
             <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
               <div className="text-[10.5px] uppercase tracking-widest font-bold text-center" style={{ color: WOW_SUB }}>Durée de distribution</div>
@@ -3787,7 +3911,7 @@
               { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(inputs.versementInitial), c: WOW_TEAL },
               { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: `${new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)} €/mois`, c: WOW_GOLD },
               { ic: <Ico d={<><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>} />, l: "Durée du placement", v: `${inputs.dureeAnnees} ans`, c: WOW_TEAL },
-              { ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD },
+              ...(isCapiProduit ? [] : [{ ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD }]),
               ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), c: WOW_TEAL }] : []),
             ];
             return (
@@ -3796,33 +3920,69 @@
                 <H className="text-4xl md:text-5xl mb-7">{produitNom}</H>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                   {cards.map((c, k) => (
-                    <div key={k} className={`${soft} p-6 flex items-center gap-4`} style={softStyle}>
+                    <div key={k} className={`${soft} p-6 flex items-center gap-6`} style={softStyle}>
                       <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-white flex-shrink-0" style={{ background: c.c }}>{c.ic}</span>
                       <div className="min-w-0"><div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>{c.l}</div><div className="num text-[28px] font-bold tracking-tightest leading-tight" style={{ color: WOW_INK }}>{c.v}</div></div>
                     </div>
                   ))}
                 </div>
-                <div className={`${soft} p-6 flex items-center justify-center gap-8 flex-wrap mb-3`} style={softStyle}>
-                  <div className="flex items-center gap-3">
+                <div className={`grid grid-cols-1 ${isCapiProduit ? '' : 'md:grid-cols-2'} gap-3 mb-3`}>
+                  {/* Rendement — valeur juste sous le libellé, comme les cartes du haut */}
+                  <div className={`${soft} p-6 flex items-center gap-6`} style={softStyle}>
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-white flex-shrink-0" style={{ background: WOW_TEAL }}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg></span>
-                    <div><div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>Hypothèse de rendement</div><div className="text-[12px] mt-0.5" style={{ color: WOW_SUB }}>prudent {fmtPCT(sim.rdtPess)} · optimiste {fmtPCT(sim.rdtOpt)}</div></div>
+                    <div className="min-w-0">
+                      <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>Hypothèse de rendement</div>
+                      <div className="num text-[28px] font-bold tracking-tightest leading-tight" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}<span className="text-[13px] font-medium ml-1.5" style={{ color: WOW_SUB }}>médian</span></div>
+                      <div className="text-[11px] mt-0.5" style={{ color: WOW_SUB }}>prudent {fmtPCT(sim.rdtPess)} · optimiste {fmtPCT(sim.rdtOpt)}</div>
+                    </div>
                   </div>
-                  <div className="flex items-baseline gap-1.5"><span className="num text-[28px] font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</span><span className="text-[12px]" style={{ color: WOW_SUB }}>médian</span></div>
+                  {/* À côté : TMI en PER, Total investi en AV. En capi, le total investi passe en bas (pleine largeur). */}
+                  {isPERProduit ? (
+                    <div className={`${soft} p-6 flex items-center gap-6`} style={softStyle}>
+                      <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-white flex-shrink-0" style={{ background: "#6d28d9" }}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="5" x2="5" y2="19" /><circle cx="6.5" cy="6.5" r="2.5" /><circle cx="17.5" cy="17.5" r="2.5" /></svg></span>
+                      <div className="min-w-0">
+                        <div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>Tranche marginale d'imposition</div>
+                        <div className="num text-[28px] font-bold tracking-tightest leading-tight" style={{ color: "#6d28d9" }}>{(inputs.tauxIR * 100).toFixed(0)} %</div>
+                        <div className="text-[11px] mt-0.5" style={{ color: WOW_SUB }}>revenus déductibles à ce taux</div>
+                      </div>
+                    </div>
+                  ) : !isCapiProduit && (
+                    <div className="rounded-2xl p-6 flex items-center justify-center gap-4" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.25)" }}>
+                      <span className="text-[13px] uppercase tracking-widest font-bold" style={{ color: WOW_TEAL }}>Total investi</span>
+                      <span className="num text-4xl font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
+                    </div>
+                  )}
                 </div>
-                <div className="rounded-2xl p-6 flex items-baseline justify-center gap-6" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.25)" }}>
-                  <span className="text-[13px] uppercase tracking-widest font-bold" style={{ color: WOW_TEAL }}>Total investi</span>
-                  <span className="num text-4xl font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
-                </div>
+                {isCapiProduit && (
+                  <div className="rounded-2xl p-6 flex items-center justify-center gap-4 mb-3" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.25)" }}>
+                    <span className="text-[13px] uppercase tracking-widest font-bold" style={{ color: WOW_TEAL }}>Total investi</span>
+                    <span className="num text-4xl font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
+                  </div>
+                )}
+                {isPERProduit && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="rounded-2xl p-6 flex items-center justify-center gap-4" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.25)" }}>
+                      <span className="text-[13px] uppercase tracking-widest font-bold" style={{ color: WOW_TEAL }}>Total investi</span>
+                      <span className="num text-4xl font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
+                    </div>
+                    {reductionPER > 0 && (
+                      <div className="rounded-2xl p-6 flex items-center justify-center gap-4" style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.10), rgba(139,92,246,0.06))", border: "1px solid rgba(124,58,237,0.35)" }}>
+                        <span className="text-[13px] uppercase tracking-widest font-bold" style={{ color: "#6d28d9" }}>Réduction d'impôt PER</span>
+                        <span className="num text-4xl font-bold tracking-tightest" style={{ color: "#6d28d9" }}>{fmtEUR(reductionPER)}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           }
           case "alloc": return (
             <div>
               <Eyebrow>Profil &amp; supports</Eyebrow>
-              <H className="text-4xl md:text-5xl mb-8">Votre allocation</H>
+              <H className="text-4xl md:text-5xl mb-10">Votre allocation</H>
               <RowList rows={inputs.allocation.map(s => ({ dot: SUPPORT_META[s.type].color, l: SUPPORT_META[s.type].label, v: `${(s.poids * 100).toFixed(0)} %` }))} />
-              <div className="max-w-2xl py-5" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
-                <div className="text-[16px] font-medium mb-10" style={{ color: WOW_INK }}>Niveau de risque (SRI)</div>
+              <div className="max-w-2xl pt-10 pb-10 mt-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
+                <div className="text-[16px] font-medium mb-12" style={{ color: WOW_INK }}>Niveau de risque (SRI)</div>
                 <div className="relative h-2.5 rounded-full" style={{ background: "linear-gradient(90deg,#7BD0CF,#A5DC54,#F0CD3F,#F08C92)" }}>
                   <div className="absolute -top-9 -translate-x-1/2 whitespace-nowrap text-[13px] font-bold" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, color: WOW_INK }}>{sriAlloc}/7 · {SRI_LABELS[sriAlloc]}</div>
                   <div className="absolute -top-2 w-6 h-6 rounded-full bg-white shadow-md -translate-x-1/2" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, border: `3px solid ${SRI_COLORS[sriAlloc]}` }}></div>
@@ -3832,7 +3992,7 @@
                 </div>
                 <div className="flex justify-between text-[10px]" style={{ color: WOW_SUB }}><span>Prudent</span><span>Offensif</span></div>
               </div>
-              <div className="max-w-2xl py-5" style={{ borderTop: `2px solid ${WOW_GOLD}55` }}>
+              <div className="max-w-2xl pt-12 pb-8 mt-4" style={{ borderTop: `2px solid ${WOW_GOLD}55` }}>
                 <div className="text-[16px] font-medium mb-16" style={{ color: WOW_INK }}>Hypothèse de rendement annuel</div>
                 <div className="relative h-2.5 rounded-full" style={{ background: "linear-gradient(90deg,#b45309,#0f766e,#059669)" }}>
                   <div className="absolute -top-16 left-1/2 -translate-x-1/2 text-center"><div className="num text-3xl font-bold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</div><div className="text-[11px] font-semibold mt-1" style={{ color: WOW_TEAL }}>médian</div></div>
@@ -3845,43 +4005,56 @@
               </div>
             </div>
           );
-          case "proj": return (
-            <div>
-              <Eyebrow>Projection &amp; hypothèses de rendement</Eyebrow>
-              <H className="text-4xl md:text-5xl mb-4">L'évolution de votre capital</H>
-              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1 mb-5 text-[13.5px]" style={{ color: WOW_SUB }}>
-                <span>Versement initial <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(inputs.versementInitial)}</span></span>
-                <span>· <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(inputs.versementMensuel)}</span>/mois</span>
-                <span>· durée <span className="num font-bold" style={{ color: WOW_INK }}>{inputs.dureeAnnees} ans</span></span>
-                <span>· hypothèse de rendement médian <span className="num font-bold" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</span></span>
-              </div>
-              <div className={`${soft} p-6`} style={softStyle}><ProjChart height={400} /></div>
-              <div className="mt-3 text-[12.5px]" style={{ color: WOW_SUB }}>Courbes <span className="font-bold" style={{ color: WOW_TEAL }}>{produitNom}</span> (médian · optimiste · prudent), comparées au <span className="font-semibold">{livretNom.toLowerCase()}</span> (pointillés gris).</div>
-            </div>
-          );
+          case "proj": return <ProjSlide />;
           case "succ": {
-            const maxNet = Math.max(win.netTransmis, refCol.netTransmis, 1);
+            const maxNet = Math.max(win.netTransmis, primeCol ? primeCol.netTransmis : 0, showRef ? refCol.netTransmis : 0, 1);
+            const droitsNote = (c) => {
+              const ab = `${fmtEUR(c.abattement || 0)}${c.abattDetail ? ` (${c.abattDetail})` : ''}`;
+              return (c.taxe || 0) > 0
+                ? `Base ${fmtEUR(c.capitalDeces)} − abattement ${ab} → ${fmtEUR(c.taxe)} de droits`
+                : `Base ${fmtEUR(c.capitalDeces)} − abattement ${ab} → aucun droit de succession`;
+            };
+            // Lignes classées : contrat actuel → solution → prime majorée (progression pédagogique)
+            const succRows = [];
+            if (showRef) succRows.push({ nom: refNom, pp: basePP, col: refCol, c: WOW_SUB, grad: "linear-gradient(90deg,#b0a99e,#c6c0b6)", muted: true });
+            succRows.push({ nom: winNom, pp: basePP, col: win, c: WOW_TEAL, grad: "linear-gradient(90deg,#0f766e,#34d399)", hero: true });
+            if (primeCol) succRows.push({ nom: winNom, pp: primePP, col: primeCol, c: WOW_GOLD, grad: `linear-gradient(90deg,#a07f3f,${WOW_GOLD})` });
+            const gainVsRef = showRef ? (win.netTransmis - refCol.netTransmis) : null;
             return (
               <div>
                 <Eyebrow>Transmission</Eyebrow>
                 <H className="text-4xl md:text-5xl mb-3">Protection de vos héritiers</H>
-                <p className="text-[15px] mb-10 max-w-3xl" style={{ color: WOW_SUB }}>En cas de décès, ce que vos héritiers perçoivent réellement, une fois les droits de succession déduits.</p>
-                <div className="space-y-9 max-w-3xl">
-                  <div>
-                    <div className="flex items-baseline justify-between mb-2.5"><span className="text-[16px] font-bold" style={{ color: WOW_INK }}>{produitNom}</span><span className="num text-[26px] font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(win.netTransmis)}</span></div>
-                    <div className="h-5 rounded-full" style={{ width: `${(win.netTransmis / maxNet) * 100}%`, background: "linear-gradient(90deg,#0f766e,#34d399)" }}></div>
-                    <div className="text-[13px] mt-2 font-medium" style={{ color: win.taxe > 0 ? "#c07a45" : WOW_TEAL }}>{win.taxe > 0 ? `Base imposable ${fmtEUR(win.capitalDeces)} − abattement ${fmtEUR(win.abattement)} (${win.abattDetail}) → ${fmtEUR(win.taxe)} de droits de succession à payer` : `Base ${fmtEUR(win.capitalDeces)} − abattement ${fmtEUR(win.abattement)} (${win.abattDetail}) → aucun droit de succession`}</div>
-                  </div>
-                  <div>
-                    <div className="flex items-baseline justify-between mb-2.5"><span className="text-[16px] font-bold" style={{ color: WOW_INK }}>{refNom}</span><span className="num text-[26px] font-bold tracking-tightest" style={{ color: WOW_SUB }}>{fmtEUR(refCol.netTransmis)}</span></div>
-                    <div className="h-5 rounded-full bg-black/[0.05] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${(refCol.netTransmis / maxNet) * 100}%`, background: "linear-gradient(90deg,#b0a99e,#c6c0b6)" }}></div></div>
-                    <div className="text-[13px] mt-2 font-medium" style={{ color: (refCol.taxe || 0) > 0 ? "#c07a45" : WOW_TEAL }}>{(refCol.taxe || 0) > 0 ? `Base imposable ${fmtEUR(refCol.capitalDeces)} − abattement ${fmtEUR(refCol.abattement || 0)} (${refCol.abattDetail || ''}) → ${fmtEUR(refCol.taxe)} de droits de succession à payer` : `Base ${fmtEUR(refCol.capitalDeces)} − abattement ${fmtEUR(refCol.abattement || 0)} (${refCol.abattDetail || ''}) → aucun droit de succession`}</div>
-                  </div>
-                </div>
-                <div className="mt-10 rounded-2xl p-6 flex items-center justify-center gap-4 flex-wrap text-center" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.25)" }}>
-                  <span className="text-[16px] font-semibold" style={{ color: WOW_INK }}>Vos héritiers recevront</span>
-                  <span className="num text-3xl font-bold tracking-tightest" style={{ color: WOW_TEAL }}>{fmtEUR(win.netTransmis)}</span>
-                  <span className="text-[16px] font-semibold" style={{ color: WOW_INK }}>avec la nouvelle solution proposée</span>
+                <p className="text-[15px] mb-8 max-w-3xl" style={{ color: WOW_SUB }}>En cas de décès, ce que chaque solution transmet <span className="font-semibold" style={{ color: WOW_INK }}>réellement à vos héritiers</span>, une fois les droits de succession déduits.</p>
+
+                {/* Cadres classés — titre au-dessus, comparaison directe et lisible */}
+                <div className="space-y-12 max-w-3xl">
+                  {succRows.map((r, k) => {
+                    const ecart = r.hero && gainVsRef != null ? gainVsRef : (r.col === primeCol ? primeCol.netTransmis - win.netTransmis : null);
+                    return (
+                    <div key={k}>
+                      {/* Titre AU-DESSUS du cadre */}
+                      <div className="flex items-baseline gap-2 mb-2 px-1">
+                        <span className="text-[16px] font-bold leading-tight" style={{ color: r.muted ? WOW_INK : r.c }}>{r.nom}</span>
+                        <span className="text-[11px] uppercase tracking-widest font-extrabold px-2.5 py-1 rounded-full text-white shadow-sm" style={{ background: r.c }}>{r.pp}</span>
+                        {r.hero && <span className="text-[10px] uppercase tracking-widest font-extrabold px-2 py-0.5 rounded-full" style={{ background: `${r.c}1f`, color: r.c }}>Solution proposée</span>}
+                      </div>
+                      {/* Cadre */}
+                      <div className="rounded-2xl px-5 py-4" style={{ border: `1.5px solid ${r.c}55`, background: r.hero ? "rgba(15,118,110,0.06)" : "rgba(255,255,255,0.5)" }}>
+                        <div className="flex items-center justify-between mb-2.5 gap-3">
+                          <div className="text-[12px] uppercase tracking-widest font-bold" style={{ color: WOW_SUB }}>Transmis aux héritiers</div>
+                          <div className="flex items-baseline gap-2.5 flex-shrink-0">
+                            {ecart != null && ecart !== 0 && (
+                              <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-full" style={{ background: `${r.c}1f`, color: r.c }}>+{fmtEUR(ecart)} vs {r.hero ? "contrat actuel" : "solution proposée"}</span>
+                            )}
+                            <span className="num text-[30px] font-extrabold tracking-tightest leading-none" style={{ color: r.c }}>{fmtEUR(r.col.netTransmis)}</span>
+                          </div>
+                        </div>
+                        <div className="h-6 rounded-full bg-black/[0.05] overflow-hidden"><div className="h-full rounded-full flex items-center justify-end pr-3" style={{ width: `${Math.max(8, (r.col.netTransmis / maxNet) * 100)}%`, background: r.grad }}><span className="text-white text-[11px] font-bold num opacity-90">{Math.round((r.col.netTransmis / maxNet) * 100)}%</span></div></div>
+                        <div className="text-[12.5px] mt-2 font-medium" style={{ color: (r.col.taxe || 0) > 0 ? "#c07a45" : WOW_TEAL }}>{droitsNote(r.col)}</div>
+                      </div>
+                    </div>
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -3894,9 +4067,10 @@
                 <Eyebrow>Revenu à vie</Eyebrow>
                 <H className="text-4xl md:text-5xl mb-5">Complément de revenu à vie</H>
                 <p className="text-[16px] mb-6 max-w-3xl" style={{ color: WOW_SUB }}>Au terme des {inputs.dureeAnnees} ans et selon les hypothèses de rendement, vous pourrez percevoir un revenu à vie — sans entamer votre capital.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <RenteAdjust col={refCol} nom={refNom} accent={WOW_SUB} primary={false} hero={false} />
-                  <RenteAdjust col={win} nom={produitNom} accent={WOW_TEAL} primary={true} hero={true} />
+                <div className={`grid grid-cols-1 gap-5 ${(1 + (showRef ? 1 : 0) + (primeCol ? 1 : 0)) >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} justify-center`}>
+                  {showRef && <RenteAdjust col={refCol} nom={refNom} accent={WOW_SUB} primary={false} hero={false} pp={basePP} />}
+                  <RenteAdjust col={win} nom={winNom} accent={WOW_TEAL} primary={true} hero={true} pp={basePP} />
+                  {primeCol && <RenteAdjust col={primeCol} nom={`${winNom} · ${primeNom}`} accent={WOW_GOLD} primary={false} hero={false} pp={primePP} />}
                 </div>
                 {isAV && (
                   <div className="mt-5 text-[12px] leading-snug rounded-xl px-4 py-3 max-w-3xl" style={{ background: "rgba(15,118,110,0.07)", color: WOW_INK }}>
@@ -3908,13 +4082,13 @@
           }
           case "synth": {
             const metrics = [
-              { t: "Capital à terme", sub: `à ${inputs.dureeAnnees} ans`, av: win.capital, liv: refCol.capital, fmt: v => fmtEUR(v) },
-              ...(!isCapiProduit ? [{ t: "Transmission nette", sub: `${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires > 1 ? 's' : ''}`, av: win.netTransmis, liv: refCol.netTransmis, fmt: v => fmtEUR(v) }] : [{ t: "Net après IS", sub: "à terme", av: solutionCol.netTransmis, liv: refCol.netTransmis, fmt: v => fmtEUR(v) }]),
-              ...(!isCapiProduit ? [{ t: "Rente à vie / mois", sub: "capital préservé", av: win.renteNetteMois, liv: refCol.renteNetteMois, fmt: v => `${fmtEUR(v)}/mois` }] : []),
+              { t: "Capital à terme", sub: `à ${inputs.dureeAnnees} ans`, av: win.capital, liv: refCol.capital, pr: primeCol ? primeCol.capital : null, fmt: v => fmtEUR(v) },
+              ...(!isCapiProduit ? [{ t: "Transmission nette", sub: `${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires > 1 ? 's' : ''}`, av: win.netTransmis, liv: refCol.netTransmis, pr: primeCol ? primeCol.netTransmis : null, fmt: v => fmtEUR(v) }] : [{ t: "Plus-value générée", sub: "sur la durée", av: Math.max(0, win.capital - win.versements), liv: Math.max(0, refCol.capital - refCol.versements), pr: null, fmt: v => fmtEUR(v) }]),
+              ...(!isCapiProduit ? [{ t: "Rente à vie / mois", sub: "capital préservé", av: win.renteNetteMois, liv: refCol.renteNetteMois, pr: primeCol ? primeCol.renteNetteMois : null, fmt: v => `${fmtEUR(v)}/mois` }] : []),
             ];
             const EL = ({ k, v, s }) => (
-              <div className="px-1">
-                <div className="text-[9.5px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_SUB }}>{k}</div>
+              <div className="px-1 flex flex-col">
+                <div className="text-[9.5px] uppercase tracking-widest font-bold mb-1 leading-tight" style={{ color: WOW_SUB, minHeight: '2.2em' }}>{k}</div>
                 <div className="num text-[17px] font-bold tracking-tightest leading-none" style={{ color: WOW_INK }}>{v}</div>
                 {s && <div className="text-[10px] mt-0.5" style={{ color: WOW_SUB }}>{s}</div>}
               </div>
@@ -3926,42 +4100,62 @@
 
                 {/* État des lieux du projet */}
                 <div className={`${soft} p-6 mb-6`} style={{ ...softStyle, border: `1.5px solid ${WOW_GOLD}`, boxShadow: `0 0 0 3px ${WOW_GOLD}1a, 0 1px 2px rgba(29,39,53,0.04)` }}>
-                  <div className="flex items-end justify-between flex-wrap gap-4 pb-4 mb-4" style={{ borderBottom: "1px solid rgba(29,39,53,0.1)" }}>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_GOLD }}>Le projet</div>
-                      <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[10px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_SUB }}>Total investi</div>
-                      <div className="num text-[30px] font-bold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</div>
-                    </div>
+                  <div className="mb-4">
+                    <div className="text-[10px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_GOLD }}>Le projet</div>
+                    <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-y-4 gap-x-3">
-                    <EL k="Durée" v={`${inputs.dureeAnnees} ans`} />
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-y-5 gap-x-6">
                     <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} />
                     <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" />
+                    <EL k="Durée" v={`${inputs.dureeAnnees} ans`} />
                     <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} />
                     <EL k="Profil de risque" v={`SRI ${sriAlloc}/7`} />
                   </div>
+                  <div className="mt-5 pt-4 flex items-baseline justify-start gap-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
+                    <span className="text-[11px] uppercase tracking-widest font-bold" style={{ color: WOW_SUB }}>Total investi</span>
+                    <span className="num text-[30px] font-bold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
+                  </div>
                 </div>
 
-                {/* Comparaison des 3 résultats clés */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {/* Comparaison des résultats clés — grille centrée si moins de 3 blocs */}
+                <div className={`grid grid-cols-1 gap-5 ${metrics.length >= 3 ? 'md:grid-cols-3' : metrics.length === 2 ? 'md:grid-cols-2 md:max-w-3xl md:mx-auto' : 'md:max-w-xl md:mx-auto'}`}>
                   {metrics.map((m, k) => {
-                    const max = Math.max(m.av, m.liv, 1);
+                    const max = Math.max(m.av, m.liv, m.pr || 0, 1);
                     return (
                       <div key={k} className={`${soft} p-6`} style={{ ...softStyle, border: `1.5px solid ${WOW_GOLD}`, boxShadow: `0 0 0 3px ${WOW_GOLD}1a, 0 1px 2px rgba(29,39,53,0.04)` }}>
-                        <div className="mb-4"><div className="text-[12px] uppercase tracking-widest font-extrabold" style={{ color: WOW_INK }}>{m.t}</div><div className="text-[11px]" style={{ color: WOW_SUB }}>{m.sub}</div></div>
-                        <div className="mb-3"><div className="flex justify-between items-baseline text-[13px] mb-1.5"><span className="font-bold" style={{ color: WOW_TEAL }}>{produitNom.length > 22 ? "Votre solution" : produitNom}</span><span className="num font-extrabold text-[16px]" style={{ color: WOW_TEAL }}>{m.fmt(m.av)}</span></div><div className="h-3 rounded-full" style={{ width: `${(m.av / max) * 100}%`, background: "linear-gradient(90deg,#0f766e,#34d399)" }}></div></div>
-                        <div className="mb-4"><div className="flex justify-between items-baseline text-[13px] mb-1.5"><span style={{ color: WOW_SUB }}>{refNom}</span><span className="num font-semibold" style={{ color: WOW_SUB }}>{m.fmt(m.liv)}</span></div><div className="h-3 rounded-full bg-black/[0.05] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${(m.liv / max) * 100}%`, background: "#b0a99e" }}></div></div></div>
-                        <div className="rounded-xl px-3 py-2.5 text-center" style={{ background: "rgba(15,118,110,0.1)" }}>
-                          <span className="text-[10px] uppercase tracking-wider font-bold" style={{ color: WOW_TEAL }}>En votre faveur </span>
-                          <span className="num text-[18px] font-extrabold" style={{ color: WOW_TEAL }}>+{m.fmt(m.av - m.liv)}</span>
+                        <div className="mb-4 text-center">
+                          <div className="inline-flex items-center rounded-lg px-3 py-1.5 mb-1.5" style={{ background: "rgba(15,118,110,0.08)", border: "1px solid rgba(15,118,110,0.28)" }}>
+                            <span className="text-[12px] uppercase tracking-widest font-extrabold" style={{ color: WOW_TEAL }}>{m.t}</span>
+                          </div>
+                          <div className="text-[11px]" style={{ color: WOW_SUB }}>{m.sub}</div>
                         </div>
+                        <div className="mb-3"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-bold px-2 py-0.5 rounded-md" style={{ color: WOW_TEAL, background: "rgba(15,118,110,0.10)", border: "1px solid rgba(15,118,110,0.3)" }}>{winNom.length > 22 ? "Votre solution" : winNom}</span><span className="num font-extrabold text-[16px]" style={{ color: WOW_TEAL }}>{m.fmt(m.av)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: WOW_TEAL }}>{basePP}</div><div className="h-3 rounded-full" style={{ width: `${(m.av / max) * 100}%`, background: "linear-gradient(90deg,#0f766e,#34d399)" }}></div></div>
+                        {m.pr != null && (
+                          <div className="mb-3"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-bold px-2 py-0.5 rounded-md" style={{ color: "#a07f3f", background: "rgba(184,146,78,0.14)", border: "1px solid rgba(184,146,78,0.4)" }}>Prime majorée</span><span className="num font-extrabold text-[15px]" style={{ color: WOW_GOLD }}>{m.fmt(m.pr)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: "#a07f3f" }}>{primePP}</div><div className="h-3 rounded-full" style={{ width: `${(m.pr / max) * 100}%`, background: `linear-gradient(90deg,#a07f3f,${WOW_GOLD})` }}></div></div>
+                        )}
+                        {showRef && <div className="mb-4"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-semibold px-2 py-0.5 rounded-md" style={{ color: WOW_SUB, background: "rgba(29,39,53,0.05)", border: "1px solid rgba(29,39,53,0.15)" }}>{refNom}</span><span className="num font-semibold" style={{ color: WOW_SUB }}>{m.fmt(m.liv)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: WOW_SUB }}>{basePP}</div><div className="h-3 rounded-full bg-black/[0.05] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${(m.liv / max) * 100}%`, background: "#b0a99e" }}></div></div></div>}
+                        {showRef ? (
+                        <div className="rounded-xl px-3 py-2 text-center" style={{ background: "rgba(15,118,110,0.1)" }}>
+                          <div className="text-[9.5px] uppercase tracking-wider font-bold" style={{ color: WOW_TEAL }}>Votre solution vs {refNom}</div>
+                          <div className="num text-[18px] font-extrabold" style={{ color: WOW_TEAL }}>+{m.fmt(m.av - m.liv)}</div>
+                        </div>
+                        ) : m.pr != null && (
+                        <div className="rounded-xl px-3 py-2 text-center" style={{ background: "rgba(184,146,78,0.12)" }}>
+                          <div className="text-[9.5px] uppercase tracking-wider font-bold" style={{ color: "#a07f3f" }}>Prime majorée vs votre solution</div>
+                          <div className="num text-[18px] font-extrabold" style={{ color: WOW_GOLD }}>+{m.fmt(m.pr - m.av)}</div>
+                        </div>
+                        )}
                       </div>
                     );
                   })}
                 </div>
+                {isPERProduit && reductionPER > 0 && (
+                  <div className="mt-5 rounded-2xl px-6 py-5 flex items-center justify-center gap-4 flex-wrap text-center" style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.10), rgba(139,92,246,0.05))", border: "1.5px solid rgba(124,58,237,0.4)" }}>
+                    <span className="text-[15px] font-semibold" style={{ color: WOW_INK }}>Une réduction d'impôt de</span>
+                    <span className="num text-3xl font-extrabold tracking-tightest" style={{ color: "#6d28d9" }}>{fmtEUR(reductionPER)}</span>
+                    <span className="text-[15px] font-semibold" style={{ color: WOW_INK }}>sur {inputs.dureeAnnees} années</span>
+                  </div>
+                )}
               </div>
             );
           }
@@ -4010,12 +4204,12 @@
     // ============================================================
     // BENCHMARK TABLE — vue d'ensemble visuelle (3 KPI clés en barres)
     // ============================================================
-    function BenchmarkTable({ allCols, livretCol, inputs, scenarioLvl }) {
+    function BenchmarkTable({ allCols, livretCol, refLabel, inputs, scenarioLvl }) {
+      const refWord = inputs.produit === "per" ? "PER seul" : (refLabel || (inputs.produit === "capi" ? "CAT" : "livret"));
       const KPIS = inputs.produit === "capi"
         ? [
-            { key: 'capital',  label: 'Capital final brut',  sub: 'à terme · avant IS',         getValue: c => c.capital,        suffix: '' },
+            { key: 'capital',  label: 'Capital final',       sub: 'à terme',                    getValue: c => c.capital,        suffix: '' },
             { key: 'pv',       label: 'Plus-value',          sub: 'capitalisée sur la durée',   getValue: c => Math.max(0, c.capital - c.versements), suffix: '' },
-            { key: 'netIS',    label: 'Net après IS',        sub: 'trésorerie disponible',      getValue: c => c.netTransmis,    suffix: '' },
           ]
         : inputs.produit === 'per'
         ? [
@@ -4101,7 +4295,7 @@
                 : livretCol;
               const livretValue = kpi.getValue(refForDelta);
               // En PER, le "gagnant" se choisit parmi toutes les colonnes y compris la PER+Réintégration.
-              const winnerVal = Math.max(...allCols.filter(c => inputs.produit === 'per' ? true : c.type !== 'livret').map(kpi.getValue));
+              const winnerVal = Math.max(...allCols.filter(c => inputs.produit === 'per' ? true : c !== livretCol).map(kpi.getValue));
 
               return (
                 <div key={kpi.key}>
@@ -4111,7 +4305,6 @@
                       <div className="w-1 h-4 bg-red-500 rounded-full"></div>
                       <div className="text-[13px] font-extrabold uppercase tracking-wide text-white">{kpi.label}</div>
                     </div>
-                    <div className="text-[11px] text-stone-500 italic">{kpi.sub}</div>
                   </div>
 
                   <div className="space-y-2.5">
@@ -4120,7 +4313,7 @@
                       const pct = (val / max) * 100;
                       const delta = val - livretValue;
                       const ratio = livretValue > 0 ? val / livretValue : null;
-                      const isLivret = col.type === 'livret';
+                      const isLivret = col === livretCol;
                       const isPerRef = col.type === 'perReinvest';
                       const isReference = isLivret;
                       const isWinner = inputs.produit === 'per'
@@ -4220,13 +4413,13 @@
                                   </span>
                                   <div className="text-right">
                                     <div className="num text-[15px] font-extrabold text-emerald-700 leading-none whitespace-nowrap">{delta >= 0 ? '+' : ''}{fmtEUR(delta)}</div>
-                                    <div className="text-[10px] text-stone-500 font-semibold leading-tight mt-0.5">vs {inputs.produit === "per" ? "PER seul" : inputs.produit === "capi" ? "CAT" : "livret"}</div>
+                                    <div className="text-[10px] text-stone-500 font-semibold leading-tight mt-0.5">vs {refWord}</div>
                                   </div>
                                 </div>
                               ) : (
                                 <div className="text-right">
                                   <div className={`num font-bold text-[13px] ${deltaColor}`}>{delta > 0 ? '+' : ''}{fmtEUR(delta)}</div>
-                                  <div className="text-[10px] text-stone-400">{ratio !== null ? `×${ratio.toFixed(2)} vs ${inputs.produit === "per" ? "PER seul" : inputs.produit === "capi" ? "CAT" : "livret"}` : `vs ${inputs.produit === "per" ? "PER seul" : inputs.produit === "capi" ? "CAT" : "livret"}`}</div>
+                                  <div className="text-[10px] text-stone-400">{ratio !== null ? `×${ratio.toFixed(2)} vs ${refWord}` : `vs ${refWord}`}</div>
                                 </div>
                               );
                             })()}
@@ -4258,7 +4451,7 @@
               {inputs.produit === 'per' ? (
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-teal-500"></span>PER + Réintégration des réductions</span>
               ) : (
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-stone-400"></span>Référence ({inputs.produit === 'capi' ? 'compte à terme' : 'livret'})</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-stone-400"></span>Référence ({refWord})</span>
               )}
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-stone-900"></span>Solution {inputs.produit === 'per' ? 'PER' : inputs.produit === 'capi' ? 'Capi PM' : 'Ass Vie'}</span>
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>Scénarios</span>
@@ -4458,51 +4651,13 @@
               : <>Hypothèse de rendement <span className="num font-semibold">{fmtPCT(col.rdt)}</span></>}
           </div>
 
-          {/* Données En cas de vie — Épargne · Plus-value · Mini-carte Réduction d'impôt */}
+          {/* Données En cas de vie — Épargne · Plus-value */}
           <div className={`mt-3 pt-2.5 border-t ${colDivider(col)} space-y-1.5`}>
             <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)} lbl="Épargne investie" val={fmtEUR(col.versements)} />
             <Row textPrimary={colTextMain(col)} textSecondary={colTextSec(col)} lbl="Plus-value" val={`+${fmtEUR(pvCorePER)}`} positive />
-            {/* Mini-carte réduction d'impôt — mise en valeur avec couleur violet brand */}
-            {col.isPER && col.reductionImpotCumulee > 0 ? (
-              <div className="rounded-xl overflow-hidden" style={{background:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', outline:'1.5px solid #c4b5fd'}}>
-                {/* Header violet — centré : libellé + montant en colonne */}
-                <div className="px-3 pt-2.5 pb-2.5" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
-                  <div className="flex flex-col items-center gap-0.5 text-center">
-                    <div className="text-[10px] font-extrabold text-white uppercase tracking-widest">
-                      Réduction d'impôt
-                    </div>
-                    <div className="num text-[20px] font-extrabold text-white leading-none">
-                      +{fmtEUR(col.reductionImpotCumulee)}
-                    </div>
-                    <div className="text-[9px] text-violet-200 font-normal">
-                      TMI {(col.tauxIRPct*100).toFixed(0)} %{isPerRef ? ' · levier composé' : ''}
-                    </div>
-                  </div>
-                </div>
-                {/* Détail année 1 / années suivantes */}
-                <div className="flex items-stretch gap-0 px-2 py-2">
-                  <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
-                    <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnee1)}</div>
-                    <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>année 1</div>
-                  </div>
-                  <div className="flex items-center px-1" style={{color:'#c4b5fd', fontSize:'14px'}}>│</div>
-                  <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
-                    <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnuelle)}<span className="text-[10px] font-medium">/an</span></div>
-                    <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>années suivantes</div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              /* Colonne non-PER : rien à afficher ici */
-              <div style={{height:'0'}}></div>
-            )}
           </div>
 
-          {/* Hero : Capital + intérêts — label MIS EN VALEUR (noir/blanc extrabold pour ressortir)
-              Sur les cadres verts (solution AV/Capi ou PER + Réintégration), le MONTANT est forcé en noir
-              (text-stone-900) pour ressortir fortement sur le fond émeraude. Le label reste en blanc. */}
-          {/* Hero "Capital + intérêts" — sur cadres verts, encadré noir épais + fond blanc
-              pour faire ressortir fortement le résultat */}
+          {/* Hero "Capital + intérêts" — remonté au-dessus du bloc réduction d'impôt */}
           <div className={`mt-2.5 pt-2.5 ${isSolutionVisual(col) ? '' : `border-t ${colDivider(col)}`}`}>
             <div className={isSolutionVisual(col) ? 'border-2 border-stone-900 rounded-xl bg-white px-4 py-2.5 shadow-md text-center' : ''}>
               <div className={`text-[11px] uppercase tracking-widest font-extrabold ${isSolutionVisual(col) ? 'text-stone-900' : colTextMain(col)} mb-1`}>Capital + intérêts</div>
@@ -4510,21 +4665,25 @@
             </div>
           </div>
 
-          {/* Encart bas PER : Transmission nette */}
-          {col.isPER && (
-            <div style={{marginTop:'auto'}}>
-              <div className={`mt-3 pt-3 border-t ${colDivider(col)}`}>
-                <div className="rounded-xl px-3 py-3 ring-1 ring-slate-200/70 bg-slate-50/80 text-center"
-                  style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-                  <div className="text-[10px] uppercase tracking-widest font-extrabold text-slate-700" style={{marginBottom:'6px', letterSpacing:'0.10em'}}>
-                    Transmission nette
-                  </div>
-                  <div className="num font-extrabold text-slate-800 leading-none" style={{fontSize:'26px', textAlign:'center', width:'100%'}}>
-                    {fmtEUR(col.netTransmis ?? col.capitalDeces ?? col.capital)}
-                  </div>
-                  <div className="text-[10px] mt-1.5 text-slate-400 italic">
-                    Après droits de succession
-                  </div>
+          {/* Réduction d'impôt PER — SOUS le capital + intérêts */}
+          {col.isPER && col.reductionImpotCumulee > 0 && (
+            <div className="mt-3 rounded-xl overflow-hidden" style={{background:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', outline:'1.5px solid #c4b5fd'}}>
+              <div className="px-3 pt-2.5 pb-2.5" style={{background:'linear-gradient(135deg, #7c3aed, #6d28d9)'}}>
+                <div className="flex flex-col items-center gap-0.5 text-center">
+                  <div className="text-[10px] font-extrabold text-white uppercase tracking-widest">Réduction d'impôt</div>
+                  <div className="num text-[20px] font-extrabold text-white leading-none">+{fmtEUR(col.reductionImpotCumulee)}</div>
+                  <div className="text-[9px] text-violet-200 font-normal">TMI {(col.tauxIRPct*100).toFixed(0)} %{isPerRef ? ' · levier composé' : ''}</div>
+                </div>
+              </div>
+              <div className="flex items-stretch gap-0 px-2 py-2">
+                <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
+                  <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnee1)}</div>
+                  <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>année 1</div>
+                </div>
+                <div className="flex items-center px-1" style={{color:'#c4b5fd', fontSize:'14px'}}>│</div>
+                <div className="flex-1 text-center px-2 py-1.5 rounded-lg" style={{background:'rgba(124,58,237,0.08)'}}>
+                  <div className="num font-bold text-[13px]" style={{color:'#5b21b6'}}>{fmtEUR(col.reductionImpotAnnuelle)}<span className="text-[10px] font-medium">/an</span></div>
+                  <div className="text-[9px] mt-0.5 font-medium" style={{color:'#7c3aed'}}>années suivantes</div>
                 </div>
               </div>
             </div>
@@ -4706,7 +4865,7 @@
 
                 {/* Rente brute — encadré émeraude prominent, label MIS EN VALEUR */}
                 <div className={`rounded-xl px-4 py-3.5 text-center border-2 ${isDark ? 'bg-emerald-900/40 border-emerald-700/60' : 'bg-emerald-50 border-emerald-200'}`}>
-                  <div className={`text-[12px] uppercase tracking-widest font-extrabold ${isDark ? 'text-white' : 'text-emerald-900'} mb-1.5`}>Rente mensuelle brute</div>
+                  <div className={`text-[12px] uppercase tracking-widest font-extrabold ${isDark ? 'text-white' : 'text-emerald-900'} mb-1.5`}>Rente nette</div>
                   <div className={`num text-[30px] md:text-[32px] font-extrabold tracking-tightest ${isDark ? 'text-white' : 'text-emerald-700'} leading-none`}>
                     {fmtEUR(targetNetMois)}<span className={`text-sm font-medium ${isDark ? 'text-emerald-400/70' : 'text-emerald-600/80'}`}> /mois</span>
                   </div>
@@ -4959,7 +5118,7 @@
     // ============================================================
     // STEP 5 — PRÉSENTATION CLIENT (graphique premium)
     // ============================================================
-    function Step5Presentation({ inputs, sim, scenarios, scenarioLvl, setScenarioLvl, onOpenPrint, autreAV }) {
+    function Step5Presentation({ inputs, sim, scenarios, scenarioLvl, setScenarioLvl, onOpenPrint, autreAV, prime, setPrime, comparOn, setComparOn }) {
       const chartRef = useRef(null);
       const chartInst = useRef(null);
       const isPER_Step5 = inputs.produit === "per";
@@ -5273,7 +5432,7 @@
       const produitNomComplet = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`;
       return (
         <div className="max-w-screen-xl mx-auto page-enter">
-          {presOpen && <ClientWowScreen inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} onClose={() => setPresOpen(false)} autreAV={autreAV} />}
+          {presOpen && <ClientWowScreen inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} onClose={() => setPresOpen(false)} autreAV={autreAV} prime={prime} setPrime={setPrime} comparOn={comparOn} setComparOn={setComparOn} />}
           {/* HERO — titre + chip gains + chip réduction d'impôt PER */}
           <div className="flex items-end justify-between flex-wrap gap-4 mb-4 pb-4 border-b border-stone-200">
             <div>
@@ -5585,28 +5744,29 @@
                   </div>
                 );
               })() : inputs.produit === "capi" ? (() => {
-                // Donut Net après IS / Capital brut
-                const netCapi = sim.fiscCapi?.netCapital || finalSolution;
-                const ratio = finalSolution > 0 ? netCapi / finalSolution : 1;
+                // Donut Capital à terme / Plus-value (IS non géré)
+                const capiFinal = sim.fiscCapi?.netCapital || finalSolution;
+                const pvCapi = Math.max(0, capiFinal - (sim.proj.totVerseBrut || 0));
+                const ratio = capiFinal > 0 ? pvCapi / capiFinal : 0;
                 const r = 38, c = 2 * Math.PI * r;
                 const dash = ratio * c;
                 return (
                   <div className="bg-white border border-stone-200 rounded-2xl p-4 shadow-sm">
-                    <div className="text-[10px] uppercase tracking-widest font-bold text-amber-700 mb-2 text-center">Net après IS</div>
+                    <div className="text-[10px] uppercase tracking-widest font-bold text-emerald-700 mb-2 text-center">Capital à terme</div>
                     <div className="relative flex items-center justify-center" style={{height: '100px'}}>
                       <svg width="100" height="100" viewBox="0 0 100 100" style={{transform:'rotate(-90deg)'}}>
                         <circle cx="50" cy="50" r={r} fill="none" stroke="#f5f5f4" strokeWidth="9"/>
-                        <circle cx="50" cy="50" r={r} fill="none" stroke="#b45309" strokeWidth="9" strokeLinecap="round"
+                        <circle cx="50" cy="50" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round"
                           strokeDasharray={`${dash} ${c}`} style={{transition:'stroke-dasharray 0.6s ease-out'}} />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <div className="num text-[16px] font-extrabold text-amber-700 leading-none tracking-tightest">{(ratio*100).toFixed(0)}%</div>
-                        <div className="text-[8px] text-stone-500 mt-0.5">conservé</div>
+                        <div className="num text-[16px] font-extrabold text-emerald-700 leading-none tracking-tightest">{(ratio*100).toFixed(0)}%</div>
+                        <div className="text-[8px] text-stone-500 mt-0.5">de plus-value</div>
                       </div>
                     </div>
                     <div className="mt-2 text-center">
-                      <div className="num text-[20px] font-bold text-amber-700 leading-none">{fmtEURc(netCapi)}</div>
-                      <div className="text-[10px] text-stone-500 mt-1">IS {(inputs.tauxIS*100).toFixed(0)}% sur plus-values</div>
+                      <div className="num text-[20px] font-bold text-emerald-700 leading-none">{fmtEURc(capiFinal)}</div>
+                      <div className="text-[10px] text-stone-500 mt-1">dont {fmtEURc(pvCapi)} de plus-value</div>
                     </div>
                   </div>
                 );
@@ -5734,9 +5894,14 @@
     // ============================================================
     // CLIENT PRESENTATION PRINT — A4 portrait, design directeur de création
     // ============================================================
-    function ClientPresentationPrint({ inputs, sim, scenarios, clientLabel, totalVerseBrut, autreAV, onClose }) {
+    function ClientPresentationPrint({ inputs, sim, scenarios, clientLabel, totalVerseBrut, autreAV, presPrime, scenarioLvl, onClose }) {
       const isPER = inputs.produit === "per";
       const isCapi = inputs.produit === "capi";
+      // Scénario « prime périodique majorée » repris de la présentation interactive (transmission)
+      const primeCompar = (presPrime && !isCapi && Math.round(presPrime) !== Math.round(inputs.versementMensuel)) ? (() => {
+        const pS = runSimulation({ ...inputs, versementMensuel: presPrime }, scenarioLvl || 'med');
+        return { prime: presPrime, capitalDeces: pS.proj.capitalFin, taxe: pS.fisc.taxe, net: pS.fisc.direct, abattTotal: pS.fisc.abattTotal };
+      })() : null;
       const useAutreAV = !isPER && !isCapi && autreAV && autreAV.active;
       const livretNom = isPER ? "PER + Réintégration" : isCapi ? "Compte à terme" : (useAutreAV ? "Assurance vie client" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret"));
       // Comparateur « Assurance vie client » (autre AV) pour le PDF
@@ -5926,11 +6091,11 @@
 
       // === Hero number selon produit (la statistique signature) ===
       const heroNum = isPER ? reductionImpotCumulee : isCapi ? (sim.fiscCapi?.netCapital || finalSolution) : gainEUR;
-      const heroEyebrow = isPER ? "Réduction d'impôt cumulée" : isCapi ? "Capital net après IS" : `Avantage vs ${livretNom}`;
+      const heroEyebrow = isPER ? "Réduction d'impôt cumulée" : isCapi ? "Capital à terme" : `Avantage vs ${livretNom}`;
       const heroCaption = isPER
         ? `Économie fiscale totale sur ${N} ans, calculée au taux marginal d'imposition de ${(inputs.tauxIR*100).toFixed(0)} %.`
         : isCapi
-        ? `Trésorerie d'entreprise après IS sur les plus-values. Optimisation de la fiscalité corporate.`
+        ? `Capital brut à terme du contrat de capitalisation, trésorerie d'entreprise, scénario médian sur ${N} ans.`
         : `Capital supplémentaire à terme face au ${livretNom.toLowerCase()}, scénario médian sur ${N} ans.`;
 
       // === Ligne décorative Figara (trait + étoile compas rouge au centre) — réutilisable ===
@@ -6375,31 +6540,32 @@
                     </div>
                   );
                 })() : (
-                  /* Pour Capi PM : Donut "Net après IS" à la place de la rente — text dans SVG */
+                  /* Pour Capi PM : Donut "Capital à terme / Plus-value" (IS non géré) */
                   (() => {
-                    const netCapi = sim.fiscCapi?.netCapital || finalSolution;
-                    const ratio = finalSolution > 0 ? netCapi / finalSolution : 1;
+                    const capiFinal = sim.fiscCapi?.netCapital || finalSolution;
+                    const pvCapi = Math.max(0, capiFinal - (sim.proj.totVerseBrut || 0));
+                    const ratio = capiFinal > 0 ? pvCapi / capiFinal : 0;
                     const r = 32, c = 2 * Math.PI * r;
                     const dash = ratio * c;
                     return (
                       <div className="pres-donut-card">
-                        <div className="dn-tag" style={{color:'#b45309'}}>Net après IS</div>
+                        <div className="dn-tag" style={{color:'#047857'}}>Capital à terme</div>
                         <div style={{display:'flex', justifyContent:'center', margin:'2mm 0 1mm'}}>
                           <svg width="92" height="92" viewBox="0 0 92 92">
                             <g transform="rotate(-90 46 46)">
                               <circle cx="46" cy="46" r={r} fill="none" stroke="#f5f5f4" strokeWidth="7"/>
-                              <circle cx="46" cy="46" r={r} fill="none" stroke="#b45309" strokeWidth="7" strokeLinecap="round" strokeDasharray={`${dash} ${c}`}/>
+                              <circle cx="46" cy="46" r={r} fill="none" stroke="#047857" strokeWidth="7" strokeLinecap="round" strokeDasharray={`${dash} ${c}`}/>
                             </g>
                             <text x="46" y="44" textAnchor="middle" dominantBaseline="central"
-                              fontFamily="Fraunces, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#b45309"
+                              fontFamily="Fraunces, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
                               letterSpacing="-0.5">{(ratio*100).toFixed(0)}%</text>
                             <text x="46" y="60" textAnchor="middle" dominantBaseline="central"
                               fontFamily="Inter, sans-serif" fontSize="7" fontWeight="500" fill="#78716c"
-                              letterSpacing="0.2">conservé</text>
+                              letterSpacing="0.2">plus-value</text>
                           </svg>
                         </div>
-                        <div className="dn-amount" style={{color:'#b45309', textAlign:'center'}}>{fmtEURc(netCapi)}</div>
-                        <div className="dn-foot">IS {(inputs.tauxIS*100).toFixed(0)}% sur les plus-values<br/>Trésorerie d'entreprise (PM)</div>
+                        <div className="dn-amount" style={{color:'#047857', textAlign:'center'}}>{fmtEURc(capiFinal)}</div>
+                        <div className="dn-foot">dont {fmtEURc(pvCapi)} de plus-value<br/>Trésorerie d'entreprise (PM)</div>
                       </div>
                     );
                   })()
@@ -6580,39 +6746,15 @@
                           <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>+{fmtEURc(plusValue)}</div>
                           <div style={{fontSize:'8pt', color:'#78716c', marginTop:'2mm', fontStyle:'italic'}}>intérêts générés sur {N} ans</div>
                         </div>
-                        <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center', background:'linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)', border:'1px solid #fed7aa'}}>
-                          <div className="cmp-title" style={{color:'#b45309', marginBottom:'2mm', textAlign:'left'}}>IS prélevé</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#b45309', letterSpacing:'-0.02em', lineHeight:1}}>−{fmtEURc(taxeIS)}</div>
-                          <div style={{fontSize:'8pt', color:'#b45309', opacity:0.7, marginTop:'2mm', fontStyle:'italic'}}>IS {(inputs.tauxIS*100).toFixed(0)} % sur plus-value</div>
+                        <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center'}}>
+                          <div className="cmp-title" style={{marginBottom:'2mm', textAlign:'left'}}>Versements</div>
+                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(totalVerseBrut)}</div>
+                          <div style={{fontSize:'8pt', color:'#78716c', marginTop:'2mm', fontStyle:'italic'}}>capital investi</div>
                         </div>
                         <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center', background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
-                          <div className="cmp-title" style={{color:'#047857', marginBottom:'2mm', textAlign:'left'}}>Net après IS</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(netCapi)}</div>
-                          <div style={{fontSize:'8pt', color:'#047857', opacity:0.75, marginTop:'2mm', fontStyle:'italic'}}>rendement net effectif {(tauxEffectif*100).toFixed(2).replace('.',',')} %/an</div>
-                        </div>
-                      </div>
-
-                      {/* Calcul détaillé — full width, sobre */}
-                      <div className="pres-cmp-card" style={{marginTop:'5mm', padding:'5mm 6mm 6mm'}}>
-                        <div className="cmp-title" style={{color:'#b45309'}}>Calcul fiscal · IS sur plus-value uniquement</div>
-                        <div style={{display:'grid', gridTemplateColumns:'1fr auto', columnGap:'8mm', rowGap:'2.5mm', marginTop:'3mm', fontFamily:"'JetBrains Mono', monospace"}}>
-                          <div style={{fontSize:'9pt', color:'#57534e'}}>Capital brut à terme</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'12pt', fontWeight:700, color:'#0a0908', textAlign:'right'}}>{fmtEURc(finalSolution)}</div>
-
-                          <div style={{fontSize:'9pt', color:'#57534e'}}>− Versements bruts payés</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'12pt', fontWeight:700, color:'#0a0908', textAlign:'right'}}>−{fmtEURc(totalVerseBrut)}</div>
-
-                          <div style={{fontSize:'9pt', color:'#b45309', fontWeight:600, paddingTop:'2mm', borderTop:'1px solid rgba(180,83,9,0.15)'}}>= Plus-value (assiette IS)</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#b45309', textAlign:'right', paddingTop:'2mm', borderTop:'1px solid rgba(180,83,9,0.15)'}}>{fmtEURc(plusValue)}</div>
-
-                          <div style={{fontSize:'9pt', color:'#b45309', fontWeight:600}}>× IS {(inputs.tauxIS*100).toFixed(0)} % = IS dû</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#b45309', textAlign:'right'}}>−{fmtEURc(taxeIS)}</div>
-
-                          <div style={{fontSize:'9pt', color:'#047857', fontWeight:700, paddingTop:'2.5mm', borderTop:'2px solid #047857', letterSpacing:'0.05em', textTransform:'uppercase'}}>= Net après IS pour l'entreprise</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'18pt', fontWeight:800, color:'#047857', textAlign:'right', paddingTop:'2.5mm', borderTop:'2px solid #047857', letterSpacing:'-0.025em'}}>{fmtEURc(netCapi)}</div>
-                        </div>
-                        <div style={{marginTop:'4mm', paddingTop:'3mm', borderTop:'1px dashed rgba(10,9,8,0.12)', fontSize:'8.5pt', color:'#78716c', lineHeight:1.55, fontStyle:'italic'}}>
-                          Note · Le remboursement du capital (versements bruts) n'est <strong style={{color:'#0a0908', fontStyle:'normal'}}>jamais imposable à l'IS</strong>. Seule la <strong style={{color:'#b45309', fontStyle:'normal'}}>plus-value</strong>, c'est-à-dire les intérêts effectivement générés par le contrat, entre dans l'assiette imposable.
+                          <div className="cmp-title" style={{color:'#047857', marginBottom:'2mm', textAlign:'left'}}>Capital à terme</div>
+                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(finalSolution)}</div>
+                          <div style={{fontSize:'8pt', color:'#047857', opacity:0.75, marginTop:'2mm', fontStyle:'italic'}}>rendement net {(tauxEffectif*100).toFixed(2).replace('.',',')} %/an</div>
                         </div>
                       </div>
                     </div>
@@ -6655,11 +6797,11 @@
                   const plusValue = Math.max(0, finalSolution - totalVerseBrut);
                   return (
                     <div className="pres-donut-card" style={{padding:'5mm 6mm 6mm'}}>
-                      <div className="dn-tag" style={{color:'#b45309'}}>Trésorerie d'entreprise</div>
-                      <div className="dn-amount" style={{color:'#b45309', fontSize:'22pt', marginTop:'4mm'}}>{fmtEUR(netCapi)}</div>
+                      <div className="dn-tag" style={{color:'#047857'}}>Trésorerie d'entreprise</div>
+                      <div className="dn-amount" style={{color:'#047857', fontSize:'22pt', marginTop:'4mm'}}>{fmtEUR(netCapi)}</div>
                       <div className="dn-foot" style={{marginTop:'3mm'}}>
-                        Capital net après IS de <strong style={{color:'#b45309'}}>{(inputs.tauxIS*100).toFixed(0)} %</strong> sur les plus-values<br/>
-                        Plus-value brute : <strong style={{color:'#0a0908'}}>{fmtEUR(plusValue)}</strong>
+                        Capital brut à terme du contrat de capitalisation<br/>
+                        Plus-value générée : <strong style={{color:'#0a0908'}}>{fmtEUR(plusValue)}</strong>
                       </div>
                     </div>
                   );
@@ -6714,37 +6856,24 @@
                     </div>
                   </div>
                 ) : isCapi ? (
-                  <div className="pres-cmp-card" style={{background:'linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)', border:'1px solid #fed7aa'}}>
-                    <div className="cmp-title" style={{color:'#b45309'}}>Impact fiscal IS</div>
+                  <div className="pres-cmp-card" style={{background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
+                    <div className="cmp-title" style={{color:'#047857'}}>Plus-value générée</div>
                     <div style={{display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:'3mm'}}>
-                      <span style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#b45309', letterSpacing:'-0.025em', lineHeight:1}}>
-                        −{fmtEUR(sim.fiscCapi?.taxeIS || 0)}
+                      <span style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
+                        +{fmtEUR(Math.max(0, finalSolution - totalVerseBrut))}
                       </span>
                     </div>
                     <div style={{fontSize:'9pt', color:'#57534e', lineHeight:1.55, marginBottom:'3mm'}}>
-                      d'IS prélevé <strong>uniquement sur la plus-value</strong> (taux {(inputs.tauxIS*100).toFixed(0)} %). Le remboursement du principal n'est pas imposable.
+                      d'intérêts générés par le contrat sur {N} ans (scénario médian).
                     </div>
-                    {/* Breakdown explicite du calcul IS */}
-                    <div style={{paddingTop:'3mm', borderTop:'1px solid rgba(180,83,9,0.20)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'3mm 4mm'}}>
+                    <div style={{paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
                       <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>Capital brut</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(finalSolution)}</div>
+                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>Versements</div>
+                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(totalVerseBrut)}</div>
                       </div>
                       <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>− Versements bruts</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>−{fmtEURc(totalVerseBrut)}</div>
-                      </div>
-                      <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#b45309', fontWeight:600, marginBottom:'1mm'}}>= Plus-value</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#b45309'}}>{fmtEURc(sim.fiscCapi?.plusValue || 0)}</div>
-                      </div>
-                      <div>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#b45309', fontWeight:600, marginBottom:'1mm'}}>× IS {(inputs.tauxIS*100).toFixed(0)} % = IS dû</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#b45309'}}>−{fmtEUR(sim.fiscCapi?.taxeIS || 0)}</div>
-                      </div>
-                      <div style={{gridColumn:'1 / -1', marginTop:'2mm', paddingTop:'3mm', borderTop:'1px solid rgba(180,83,9,0.20)', display:'flex', alignItems:'baseline', justifyContent:'space-between'}}>
-                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'7pt', letterSpacing:'0.24em', textTransform:'uppercase', color:'#b45309', fontWeight:700}}>Net après IS</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'18pt', fontWeight:800, color:'#b45309', letterSpacing:'-0.02em'}}>{fmtEURc(sim.fiscCapi?.netCapital || finalSolution)}</div>
+                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1mm'}}>Capital à terme</div>
+                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>{fmtEURc(finalSolution)}</div>
                       </div>
                     </div>
                   </div>
@@ -6770,6 +6899,15 @@
                         <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#047857'}}>{fmtEURc(sim.fisc.direct)}</div>
                       </div>
                     </div>
+                    {primeCompar && (
+                      <div style={{marginTop:'3mm', paddingTop:'3mm', borderTop:'1px dashed rgba(184,146,78,0.5)', display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:'3mm'}}>
+                        <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.14em', textTransform:'uppercase', color:'#a07f3f', fontWeight:700, lineHeight:1.4}}>Avec prime majorée<br/>{fmtEUR(primeCompar.prime)}/mois</div>
+                        <div style={{textAlign:'right'}}>
+                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'15pt', fontWeight:800, color:'#a07f3f', letterSpacing:'-0.02em'}}>{fmtEURc(primeCompar.net)}</div>
+                          <div style={{fontSize:'7.5pt', color:'#a07f3f', fontWeight:700}}>+{fmtEUR(primeCompar.net - sim.fisc.direct)} transmis</div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
                   </div>
@@ -6778,7 +6916,7 @@
 
               {/* Mention légale — placée tout en bas de page (via margin-top: auto) */}
               <div className="pres-fineprint" style={{marginTop:'6mm', flexShrink:0}}>
-                <strong>Mentions importantes</strong>
+                <div className="fp-title">Mentions importantes</div>
                 <div style={{marginTop:'1.5mm', display:'flex', flexDirection:'column', gap:'1.5mm'}}>
                   <div style={{display:'flex', alignItems:'flex-start', gap:'2mm'}}>
                     <span style={{flexShrink:0, fontWeight:700, color:'#0a0908'}}>1 /</span>
