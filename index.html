@@ -3153,12 +3153,12 @@
                   <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500 flex-shrink-0">Comparatif</div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1 min-w-0">
                     {/* Option LIVRET — exclusive avec l'autre AV */}
-                    <div className="flex items-center gap-2 rounded-lg px-3 py-2 transition" style={{ background: livretActive ? '#fde68a' : '#fef3c7', border: `2px solid ${livretActive ? '#d97706' : '#fbbf24'}`, boxShadow: livretActive ? '0 0 0 3px rgba(217,119,6,0.25)' : 'none' }}>
-                      <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: '#b45309' }}></span>
+                    <div className="flex items-center gap-2 rounded-lg px-3 py-2 transition" style={{ background: livretActive ? 'rgba(184,146,78,0.12)' : 'rgba(184,146,78,0.05)', border: `1px solid ${livretActive ? '#b8924e' : 'rgba(184,146,78,0.35)'}`, boxShadow: livretActive ? '0 0 0 3px rgba(184,146,78,0.14)' : 'none' }}>
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#b8924e' }}></span>
                       <input type="checkbox" checked={livretActive}
                         onChange={e => { if (e.target.checked) { setLivretActive(true); setAutreAV(p=>({...p, active:false})); setAvPop(false); } else setLivretActive(false); }}
-                        className="w-4 h-4 cursor-pointer flex-shrink-0" style={{ accentColor: '#b45309' }} />
-                      <span className="text-[12.5px] font-extrabold flex-1 whitespace-nowrap" style={{ color: '#78350f' }}>{isCapiProduit ? "Compte à terme" : "Compte sur livret"}</span>
+                        className="w-4 h-4 cursor-pointer flex-shrink-0" style={{ accentColor: '#b8924e' }} />
+                      <span className="text-[12px] font-bold flex-1 whitespace-nowrap" style={{ color: '#8a6d3a' }}>{isCapiProduit ? "Compte à terme" : "Compte sur livret"}</span>
                       {!isCapiProduit && (
                         <select value={inputs.livretId} disabled={!livretActive} onChange={e => { upd("livretId", e.target.value); upd("livretTaux", LIVRETS.find(p=>p.id===e.target.value).taux); }}
                           className="text-[11px] font-semibold text-stone-700 px-2 py-1.5 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900 disabled:opacity-60 disabled:cursor-not-allowed">
@@ -3175,12 +3175,12 @@
                     {/* Option ASSURANCE VIE CONCURRENCE — cocher décoche le livret */}
                     {!isCapiProduit && (
                       <div className="relative">
-                        <div className="flex items-center gap-2 rounded-lg px-3 py-2 transition" style={{ background: autreAV.active ? '#bae6fd' : '#e0f2fe', border: `2px solid ${autreAV.active ? '#0284c7' : '#7dd3fc'}`, boxShadow: autreAV.active ? '0 0 0 3px rgba(2,132,199,0.25)' : 'none' }}>
-                          <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: '#0369a1' }}></span>
+                        <div className="flex items-center gap-2 rounded-lg px-3 py-2 transition" style={{ background: autreAV.active ? 'rgba(71,85,105,0.10)' : 'rgba(71,85,105,0.04)', border: `1px solid ${autreAV.active ? '#475569' : 'rgba(71,85,105,0.3)'}`, boxShadow: autreAV.active ? '0 0 0 3px rgba(71,85,105,0.12)' : 'none' }}>
+                          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#475569' }}></span>
                           <input type="checkbox" checked={autreAV.active}
                             onChange={e => { if (e.target.checked) { setAutreAV(p=>({...p, active:true})); setLivretActive(false); setAvPop(true); } else { setAutreAV(p=>({...p, active:false})); setAvPop(false); } }}
-                            className="w-4 h-4 cursor-pointer flex-shrink-0" style={{ accentColor: '#0369a1' }} />
-                          <span className="text-[12.5px] font-extrabold flex-1 whitespace-nowrap" style={{ color: '#0c4a6e' }}>Assurance vie concurrence</span>
+                            className="w-4 h-4 cursor-pointer flex-shrink-0" style={{ accentColor: '#475569' }} />
+                          <span className="text-[12px] font-bold flex-1 whitespace-nowrap" style={{ color: '#334155' }}>Assurance vie concurrence</span>
                           <button type="button" onClick={()=>{ if(!autreAV.active){ setAutreAV(p=>({...p, active:true})); setLivretActive(false); } setAvPop(v=>!v); }}
                             className={`flex items-center gap-1 bg-white border rounded-lg px-2.5 py-1.5 transition ${autreAV.active ? 'border-slate-300 hover:border-slate-500' : 'border-stone-200 opacity-60'}`}>
                             <span className="num text-[12px] font-bold text-slate-800">{(autreAV.rdt*100).toFixed(2).replace('.',',')}</span>
