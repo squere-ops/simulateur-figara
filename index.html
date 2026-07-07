@@ -2066,6 +2066,8 @@
       const [pu, setPu] = useState(15000);
       const [pp, setPp] = useState(300);
       const [solve, setSolve] = useState('pp');            // 'pp' = fixe la PU, calcule la PP ; 'pu' = l'inverse
+      const [revMode, setRevMode] = useState('vie');       // 'vie' = rente à vie capital préservé ; 'duree' = revenu sur X ans (capital consommé)
+      const [dureeRetraite, setDureeRetraite] = useState('25'); // années de perception du revenu (mode 'duree')
       const [revs, setRevs] = useState([]);                // apports VALIDÉS (comptés dans le calcul) : {id, annee, montant}
       const [draftMontant, setDraftMontant] = useState('10000');
       const [draftAnnee, setDraftAnnee] = useState('5');
@@ -2078,7 +2080,14 @@
       const i = Math.pow(1 + rdt, 1/12) - 1;
       const nMonths = N * 12;
       const annuityF = i > 0 ? (Math.pow(1 + i, nMonths) - 1) / i : nMonths;
-      const capitalCible = rdt > 0 ? (rev * 12) / rdt : rev * 12 * N;
+      // Capital nécessaire à la retraite :
+      //   - 'vie'   → rente perpétuelle, capital préservé : R×12 / rendement
+      //   - 'duree' → revenu sur D années, capital consommé : valeur actuelle d'une annuité mensuelle
+      const Dr = Math.max(1, Number(dureeRetraite) || 0);
+      const Dm = Dr * 12;
+      const capitalCible = revMode === 'vie'
+        ? (rdt > 0 ? (rev * 12) / rdt : rev * 12 * N)
+        : (i > 0 ? rev * (1 - Math.pow(1 + i, -Dm)) / i : rev * Dm);
       const fvRev = revs.reduce((s, r) => s + (Number(r.montant) || 0) * Math.pow(1 + rdt, Math.max(0, N - (Number(r.annee) || 0))), 0);
 
       let ppReq = pp, puReq = pu, suffit = false;
@@ -2097,6 +2106,10 @@
       const usePU = solve === 'pp' ? pu : puReq;
       const capitalProjete = usePU * Math.pow(1 + rdt, N) + usePP * annuityF + fvRev;
       const totalVerse = usePU + usePP * nMonths + revs.reduce((s, r) => s + (Number(r.montant) || 0), 0);
+      // Revenu que le capital atteint peut réellement servir (selon le mode)
+      const revGen = revMode === 'vie'
+        ? capitalProjete * rdt / 12
+        : (i > 0 ? capitalProjete * i / (1 - Math.pow(1 + i, -Dm)) : capitalProjete / Dm);
 
       const validerApport = () => {
         const m = Number(draftMontant) || 0;
@@ -2139,15 +2152,31 @@
                 <div className="text-center"><div className={lblCls} style={{ color: SUB }}>Durée</div><div className="num text-[24px] font-extrabold tracking-tightest leading-none pt-1.5" style={{ color: T }}>{N}<span className="text-[13px] font-medium ml-1" style={{ color: SUB }}>ans</span></div></div>
                 <div><div className={lblCls} style={{ color: SUB }}>Rendement</div><div className="flex items-center bg-stone-50 border border-stone-200 rounded-xl focus-within:border-teal-600"><input type="number" inputMode="decimal" value={rdtPct} onChange={e => setRdtPct(e.target.value)} className="num flex-1 w-full text-right text-[15px] font-bold px-3 py-2.5 bg-transparent focus:outline-none" /><span className="px-2.5 text-stone-400 text-[13px]">%</span></div></div>
               </div>
-              <div className="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between flex-wrap gap-3" style={{ background: "linear-gradient(135deg, rgba(184,146,78,0.12), rgba(184,146,78,0.04))", border: "1px solid rgba(184,146,78,0.35)" }}>
-                <div className="flex items-center gap-3">
-                  <div className={lblCls + " mb-0"} style={{ color: GOLD }}>Revenu visé à la retraite</div>
-                  <div className="flex items-center bg-white border border-stone-200 rounded-xl focus-within:border-amber-500"><input type="number" inputMode="numeric" value={revenuCible} onChange={e => setRevenuCible(e.target.value)} className="num w-28 text-right text-[20px] font-extrabold px-3 py-2 bg-transparent focus:outline-none" style={{ color: INK }} /><span className="px-2.5 text-stone-400 text-[12px]">€/mois</span></div>
+              <div className="mt-5 rounded-2xl px-5 py-4" style={{ background: "linear-gradient(135deg, rgba(184,146,78,0.12), rgba(184,146,78,0.04))", border: "1px solid rgba(184,146,78,0.35)" }}>
+                <div className="flex items-center justify-between flex-wrap gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className={lblCls + " mb-0"} style={{ color: GOLD }}>Revenu visé à la retraite</div>
+                    <div className="flex items-center bg-white border border-stone-200 rounded-xl focus-within:border-amber-500"><input type="number" inputMode="numeric" value={revenuCible} onChange={e => setRevenuCible(e.target.value)} className="num w-28 text-right text-[20px] font-extrabold px-3 py-2 bg-transparent focus:outline-none" style={{ color: INK }} /><span className="px-2.5 text-stone-400 text-[12px]">€/mois</span></div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>Capital nécessaire</div>
+                    <div className="num text-[26px] font-extrabold tracking-tightest" style={{ color: GOLD }}>{fmtEUR(capitalCible)}</div>
+                    <div className="text-[10px]" style={{ color: SUB }}>{revMode === 'vie' ? 'rente à vie · capital préservé' : `sur ${Dr} ans · capital consommé`}</div>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>Capital nécessaire</div>
-                  <div className="num text-[26px] font-extrabold tracking-tightest" style={{ color: GOLD }}>{fmtEUR(capitalCible)}</div>
-                  <div className="text-[10px]" style={{ color: SUB }}>rente à vie · capital préservé</div>
+                {/* Mode de perception : à vie ou sur une durée */}
+                <div className="mt-3 pt-3 flex items-center gap-3 flex-wrap" style={{ borderTop: "1px solid rgba(184,146,78,0.25)" }}>
+                  <span className="text-[11px] font-bold" style={{ color: "#8a6d3a" }}>Perçu :</span>
+                  <div className="inline-flex bg-white/70 rounded-lg p-1 border border-amber-200">
+                    <button onClick={() => setRevMode('vie')} className={`px-3 py-1 rounded-md text-[11px] font-bold transition ${revMode === 'vie' ? 'bg-white shadow-sm' : ''}`} style={{ color: revMode === 'vie' ? GOLD : SUB }}>À vie (capital préservé)</button>
+                    <button onClick={() => setRevMode('duree')} className={`px-3 py-1 rounded-md text-[11px] font-bold transition ${revMode === 'duree' ? 'bg-white shadow-sm' : ''}`} style={{ color: revMode === 'duree' ? GOLD : SUB }}>Pendant X années</button>
+                  </div>
+                  {revMode === 'duree' && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] font-bold" style={{ color: "#8a6d3a" }}>pendant</span>
+                      <div className="flex items-center bg-white border border-stone-200 rounded-lg"><input type="number" inputMode="numeric" value={dureeRetraite} onChange={e => setDureeRetraite(e.target.value)} className="num w-14 px-2 py-1.5 text-right font-bold bg-transparent focus:outline-none" /><span className="px-2 text-[11px] text-stone-400">ans</span></div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -2201,13 +2230,13 @@
                   <>
                     <div className="text-[11px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Épargne mensuelle à prévoir</div>
                     <div className="num serif font-extrabold tracking-tightest leading-none my-1.5 text-white" style={{ fontSize: 62 }}>{fmtEUR(ppReq)}<span className="text-[22px] font-bold opacity-70"> /mois</span></div>
-                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>pendant <b className="text-white">{N} ans</b>, avec <b className="text-white">{fmtEUR(pu)}</b> de départ — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
+                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>pendant <b className="text-white">{N} ans</b>, avec <b className="text-white">{fmtEUR(pu)}</b> de départ — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> {revMode === 'vie' ? 'à vie' : `pendant ${Dr} ans`}.</div>
                   </>
                 ) : (
                   <>
                     <div className="text-[11px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Prime unique à prévoir</div>
                     <div className="num serif font-extrabold tracking-tightest leading-none my-1.5 text-white" style={{ fontSize: 62 }}>{fmtEUR(puReq)}</div>
-                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>au départ, avec <b className="text-white">{fmtEUR(pp)}/mois</b> pendant <b className="text-white">{N} ans</b> — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
+                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>au départ, avec <b className="text-white">{fmtEUR(pp)}/mois</b> pendant <b className="text-white">{N} ans</b> — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> {revMode === 'vie' ? 'à vie' : `pendant ${Dr} ans`}.</div>
                   </>
                 )}
               </div>
@@ -2217,7 +2246,7 @@
             <div className="grid grid-cols-3 gap-3 mb-8">
               <div className="rounded-2xl px-3 py-3 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: SUB }}>Total investi</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: INK }}>{fmtEUR(totalVerse)}</div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>sur {N} ans</div></div>
               <div className="rounded-2xl px-3 py-3 text-center bg-white border-2 shadow-sm" style={{ borderColor: "rgba(15,118,110,0.4)" }}><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: T }}>Capital atteint</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: T }}>{fmtEUR(capitalProjete)}</div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>à la retraite</div></div>
-              <div className="rounded-2xl px-3 py-3 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>Revenu à vie</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: GOLD }}>{fmtEUR(capitalProjete * rdt / 12)}<span className="text-[11px] font-medium" style={{ color: SUB }}>/mois</span></div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>capital préservé</div></div>
+              <div className="rounded-2xl px-3 py-3 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>{revMode === 'vie' ? 'Revenu à vie' : `Revenu / ${Dr} ans`}</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: GOLD }}>{fmtEUR(revGen)}<span className="text-[11px] font-medium" style={{ color: SUB }}>/mois</span></div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>{revMode === 'vie' ? 'capital préservé' : 'capital consommé'}</div></div>
             </div>
 
             {/* 3 — Apports ponctuels (saisie + Valider) */}
