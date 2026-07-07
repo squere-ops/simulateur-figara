@@ -2158,34 +2158,8 @@
               </div>
             </div>
 
-            {/* HERO résultat */}
-            <div className="rounded-3xl px-8 py-8 mb-5 text-center relative overflow-hidden" style={{ background: "linear-gradient(150deg,#0b3b37 0%,#0f766e 55%,#12897f 100%)", boxShadow: "0 24px 60px -30px rgba(15,118,110,0.6)" }}>
-              <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(420px 220px at 88% 0%, rgba(184,146,78,0.35), transparent)" }}></div>
-              <div className="relative">
-                {suffit ? (
-                  <>
-                    <div className="text-[12px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Objectif déjà atteint</div>
-                    <div className="num serif font-extrabold tracking-tightest leading-none my-2 text-white" style={{ fontSize: 56 }}>{fmtEUR(usePU)}</div>
-                    <div className="text-[15px]" style={{ color: "rgba(255,255,255,0.9)" }}>de prime unique suffisent — aucune épargne mensuelle nécessaire.</div>
-                  </>
-                ) : solve === 'pp' ? (
-                  <>
-                    <div className="text-[12px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Épargne mensuelle à prévoir</div>
-                    <div className="num serif font-extrabold tracking-tightest leading-none my-2 text-white" style={{ fontSize: 76 }}>{fmtEUR(ppReq)}<span className="text-[26px] font-bold opacity-70"> /mois</span></div>
-                    <div className="text-[15px]" style={{ color: "rgba(255,255,255,0.9)" }}>pendant <b className="text-white">{N} ans</b>, avec <b className="text-white">{fmtEUR(pu)}</b> de départ — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
-                  </>
-                ) : (
-                  <>
-                    <div className="text-[12px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Prime unique à prévoir</div>
-                    <div className="num serif font-extrabold tracking-tightest leading-none my-2 text-white" style={{ fontSize: 76 }}>{fmtEUR(puReq)}</div>
-                    <div className="text-[15px]" style={{ color: "rgba(255,255,255,0.9)" }}>au départ, avec <b className="text-white">{fmtEUR(pp)}/mois</b> pendant <b className="text-white">{N} ans</b> — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Curseur du levier choisi */}
-            <div className="rounded-2xl bg-white border border-stone-200 p-5 mb-8 shadow-sm">
+            {/* Curseur du levier choisi — EN PREMIER (capital de départ) */}
+            <div className="rounded-2xl bg-white border border-stone-200 p-5 mb-4 shadow-sm">
               {solve === 'pp' ? (
                 <>
                   <div className="flex items-baseline justify-between mb-2">
@@ -2194,7 +2168,6 @@
                   </div>
                   <input type="range" min={0} max={200000} step={1000} value={pu} onChange={e => setPu(parseInt(e.target.value))} className="slider w-full" style={{ background: `linear-gradient(to right, ${T} 0%, #34d399 ${(pu/200000)*100}%, #e7e5e4 ${(pu/200000)*100}%, #e7e5e4 100%)` }} />
                   <div className="flex justify-between text-[10px] mt-1.5" style={{ color: SUB }}><span>0 €</span><span>200 000 €</span></div>
-                  <div className="text-[12px] mt-2" style={{ color: SUB }}>Bougez le curseur : plus le capital de départ est élevé, plus l'effort mensuel baisse.</div>
                 </>
               ) : (
                 <>
@@ -2204,9 +2177,41 @@
                   </div>
                   <input type="range" min={0} max={3000} step={25} value={pp} onChange={e => setPp(parseInt(e.target.value))} className="slider w-full" style={{ background: `linear-gradient(to right, ${T} 0%, #34d399 ${(pp/3000)*100}%, #e7e5e4 ${(pp/3000)*100}%, #e7e5e4 100%)` }} />
                   <div className="flex justify-between text-[10px] mt-1.5" style={{ color: SUB }}><span>0 €</span><span>3 000 €/mois</span></div>
-                  <div className="text-[12px] mt-2" style={{ color: SUB }}>Bougez le curseur : plus l'effort mensuel est élevé, plus le capital de départ nécessaire baisse.</div>
                 </>
               )}
+            </div>
+
+            {/* HERO résultat — SOUS le curseur, compact */}
+            <div className="rounded-3xl px-8 py-6 mb-4 text-center relative overflow-hidden" style={{ background: "linear-gradient(150deg,#0b3b37 0%,#0f766e 55%,#12897f 100%)", boxShadow: "0 24px 60px -30px rgba(15,118,110,0.6)" }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(420px 220px at 88% 0%, rgba(184,146,78,0.35), transparent)" }}></div>
+              <div className="relative">
+                {suffit ? (
+                  <>
+                    <div className="text-[11px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Objectif déjà atteint</div>
+                    <div className="num serif font-extrabold tracking-tightest leading-none my-1.5 text-white" style={{ fontSize: 50 }}>{fmtEUR(usePU)}</div>
+                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>de prime unique suffisent — aucune épargne mensuelle nécessaire.</div>
+                  </>
+                ) : solve === 'pp' ? (
+                  <>
+                    <div className="text-[11px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Épargne mensuelle à prévoir</div>
+                    <div className="num serif font-extrabold tracking-tightest leading-none my-1.5 text-white" style={{ fontSize: 62 }}>{fmtEUR(ppReq)}<span className="text-[22px] font-bold opacity-70"> /mois</span></div>
+                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>pendant <b className="text-white">{N} ans</b>, avec <b className="text-white">{fmtEUR(pu)}</b> de départ — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-[11px] uppercase tracking-[0.2em] font-extrabold" style={{ color: "rgba(255,255,255,0.82)" }}>Prime unique à prévoir</div>
+                    <div className="num serif font-extrabold tracking-tightest leading-none my-1.5 text-white" style={{ fontSize: 62 }}>{fmtEUR(puReq)}</div>
+                    <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>au départ, avec <b className="text-white">{fmtEUR(pp)}/mois</b> pendant <b className="text-white">{N} ans</b> — pour toucher <b className="text-white">{fmtEUR(rev)}/mois</b> à vie.</div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Synthèse chiffrée — remontée ici pour être visible sans scroller */}
+            <div className="grid grid-cols-3 gap-3 mb-8">
+              <div className="rounded-2xl px-3 py-3 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: SUB }}>Total investi</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: INK }}>{fmtEUR(totalVerse)}</div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>sur {N} ans</div></div>
+              <div className="rounded-2xl px-3 py-3 text-center bg-white border-2 shadow-sm" style={{ borderColor: "rgba(15,118,110,0.4)" }}><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: T }}>Capital atteint</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: T }}>{fmtEUR(capitalProjete)}</div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>à la retraite</div></div>
+              <div className="rounded-2xl px-3 py-3 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[9.5px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>Revenu à vie</div><div className="num text-[20px] font-extrabold tracking-tightest mt-0.5" style={{ color: GOLD }}>{fmtEUR(capitalProjete * rdt / 12)}<span className="text-[11px] font-medium" style={{ color: SUB }}>/mois</span></div><div className="text-[9.5px] mt-0.5" style={{ color: SUB }}>capital préservé</div></div>
             </div>
 
             {/* 3 — Reversements ponctuels */}
@@ -2233,13 +2238,6 @@
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Synthèse chiffrée (sans graphe) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-              <div className="rounded-2xl px-5 py-4 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: SUB }}>Total investi</div><div className="num text-[24px] font-extrabold tracking-tightest mt-1" style={{ color: INK }}>{fmtEUR(totalVerse)}</div><div className="text-[10px] mt-0.5" style={{ color: SUB }}>sur {N} ans</div></div>
-              <div className="rounded-2xl px-5 py-4 text-center bg-white border-2 shadow-sm" style={{ borderColor: "rgba(15,118,110,0.4)" }}><div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: T }}>Capital atteint</div><div className="num text-[24px] font-extrabold tracking-tightest mt-1" style={{ color: T }}>{fmtEUR(capitalProjete)}</div><div className="text-[10px] mt-0.5" style={{ color: SUB }}>à la retraite</div></div>
-              <div className="rounded-2xl px-5 py-4 text-center bg-white border border-stone-200 shadow-sm"><div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: GOLD }}>Revenu à vie généré</div><div className="num text-[24px] font-extrabold tracking-tightest mt-1" style={{ color: GOLD }}>{fmtEUR(capitalProjete * rdt / 12)}<span className="text-[13px] font-medium" style={{ color: SUB }}>/mois</span></div><div className="text-[10px] mt-0.5" style={{ color: SUB }}>capital préservé</div></div>
             </div>
           </div>
         </div>
