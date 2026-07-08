@@ -4228,35 +4228,83 @@
               </div>
             );
           }
-          case "alloc": return (
-            <div>
-              <Eyebrow>Profil &amp; supports</Eyebrow>
-              <H className="text-4xl md:text-5xl mb-10">Votre allocation</H>
-              <RowList rows={inputs.allocation.map(s => ({ dot: SUPPORT_META[s.type].color, l: SUPPORT_META[s.type].label, v: `${(s.poids * 100).toFixed(0)} %` }))} />
-              <div className="max-w-2xl pt-10 pb-10 mt-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
-                <div className="text-[16px] font-medium mb-12" style={{ color: WOW_INK }}>Niveau de risque (SRI)</div>
-                <div className="relative h-2.5 rounded-full" style={{ background: "linear-gradient(90deg,#7BD0CF,#A5DC54,#F0CD3F,#F08C92)" }}>
-                  <div className="absolute -top-9 -translate-x-1/2 whitespace-nowrap text-[13px] font-bold" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, color: WOW_INK }}>{sriAlloc}/7 · {SRI_LABELS[sriAlloc]}</div>
-                  <div className="absolute -top-2 w-6 h-6 rounded-full bg-white shadow-md -translate-x-1/2" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, border: `3px solid ${SRI_COLORS[sriAlloc]}` }}></div>
+          case "alloc": {
+            const alloc = inputs.allocation;
+            const totP = alloc.reduce((s, a) => s + (a.poids || 0), 0) || 1;
+            const R = 76, CIRC = 2 * Math.PI * R;
+            let accF = 0;
+            const donutSegs = alloc.map((s, idx) => {
+              const frac = (s.poids || 0) / totP;
+              const seg = { color: SUPPORT_META[s.type].color, dash: frac * CIRC, offset: accF * CIRC };
+              accF += frac;
+              return seg;
+            });
+            return (
+              <div>
+                <Eyebrow>Profil &amp; supports</Eyebrow>
+                <H className="text-4xl md:text-5xl mb-6">Votre allocation</H>
+                {/* Donut + légende */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-8">
+                  <div className="flex justify-center">
+                    <div className="relative" style={{ width: 210, height: 210 }}>
+                      <svg width="210" height="210" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r={R} fill="none" stroke="rgba(29,39,53,0.06)" strokeWidth="26" />
+                        {donutSegs.map((sg, k) => (
+                          <circle key={k} cx="100" cy="100" r={R} fill="none" stroke={sg.color} strokeWidth="26"
+                            strokeDasharray={`${sg.dash} ${CIRC - sg.dash}`} strokeDashoffset={-sg.offset}
+                            transform="rotate(-90 100 100)" strokeLinecap="butt" />
+                        ))}
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="num text-[30px] font-extrabold tracking-tightest leading-none" style={{ color: WOW_INK }}>{sriAlloc}<span className="text-[15px] font-bold" style={{ color: WOW_SUB }}>/7</span></div>
+                        <div className="text-[10px] uppercase tracking-widest font-bold mt-1" style={{ color: WOW_SUB }}>{SRI_LABELS[sriAlloc]}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {alloc.map((s, k) => {
+                      const pct = (s.poids || 0) / totP * 100;
+                      const meta = SUPPORT_META[s.type];
+                      return (
+                        <div key={k}>
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: meta.color }}></span>
+                              <span className="text-[15px] font-bold" style={{ color: WOW_INK }}>{meta.label}</span>
+                            </div>
+                            <span className="num text-[20px] font-extrabold tracking-tightest" style={{ color: WOW_INK }}>{pct.toFixed(0)} %</span>
+                          </div>
+                          <div className="h-2 rounded-full bg-black/[0.05] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${pct}%`, background: meta.color }}></div></div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="relative h-5 mt-3 text-[11px]" style={{ color: WOW_SUB }}>
-                  {[1, 2, 3, 4, 5, 6, 7].map(n => <span key={n} className="absolute -translate-x-1/2" style={{ left: `${((n - 0.5) / 7) * 100}%`, color: n === sriAlloc ? WOW_INK : WOW_SUB, fontWeight: n === sriAlloc ? 800 : 600 }}>{n}</span>)}
+
+                {/* SRI + rendement — côte à côte, compact */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="rounded-2xl p-5" style={{ ...softStyle, background: "rgba(255,255,255,0.55)" }}>
+                    <div className="text-[12px] uppercase tracking-widest font-bold mb-8" style={{ color: WOW_SUB }}>Niveau de risque (SRI)</div>
+                    <div className="relative h-2.5 rounded-full" style={{ background: "linear-gradient(90deg,#7BD0CF,#A5DC54,#F0CD3F,#F08C92)" }}>
+                      <div className="absolute -top-7 -translate-x-1/2 whitespace-nowrap text-[12px] font-bold" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, color: WOW_INK }}>{sriAlloc}/7 · {SRI_LABELS[sriAlloc]}</div>
+                      <div className="absolute -top-1.5 w-5 h-5 rounded-full bg-white shadow-md -translate-x-1/2" style={{ left: `${((sriAlloc - 0.5) / 7) * 100}%`, border: `3px solid ${SRI_COLORS[sriAlloc]}` }}></div>
+                    </div>
+                    <div className="flex justify-between text-[10px] mt-3" style={{ color: WOW_SUB }}><span>Prudent</span><span>Offensif</span></div>
+                  </div>
+                  <div className="rounded-2xl p-5" style={{ background: "rgba(15,118,110,0.06)", border: "1px solid rgba(15,118,110,0.25)" }}>
+                    <div className="text-[12px] uppercase tracking-widest font-bold mb-3" style={{ color: WOW_TEAL }}>Hypothèse de rendement annuel</div>
+                    <div className="flex items-end justify-between">
+                      <div><div className="num text-[36px] font-extrabold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</div><div className="text-[11px] font-semibold mt-0.5" style={{ color: WOW_TEAL }}>médian</div></div>
+                      <div className="text-right text-[12px] leading-relaxed">
+                        <div style={{ color: "#b45309" }}>prudent <span className="num font-bold">{fmtPCT(sim.rdtPess)}</span></div>
+                        <div style={{ color: "#059669" }}>optimiste <span className="num font-bold">{fmtPCT(sim.rdtOpt)}</span></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-between text-[10px]" style={{ color: WOW_SUB }}><span>Prudent</span><span>Offensif</span></div>
               </div>
-              <div className="max-w-2xl pt-12 pb-8 mt-4" style={{ borderTop: `2px solid ${WOW_GOLD}55` }}>
-                <div className="text-[16px] font-medium mb-16" style={{ color: WOW_INK }}>Hypothèse de rendement annuel</div>
-                <div className="relative h-2.5 rounded-full" style={{ background: "linear-gradient(90deg,#b45309,#0f766e,#059669)" }}>
-                  <div className="absolute -top-16 left-1/2 -translate-x-1/2 text-center"><div className="num text-3xl font-bold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</div><div className="text-[11px] font-semibold mt-1" style={{ color: WOW_TEAL }}>médian</div></div>
-                  <div className="absolute -top-2 left-1/2 w-6 h-6 rounded-full bg-white shadow-md -translate-x-1/2" style={{ border: `3px solid ${WOW_TEAL}` }}></div>
-                </div>
-                <div className="flex justify-between mt-3 text-[12px]">
-                  <span style={{ color: "#b45309" }}><span className="num font-bold">{fmtPCT(sim.rdtPess)}</span> · prudent</span>
-                  <span style={{ color: "#059669" }}>optimiste · <span className="num font-bold">{fmtPCT(sim.rdtOpt)}</span></span>
-                </div>
-              </div>
-            </div>
-          );
+            );
+          }
           case "proj": return <ProjSlide />;
           case "succ": {
             const maxNet = Math.max(win.netTransmis, primeCol ? primeCol.netTransmis : 0, showRef ? refCol.netTransmis : 0, 1);
