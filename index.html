@@ -3946,14 +3946,16 @@
               const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
               const yc = y(mv);
               const lbl = `+${fmtEUR(Number(v.montant) || 0)}`;
-              const wLbl = 16 + lbl.length * 5.6;
+              const wLbl = Math.max(92, 16 + lbl.length * 6.2);
+              const cx2 = Math.max(pl + wLbl / 2, Math.min(W - pr - wLbl / 2, xc));
               return (
                 <g key={`comp${k}`}>
                   <line x1={xc} y1={yc} x2={xc} y2={Hh - pb} stroke={WOW_GOLD} strokeWidth="1.2" strokeDasharray="3 3" opacity="0.65" />
                   <circle cx={xc} cy={yc} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
-                  <g transform={`translate(${Math.max(pl + wLbl / 2, Math.min(W - pr - wLbl / 2, xc))}, ${yc - 22})`}>
-                    <rect x={-wLbl / 2} y={-11} width={wLbl} height="17" rx="8.5" fill={WOW_GOLD} />
-                    <text x="0" y="1.5" textAnchor="middle" fontSize="10" fontWeight="800" fill="#fff" className="num">{lbl}</text>
+                  <g transform={`translate(${cx2}, ${yc - 8})`}>
+                    <rect x={-wLbl / 2} y={-26} width={wLbl} height="30" rx="7" fill={WOW_GOLD} />
+                    <text x="0" y="-15" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.04em', textTransform: 'uppercase' }}>Versement compl.</text>
+                    <text x="0" y="-2" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" className="num">{lbl}</text>
                   </g>
                 </g>
               );
@@ -5664,17 +5666,21 @@
               ctx.save();
               ctx.strokeStyle = 'rgba(184,146,78,0.6)';
               ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 52); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 48); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
               ctx.setLineDash([]);
-              ctx.font = '800 10px Inter';
-              const text = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
-              const tw = ctx.measureText(text).width;
-              const padX = 7, h = 17;
-              const bx = Math.max(chartArea.left, Math.min(chartArea.right - (tw + padX * 2), xPos - (tw + padX * 2) / 2));
-              const by = chartArea.top + 56;
+              const cap = 'VERSEMENT COMPL.';
+              const amt = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
+              ctx.font = '700 7px Inter'; const capW = ctx.measureText(cap).width;
+              ctx.font = '800 11px Inter'; const amtW = ctx.measureText(amt).width;
+              const padX = 8, h = 27, w = Math.max(capW, amtW) + padX * 2;
+              const bx = Math.max(chartArea.left, Math.min(chartArea.right - w, xPos - w / 2));
+              const by = chartArea.top + 46;
               ctx.fillStyle = '#b8924e';
-              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw + padX * 2, h, 8.5); ctx.fill(); } else ctx.fillRect(bx, by, tw + padX * 2, h);
-              ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(text, bx + padX, by + h / 2);
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, h, 8); ctx.fill(); } else ctx.fillRect(bx, by, w, h);
+              ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              ctx.font = '700 7px Inter'; ctx.fillText(cap, bx + w / 2, by + 5);
+              ctx.font = '800 11px Inter'; ctx.fillText(amt, bx + w / 2, by + 13);
+              ctx.textAlign = 'left';
               ctx.restore();
             });
           },
@@ -6408,17 +6414,21 @@
               ctx.save();
               ctx.strokeStyle = 'rgba(184,146,78,0.6)';
               ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 8); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 4); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
               ctx.setLineDash([]);
-              ctx.font = '800 9px Inter';
-              const text = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
-              const tw = ctx.measureText(text).width;
-              const padX = 6, h = 15;
-              const bx = Math.max(chartArea.left, Math.min(chartArea.right - (tw + padX * 2), xPos - (tw + padX * 2) / 2));
-              const by = chartArea.top + 6;
+              const cap = 'VERSEMENT COMPL.';
+              const amt = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
+              ctx.font = '700 6px Inter'; const capW = ctx.measureText(cap).width;
+              ctx.font = '800 9px Inter'; const amtW = ctx.measureText(amt).width;
+              const padX = 6, h = 22, w = Math.max(capW, amtW) + padX * 2;
+              const bx = Math.max(chartArea.left, Math.min(chartArea.right - w, xPos - w / 2));
+              const by = chartArea.top + 4;
               ctx.fillStyle = '#b8924e';
-              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw + padX * 2, h, 7.5); ctx.fill(); } else ctx.fillRect(bx, by, tw + padX * 2, h);
-              ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(text, bx + padX, by + h / 2);
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, h, 6); ctx.fill(); } else ctx.fillRect(bx, by, w, h);
+              ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+              ctx.font = '700 6px Inter'; ctx.fillText(cap, bx + w / 2, by + 4);
+              ctx.font = '800 9px Inter'; ctx.fillText(amt, bx + w / 2, by + 11);
+              ctx.textAlign = 'left';
               ctx.restore();
             });
           },
@@ -6659,65 +6669,51 @@
               {/* Ligne décorative Figara sous le titre */}
               <FigaraRule style={{margin:'4mm 0 0'}}/>
 
-              {/* Hypothèses retenues — carte récap enrichie (net de frais + remise commerciale) */}
+              {/* Hypothèses retenues — récap propre, aligné, dans l'ordre demandé */}
               {(() => {
+                const nf = (x) => new Intl.NumberFormat('fr-FR').format(Math.round(x || 0));
                 const frais = inputs.fraisSouscription || 0;
-                const netInit = inputs.versementInitial * (1 - frais);
-                const netMens = inputs.versementMensuel * (1 - frais);
+                const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
+                const totalComp = comps.reduce((s, v) => s + (Number(v.montant) || 0), 0);
                 const remiseEur = Math.max(0, (FRAIS_SOUSC_MAX - frais)) * totalVerseBrut;
                 const remisePct = FRAIS_SOUSC_MAX > 0 ? Math.max(0, (FRAIS_SOUSC_MAX - frais)) / FRAIS_SOUSC_MAX * 100 : 0;
-                const subNet = { fontSize:'6.5pt', color:'#047857', fontWeight:700, marginTop:'0.6mm', fontFamily:"'JetBrains Mono', monospace", letterSpacing:'0.02em' };
-                const subGold = { fontSize:'6.5pt', color:'#b45309', fontWeight:700, marginTop:'0.6mm', fontFamily:"'JetBrains Mono', monospace" };
+                const totalNet = totalVerseBrut * (1 - frais);
+                const items = [
+                  { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€' },
+                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.length === 1 ? `à l'année ${comps[0].annee}` : `${comps.length} apports` }] : []),
+                  { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m' },
+                  { k: 'Durée', v: `${N}`, u: 'ans' },
+                  { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', gold: true },
+                  { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null },
+                  { k: 'Total net versé', v: nf(totalNet), u: '€', highlight: true },
+                ];
                 return (
-              <div className="pres-cmp-card" style={{marginTop:'8mm', padding:'4.5mm 5mm'}}>
-                <div className="cmp-title">Hypothèses retenues</div>
-                <div className="pres-hyp-row" style={{marginTop:'2.5mm'}}>
-                  <div className="pres-hyp-cell">
-                    <div className="pres-hyp-k">Versement initial</div>
-                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementInitial)}</span><span className="unit">€</span></div>
-                    <div style={subNet}>net {new Intl.NumberFormat('fr-FR').format(Math.round(netInit))} €</div>
-                  </div>
-                  <div className="pres-hyp-cell">
-                    <div className="pres-hyp-k">Versement mensuel</div>
-                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}</span><span className="unit">€/m</span></div>
-                    <div style={subNet}>net {new Intl.NumberFormat('fr-FR').format(Math.round(netMens))} €/m</div>
-                  </div>
-                  <div className="pres-hyp-cell">
-                    <div className="pres-hyp-k">Durée</div>
-                    <div className="pres-hyp-v"><span className="num-val">{N}</span><span className="unit">ans</span></div>
-                  </div>
-                  <div className="pres-hyp-cell">
-                    <div className="pres-hyp-k">Rendement médian</div>
-                    <div className="pres-hyp-v gold"><span className="num-val">{(sim.rdtMed*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
-                  </div>
-                  <div className="pres-hyp-cell">
-                    <div className="pres-hyp-k">Frais d'entrée</div>
-                    <div className="pres-hyp-v"><span className="num-val">{(frais*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
-                    {remiseEur > 0 && <div style={subGold}>remise {new Intl.NumberFormat('fr-FR').format(Math.round(remiseEur))} € · −{remisePct.toFixed(0)} %</div>}
-                  </div>
-                  <div className="pres-hyp-cell highlight">
-                    <div className="pres-hyp-k">Total versé</div>
-                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(totalVerseBrut)}</span><span className="unit">€</span></div>
-                  </div>
-                </div>
-                {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
-                  <div style={{marginTop:'3mm', paddingTop:'2.5mm', borderTop:'1px dashed rgba(10,9,8,0.12)', display:'flex', alignItems:'baseline', gap:'3mm', flexWrap:'wrap'}}>
-                    <span style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.18em', textTransform:'uppercase', color:'#047857', fontWeight:700}}>Versements complémentaires</span>
-                    <span style={{fontSize:'8.5pt', color:'#57534e'}}>
-                      {inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).map((v, k, arr) => (
-                        <span key={k}><strong style={{color:'#0a0908'}}>{fmtEUR(Number(v.montant)||0)}</strong> à l'année {v.annee}{k < arr.length - 1 ? ' · ' : ''}</span>
+                  <div className="pres-cmp-card" style={{ marginTop: '5mm', padding: '4.5mm 5mm' }}>
+                    <div className="cmp-title">Hypothèses retenues</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${items.length}, 1fr)`, marginTop: '3mm' }}>
+                      {items.map((it, idx) => (
+                        <div key={idx} style={{
+                          textAlign: 'center', padding: '2mm 2mm', minHeight: '20mm',
+                          borderRight: idx < items.length - 1 ? '1px solid rgba(10,9,8,0.08)' : 'none',
+                          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2mm',
+                          ...(it.highlight ? { background: 'linear-gradient(180deg,#ecfdf5,#d1fae5)', borderRadius: '2mm', border: 'none' } : {}),
+                        }}>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', letterSpacing: '0.14em', textTransform: 'uppercase', color: it.highlight ? '#047857' : '#57534e', fontWeight: 700, lineHeight: 1.3, minHeight: '6mm', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{it.k}</div>
+                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '11pt', fontWeight: 700, color: it.highlight ? '#047857' : (it.gold ? '#57534e' : '#0a0908'), lineHeight: 1, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                            {it.v}<span style={{ fontSize: '7pt', fontWeight: 500, color: it.highlight ? '#047857' : '#78716c', marginLeft: '1px' }}>{it.u}</span>
+                          </div>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', lineHeight: 1.2, minHeight: '3mm', whiteSpace: 'nowrap' }}>{it.sub || ''}</div>
+                        </div>
                       ))}
-                    </span>
+                    </div>
                   </div>
-                )}
-              </div>
                 );
               })()}
 
               {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
               <div className="pres-cmp-card" style={{marginTop:'4mm', padding:'4mm 5mm 5mm'}}>
                 <div className="cmp-title">Évolution comparée · Capital & scenarii</div>
-                <div style={{width:'100%', height:'70mm', position:'relative'}}>
+                <div style={{width:'100%', height:'58mm', position:'relative'}}>
                   <canvas ref={printChartRef}></canvas>
                 </div>
                 <div style={{display:'none'}}>
@@ -6773,7 +6769,7 @@
               </div>
 
               {/* 3 modules dashboard : Multiplicateur · Allocation · (Rente AV/PER ou Net après IS Capi) — espacement homogène */}
-              <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'4mm', marginBottom:'2mm'}}>
+              <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'2mm', marginBottom:'0'}}>
                 {/* DONUT Multiplicateur — cercle agrandi + ligne Figara + chiffres plus gros */}
                 {(() => {
                   // En mode PER : on affiche le multiplicateur avec ET sans réintégration
