@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD graphes-collision-v4 (pastilles anti-chevauchement)', 'color:#0f766e;font-weight:700');
+    console.log('%cBUILD graphes-v5 (pastilles colonne unique, zero chevauchement)', 'color:#0f766e;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3955,26 +3955,12 @@
                 return cands.length ? Math.max(...cands) : 0;
               };
               const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
-              // détection de collision par rectangles : rien ne se pose sur l'en-tête ni sur une autre pastille
-              const rects = [{ x: pl + 6, y: by, w: headerW, h: hH }];
-              const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
-              const findRow = (px, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x: px, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
-              const placed = sorted.map(({ v, yr }) => {
+              // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
+              const pxL = pl + 6;
+              const placed = sorted.map(({ v, yr }, k) => {
                 const xc = pl + (yr / (n - 1)) * (W - pl - pr);
                 const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
-                const yv = y(mv);
-                // 1) aplomb, dans l'espace au-dessus de la courbe
-                const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, xc));
-                const px = xt - pW / 2;
-                const maxYA = y(curveTopVal(yr)) - pH - 6;
-                let py = (maxYA >= firstRowY) ? findRow(px, firstRowY, maxYA) : null;
-                if (py != null) { rects.push({ x: px, y: py, w: pW, h: pH }); return { v, yr, xc, yv, mode: 'aplomb', xt, px, py }; }
-                // 2) repli colonne gauche, empilé sans chevauchement
-                const pxL = pl + 6;
-                py = findRow(pxL, firstRowY, yv - pH - 4);
-                if (py == null) py = firstRowY;
-                rects.push({ x: pxL, y: py, w: pW, h: pH });
-                return { v, yr, xc, yv, mode: 'left', xt: pxL + pW / 2, px: pxL, py };
+                return { v, yr, xc, yv: y(mv), mode: 'left', xt: pxL + pW / 2, px: pxL, py: firstRowY + k * (pH + gap) };
               });
               return (
                 <g>
@@ -5692,22 +5678,11 @@
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
             // détection de collision par rectangles : rien ne se pose sur l'en-tête ni sur une autre pastille
-            const rects = [{ x: bx, y: by, w: hW, h: hH }];
-            const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
-            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
-            const placed = sorted.map(o => {
-              const mp = medPix(o.yr); const yv = mp.y;
-              // 1) aplomb : centré sur l'année, uniquement dans l'espace au-dessus de la courbe
-              const xA = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-              const maxYA = curveTopPix(o.yr) - pH - 6; // bas de pastille doit rester au-dessus de la courbe
-              let py = (maxYA >= firstRowY) ? findRow(xA, firstRowY, maxYA) : null;
-              if (py != null) { rects.push({ x: xA, y: py, w: pW, h: pH }); return { ...o, mode: 'aplomb', px: xA, py, yv }; }
-              // 2) repli colonne gauche : empilé vers le bas, sans chevauchement
-              const xL = chartArea.left + 6;
-              py = findRow(xL, firstRowY, chartArea.bottom - pH);
-              if (py == null) py = firstRowY;
-              rects.push({ x: xL, y: py, w: pW, h: pH });
-              return { ...o, mode: 'left', px: xL, py, yv };
+            // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
+            const xL = chartArea.left + 6;
+            const placed = sorted.map((o, k) => {
+              const mp = medPix(o.yr);
+              return { ...o, mode: 'left', px: xL, py: firstRowY + k * (pH + gap), yv: mp.y };
             });
             // en-tête
             ctx.fillStyle = '#b8924e';
@@ -6472,20 +6447,11 @@
             };
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            const rects = [{ x: bx, y: by, w: hW, h: hH }];
-            const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
-            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
-            const placed = sorted.map(o => {
-              const mp = medPix(o.yr); const yv = mp.y;
-              const xA = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-              const maxYA = curveTopPix(o.yr) - pH - 5;
-              let py = (maxYA >= firstRowY) ? findRow(xA, firstRowY, maxYA) : null;
-              if (py != null) { rects.push({ x: xA, y: py, w: pW, h: pH }); return { ...o, mode: 'aplomb', px: xA, py, yv }; }
-              const xL = chartArea.left + 5;
-              py = findRow(xL, firstRowY, chartArea.bottom - pH);
-              if (py == null) py = firstRowY;
-              rects.push({ x: xL, y: py, w: pW, h: pH });
-              return { ...o, mode: 'left', px: xL, py, yv };
+            // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
+            const xL = chartArea.left + 5;
+            const placed = sorted.map((o, k) => {
+              const mp = medPix(o.yr);
+              return { ...o, mode: 'left', px: xL, py: firstRowY + k * (pH + gap), yv: mp.y };
             });
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
