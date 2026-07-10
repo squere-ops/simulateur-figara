@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD graphes-v7 (pas de trait/point en fin de courbe + bloc PDF remonte)', 'color:#0f766e;font-weight:700');
+    console.log('%cBUILD graphes-v8 (pastilles a l aplomb en haut + trait vertical, style mockup)', 'color:#0f766e;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3955,22 +3955,31 @@
                 return cands.length ? Math.max(...cands) : 0;
               };
               const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
-              // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
-              const pxL = pl + 6;
-              const placed = sorted.map(({ v, yr }, k) => {
+              // pastille À L'APLOMB de son année, poussée dans l'espace vide EN HAUT ; empilée si années proches ; jamais sur la courbe
+              const rects = [{ x: pl + 6, y: by, w: headerW, h: hH }];
+              const hitR = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+              const findRow = (px, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x: px, y: yy, w: pW, h: pH }; if (!rects.some(q => hitR(r, q))) return yy; yy += (pH + gap); } return null; };
+              const placed = sorted.map(({ v, yr }) => {
                 const xc = pl + (yr / (n - 1)) * (W - pl - pr);
                 const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
-                return { v, yr, xc, yv: y(mv), mode: 'left', xt: pxL + pW / 2, px: pxL, py: firstRowY + k * (pH + gap) };
+                const yv = y(mv);
+                const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, xc));
+                const px = xt - pW / 2;
+                const maxY = y(curveTopVal(yr)) - pH - 6;      // reste au-dessus de la courbe
+                let py = findRow(px, pt + 2, Math.max(pt + 2, maxY));
+                if (py == null) py = pt + 2;                   // repli : tout en haut
+                rects.push({ x: px, y: py, w: pW, h: pH });
+                return { v, yr, xc, yv, xt, px, py };
               });
               return (
                 <g>
-                  {/* traits de rappel VERTICAUX (droits) — pas de trait/point en fin de courbe (zone encombrée) */}
-                  {placed.map((p, k) => (p.xc <= pl + 0.85 * (W - pl - pr)) ? (
+                  {/* traits de rappel VERTICAUX du bas de la pastille jusqu'au point sur la courbe */}
+                  {placed.map((p, k) => (
                     <g key={`cd${k}`}>
-                      <line x1={p.xc} y1={firstRowY} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.45" />
+                      <line x1={p.xc} y1={p.py + pH} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.45" />
                       <circle cx={p.xc} cy={p.yv} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
                     </g>
-                  ) : null)}
+                  ))}
                   {/* En-tête à gauche */}
                   <rect x={pl + 6} y={by} width={headerW} height={hH} rx="7" fill={WOW_GOLD} />
                   <text x={pl + 6 + headerW / 2} y={by + hH / 2 + 3} textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
@@ -5675,28 +5684,31 @@
             };
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            // détection de collision par rectangles : rien ne se pose sur l'en-tête ni sur une autre pastille
-            // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
-            const xL = chartArea.left + 6;
-            const placed = sorted.map((o, k) => {
+            // pastille À L'APLOMB de son année, poussée dans l'espace vide EN HAUT ; empilée si années proches ; jamais sur la courbe
+            const topY = chartArea.top + 2;
+            const rects = [{ x: bx, y: by, w: hW, h: hH }];
+            const hitR = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hitR(r, q))) return yy; yy += (pH + gap); } return null; };
+            const placed = sorted.map(o => {
               const mp = medPix(o.yr);
-              return { ...o, mode: 'left', px: xL, py: firstRowY + k * (pH + gap), yv: mp.y };
+              const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+              const maxY = curveTopPix(o.yr) - pH - 6;
+              let py = findRow(px, topY, Math.max(topY, maxY));
+              if (py == null) py = topY;
+              rects.push({ x: px, y: py, w: pW, h: pH });
+              return { ...o, px, py, yv: mp.y };
             });
             // en-tête
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 7); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
-            // pastilles + traits de rappel VERTICAUX (droits) à l'aplomb de l'année + point sur la courbe
-            const endZone = chartArea.left + 0.85 * (chartArea.right - chartArea.left);
+            // pastilles + traits de rappel VERTICAUX du bas de la pastille jusqu'au point sur la courbe
             placed.forEach(o => {
               const py = o.py;
-              // trait + point seulement si l'année n'est pas en fin de courbe (zone encombrée)
-              if (o.xt <= endZone) {
-                ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-                ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
-                ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 3.2, 0, Math.PI * 2); ctx.fill();
-              }
+              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
+              ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 3.2, 0, Math.PI * 2); ctx.fill();
               ctx.fillStyle = '#fff';
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 6); ctx.fill(); } else ctx.fillRect(o.px, py, pW, pH);
               ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.5;
@@ -6446,22 +6458,29 @@
             };
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            // colonne unique en haut à gauche : une pastille par ligne → chevauchement impossible
-            const xL = chartArea.left + 5;
-            const placed = sorted.map((o, k) => {
+            // pastille À L'APLOMB de son année, poussée dans l'espace vide EN HAUT ; empilée si années proches ; jamais sur la courbe
+            const topY = chartArea.top + 1;
+            const rects = [{ x: bx, y: by, w: hW, h: hH }];
+            const hitR = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hitR(r, q))) return yy; yy += (pH + gap); } return null; };
+            const placed = sorted.map(o => {
               const mp = medPix(o.yr);
-              return { ...o, mode: 'left', px: xL, py: firstRowY + k * (pH + gap), yv: mp.y };
+              const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+              const maxY = curveTopPix(o.yr) - pH - 4;
+              let py = findRow(px, topY, Math.max(topY, maxY));
+              if (py == null) py = topY;
+              rects.push({ x: px, y: py, w: pW, h: pH });
+              return { ...o, px, py, yv: mp.y };
             });
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.font = '700 5.5px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
-            const endZone = chartArea.left + 0.85 * (chartArea.right - chartArea.left);
             placed.forEach(o => {
               const py = o.py;
-              if (o.xt <= endZone) {
+              {
                 ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-                ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
+                ctx.beginPath(); ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
                 ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 2.6, 0, Math.PI * 2); ctx.fill();
               }
               ctx.fillStyle = '#fff';
