@@ -3954,27 +3954,26 @@
                 return cands.length ? Math.max(...cands) : 0;
               };
               const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
-              const rowRight = [];   // collision horizontale (mode aplomb)
-              let leftStack = 0;     // empilement colonne gauche (repli)
-              // pastille à l'aplomb SI place au-dessus de la courbe ; sinon repli à gauche
+              // détection de collision par rectangles : rien ne se pose sur l'en-tête ni sur une autre pastille
+              const rects = [{ x: pl + 6, y: by, w: headerW, h: hH }];
+              const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+              const findRow = (px, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x: px, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
               const placed = sorted.map(({ v, yr }) => {
                 const xc = pl + (yr / (n - 1)) * (W - pl - pr);
                 const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
                 const yv = y(mv);
-                const room = y(curveTopVal(yr)) - firstRowY;   // espace libre au-dessus de la courbe
-                if (room >= pH + 6) {
-                  const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, xc));
-                  const px = xt - pW / 2;
-                  const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
-                  let row = 0;
-                  while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
-                  rowRight[row] = px + pW;
-                  return { v, yr, xc, yv, mode: 'aplomb', xt, px, py: firstRowY + row * (pH + gap) };
-                }
-                const px = pl + 6;
-                const py = firstRowY + leftStack * (pH + gap);
-                leftStack++;
-                return { v, yr, xc, yv, mode: 'left', xt: px + pW / 2, px, py };
+                // 1) aplomb, dans l'espace au-dessus de la courbe
+                const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, xc));
+                const px = xt - pW / 2;
+                const maxYA = y(curveTopVal(yr)) - pH - 6;
+                let py = (maxYA >= firstRowY) ? findRow(px, firstRowY, maxYA) : null;
+                if (py != null) { rects.push({ x: px, y: py, w: pW, h: pH }); return { v, yr, xc, yv, mode: 'aplomb', xt, px, py }; }
+                // 2) repli colonne gauche, empilé sans chevauchement
+                const pxL = pl + 6;
+                py = findRow(pxL, firstRowY, yv - pH - 4);
+                if (py == null) py = firstRowY;
+                rects.push({ x: pxL, y: py, w: pW, h: pH });
+                return { v, yr, xc, yv, mode: 'left', xt: pxL + pW / 2, px: pxL, py };
               });
               return (
                 <g>
@@ -5691,24 +5690,23 @@
             };
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            const rowRight = [];  // collision horizontale (aplomb)
-            let leftStack = 0;    // empilement colonne gauche (repli)
-            // pastille à l'aplomb SI place au-dessus de la courbe ; sinon repli à gauche avec trait de rappel
+            // détection de collision par rectangles : rien ne se pose sur l'en-tête ni sur une autre pastille
+            const rects = [{ x: bx, y: by, w: hW, h: hH }];
+            const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
             const placed = sorted.map(o => {
-              const mp = medPix(o.yr);
-              const room = curveTopPix(o.yr) - firstRowY;
-              const yv = mp.y;
-              if (room >= pH + 6) {
-                const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-                const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
-                let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
-                rowRight[row] = px + pW;
-                return { ...o, mode: 'aplomb', px, py: firstRowY + row * (pH + gap), yv };
-              }
-              const px = chartArea.left + 6;
-              const py = firstRowY + leftStack * (pH + gap);
-              leftStack++;
-              return { ...o, mode: 'left', px, py, yv };
+              const mp = medPix(o.yr); const yv = mp.y;
+              // 1) aplomb : centré sur l'année, uniquement dans l'espace au-dessus de la courbe
+              const xA = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+              const maxYA = curveTopPix(o.yr) - pH - 6; // bas de pastille doit rester au-dessus de la courbe
+              let py = (maxYA >= firstRowY) ? findRow(xA, firstRowY, maxYA) : null;
+              if (py != null) { rects.push({ x: xA, y: py, w: pW, h: pH }); return { ...o, mode: 'aplomb', px: xA, py, yv }; }
+              // 2) repli colonne gauche : empilé vers le bas, sans chevauchement
+              const xL = chartArea.left + 6;
+              py = findRow(xL, firstRowY, chartArea.bottom - pH);
+              if (py == null) py = firstRowY;
+              rects.push({ x: xL, y: py, w: pW, h: pH });
+              return { ...o, mode: 'left', px: xL, py, yv };
             });
             // en-tête
             ctx.fillStyle = '#b8924e';
@@ -6473,23 +6471,20 @@
             };
             const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            const rowRight = [];
-            let leftStack = 0;
+            const rects = [{ x: bx, y: by, w: hW, h: hH }];
+            const hit = (a, b) => !(a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y);
+            const findRow = (x, startY, maxY) => { let yy = startY; while (yy <= maxY) { const r = { x, y: yy, w: pW, h: pH }; if (!rects.some(q => hit(r, q))) return yy; yy += (pH + gap); } return null; };
             const placed = sorted.map(o => {
-              const mp = medPix(o.yr);
-              const room = curveTopPix(o.yr) - firstRowY;
-              const yv = mp.y;
-              if (room >= pH + 5) {
-                const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-                const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
-                let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
-                rowRight[row] = px + pW;
-                return { ...o, mode: 'aplomb', px, py: firstRowY + row * (pH + gap), yv };
-              }
-              const px = chartArea.left + 5;
-              const py = firstRowY + leftStack * (pH + gap);
-              leftStack++;
-              return { ...o, mode: 'left', px, py, yv };
+              const mp = medPix(o.yr); const yv = mp.y;
+              const xA = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+              const maxYA = curveTopPix(o.yr) - pH - 5;
+              let py = (maxYA >= firstRowY) ? findRow(xA, firstRowY, maxYA) : null;
+              if (py != null) { rects.push({ x: xA, y: py, w: pW, h: pH }); return { ...o, mode: 'aplomb', px: xA, py, yv }; }
+              const xL = chartArea.left + 5;
+              py = findRow(xL, firstRowY, chartArea.bottom - pH);
+              if (py == null) py = firstRowY;
+              rects.push({ x: xL, y: py, w: pW, h: pH });
+              return { ...o, mode: 'left', px: xL, py, yv };
             });
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
