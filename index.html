@@ -4410,10 +4410,10 @@
               ...(!isCapiProduit ? [{ t: "Rente à vie / mois", sub: "capital préservé", av: win.renteNetteMois, liv: refCol.renteNetteMois, pr: primeCol ? primeCol.renteNetteMois : null, fmt: v => `${fmtEUR(v)}/mois` }] : []),
             ];
             const EL = ({ k, v, s }) => (
-              <div className="px-1 flex flex-col">
-                <div className="text-[9.5px] uppercase tracking-widest font-bold mb-1 leading-tight" style={{ color: WOW_SUB, minHeight: '2.2em' }}>{k}</div>
-                <div className="num text-[17px] font-bold tracking-tightest leading-none" style={{ color: WOW_INK }}>{v}</div>
-                {s && <div className="text-[10px] mt-0.5" style={{ color: WOW_SUB }}>{s}</div>}
+              <div className="rounded-xl bg-white/70 px-3 py-3 text-center" style={{ border: "1px solid rgba(29,39,53,0.10)", boxShadow: "0 1px 2px rgba(29,39,53,0.03)" }}>
+                <div className="text-[9px] uppercase tracking-widest font-bold leading-tight" style={{ color: WOW_SUB, minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k}</div>
+                <div className="num text-[18px] font-extrabold tracking-tightest leading-none mt-1" style={{ color: WOW_INK }}>{v}</div>
+                {s && <div className="text-[9.5px] mt-0.5" style={{ color: WOW_SUB }}>{s}</div>}
               </div>
             );
             return (
@@ -4427,7 +4427,7 @@
                     <div className="text-[10px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_GOLD }}>Le projet</div>
                     <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-6 gap-y-5 gap-x-6">
+                  <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
                     <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} />
                     <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" />
                     <EL k="Durée" v={`${inputs.dureeAnnees} ans`} />
@@ -6665,14 +6665,6 @@
                 return (
                   <div className="pres-cmp-card" style={{ marginTop: '4mm', padding: '4mm 5mm 4.5mm' }}>
                     <div className="cmp-title">Hypothèses retenues</div>
-                    {/* HERO — Total net versé */}
-                    <div style={{ marginTop: '2.5mm', borderRadius: '2.5mm', background: 'linear-gradient(120deg,#065f46 0%,#047857 55%,#10b981 100%)', padding: '3mm 6mm', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 3mm 8mm -6mm rgba(4,120,87,0.5)' }}>
-                      <div>
-                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7pt', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>Total net versé</div>
-                        <div style={{ fontSize: '7.5pt', color: 'rgba(255,255,255,0.7)', marginTop: '0.8mm' }}>net de frais d'entrée · investi réellement</div>
-                      </div>
-                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '22pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '11pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
-                    </div>
                     {/* Détails — chips aérés, 3 par rangée, centrés */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3mm', marginTop: '3mm' }}>
                       {details.map((it, idx) => (
@@ -6685,6 +6677,14 @@
                         </div>
                       ))}
                     </div>
+                    {/* HERO — Total net versé (EN BAS) */}
+                    <div style={{ marginTop: '3.5mm', borderRadius: '2.5mm', background: 'linear-gradient(120deg,#065f46 0%,#047857 55%,#10b981 100%)', padding: '3mm 6mm', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 3mm 8mm -6mm rgba(4,120,87,0.5)' }}>
+                      <div>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7pt', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>Total net versé</div>
+                        <div style={{ fontSize: '7.5pt', color: 'rgba(255,255,255,0.7)', marginTop: '0.8mm' }}>net de frais d'entrée · investi réellement</div>
+                      </div>
+                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '22pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '11pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
+                    </div>
                   </div>
                 );
               })()}
@@ -6692,7 +6692,7 @@
               {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
               <div className="pres-cmp-card" style={{marginTop:'4mm', padding:'4mm 5mm 5mm'}}>
                 <div className="cmp-title">Évolution comparée · Capital & scenarii</div>
-                <div style={{width:'100%', height:'50mm', position:'relative'}}>
+                <div style={{width:'100%', height:'42mm', position:'relative'}}>
                   <canvas ref={printChartRef}></canvas>
                 </div>
                 <div style={{display:'none'}}>
@@ -6985,7 +6985,7 @@
               {!isCapi ? (
                 <div style={{display:'flex', flexDirection:'column', gap:'3mm', marginTop:'10mm'}}>
                   {(() => {
-                    const CmpCard = ({ title, valSol, valLiv, fmt = fmtEURc, sub, gainPct, solLabel, livLabel, winLabel }) => {
+                    const CmpCard = ({ title, valSol, valLiv, fmt = fmtEURc, sub, gainPct, solLabel, livLabel, winLabel, accent }) => {
                       const max = Math.max(valSol, valLiv, 1);
                       const gain = valSol - valLiv;
                       const wSol = (valSol / max) * 100;
@@ -6993,7 +6993,7 @@
                       return (
                         <div style={{display:'flex', alignItems:'center', gap:'0', border:'1px solid rgba(10,9,8,0.10)', borderRadius:'3mm', overflow:'hidden', background:'#fff', minHeight:'18mm'}}>
                           {/* Colonne 1 — Titre */}
-                          <div style={{width:'36mm', flexShrink:0, margin:'2.5mm 0 2.5mm 2.5mm', borderRadius:'2mm', background:'rgba(28,25,23,0.82)', display:'flex', alignItems:'center', justifyContent:'center', padding:'2.5mm 4mm'}}>
+                          <div style={{width:'36mm', flexShrink:0, margin:'2.5mm 0 2.5mm 2.5mm', borderRadius:'2mm', background: accent || 'linear-gradient(150deg,#0b3b37 0%,#0f766e 60%,#12897f 100%)', display:'flex', alignItems:'center', justifyContent:'center', padding:'2.5mm 4mm', boxShadow:'0 2mm 5mm -3mm rgba(15,118,110,0.5)'}}>
                             <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'8.5pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em', textAlign:'center'}}>{title}</div>
                           </div>
                           {/* Colonne 2 — Barres comparatives */}
@@ -7087,9 +7087,9 @@
                     }
                     return (
                       <>
-                        <CmpCard title="Capital à terme" valSol={finalSolution} valLiv={finalLivret} fmt={fmtEURc} gainPct={gainPCT} sub={`Capital supplémentaire à horizon ${N} ans, scénario médian.`}/>
-                        <CmpCard title="Rente brute /mois" valSol={renteSolM} valLiv={renteLivM} fmt={fmtEUR} sub={`Rente perpétuelle à vie · ${fmtEUR(renteSolM*12)} / an vs ${fmtEUR(renteLivM*12)} / an.`}/>
-                        <CmpCard title="Transmission nette" valSol={succSol} valLiv={succLiv} fmt={fmtEURc} sub={`${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires>1?'s':''} · abattement ${fmtEUR(ABATT_AV_70)} par personne · plafond tous contrats AV confondus.`}/>
+                        <CmpCard title="Capital à terme" accent="linear-gradient(150deg,#0b3b37,#0f766e 60%,#12897f)" valSol={finalSolution} valLiv={finalLivret} fmt={fmtEURc} gainPct={gainPCT} sub={`Capital supplémentaire à horizon ${N} ans, scénario médian.`}/>
+                        <CmpCard title="Rente brute /mois" accent="linear-gradient(150deg,#8a6d1f,#b8924e 60%,#cba55f)" valSol={renteSolM} valLiv={renteLivM} fmt={fmtEUR} sub={`Rente perpétuelle à vie · ${fmtEUR(renteSolM*12)} / an vs ${fmtEUR(renteLivM*12)} / an.`}/>
+                        <CmpCard title="Transmission nette" accent="linear-gradient(150deg,#155e42,#059669 60%,#10b981)" valSol={succSol} valLiv={succLiv} fmt={fmtEURc} sub={`${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires>1?'s':''} · abattement ${fmtEUR(ABATT_AV_70)} par personne · plafond tous contrats AV confondus.`}/>
                       </>
                     );
                   })()}
