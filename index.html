@@ -4425,9 +4425,9 @@
               ...(!isCapiProduit ? [{ t: "Transmission nette", sub: `${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires > 1 ? 's' : ''}`, av: win.netTransmis, liv: refCol.netTransmis, pr: primeCol ? primeCol.netTransmis : null, fmt: v => fmtEUR(v) }] : [{ t: "Plus-value générée", sub: "sur la durée", av: Math.max(0, win.capital - win.versements), liv: Math.max(0, refCol.capital - refCol.versements), pr: null, fmt: v => fmtEUR(v) }]),
               ...(!isCapiProduit ? [{ t: "Rente à vie / mois", sub: "capital préservé", av: win.renteNetteMois, liv: refCol.renteNetteMois, pr: primeCol ? primeCol.renteNetteMois : null, fmt: v => `${fmtEUR(v)}/mois` }] : []),
             ];
-            const EL = ({ k, v, s }) => (
-              <div className="rounded-xl bg-white/70 px-3 py-3 text-center" style={{ border: "1px solid rgba(29,39,53,0.10)", boxShadow: "0 1px 2px rgba(29,39,53,0.03)" }}>
-                <div className="text-[9px] uppercase tracking-widest font-bold leading-tight" style={{ color: WOW_SUB, minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k}</div>
+            const EL = ({ k, v, s, c = WOW_TEAL }) => (
+              <div className="rounded-xl px-3 py-3 text-center flex flex-col justify-center" style={{ background: `${c}0f`, border: `1px solid ${c}44`, minHeight: '5.4rem' }}>
+                <div className="text-[9px] uppercase tracking-widest font-bold leading-tight" style={{ color: c, minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k}</div>
                 <div className="num text-[18px] font-extrabold tracking-tightest leading-none mt-1" style={{ color: WOW_INK }}>{v}</div>
                 {s && <div className="text-[9.5px] mt-0.5" style={{ color: WOW_SUB }}>{s}</div>}
               </div>
@@ -4444,12 +4444,12 @@
                     <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                    <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} />
-                    <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" />
-                    <EL k="Durée" v={`${inputs.dureeAnnees} ans`} />
-                    <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} />
-                    <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} />
-                    <EL k="Profil de risque" v={`SRI ${sriAlloc}/7`} />
+                    <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} c="#0f766e" />
+                    <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" c="#b8924e" />
+                    <EL k="Durée" v={`${inputs.dureeAnnees} ans`} c="#0369a1" />
+                    <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} c="#047857" />
+                    <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} c="#b45309" />
+                    <EL k="Profil de risque" v={`SRI ${sriAlloc}/7`} c="#6d28d9" />
                   </div>
                   {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
                     <div className="mt-4 pt-3 flex items-baseline gap-3 flex-wrap" style={{ borderTop: "1px dashed rgba(29,39,53,0.12)" }}>
