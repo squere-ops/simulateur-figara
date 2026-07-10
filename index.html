@@ -4207,7 +4207,7 @@
             // Ordre demandé : initial · compl (année X) · mensuel · durée · bénéficiaires · rendement (· TMI en PER)
             const cards = [
               { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(inputs.versementInitial), c: WOW_TEAL },
-              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.map(v => `${fmtEUR(Number(v.montant) || 0)} · année ${v.annee}`).join('\n'), subMulti: true, c: WOW_TEAL }] : []),
+              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.length === 1 ? `année ${compList[0].annee}` : `années ${compList.slice(0, -1).map(v => v.annee).join(', ')} & ${compList[compList.length - 1].annee}`, c: WOW_TEAL }] : []),
               { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: <>{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}<span className="text-[15px] font-medium ml-1" style={{ color: WOW_SUB }}>€/mois</span></>, c: WOW_GOLD },
               { ic: <Ico d={<><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>} />, l: "Durée du placement", v: `${inputs.dureeAnnees} ans`, c: WOW_TEAL },
               ...(!isCapiProduit ? [{ ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD }] : []),
@@ -6663,25 +6663,25 @@
                   { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null },
                 ];
                 return (
-                  <div className="pres-cmp-card" style={{ marginTop: '5mm', padding: '5mm 6mm 6mm' }}>
+                  <div className="pres-cmp-card" style={{ marginTop: '4mm', padding: '4mm 5mm 4.5mm' }}>
                     <div className="cmp-title">Hypothèses retenues</div>
                     {/* HERO — Total net versé */}
-                    <div style={{ marginTop: '3.5mm', borderRadius: '3mm', background: 'linear-gradient(120deg,#065f46 0%,#047857 55%,#10b981 100%)', padding: '4mm 7mm', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4mm 10mm -6mm rgba(4,120,87,0.5)' }}>
+                    <div style={{ marginTop: '2.5mm', borderRadius: '2.5mm', background: 'linear-gradient(120deg,#065f46 0%,#047857 55%,#10b981 100%)', padding: '3mm 6mm', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 3mm 8mm -6mm rgba(4,120,87,0.5)' }}>
                       <div>
                         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7pt', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>Total net versé</div>
-                        <div style={{ fontSize: '8pt', color: 'rgba(255,255,255,0.7)', marginTop: '1mm' }}>net de frais d'entrée · investi réellement</div>
+                        <div style={{ fontSize: '7.5pt', color: 'rgba(255,255,255,0.7)', marginTop: '0.8mm' }}>net de frais d'entrée · investi réellement</div>
                       </div>
-                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '26pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '13pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
+                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '22pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '11pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
                     </div>
                     {/* Détails — chips aérés, 3 par rangée, centrés */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3.5mm', marginTop: '4mm' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3mm', marginTop: '3mm' }}>
                       {details.map((it, idx) => (
-                        <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', background: '#faf9f7', border: '1px solid rgba(10,9,8,0.07)', borderRadius: '2.5mm', padding: '3.5mm 4mm', textAlign: 'center' }}>
-                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#78716c', fontWeight: 700, lineHeight: 1.35, minHeight: '6mm' }}>{it.k}</div>
-                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '16pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
-                            {it.v}<span style={{ fontSize: '8.5pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
+                        <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', background: '#faf9f7', border: '1px solid rgba(10,9,8,0.07)', borderRadius: '2.5mm', padding: '2.6mm 3.5mm', textAlign: 'center' }}>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#78716c', fontWeight: 700, lineHeight: 1.3, minHeight: '5.5mm' }}>{it.k}</div>
+                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1mm', whiteSpace: 'nowrap' }}>
+                            {it.v}<span style={{ fontSize: '8pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
-                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'pre-line', lineHeight: 1.5 }}>{it.sub}</div>}
+                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1mm', whiteSpace: 'pre-line', lineHeight: 1.45 }}>{it.sub}</div>}
                         </div>
                       ))}
                     </div>
@@ -6692,7 +6692,7 @@
               {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
               <div className="pres-cmp-card" style={{marginTop:'4mm', padding:'4mm 5mm 5mm'}}>
                 <div className="cmp-title">Évolution comparée · Capital & scenarii</div>
-                <div style={{width:'100%', height:'58mm', position:'relative'}}>
+                <div style={{width:'100%', height:'50mm', position:'relative'}}>
                   <canvas ref={printChartRef}></canvas>
                 </div>
                 <div style={{display:'none'}}>
