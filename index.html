@@ -3939,35 +3939,45 @@
                 )}
               </g>);
             })}
-            {/* Repères des versements complémentaires — 1 pastille en-tête + 1 pastille indépendante par apport */}
+            {/* Repères — chaque pastille placée à l'aplomb de sa ligne pointillée (année) ; décalée en ligne si collision */}
             {(() => {
               const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && (Number(v.annee) || 0) >= 0 && (Number(v.annee) || 0) <= (n - 1));
               if (!comps.length) return null;
-              const bx = pl + 6, by = pt;
-              const hH = 15, hW = 132;                 // pastille en-tête
-              const pW = 74, pH = 26, gap = 4;         // pastilles apports (2 lignes)
-              const stackBottom = by + hH + gap + comps.length * (pH + gap);
+              const by = pt;
+              const hH = 14, gap = 4, pW = 74, pH = 26;
+              // Placement : centré sur l'x de l'année, empilé en rangées si chevauchement horizontal
+              const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
+              const rowRight = [];
+              const placed = sorted.map(({ v, yr }) => {
+                const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, pl + (yr / (n - 1)) * (W - pl - pr)));
+                const px = xt - pW / 2;
+                let row = 0;
+                while (rowRight[row] != null && px < rowRight[row] + gap) row++;
+                rowRight[row] = px + pW;
+                const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
+                return { v, yr, xt, px, row, xc: pl + (yr / (n - 1)) * (W - pl - pr), yv: y(mv) };
+              });
+              const firstRowY = by + hH + gap;
               return (
                 <g>
-                  {comps.map((v, k) => {
-                    const yr = Number(v.annee) || 0;
-                    const xc = pl + (yr / (n - 1)) * (W - pl - pr);
-                    const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
+                  {/* traits de rappel : de la pastille vers le point sur la courbe */}
+                  {placed.map((p, k) => {
+                    const py = firstRowY + p.row * (pH + gap);
                     return (<g key={`cd${k}`}>
-                      <line x1={xc} y1={stackBottom} x2={xc} y2={y(mv)} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
-                      <circle cx={xc} cy={y(mv)} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
+                      <line x1={p.xc} y1={py + pH} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
+                      <circle cx={p.xc} cy={p.yv} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
                     </g>);
                   })}
-                  {/* En-tête */}
-                  <rect x={bx} y={by} width={hW} height={hH} rx="6" fill={WOW_GOLD} />
-                  <text x={bx + hW / 2} y={by + 10.5} textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
-                  {/* Une pastille par apport */}
-                  {comps.map((v, k) => {
-                    const py = by + hH + gap + k * (pH + gap);
+                  {/* En-tête compact à gauche */}
+                  <rect x={pl + 6} y={by} width={comps.length > 1 ? 138 : 130} height={hH} rx="6" fill={WOW_GOLD} />
+                  <text x={pl + 6 + (comps.length > 1 ? 138 : 130) / 2} y={by + 10} textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
+                  {/* Pastilles apports, à l'aplomb de leur année */}
+                  {placed.map((p, k) => {
+                    const py = firstRowY + p.row * (pH + gap);
                     return (<g key={`cp${k}`}>
-                      <rect x={bx} y={py} width={pW} height={pH} rx="6" fill="#fff" stroke={WOW_GOLD} strokeWidth="1.5" />
-                      <text x={bx + pW / 2} y={py + 12} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={WOW_GOLD} className="num">+{fmtEUR(Number(v.montant) || 0)}</text>
-                      <text x={bx + pW / 2} y={py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {v.annee}</text>
+                      <rect x={p.px} y={py} width={pW} height={pH} rx="6" fill="#fff" stroke={WOW_GOLD} strokeWidth="1.5" />
+                      <text x={p.xt} y={py + 12} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={WOW_GOLD} className="num">+{fmtEUR(Number(p.v.montant) || 0)}</text>
+                      <text x={p.xt} y={py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {p.v.annee}</text>
                     </g>);
                   })}
                 </g>
@@ -5800,7 +5810,7 @@
               },
             },
           },
-          plugins: [endLabels, yearAnnotation, compAnnotation],
+          plugins: [endLabels, compAnnotation],
         });
 
         return () => chartInst.current?.destroy();
@@ -6681,25 +6691,25 @@
                 const totalNet = totalVerseBrut * (1 - frais);
                 // Détails (chips lisibles) — le total net est un hero à part
                 const details = [
-                  { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€' },
-                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.map(v => `${nf(Number(v.montant) || 0)} € · année ${v.annee}`).join('\n') }] : []),
-                  { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m' },
-                  { k: 'Durée', v: `${N}`, u: 'ans' },
-                  { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%' },
-                  { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null },
+                  { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€', c: '#0f766e' },
+                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.map(v => `${nf(Number(v.montant) || 0)} € · année ${v.annee}`).join('\n'), c: '#b8924e' }] : []),
+                  { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m', c: '#0369a1' },
+                  { k: 'Durée', v: `${N}`, u: 'ans', c: '#1c2735' },
+                  { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', c: '#047857' },
+                  { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null, c: '#b45309' },
                 ];
                 return (
                   <div className="pres-cmp-card" style={{ marginTop: '4mm', padding: '4mm 5mm 4.5mm' }}>
                     <div className="cmp-title">Hypothèses retenues</div>
-                    {/* Détails — chips aérés, 3 par rangée, centrés */}
+                    {/* Détails — chips colorés, contenu centré */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3mm', marginTop: '3mm' }}>
                       {details.map((it, idx) => (
-                        <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', background: '#faf9f7', border: '1px solid rgba(10,9,8,0.07)', borderRadius: '2.5mm', padding: '2.6mm 3.5mm', textAlign: 'center' }}>
-                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#78716c', fontWeight: 700, lineHeight: 1.3, minHeight: '5.5mm' }}>{it.k}</div>
-                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1mm', whiteSpace: 'nowrap' }}>
+                        <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', minHeight: '23mm', background: `${it.c}0d`, border: `1px solid ${it.c}44`, borderRadius: '2.5mm', padding: '2.6mm 3.5mm', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: it.c, fontWeight: 700, lineHeight: 1.3 }}>{it.k}</div>
+                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
                             {it.v}<span style={{ fontSize: '8pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
-                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1mm', whiteSpace: 'pre-line', lineHeight: 1.5, display: 'inline-block', textAlign: 'left' }}>{it.sub}</div>}
+                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'pre-line', lineHeight: 1.5, display: 'inline-block', textAlign: 'left' }}>{it.sub}</div>}
                         </div>
                       ))}
                     </div>
