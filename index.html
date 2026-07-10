@@ -2290,13 +2290,16 @@
     function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp }) {
       const [reverseOpen, setReverseOpen] = useState(false);
       // Brouillon de versement complémentaire (validé via bouton avant d'impacter le calcul)
-      const [draftCompAnnee, setDraftCompAnnee] = useState('3');
+      const [draftCompAnnee, setDraftCompAnnee] = useState('2');
       const [draftCompMontant, setDraftCompMontant] = useState('10000');
       const validerComp = () => {
         const m = Number(draftCompMontant) || 0;
         if (m <= 0) return;
-        addVersementComp(Number(draftCompAnnee) || 0, m);
-        setDraftCompAnnee('3'); setDraftCompMontant('10000');
+        const an = Number(draftCompAnnee) || 0;
+        addVersementComp(an, m);
+        // Propose d'office l'année suivante (N+1) dans la nouvelle ligne
+        setDraftCompAnnee(String(Math.min((inputs.dureeAnnees || 99), an + 1)));
+        setDraftCompMontant('10000');
       };
       // Type de client effectif (client sélectionné ou saisi)
       const effType = inputs.mode === "select" && inputs.clientSelected ? inputs.clientSelected.type : inputs.clientType;
