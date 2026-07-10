@@ -3945,41 +3945,59 @@
               if (!comps.length) return null;
               const by = pt;
               const hH = 17, gap = 5, pW = 78, pH = 27;
-              // Placement : centré sur l'x de l'année, empilé en rangées si chevauchement horizontal
-              const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
-              const rowRight = [];
-              const placed = sorted.map(({ v, yr }) => {
-                const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, pl + (yr / (n - 1)) * (W - pl - pr)));
-                const px = xt - pW / 2;
-                let row = 0;
-                while (rowRight[row] != null && px < rowRight[row] + gap) row++;
-                rowRight[row] = px + pW;
-                const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
-                return { v, yr, xt, px, row, xc: pl + (yr / (n - 1)) * (W - pl - pr), yv: y(mv) };
-              });
+              const headerW = comps.length > 1 ? 164 : 156;
               const firstRowY = by + hH + gap;
+              // sommet de courbe (optimiste sinon médian) à une année
+              const curveTopVal = (yr) => {
+                const idx = Math.min((Sx.med ? Sx.med.length : 1) - 1, Math.round(yr));
+                const cands = [Sx.opt, Sx.med].filter(s => s && s.length).map(s => s[idx] || 0);
+                return cands.length ? Math.max(...cands) : 0;
+              };
+              const sorted = comps.map(v => ({ v, yr: Number(v.annee) || 0 })).sort((a, b) => a.yr - b.yr);
+              const rowRight = [];   // collision horizontale (mode aplomb)
+              let leftStack = 0;     // empilement colonne gauche (repli)
+              // pastille à l'aplomb SI place au-dessus de la courbe ; sinon repli à gauche
+              const placed = sorted.map(({ v, yr }) => {
+                const xc = pl + (yr / (n - 1)) * (W - pl - pr);
+                const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
+                const yv = y(mv);
+                const room = y(curveTopVal(yr)) - firstRowY;   // espace libre au-dessus de la courbe
+                if (room >= pH + 6) {
+                  const xt = Math.max(pl + pW / 2 + 2, Math.min(W - pr - pW / 2 - 2, xc));
+                  const px = xt - pW / 2;
+                  const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
+                  let row = 0;
+                  while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
+                  rowRight[row] = px + pW;
+                  return { v, yr, xc, yv, mode: 'aplomb', xt, px, py: firstRowY + row * (pH + gap) };
+                }
+                const px = pl + 6;
+                const py = firstRowY + leftStack * (pH + gap);
+                leftStack++;
+                return { v, yr, xc, yv, mode: 'left', xt: px + pW / 2, px, py };
+              });
               return (
                 <g>
-                  {/* traits de rappel : de la pastille vers le point sur la courbe */}
-                  {placed.map((p, k) => {
-                    const py = firstRowY + p.row * (pH + gap);
-                    return (<g key={`cd${k}`}>
-                      <line x1={p.xc} y1={py + pH} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
+                  {/* traits de rappel + points sur la courbe */}
+                  {placed.map((p, k) => (
+                    <g key={`cd${k}`}>
+                      {p.mode === 'aplomb'
+                        ? <line x1={p.xc} y1={p.py + pH} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
+                        : <line x1={p.px + pW} y1={p.py + pH / 2} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.45" />}
                       <circle cx={p.xc} cy={p.yv} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
-                    </g>);
-                  })}
-                  {/* En-tête à gauche — plus large pour respirer */}
-                  <rect x={pl + 6} y={by} width={comps.length > 1 ? 164 : 156} height={hH} rx="7" fill={WOW_GOLD} />
-                  <text x={pl + 6 + (comps.length > 1 ? 164 : 156) / 2} y={by + hH / 2 + 3} textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
-                  {/* Pastilles apports, à l'aplomb de leur année */}
-                  {placed.map((p, k) => {
-                    const py = firstRowY + p.row * (pH + gap);
-                    return (<g key={`cp${k}`}>
-                      <rect x={p.px} y={py} width={pW} height={pH} rx="6" fill="#fff" stroke={WOW_GOLD} strokeWidth="1.5" />
-                      <text x={p.xt} y={py + 12} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={WOW_GOLD} className="num">+{fmtEUR(Number(p.v.montant) || 0)}</text>
-                      <text x={p.xt} y={py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {p.v.annee}</text>
-                    </g>);
-                  })}
+                    </g>
+                  ))}
+                  {/* En-tête à gauche */}
+                  <rect x={pl + 6} y={by} width={headerW} height={hH} rx="7" fill={WOW_GOLD} />
+                  <text x={pl + 6 + headerW / 2} y={by + hH / 2 + 3} textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
+                  {/* Pastilles apports */}
+                  {placed.map((p, k) => (
+                    <g key={`cp${k}`}>
+                      <rect x={p.px} y={p.py} width={pW} height={pH} rx="6" fill="#fff" stroke={WOW_GOLD} strokeWidth="1.5" />
+                      <text x={p.xt} y={p.py + 12} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={WOW_GOLD} className="num">+{fmtEUR(Number(p.v.montant) || 0)}</text>
+                      <text x={p.xt} y={p.py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {p.v.annee}</text>
+                    </g>
+                  ))}
                 </g>
               );
             })()}
@@ -5663,25 +5681,45 @@
             const pW = 80, pH = 28, gap = 4;
             const bx = chartArea.left + 6, by = chartArea.top + 4;
             const firstRowY = by + hH + gap;
-            // placement à l'aplomb de l'année, décalage en rangées si chevauchement
-            const sorted = comps.map(v => ({ v, yr: Math.round(Number(v.annee) || 0), xt: scales.x.getPixelForValue(Math.round(Number(v.annee) || 0)) })).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
-            const rowRight = [];
+            // sommet de courbe (optimiste sinon médian) à l'index de l'année
+            const curveTopY = (idx) => {
+              const cands = [optData, medData].filter(a => a && a.length).map(a => a[Math.min(a.length - 1, idx)] || 0);
+              return scales.y.getPixelForValue(cands.length ? Math.max(...cands) : 0);
+            };
+            const medY = (idx) => scales.y.getPixelForValue((medData && medData.length) ? (medData[Math.min(medData.length - 1, idx)] || 0) : 0);
+            const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
+            const rowRight = [];  // collision horizontale (aplomb)
+            let leftStack = 0;    // empilement colonne gauche (repli)
+            // pastille à l'aplomb SI place au-dessus de la courbe ; sinon repli à gauche avec trait de rappel
             const placed = sorted.map(o => {
-              const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-              let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap) row++;
-              rowRight[row] = px + pW;
-              return { ...o, px, row };
+              const room = curveTopY(o.yr) - firstRowY;
+              const yv = medY(o.yr);
+              if (room >= pH + 6) {
+                const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+                const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
+                let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
+                rowRight[row] = px + pW;
+                return { ...o, mode: 'aplomb', px, py: firstRowY + row * (pH + gap), yv };
+              }
+              const px = chartArea.left + 6;
+              const py = firstRowY + leftStack * (pH + gap);
+              leftStack++;
+              return { ...o, mode: 'left', px, py, yv };
             });
             // en-tête
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 7); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
-            // pastilles + traits de rappel
+            // pastilles + traits de rappel + point sur la courbe
             placed.forEach(o => {
-              const py = firstRowY + o.row * (pH + gap);
-              ctx.strokeStyle = 'rgba(184,146,78,0.55)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
+              const py = o.py;
+              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath();
+              if (o.mode === 'aplomb') { ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, o.yv); }
+              else { ctx.moveTo(o.px + pW, py + pH / 2); ctx.lineTo(o.xt, o.yv); }
+              ctx.stroke(); ctx.setLineDash([]);
+              ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 3.2, 0, Math.PI * 2); ctx.fill();
               ctx.fillStyle = '#fff';
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 6); ctx.fill(); } else ctx.fillRect(o.px, py, pW, pH);
               ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.5;
@@ -6423,22 +6461,41 @@
             const pW = 64, pH = 20, gap = 3;
             const bx = chartArea.left + 5, by = chartArea.top + 3;
             const firstRowY = by + hH + gap;
-            const sorted = comps.map(v => ({ v, xt: scales.x.getPixelForValue(Math.round(Number(v.annee) || 0)) })).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
+            const curveTopY = (idx) => {
+              const cands = [optData, medData].filter(a => a && a.length).map(a => a[Math.min(a.length - 1, idx)] || 0);
+              return scales.y.getPixelForValue(cands.length ? Math.max(...cands) : 0);
+            };
+            const medY = (idx) => scales.y.getPixelForValue((medData && medData.length) ? (medData[Math.min(medData.length - 1, idx)] || 0) : 0);
+            const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
             const rowRight = [];
+            let leftStack = 0;
             const placed = sorted.map(o => {
-              const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
-              let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap) row++;
-              rowRight[row] = px + pW;
-              return { ...o, px, row };
+              const room = curveTopY(o.yr) - firstRowY;
+              const yv = medY(o.yr);
+              if (room >= pH + 5) {
+                const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
+                const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
+                let row = 0; while (rowRight[row] != null && px < rowRight[row] + gap && row < maxRow) row++;
+                rowRight[row] = px + pW;
+                return { ...o, mode: 'aplomb', px, py: firstRowY + row * (pH + gap), yv };
+              }
+              const px = chartArea.left + 5;
+              const py = firstRowY + leftStack * (pH + gap);
+              leftStack++;
+              return { ...o, mode: 'left', px, py, yv };
             });
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.font = '700 6.5px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
             placed.forEach(o => {
-              const py = firstRowY + o.row * (pH + gap);
-              ctx.strokeStyle = 'rgba(184,146,78,0.55)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
+              const py = o.py;
+              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath();
+              if (o.mode === 'aplomb') { ctx.moveTo(o.xt, py + pH); ctx.lineTo(o.xt, o.yv); }
+              else { ctx.moveTo(o.px + pW, py + pH / 2); ctx.lineTo(o.xt, o.yv); }
+              ctx.stroke(); ctx.setLineDash([]);
+              ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 2.6, 0, Math.PI * 2); ctx.fill();
               ctx.fillStyle = '#fff';
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 5); ctx.fill(); } else ctx.fillRect(o.px, py, pW, pH);
               ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.2;
