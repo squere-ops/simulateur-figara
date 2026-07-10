@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD graphes-v6 (traits verticaux + bloc PDF compact)', 'color:#0f766e;font-weight:700');
+    console.log('%cBUILD graphes-v7 (pas de trait/point en fin de courbe + bloc PDF remonte)', 'color:#0f766e;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3964,13 +3964,13 @@
               });
               return (
                 <g>
-                  {/* traits de rappel VERTICAUX (droits) à l'aplomb de l'année + points sur la courbe */}
-                  {placed.map((p, k) => (
+                  {/* traits de rappel VERTICAUX (droits) — pas de trait/point en fin de courbe (zone encombrée) */}
+                  {placed.map((p, k) => (p.xc <= pl + 0.85 * (W - pl - pr)) ? (
                     <g key={`cd${k}`}>
                       <line x1={p.xc} y1={firstRowY} x2={p.xc} y2={p.yv} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.45" />
                       <circle cx={p.xc} cy={p.yv} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
                     </g>
-                  ))}
+                  ) : null)}
                   {/* En-tête à gauche */}
                   <rect x={pl + 6} y={by} width={headerW} height={hH} rx="7" fill={WOW_GOLD} />
                   <text x={pl + 6 + headerW / 2} y={by + hH / 2 + 3} textAnchor="middle" fontSize="8.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
@@ -5688,11 +5688,15 @@
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
             // pastilles + traits de rappel VERTICAUX (droits) à l'aplomb de l'année + point sur la courbe
+            const endZone = chartArea.left + 0.85 * (chartArea.right - chartArea.left);
             placed.forEach(o => {
               const py = o.py;
-              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
-              ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 3.2, 0, Math.PI * 2); ctx.fill();
+              // trait + point seulement si l'année n'est pas en fin de courbe (zone encombrée)
+              if (o.xt <= endZone) {
+                ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
+                ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 3.2, 0, Math.PI * 2); ctx.fill();
+              }
               ctx.fillStyle = '#fff';
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 6); ctx.fill(); } else ctx.fillRect(o.px, py, pW, pH);
               ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.5;
@@ -6430,9 +6434,9 @@
             const { ctx, chartArea, scales } = chart;
             ctx.save();
             const hdr = comps.length > 1 ? 'VERS. COMPLÉMENTAIRES' : 'VERS. COMPLÉMENTAIRE';
-            ctx.font = '700 6px Inter'; const hW = ctx.measureText(hdr).width + 12, hH = 10;
-            const pW = 60, pH = 16, gap = 2;
-            const bx = chartArea.left + 5, by = chartArea.top + 1;
+            ctx.font = '700 5.5px Inter'; const hW = ctx.measureText(hdr).width + 11, hH = 9;
+            const pW = 58, pH = 14, gap = 1;
+            const bx = chartArea.left + 5, by = chartArea.top - 1;
             const firstRowY = by + hH + gap;
             const metaTop = chart.getDatasetMeta(0), metaMed = chart.getDatasetMeta(1);
             const ptAt = (meta, idx) => (meta && meta.data && meta.data[Math.min(meta.data.length - 1, idx)]) || null;
@@ -6451,21 +6455,24 @@
             ctx.fillStyle = '#b8924e';
             if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
             ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.font = '700 6px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
+            ctx.font = '700 5.5px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
+            const endZone = chartArea.left + 0.85 * (chartArea.right - chartArea.left);
             placed.forEach(o => {
               const py = o.py;
-              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
-              ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 2.6, 0, Math.PI * 2); ctx.fill();
+              if (o.xt <= endZone) {
+                ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(o.xt, firstRowY); ctx.lineTo(o.xt, o.yv); ctx.stroke(); ctx.setLineDash([]);
+                ctx.fillStyle = '#b8924e'; ctx.beginPath(); ctx.arc(o.xt, o.yv, 2.6, 0, Math.PI * 2); ctx.fill();
+              }
               ctx.fillStyle = '#fff';
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 4); ctx.fill(); } else ctx.fillRect(o.px, py, pW, pH);
               ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.2;
               if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(o.px, py, pW, pH, 4); ctx.stroke(); } else ctx.strokeRect(o.px, py, pW, pH);
               ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-              ctx.fillStyle = '#b8924e'; ctx.font = '800 8px Inter';
-              ctx.fillText('+' + new Intl.NumberFormat('fr-FR').format(Number(o.v.montant) || 0) + ' €', o.px + pW / 2, py + 6);
-              ctx.fillStyle = '#a07f3f'; ctx.font = '700 5.5px Inter';
-              ctx.fillText('ANNÉE ' + o.v.annee, o.px + pW / 2, py + 12);
+              ctx.fillStyle = '#b8924e'; ctx.font = '800 7.5px Inter';
+              ctx.fillText('+' + new Intl.NumberFormat('fr-FR').format(Number(o.v.montant) || 0) + ' €', o.px + pW / 2, py + 5.5);
+              ctx.fillStyle = '#a07f3f'; ctx.font = '700 5px Inter';
+              ctx.fillText('ANNÉE ' + o.v.annee, o.px + pW / 2, py + 11);
             });
             ctx.textAlign = 'left';
             ctx.restore();
