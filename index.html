@@ -1671,11 +1671,11 @@
       };
 
       // Versements complémentaires : liste libre {id, annee, montant}
-      const addVersementComp = () => {
+      const addVersementComp = (annee = 1, montant = 10000) => {
         setInputs(p => {
           const list = p.versementsComplementaires || [];
           const newId = (list.length ? Math.max(...list.map(x => x.id)) : 0) + 1;
-          return { ...p, versementsComplementaires: [...list, { id: newId, annee: 1, montant: 10000 }] };
+          return { ...p, versementsComplementaires: [...list, { id: newId, annee: Number(annee) || 0, montant: Number(montant) || 0 }] };
         });
       };
       const updVersementComp = (id, field, v) => {
@@ -2289,6 +2289,15 @@
     // ============================================================
     function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp }) {
       const [reverseOpen, setReverseOpen] = useState(false);
+      // Brouillon de versement complémentaire (validé via bouton avant d'impacter le calcul)
+      const [draftCompAnnee, setDraftCompAnnee] = useState('3');
+      const [draftCompMontant, setDraftCompMontant] = useState('10000');
+      const validerComp = () => {
+        const m = Number(draftCompMontant) || 0;
+        if (m <= 0) return;
+        addVersementComp(Number(draftCompAnnee) || 0, m);
+        setDraftCompAnnee('3'); setDraftCompMontant('10000');
+      };
       // Type de client effectif (client sélectionné ou saisi)
       const effType = inputs.mode === "select" && inputs.clientSelected ? inputs.clientSelected.type : inputs.clientType;
       const isEntreprise = effType === "entreprise";
@@ -2526,10 +2535,20 @@
               </div>
             ))}
 
-            <button onClick={() => addVersementComp()}
-              className="mt-1 w-full py-2.5 text-[12px] font-bold text-teal-700 border-2 border-dashed border-teal-300 bg-white/60 rounded-lg hover:border-teal-600 hover:bg-teal-50 transition">
-              + Ajouter un versement complémentaire
-            </button>
+            {/* Saisie d'un nouveau versement → Valider */}
+            <div className="mt-1 flex items-center gap-2 flex-wrap bg-white/70 border-2 border-dashed border-teal-300 rounded-lg px-3 py-2.5">
+              <span className="text-[11px] font-semibold text-stone-500">Année</span>
+              <input type="number" min="0" max={inputs.dureeAnnees} step="1" value={draftCompAnnee}
+                onChange={e => setDraftCompAnnee(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') validerComp(); }}
+                className="num w-16 px-2 py-1.5 text-right text-[13px] font-bold text-stone-900 bg-white border border-stone-200 rounded-md focus:outline-none" />
+              <div className="flex items-center bg-white rounded-lg border border-stone-200 flex-1 min-w-[120px]">
+                <input type="text" inputMode="numeric" value={draftCompMontant}
+                  onChange={e => setDraftCompMontant(e.target.value.replace(/[^\d]/g, ''))} onKeyDown={e => { if (e.key === 'Enter') validerComp(); }}
+                  className="num w-full px-3 py-1.5 text-right text-[14px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                <span className="px-3 text-[11px] text-stone-500 font-medium">€</span>
+              </div>
+              <button onClick={validerComp} className="px-4 py-2 text-[12px] font-bold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition">Valider</button>
+            </div>
           </div>
 
           {/* FRAIS DE SOUSCRIPTION + ÉCONOMIE COMMERCIALE EN AVANT */}
@@ -3919,6 +3938,25 @@
                     </>
                 )}
               </g>);
+            })}
+            {/* Repères des versements complémentaires : à l'année Y, montant ajouté (explique le saut de la courbe) */}
+            {(inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && (Number(v.annee) || 0) >= 0 && (Number(v.annee) || 0) <= (n - 1)).map((v, k) => {
+              const yr = Number(v.annee) || 0;
+              const xc = pl + (yr / (n - 1)) * (W - pl - pr);
+              const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
+              const yc = y(mv);
+              const lbl = `+${fmtEUR(Number(v.montant) || 0)}`;
+              const wLbl = 16 + lbl.length * 5.6;
+              return (
+                <g key={`comp${k}`}>
+                  <line x1={xc} y1={yc} x2={xc} y2={Hh - pb} stroke={WOW_GOLD} strokeWidth="1.2" strokeDasharray="3 3" opacity="0.65" />
+                  <circle cx={xc} cy={yc} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
+                  <g transform={`translate(${Math.max(pl + wLbl / 2, Math.min(W - pr - wLbl / 2, xc))}, ${yc - 22})`}>
+                    <rect x={-wLbl / 2} y={-11} width={wLbl} height="17" rx="8.5" fill={WOW_GOLD} />
+                    <text x="0" y="1.5" textAnchor="middle" fontSize="10" fontWeight="800" fill="#fff" className="num">{lbl}</text>
+                  </g>
+                </g>
+              );
             })}
           </svg>
         );
@@ -5611,6 +5649,37 @@
           },
         };
 
+        // Repères des versements complémentaires : ligne dorée + « +X € » à l'année Y
+        const compAnnotation = {
+          id: 'compAnnotation',
+          afterDraw(chart) {
+            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
+            if (!comps.length) return;
+            const { ctx, chartArea, scales } = chart;
+            comps.forEach(v => {
+              const yr = Math.round(Number(v.annee) || 0);
+              if (yr < 0 || yr > N) return;
+              const xPos = scales.x.getPixelForValue(yr);
+              if (!isFinite(xPos)) return;
+              ctx.save();
+              ctx.strokeStyle = 'rgba(184,146,78,0.6)';
+              ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 52); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.font = '800 10px Inter';
+              const text = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
+              const tw = ctx.measureText(text).width;
+              const padX = 7, h = 17;
+              const bx = Math.max(chartArea.left, Math.min(chartArea.right - (tw + padX * 2), xPos - (tw + padX * 2) / 2));
+              const by = chartArea.top + 56;
+              ctx.fillStyle = '#b8924e';
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw + padX * 2, h, 8.5); ctx.fill(); } else ctx.fillRect(bx, by, tw + padX * 2, h);
+              ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(text, bx + padX, by + h / 2);
+              ctx.restore();
+            });
+          },
+        };
+
         const datasets = [
           // Optimiste — borne haute du tunnel : remplit jusqu'à Prudent (index 2)
           {
@@ -5729,7 +5798,7 @@
               },
             },
           },
-          plugins: [endLabels, yearAnnotation],
+          plugins: [endLabels, yearAnnotation, compAnnotation],
         });
 
         return () => chartInst.current?.destroy();
@@ -6324,6 +6393,36 @@
             });
           },
         };
+        // Repères des versements complémentaires (PDF)
+        const compAnnotation = {
+          id: 'compAnnotation',
+          afterDraw(chart) {
+            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
+            if (!comps.length) return;
+            const { ctx, chartArea, scales } = chart;
+            comps.forEach(v => {
+              const yr = Math.round(Number(v.annee) || 0);
+              if (yr < 0 || yr > N) return;
+              const xPos = scales.x.getPixelForValue(yr);
+              if (!isFinite(xPos)) return;
+              ctx.save();
+              ctx.strokeStyle = 'rgba(184,146,78,0.6)';
+              ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 8); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.font = '800 9px Inter';
+              const text = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
+              const tw = ctx.measureText(text).width;
+              const padX = 6, h = 15;
+              const bx = Math.max(chartArea.left, Math.min(chartArea.right - (tw + padX * 2), xPos - (tw + padX * 2) / 2));
+              const by = chartArea.top + 6;
+              ctx.fillStyle = '#b8924e';
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, tw + padX * 2, h, 7.5); ctx.fill(); } else ctx.fillRect(bx, by, tw + padX * 2, h);
+              ctx.fillStyle = '#fff'; ctx.textBaseline = 'middle'; ctx.fillText(text, bx + padX, by + h / 2);
+              ctx.restore();
+            });
+          },
+        };
         const datasets = [
           // Optimiste (borne haute du tunnel)
           { label: 'Optimiste', data: optData, borderColor: 'rgba(5,150,105,0.65)', backgroundColor: 'rgba(16,185,129,0.10)', borderDash: [5,4], borderWidth: 1.75, fill: 2, tension: 0.35, pointRadius: 0, _endLabelSoft: true, _endLabelBg: '#059669' },
@@ -6350,10 +6449,10 @@
               x: { ticks: { callback: function(v, i) { return i % Math.ceil(N/8) === 0 || i === N ? `An ${this.getLabelForValue(v)}` : ''; }, font: { family: 'Inter', size: 10, weight: '500' }, color: '#78716c', padding: 6 }, grid: { display: false }, border: { display: false } },
             },
           },
-          plugins: [endLabels],
+          plugins: [endLabels, compAnnotation],
         });
         return () => printChartInst.current?.destroy();
-      }, [pessData, medData, optData, livretData, N, livretNom, isPER]);
+      }, [pessData, medData, optData, livretData, N, livretNom, isPER, inputs.versementsComplementaires]);
 
       // === Mini-chart SVG (page 2) ===
       // padR augmenté pour accueillir les étiquettes longues comme "PER + RÉINTÉGRATION".
