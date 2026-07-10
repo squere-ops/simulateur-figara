@@ -3939,28 +3939,31 @@
                 )}
               </g>);
             })}
-            {/* Repères des versements complémentaires : à l'année Y, montant ajouté (explique le saut de la courbe) */}
-            {(inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && (Number(v.annee) || 0) >= 0 && (Number(v.annee) || 0) <= (n - 1)).map((v, k) => {
-              const yr = Number(v.annee) || 0;
-              const xc = pl + (yr / (n - 1)) * (W - pl - pr);
-              const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
-              const yc = y(mv);
-              const lbl = `+${fmtEUR(Number(v.montant) || 0)}`;
-              const wLbl = Math.max(92, 16 + lbl.length * 6.2);
-              const cx2 = Math.max(pl + wLbl / 2, Math.min(W - pr - wLbl / 2, xc));
+            {/* Repères des versements complémentaires — UNE boîte listant chaque apport + points sur la courbe */}
+            {(() => {
+              const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && (Number(v.annee) || 0) >= 0 && (Number(v.annee) || 0) <= (n - 1));
+              if (!comps.length) return null;
+              const lineH = 13, boxW = 138, boxH = 15 + comps.length * lineH;
+              const bx = pl + 6, by = pt;
               return (
-                <g key={`comp${k}`}>
-                  {/* trait de rappel du haut jusqu'au point sur la courbe (le libellé reste EN HAUT, hors de la courbe) */}
-                  <line x1={xc} y1={pt + 30} x2={xc} y2={yc} stroke={WOW_GOLD} strokeWidth="1.2" strokeDasharray="3 3" opacity="0.6" />
-                  <circle cx={xc} cy={yc} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
-                  <g transform={`translate(${cx2}, ${pt})`}>
-                    <rect x={-wLbl / 2} y={0} width={wLbl} height="29" rx="7" fill={WOW_GOLD} />
-                    <text x="0" y="11" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.04em', textTransform: 'uppercase' }}>Versement compl.</text>
-                    <text x="0" y="23" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" className="num">{lbl}</text>
-                  </g>
+                <g>
+                  {comps.map((v, k) => {
+                    const yr = Number(v.annee) || 0;
+                    const xc = pl + (yr / (n - 1)) * (W - pl - pr);
+                    const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
+                    return (<g key={`cd${k}`}>
+                      <line x1={xc} y1={by + boxH} x2={xc} y2={y(mv)} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
+                      <circle cx={xc} cy={y(mv)} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
+                    </g>);
+                  })}
+                  <rect x={bx} y={by} width={boxW} height={boxH} rx="7" fill={WOW_GOLD} />
+                  <text x={bx + 10} y={by + 11} fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
+                  {comps.map((v, k) => (
+                    <text key={`ct${k}`} x={bx + 10} y={by + 15 + (k + 1) * lineH - 3} fontSize="10.5" fontWeight="800" fill="#fff" className="num">+{fmtEUR(Number(v.montant) || 0)} · année {v.annee}</text>
+                  ))}
                 </g>
               );
-            })}
+            })()}
           </svg>
         );
       };
@@ -4201,7 +4204,7 @@
             // Ordre demandé : initial · compl (année X) · mensuel · durée · bénéficiaires · rendement (· TMI en PER)
             const cards = [
               { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(inputs.versementInitial), c: WOW_TEAL },
-              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.length === 1 ? `année ${compList[0].annee}` : `${compList.length} apports programmés`, c: WOW_TEAL }] : []),
+              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.map(v => `${fmtEUR(Number(v.montant) || 0)} · année ${v.annee}`).join('\n'), subMulti: true, c: WOW_TEAL }] : []),
               { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: <>{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}<span className="text-[15px] font-medium ml-1" style={{ color: WOW_SUB }}>€/mois</span></>, c: WOW_GOLD },
               { ic: <Ico d={<><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>} />, l: "Durée du placement", v: `${inputs.dureeAnnees} ans`, c: WOW_TEAL },
               ...(!isCapiProduit ? [{ ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD }] : []),
@@ -4217,7 +4220,7 @@
                   {cards.map((c, k) => (
                     <div key={k} className={`rounded-xl bg-white/70 px-4 py-3.5 flex items-center gap-4 ${spanLast && k === cards.length - 1 ? 'md:col-span-2' : ''}`} style={{ border: `1px solid ${c.c}33`, boxShadow: "0 1px 2px rgba(29,39,53,0.04)" }}>
                       <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg text-white flex-shrink-0 shadow-sm" style={{ background: c.c }}>{c.ic}</span>
-                      <div className="min-w-0 leading-tight"><div className="text-[10px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>{c.l}</div><div className="num text-[22px] font-extrabold tracking-tightest leading-tight" style={{ color: c.vc || WOW_INK }}>{c.v}</div>{c.sub && <div className="text-[10.5px] mt-0.5" style={{ color: WOW_SUB }}>{c.sub}</div>}</div>
+                      <div className="min-w-0 leading-tight"><div className="text-[10px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>{c.l}</div><div className="num text-[22px] font-extrabold tracking-tightest leading-tight" style={{ color: c.vc || WOW_INK }}>{c.v}</div>{c.sub && <div className="text-[11px] mt-1 font-semibold num" style={{ color: c.subMulti ? c.c : WOW_SUB, whiteSpace: 'pre-line', lineHeight: 1.5 }}>{c.sub}</div>}</div>
                     </div>
                   ))}
                 </div>
@@ -5628,38 +5631,35 @@
           },
         };
 
-        // Repères des versements complémentaires : ligne dorée + « +X € » à l'année Y
+        // Repères des versements complémentaires — UNE boîte listant chaque apport + lignes verticales
         const compAnnotation = {
           id: 'compAnnotation',
           afterDraw(chart) {
-            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
+            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && Math.round(Number(v.annee) || 0) >= 0 && Math.round(Number(v.annee) || 0) <= N);
             if (!comps.length) return;
             const { ctx, chartArea, scales } = chart;
+            ctx.save();
+            const hdr = comps.length > 1 ? 'VERSEMENTS COMPLÉMENTAIRES' : 'VERSEMENT COMPLÉMENTAIRE';
+            const lines = comps.map(v => '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' € · année ' + v.annee);
+            ctx.font = '700 8px Inter'; let maxW = ctx.measureText(hdr).width;
+            ctx.font = '800 11px Inter'; lines.forEach(t => { maxW = Math.max(maxW, ctx.measureText(t).width); });
+            const padX = 9, header = 13, lineH = 14;
+            const w = maxW + padX * 2, boxH = header + comps.length * lineH + 5;
+            const bx = chartArea.left + 6, by = chartArea.top + 6;
+            // lignes verticales (année) partant sous la boîte
             comps.forEach(v => {
-              const yr = Math.round(Number(v.annee) || 0);
-              if (yr < 0 || yr > N) return;
-              const xPos = scales.x.getPixelForValue(yr);
-              if (!isFinite(xPos)) return;
-              ctx.save();
-              ctx.strokeStyle = 'rgba(184,146,78,0.6)';
-              ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 48); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
-              ctx.setLineDash([]);
-              const cap = 'VERSEMENT COMPL.';
-              const amt = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
-              ctx.font = '700 7px Inter'; const capW = ctx.measureText(cap).width;
-              ctx.font = '800 11px Inter'; const amtW = ctx.measureText(amt).width;
-              const padX = 8, h = 27, w = Math.max(capW, amtW) + padX * 2;
-              const bx = Math.max(chartArea.left, Math.min(chartArea.right - w, xPos - w / 2));
-              const by = chartArea.top + 46;
-              ctx.fillStyle = '#b8924e';
-              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, h, 8); ctx.fill(); } else ctx.fillRect(bx, by, w, h);
-              ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-              ctx.font = '700 7px Inter'; ctx.fillText(cap, bx + w / 2, by + 5);
-              ctx.font = '800 11px Inter'; ctx.fillText(amt, bx + w / 2, by + 13);
-              ctx.textAlign = 'left';
-              ctx.restore();
+              const xp = scales.x.getPixelForValue(Math.round(Number(v.annee) || 0));
+              if (!isFinite(xp)) return;
+              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(xp, by + boxH + 4); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
             });
+            // boîte
+            ctx.fillStyle = '#b8924e';
+            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, boxH, 8); ctx.fill(); } else ctx.fillRect(bx, by, w, boxH);
+            ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + padX, by + 5);
+            ctx.font = '800 11px Inter'; lines.forEach((t, i) => ctx.fillText(t, bx + padX, by + header + 4 + i * lineH));
+            ctx.restore();
           },
         };
 
@@ -6376,38 +6376,33 @@
             });
           },
         };
-        // Repères des versements complémentaires (PDF)
+        // Repères des versements complémentaires (PDF) — UNE boîte listant chaque apport
         const compAnnotation = {
           id: 'compAnnotation',
           afterDraw(chart) {
-            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
+            const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && Math.round(Number(v.annee) || 0) >= 0 && Math.round(Number(v.annee) || 0) <= N);
             if (!comps.length) return;
             const { ctx, chartArea, scales } = chart;
+            ctx.save();
+            const hdr = comps.length > 1 ? 'VERSEMENTS COMPLÉMENTAIRES' : 'VERSEMENT COMPLÉMENTAIRE';
+            const lines = comps.map(v => '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' € · année ' + v.annee);
+            ctx.font = '700 6.5px Inter'; let maxW = ctx.measureText(hdr).width;
+            ctx.font = '800 9px Inter'; lines.forEach(t => { maxW = Math.max(maxW, ctx.measureText(t).width); });
+            const padX = 7, header = 11, lineH = 11.5;
+            const w = maxW + padX * 2, boxH = header + comps.length * lineH + 4;
+            const bx = chartArea.left + 5, by = chartArea.top + 4;
             comps.forEach(v => {
-              const yr = Math.round(Number(v.annee) || 0);
-              if (yr < 0 || yr > N) return;
-              const xPos = scales.x.getPixelForValue(yr);
-              if (!isFinite(xPos)) return;
-              ctx.save();
-              ctx.strokeStyle = 'rgba(184,146,78,0.6)';
-              ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xPos, chartArea.top + 4); ctx.lineTo(xPos, chartArea.bottom); ctx.stroke();
-              ctx.setLineDash([]);
-              const cap = 'VERSEMENT COMPL.';
-              const amt = '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €';
-              ctx.font = '700 6px Inter'; const capW = ctx.measureText(cap).width;
-              ctx.font = '800 9px Inter'; const amtW = ctx.measureText(amt).width;
-              const padX = 6, h = 22, w = Math.max(capW, amtW) + padX * 2;
-              const bx = Math.max(chartArea.left, Math.min(chartArea.right - w, xPos - w / 2));
-              const by = chartArea.top + 4;
-              ctx.fillStyle = '#b8924e';
-              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, h, 6); ctx.fill(); } else ctx.fillRect(bx, by, w, h);
-              ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-              ctx.font = '700 6px Inter'; ctx.fillText(cap, bx + w / 2, by + 4);
-              ctx.font = '800 9px Inter'; ctx.fillText(amt, bx + w / 2, by + 11);
-              ctx.textAlign = 'left';
-              ctx.restore();
+              const xp = scales.x.getPixelForValue(Math.round(Number(v.annee) || 0));
+              if (!isFinite(xp)) return;
+              ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(xp, by + boxH + 3); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
             });
+            ctx.fillStyle = '#b8924e';
+            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, boxH, 6); ctx.fill(); } else ctx.fillRect(bx, by, w, boxH);
+            ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+            ctx.font = '700 6.5px Inter'; ctx.fillText(hdr, bx + padX, by + 4);
+            ctx.font = '800 9px Inter'; lines.forEach((t, i) => ctx.fillText(t, bx + padX, by + header + 3 + i * lineH));
+            ctx.restore();
           },
         };
         const datasets = [
@@ -6658,7 +6653,7 @@
                 // Détails (chips lisibles) — le total net est un hero à part
                 const details = [
                   { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€' },
-                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.length === 1 ? `année ${comps[0].annee}` : `${comps.length} apports` }] : []),
+                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.map(v => `${nf(Number(v.montant) || 0)} € · année ${v.annee}`).join('\n') }] : []),
                   { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m' },
                   { k: 'Durée', v: `${N}`, u: 'ans' },
                   { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%' },
@@ -6683,7 +6678,7 @@
                           <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '16pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
                             {it.v}<span style={{ fontSize: '8.5pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
-                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>{it.sub}</div>}
+                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'pre-line', lineHeight: 1.5 }}>{it.sub}</div>}
                         </div>
                       ))}
                     </div>
