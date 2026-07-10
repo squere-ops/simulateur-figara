@@ -378,10 +378,7 @@
       display: flex; flex-direction: column;
       height: 297mm; box-sizing: border-box;
     }
-    .pres-spread::before {
-      content: ""; position: absolute; top: 0; left: 16mm; right: 16mm; height: 1px;
-      background: #1c1917;
-    }
+    .pres-spread::before { content: none; }
     .pres-spread-watermark { display: none; }
     .pres-spread-head {
       display: flex; justify-content: space-between; align-items: flex-end;
@@ -3942,12 +3939,14 @@
                 )}
               </g>);
             })}
-            {/* Repères des versements complémentaires — UNE boîte listant chaque apport + points sur la courbe */}
+            {/* Repères des versements complémentaires — 1 pastille en-tête + 1 pastille indépendante par apport */}
             {(() => {
               const comps = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0 && (Number(v.annee) || 0) >= 0 && (Number(v.annee) || 0) <= (n - 1));
               if (!comps.length) return null;
-              const lineH = 13, boxW = 138, boxH = 15 + comps.length * lineH;
               const bx = pl + 6, by = pt;
+              const hH = 15, hW = 132;                 // pastille en-tête
+              const pW = 74, pH = 26, gap = 4;         // pastilles apports (2 lignes)
+              const stackBottom = by + hH + gap + comps.length * (pH + gap);
               return (
                 <g>
                   {comps.map((v, k) => {
@@ -3955,15 +3954,22 @@
                     const xc = pl + (yr / (n - 1)) * (W - pl - pr);
                     const mv = (Sx.med && Sx.med.length) ? (Sx.med[Math.min(Sx.med.length - 1, Math.round(yr))] || 0) : 0;
                     return (<g key={`cd${k}`}>
-                      <line x1={xc} y1={by + boxH} x2={xc} y2={y(mv)} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
+                      <line x1={xc} y1={stackBottom} x2={xc} y2={y(mv)} stroke={WOW_GOLD} strokeWidth="1.1" strokeDasharray="3 3" opacity="0.5" />
                       <circle cx={xc} cy={y(mv)} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
                     </g>);
                   })}
-                  <rect x={bx} y={by} width={boxW} height={boxH} rx="7" fill={WOW_GOLD} />
-                  <text x={bx + 10} y={by + 11} fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.06em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
-                  {comps.map((v, k) => (
-                    <text key={`ct${k}`} x={bx + 10} y={by + 15 + (k + 1) * lineH - 3} fontSize="10.5" fontWeight="800" fill="#fff" className="num">+{fmtEUR(Number(v.montant) || 0)} · année {v.annee}</text>
-                  ))}
+                  {/* En-tête */}
+                  <rect x={bx} y={by} width={hW} height={hH} rx="6" fill={WOW_GOLD} />
+                  <text x={bx + hW / 2} y={by + 10.5} textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.05em', textTransform: 'uppercase' }}>{comps.length > 1 ? 'Versements complémentaires' : 'Versement complémentaire'}</text>
+                  {/* Une pastille par apport */}
+                  {comps.map((v, k) => {
+                    const py = by + hH + gap + k * (pH + gap);
+                    return (<g key={`cp${k}`}>
+                      <rect x={bx} y={py} width={pW} height={pH} rx="6" fill="#fff" stroke={WOW_GOLD} strokeWidth="1.5" />
+                      <text x={bx + pW / 2} y={py + 12} textAnchor="middle" fontSize="10.5" fontWeight="800" fill={WOW_GOLD} className="num">+{fmtEUR(Number(v.montant) || 0)}</text>
+                      <text x={bx + pW / 2} y={py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {v.annee}</text>
+                    </g>);
+                  })}
                 </g>
               );
             })()}
@@ -5634,7 +5640,7 @@
           },
         };
 
-        // Repères des versements complémentaires — UNE boîte listant chaque apport + lignes verticales
+        // Repères — 1 pastille en-tête + 1 pastille indépendante par apport
         const compAnnotation = {
           id: 'compAnnotation',
           afterDraw(chart) {
@@ -5643,25 +5649,35 @@
             const { ctx, chartArea, scales } = chart;
             ctx.save();
             const hdr = comps.length > 1 ? 'VERSEMENTS COMPLÉMENTAIRES' : 'VERSEMENT COMPLÉMENTAIRE';
-            const lines = comps.map(v => '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' € · année ' + v.annee);
-            ctx.font = '700 8px Inter'; let maxW = ctx.measureText(hdr).width;
-            ctx.font = '800 11px Inter'; lines.forEach(t => { maxW = Math.max(maxW, ctx.measureText(t).width); });
-            const padX = 9, header = 13, lineH = 14;
-            const w = maxW + padX * 2, boxH = header + comps.length * lineH + 5;
+            ctx.font = '700 8px Inter'; const hW = ctx.measureText(hdr).width + 18, hH = 16;
+            const pW = 78, pH = 28, gap = 4;
             const bx = chartArea.left + 6, by = chartArea.top + 6;
-            // lignes verticales (année) partant sous la boîte
+            const stackBottom = by + hH + gap + comps.length * (pH + gap);
             comps.forEach(v => {
               const xp = scales.x.getPixelForValue(Math.round(Number(v.annee) || 0));
               if (!isFinite(xp)) return;
               ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xp, by + boxH + 4); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
+              ctx.beginPath(); ctx.moveTo(xp, stackBottom); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
             });
-            // boîte
+            // en-tête
             ctx.fillStyle = '#b8924e';
-            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, boxH, 8); ctx.fill(); } else ctx.fillRect(bx, by, w, boxH);
-            ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-            ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + padX, by + 5);
-            ctx.font = '800 11px Inter'; lines.forEach((t, i) => ctx.fillText(t, bx + padX, by + header + 4 + i * lineH));
+            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 7); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
+            ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.font = '700 8px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
+            // pastilles par apport
+            comps.forEach((v, i) => {
+              const py = by + hH + gap + i * (pH + gap);
+              ctx.fillStyle = '#fff';
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, py, pW, pH, 6); ctx.fill(); } else ctx.fillRect(bx, py, pW, pH);
+              ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.5;
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, py, pW, pH, 6); ctx.stroke(); } else ctx.strokeRect(bx, py, pW, pH);
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillStyle = '#b8924e'; ctx.font = '800 11px Inter';
+              ctx.fillText('+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €', bx + pW / 2, py + 9);
+              ctx.fillStyle = '#a07f3f'; ctx.font = '700 8px Inter';
+              ctx.fillText('ANNÉE ' + v.annee, bx + pW / 2, py + 20);
+            });
+            ctx.textAlign = 'left';
             ctx.restore();
           },
         };
@@ -6379,7 +6395,7 @@
             });
           },
         };
-        // Repères des versements complémentaires (PDF) — UNE boîte listant chaque apport
+        // Repères (PDF) — 1 pastille en-tête + 1 pastille indépendante par apport
         const compAnnotation = {
           id: 'compAnnotation',
           afterDraw(chart) {
@@ -6387,24 +6403,34 @@
             if (!comps.length) return;
             const { ctx, chartArea, scales } = chart;
             ctx.save();
-            const hdr = comps.length > 1 ? 'VERSEMENTS COMPLÉMENTAIRES' : 'VERSEMENT COMPLÉMENTAIRE';
-            const lines = comps.map(v => '+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' € · année ' + v.annee);
-            ctx.font = '700 6.5px Inter'; let maxW = ctx.measureText(hdr).width;
-            ctx.font = '800 9px Inter'; lines.forEach(t => { maxW = Math.max(maxW, ctx.measureText(t).width); });
-            const padX = 7, header = 11, lineH = 11.5;
-            const w = maxW + padX * 2, boxH = header + comps.length * lineH + 4;
-            const bx = chartArea.left + 5, by = chartArea.top + 4;
+            const hdr = comps.length > 1 ? 'VERS. COMPLÉMENTAIRES' : 'VERS. COMPLÉMENTAIRE';
+            ctx.font = '700 6.5px Inter'; const hW = ctx.measureText(hdr).width + 14, hH = 12;
+            const pW = 62, pH = 20, gap = 3;
+            const bx = chartArea.left + 5, by = chartArea.top + 3;
+            const stackBottom = by + hH + gap + comps.length * (pH + gap);
             comps.forEach(v => {
               const xp = scales.x.getPixelForValue(Math.round(Number(v.annee) || 0));
               if (!isFinite(xp)) return;
               ctx.strokeStyle = 'rgba(184,146,78,0.5)'; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
-              ctx.beginPath(); ctx.moveTo(xp, by + boxH + 3); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
+              ctx.beginPath(); ctx.moveTo(xp, stackBottom); ctx.lineTo(xp, chartArea.bottom); ctx.stroke(); ctx.setLineDash([]);
             });
             ctx.fillStyle = '#b8924e';
-            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, w, boxH, 6); ctx.fill(); } else ctx.fillRect(bx, by, w, boxH);
-            ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-            ctx.font = '700 6.5px Inter'; ctx.fillText(hdr, bx + padX, by + 4);
-            ctx.font = '800 9px Inter'; lines.forEach((t, i) => ctx.fillText(t, bx + padX, by + header + 3 + i * lineH));
+            if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, by, hW, hH, 5); ctx.fill(); } else ctx.fillRect(bx, by, hW, hH);
+            ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.font = '700 6.5px Inter'; ctx.fillText(hdr, bx + hW / 2, by + hH / 2 + 0.5);
+            comps.forEach((v, i) => {
+              const py = by + hH + gap + i * (pH + gap);
+              ctx.fillStyle = '#fff';
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, py, pW, pH, 5); ctx.fill(); } else ctx.fillRect(bx, py, pW, pH);
+              ctx.strokeStyle = '#b8924e'; ctx.lineWidth = 1.2;
+              if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, py, pW, pH, 5); ctx.stroke(); } else ctx.strokeRect(bx, py, pW, pH);
+              ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+              ctx.fillStyle = '#b8924e'; ctx.font = '800 9px Inter';
+              ctx.fillText('+' + new Intl.NumberFormat('fr-FR').format(Number(v.montant) || 0) + ' €', bx + pW / 2, py + 7);
+              ctx.fillStyle = '#a07f3f'; ctx.font = '700 6.5px Inter';
+              ctx.fillText('ANNÉE ' + v.annee, bx + pW / 2, py + 15);
+            });
+            ctx.textAlign = 'left';
             ctx.restore();
           },
         };
@@ -6673,7 +6699,7 @@
                           <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1mm', whiteSpace: 'nowrap' }}>
                             {it.v}<span style={{ fontSize: '8pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
-                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1mm', whiteSpace: 'pre-line', lineHeight: 1.45 }}>{it.sub}</div>}
+                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1mm', whiteSpace: 'pre-line', lineHeight: 1.5, display: 'inline-block', textAlign: 'left' }}>{it.sub}</div>}
                         </div>
                       ))}
                     </div>
