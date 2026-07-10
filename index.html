@@ -1392,9 +1392,8 @@
       const vMN = inp.versementMensuel * (1 - inp.fraisSouscription);
       const compMois = complementairesParMois(inp, inp.fraisSouscription, N*12);
       let cap = vIN;
-      // Point de départ affiché = versement initial BRUT (comme le comparateur livret/CAT),
-      // pour que toutes les courbes partent du même montant à t0 ; les frais d'entrée jouent ensuite sur la pente.
-      const series = [inp.versementInitial];
+      // Point de départ = versement initial NET des frais d'entrée (ex. 100 000 € − 3 % = 97 000 €).
+      const series = [vIN];
       for (let m = 1; m <= N*12; m++) {
         cap = (cap + vMN) * (1 + tm);
         if (compMois[m]) cap += compMois[m];
@@ -3903,7 +3902,7 @@
             {Sx.pess && Sx.pess.length >= 2 && <polyline points={poly(Sx.pess)} fill="none" stroke="#b45309" strokeWidth="1.6" strokeDasharray="2 4" opacity="0.7" />}
             {Sx.med && Sx.med.length >= 2 && <polyline points={poly(Sx.med)} fill="none" stroke={WOW_TEAL} strokeWidth="4" strokeLinejoin="round" />}
             {Sx.compar && Sx.compar.length >= 2 && <polyline points={poly(Sx.compar)} fill="none" stroke={WOW_GOLD} strokeWidth="4" strokeLinejoin="round" />}
-            {Sx.med && Sx.med.length >= 2 && <g><circle cx={x(0)} cy={y(Sx.med[0])} r="4.5" fill={WOW_INK} stroke="#fdfbf6" strokeWidth="1.5" /><text x={pl - 10} y={y(Sx.med[0]) + 4} textAnchor="end" fontSize="13" fontWeight="700" fill={WOW_INK} className="num">{fmtEUR(inputs.versementInitial)}</text></g>}
+            {Sx.med && Sx.med.length >= 2 && <g><circle cx={x(0)} cy={y(Sx.med[0])} r="4.5" fill={WOW_INK} stroke="#fdfbf6" strokeWidth="1.5" /><text x={pl - 10} y={y(Sx.med[0]) + 4} textAnchor="end" fontSize="13" fontWeight="700" fill={WOW_INK} className="num">{fmtEUR(Sx.med[0])}</text></g>}
             {placed.map((l, k) => {
               const tx = l.sec ? x(n - 1) + 150 : x(n - 1) + 19;
               return (<g key={k}>
@@ -4405,14 +4404,25 @@
                     <div className="text-[10px] uppercase tracking-widest font-bold mb-1" style={{ color: WOW_GOLD }}>Le projet</div>
                     <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-y-5 gap-x-6">
+                  <div className="grid grid-cols-2 md:grid-cols-6 gap-y-5 gap-x-6">
                     <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} />
                     <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" />
                     <EL k="Durée" v={`${inputs.dureeAnnees} ans`} />
                     <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} />
+                    <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} />
                     <EL k="Profil de risque" v={`SRI ${sriAlloc}/7`} />
                   </div>
-                  <div className="mt-5 pt-4 flex items-baseline justify-start gap-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
+                  {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
+                    <div className="mt-4 pt-3 flex items-baseline gap-3 flex-wrap" style={{ borderTop: "1px dashed rgba(29,39,53,0.12)" }}>
+                      <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: WOW_TEAL }}>Versements complémentaires</span>
+                      <span className="text-[13px]" style={{ color: WOW_INK }}>
+                        {inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).map((v, k, arr) => (
+                          <span key={k}><span className="num font-bold">{fmtEUR(Number(v.montant)||0)}</span> à l'année {v.annee}{k < arr.length - 1 ? ' · ' : ''}</span>
+                        ))}
+                      </span>
+                    </div>
+                  )}
+                  <div className="mt-4 pt-4 flex items-baseline justify-start gap-4" style={{ borderTop: "1px solid rgba(29,39,53,0.1)" }}>
                     <span className="text-[11px] uppercase tracking-widest font-bold" style={{ color: WOW_SUB }}>Total investi</span>
                     <span className="num text-[30px] font-bold tracking-tightest leading-none" style={{ color: WOW_TEAL }}>{fmtEUR(totalVerse)}</span>
                   </div>
@@ -6582,6 +6592,10 @@
                     <div className="pres-hyp-k">Rendement médian</div>
                     <div className="pres-hyp-v gold"><span className="num-val">{(sim.rdtMed*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
                   </div>
+                  <div className="pres-hyp-cell">
+                    <div className="pres-hyp-k">Frais d'entrée</div>
+                    <div className="pres-hyp-v"><span className="num-val">{((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
+                  </div>
                   <div className="pres-hyp-cell highlight">
                     <div className="pres-hyp-k">Total versé</div>
                     <div className="pres-hyp-v">
@@ -6594,6 +6608,16 @@
                     </div>
                   </div>
                 </div>
+                {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
+                  <div style={{marginTop:'3mm', paddingTop:'2.5mm', borderTop:'1px dashed rgba(10,9,8,0.12)', display:'flex', alignItems:'baseline', gap:'3mm', flexWrap:'wrap'}}>
+                    <span style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.18em', textTransform:'uppercase', color:'#047857', fontWeight:700}}>Versements complémentaires</span>
+                    <span style={{fontSize:'8.5pt', color:'#57534e'}}>
+                      {inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).map((v, k, arr) => (
+                        <span key={k}><strong style={{color:'#0a0908'}}>{fmtEUR(Number(v.montant)||0)}</strong> à l'année {v.annee}{k < arr.length - 1 ? ' · ' : ''}</span>
+                      ))}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
