@@ -3950,12 +3950,13 @@
               const cx2 = Math.max(pl + wLbl / 2, Math.min(W - pr - wLbl / 2, xc));
               return (
                 <g key={`comp${k}`}>
-                  <line x1={xc} y1={yc} x2={xc} y2={Hh - pb} stroke={WOW_GOLD} strokeWidth="1.2" strokeDasharray="3 3" opacity="0.65" />
+                  {/* trait de rappel du haut jusqu'au point sur la courbe (le libellé reste EN HAUT, hors de la courbe) */}
+                  <line x1={xc} y1={pt + 30} x2={xc} y2={yc} stroke={WOW_GOLD} strokeWidth="1.2" strokeDasharray="3 3" opacity="0.6" />
                   <circle cx={xc} cy={yc} r="4" fill={WOW_GOLD} stroke="#fdfbf6" strokeWidth="1.5" />
-                  <g transform={`translate(${cx2}, ${yc - 8})`}>
-                    <rect x={-wLbl / 2} y={-26} width={wLbl} height="30" rx="7" fill={WOW_GOLD} />
-                    <text x="0" y="-15" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.04em', textTransform: 'uppercase' }}>Versement compl.</text>
-                    <text x="0" y="-2" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" className="num">{lbl}</text>
+                  <g transform={`translate(${cx2}, ${pt})`}>
+                    <rect x={-wLbl / 2} y={0} width={wLbl} height="29" rx="7" fill={WOW_GOLD} />
+                    <text x="0" y="11" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#fff" style={{ letterSpacing: '0.04em', textTransform: 'uppercase' }}>Versement compl.</text>
+                    <text x="0" y="23" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" className="num">{lbl}</text>
                   </g>
                 </g>
               );
@@ -4200,7 +4201,7 @@
             // Ordre demandé : initial · compl (année X) · mensuel · durée · bénéficiaires · rendement (· TMI en PER)
             const cards = [
               { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(inputs.versementInitial), c: WOW_TEAL },
-              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.length === 1 ? `à l'année ${compList[0].annee}` : `${compList.length} apports programmés`, c: WOW_TEAL }] : []),
+              ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.length === 1 ? `année ${compList[0].annee}` : `${compList.length} apports programmés`, c: WOW_TEAL }] : []),
               { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: <>{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}<span className="text-[15px] font-medium ml-1" style={{ color: WOW_SUB }}>€/mois</span></>, c: WOW_GOLD },
               { ic: <Ico d={<><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>} />, l: "Durée du placement", v: `${inputs.dureeAnnees} ans`, c: WOW_TEAL },
               ...(!isCapiProduit ? [{ ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD }] : []),
@@ -4212,11 +4213,11 @@
               <div>
                 <Eyebrow>Votre projet</Eyebrow>
                 <H className="text-4xl md:text-5xl mb-7">{produitNom}</H>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   {cards.map((c, k) => (
-                    <div key={k} className={`${soft} p-6 flex items-center gap-6 ${spanLast && k === cards.length - 1 ? 'md:col-span-2' : ''}`} style={softStyle}>
-                      <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl text-white flex-shrink-0 shadow-sm" style={{ background: c.c }}>{c.ic}</span>
-                      <div className="min-w-0"><div className="text-[11px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>{c.l}</div><div className="num text-[28px] font-bold tracking-tightest leading-tight" style={{ color: c.vc || WOW_INK }}>{c.v}</div>{c.sub && <div className="text-[11px] mt-0.5" style={{ color: WOW_SUB }}>{c.sub}</div>}</div>
+                    <div key={k} className={`rounded-xl bg-white/70 px-4 py-3.5 flex items-center gap-4 ${spanLast && k === cards.length - 1 ? 'md:col-span-2' : ''}`} style={{ border: `1px solid ${c.c}33`, boxShadow: "0 1px 2px rgba(29,39,53,0.04)" }}>
+                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg text-white flex-shrink-0 shadow-sm" style={{ background: c.c }}>{c.ic}</span>
+                      <div className="min-w-0 leading-tight"><div className="text-[10px] uppercase tracking-wider font-bold" style={{ color: WOW_SUB }}>{c.l}</div><div className="num text-[22px] font-extrabold tracking-tightest leading-tight" style={{ color: c.vc || WOW_INK }}>{c.v}</div>{c.sub && <div className="text-[10.5px] mt-0.5" style={{ color: WOW_SUB }}>{c.sub}</div>}</div>
                     </div>
                   ))}
                 </div>
@@ -6656,7 +6657,7 @@
                 const totalNet = totalVerseBrut * (1 - frais);
                 const items = [
                   { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€' },
-                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.length === 1 ? `à l'année ${comps[0].annee}` : `${comps.length} apports` }] : []),
+                  ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.length === 1 ? `année ${comps[0].annee}` : `${comps.length} apports` }] : []),
                   { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m' },
                   { k: 'Durée', v: `${N}`, u: 'ans' },
                   { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', gold: true },
@@ -6669,16 +6670,19 @@
                     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${items.length}, 1fr)`, marginTop: '3mm' }}>
                       {items.map((it, idx) => (
                         <div key={idx} style={{
-                          textAlign: 'center', padding: '2mm 2mm', minHeight: '20mm',
+                          display: 'grid', gridTemplateRows: '9mm 8mm 4mm', justifyItems: 'center',
+                          textAlign: 'center', padding: '2mm 2.5mm',
                           borderRight: idx < items.length - 1 ? '1px solid rgba(10,9,8,0.08)' : 'none',
-                          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2mm',
                           ...(it.highlight ? { background: 'linear-gradient(180deg,#ecfdf5,#d1fae5)', borderRadius: '2mm', border: 'none' } : {}),
                         }}>
-                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', letterSpacing: '0.14em', textTransform: 'uppercase', color: it.highlight ? '#047857' : '#57534e', fontWeight: 700, lineHeight: 1.3, minHeight: '6mm', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{it.k}</div>
-                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '11pt', fontWeight: 700, color: it.highlight ? '#047857' : (it.gold ? '#57534e' : '#0a0908'), lineHeight: 1, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                          {/* libellé — aligné en bas de sa ligne (les valeurs restent alignées quel que soit le nombre de lignes) */}
+                          <div style={{ alignSelf: 'end', fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', letterSpacing: '0.12em', textTransform: 'uppercase', color: it.highlight ? '#047857' : '#57534e', fontWeight: 700, lineHeight: 1.35 }}>{it.k}</div>
+                          {/* valeur — même ligne pour toutes les cellules */}
+                          <div style={{ alignSelf: 'center', fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '12pt', fontWeight: 700, color: it.highlight ? '#047857' : (it.gold ? '#57534e' : '#0a0908'), lineHeight: 1, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
                             {it.v}<span style={{ fontSize: '7pt', fontWeight: 500, color: it.highlight ? '#047857' : '#78716c', marginLeft: '1px' }}>{it.u}</span>
                           </div>
-                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', lineHeight: 1.2, minHeight: '3mm', whiteSpace: 'nowrap' }}>{it.sub || ''}</div>
+                          {/* sous-ligne (remise / année) — hauteur réservée pour l'alignement */}
+                          <div style={{ alignSelf: 'start', fontFamily: "'JetBrains Mono', monospace", fontSize: '5.6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', lineHeight: 1.2, whiteSpace: 'nowrap' }}>{it.sub || ''}</div>
                         </div>
                       ))}
                     </div>
