@@ -6659,29 +6659,28 @@
               {/* Ligne décorative Figara sous le titre */}
               <FigaraRule style={{margin:'4mm 0 0'}}/>
 
-              {/* Hypothèses retenues — wrappée dans une carte cohérente avec les modules du bas */}
-              <div className="pres-cmp-card" style={{marginTop:'14mm', padding:'4mm 5mm'}}>
+              {/* Hypothèses retenues — carte récap enrichie (net de frais + remise commerciale) */}
+              {(() => {
+                const frais = inputs.fraisSouscription || 0;
+                const netInit = inputs.versementInitial * (1 - frais);
+                const netMens = inputs.versementMensuel * (1 - frais);
+                const remiseEur = Math.max(0, (FRAIS_SOUSC_MAX - frais)) * totalVerseBrut;
+                const remisePct = FRAIS_SOUSC_MAX > 0 ? Math.max(0, (FRAIS_SOUSC_MAX - frais)) / FRAIS_SOUSC_MAX * 100 : 0;
+                const subNet = { fontSize:'6.5pt', color:'#047857', fontWeight:700, marginTop:'0.6mm', fontFamily:"'JetBrains Mono', monospace", letterSpacing:'0.02em' };
+                const subGold = { fontSize:'6.5pt', color:'#b45309', fontWeight:700, marginTop:'0.6mm', fontFamily:"'JetBrains Mono', monospace" };
+                return (
+              <div className="pres-cmp-card" style={{marginTop:'8mm', padding:'4.5mm 5mm'}}>
                 <div className="cmp-title">Hypothèses retenues</div>
-                <div className="pres-hyp-row" style={{marginTop:'2mm'}}>
+                <div className="pres-hyp-row" style={{marginTop:'2.5mm'}}>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Versement initial</div>
-                    <div className="pres-hyp-v">
-                      <span className="num-val">{inputs.versementInitial >= 1000000
-                        ? `${(inputs.versementInitial/1e6).toFixed(2).replace('.',',')} M`
-                        : inputs.versementInitial >= 100000
-                          ? `${Math.round(inputs.versementInitial/1000)} k`
-                          : new Intl.NumberFormat('fr-FR').format(inputs.versementInitial)}</span>
-                      <span className="unit">€</span>
-                    </div>
+                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementInitial)}</span><span className="unit">€</span></div>
+                    <div style={subNet}>net {new Intl.NumberFormat('fr-FR').format(Math.round(netInit))} €</div>
                   </div>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Versement mensuel</div>
-                    <div className="pres-hyp-v">
-                      <span className="num-val">{inputs.versementMensuel >= 100000
-                        ? `${Math.round(inputs.versementMensuel/1000)} k`
-                        : new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}</span>
-                      <span className="unit">€/m</span>
-                    </div>
+                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}</span><span className="unit">€/m</span></div>
+                    <div style={subNet}>net {new Intl.NumberFormat('fr-FR').format(Math.round(netMens))} €/m</div>
                   </div>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Durée</div>
@@ -6693,18 +6692,12 @@
                   </div>
                   <div className="pres-hyp-cell">
                     <div className="pres-hyp-k">Frais d'entrée</div>
-                    <div className="pres-hyp-v"><span className="num-val">{((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
+                    <div className="pres-hyp-v"><span className="num-val">{(frais*100).toFixed(2).replace('.',',')}</span><span className="unit">%</span></div>
+                    {remiseEur > 0 && <div style={subGold}>remise {new Intl.NumberFormat('fr-FR').format(Math.round(remiseEur))} € · −{remisePct.toFixed(0)} %</div>}
                   </div>
                   <div className="pres-hyp-cell highlight">
                     <div className="pres-hyp-k">Total versé</div>
-                    <div className="pres-hyp-v">
-                      <span className="num-val">{totalVerseBrut >= 1000000
-                        ? `${(totalVerseBrut/1e6).toFixed(2).replace('.',',')} M`
-                        : totalVerseBrut >= 100000
-                          ? `${Math.round(totalVerseBrut/1000)} k`
-                          : new Intl.NumberFormat('fr-FR').format(totalVerseBrut)}</span>
-                      <span className="unit">€</span>
-                    </div>
+                    <div className="pres-hyp-v"><span className="num-val">{new Intl.NumberFormat('fr-FR').format(totalVerseBrut)}</span><span className="unit">€</span></div>
                   </div>
                 </div>
                 {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
@@ -6718,11 +6711,13 @@
                   </div>
                 )}
               </div>
+                );
+              })()}
 
               {/* Chart Chart.js (canvas) — réplique du graphique de l'onglet Présentation */}
               <div className="pres-cmp-card" style={{marginTop:'4mm', padding:'4mm 5mm 5mm'}}>
                 <div className="cmp-title">Évolution comparée · Capital & scenarii</div>
-                <div style={{width:'100%', height:'80mm', position:'relative'}}>
+                <div style={{width:'100%', height:'70mm', position:'relative'}}>
                   <canvas ref={printChartRef}></canvas>
                 </div>
                 <div style={{display:'none'}}>
