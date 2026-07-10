@@ -6655,34 +6655,35 @@
                 const remiseEur = Math.max(0, (FRAIS_SOUSC_MAX - frais)) * totalVerseBrut;
                 const remisePct = FRAIS_SOUSC_MAX > 0 ? Math.max(0, (FRAIS_SOUSC_MAX - frais)) / FRAIS_SOUSC_MAX * 100 : 0;
                 const totalNet = totalVerseBrut * (1 - frais);
-                const items = [
+                // Détails (chips lisibles) — le total net est un hero à part
+                const details = [
                   { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€' },
                   ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.length === 1 ? `année ${comps[0].annee}` : `${comps.length} apports` }] : []),
                   { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m' },
                   { k: 'Durée', v: `${N}`, u: 'ans' },
-                  { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', gold: true },
+                  { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%' },
                   { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null },
-                  { k: 'Total net versé', v: nf(totalNet), u: '€', highlight: true },
                 ];
                 return (
-                  <div className="pres-cmp-card" style={{ marginTop: '5mm', padding: '4.5mm 5mm' }}>
+                  <div className="pres-cmp-card" style={{ marginTop: '5mm', padding: '5mm 6mm 6mm' }}>
                     <div className="cmp-title">Hypothèses retenues</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${items.length}, 1fr)`, marginTop: '3mm' }}>
-                      {items.map((it, idx) => (
-                        <div key={idx} style={{
-                          display: 'grid', gridTemplateRows: '9mm 8mm 4mm', justifyItems: 'center',
-                          textAlign: 'center', padding: '2mm 2.5mm',
-                          borderRight: idx < items.length - 1 ? '1px solid rgba(10,9,8,0.08)' : 'none',
-                          ...(it.highlight ? { background: 'linear-gradient(180deg,#ecfdf5,#d1fae5)', borderRadius: '2mm', border: 'none' } : {}),
-                        }}>
-                          {/* libellé — aligné en bas de sa ligne (les valeurs restent alignées quel que soit le nombre de lignes) */}
-                          <div style={{ alignSelf: 'end', fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', letterSpacing: '0.12em', textTransform: 'uppercase', color: it.highlight ? '#047857' : '#57534e', fontWeight: 700, lineHeight: 1.35 }}>{it.k}</div>
-                          {/* valeur — même ligne pour toutes les cellules */}
-                          <div style={{ alignSelf: 'center', fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '12pt', fontWeight: 700, color: it.highlight ? '#047857' : (it.gold ? '#57534e' : '#0a0908'), lineHeight: 1, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
-                            {it.v}<span style={{ fontSize: '7pt', fontWeight: 500, color: it.highlight ? '#047857' : '#78716c', marginLeft: '1px' }}>{it.u}</span>
+                    {/* HERO — Total net versé */}
+                    <div style={{ marginTop: '3.5mm', borderRadius: '3mm', background: 'linear-gradient(120deg,#065f46 0%,#047857 55%,#10b981 100%)', padding: '4mm 7mm', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4mm 10mm -6mm rgba(4,120,87,0.5)' }}>
+                      <div>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7pt', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>Total net versé</div>
+                        <div style={{ fontSize: '8pt', color: 'rgba(255,255,255,0.7)', marginTop: '1mm' }}>net de frais d'entrée · investi réellement</div>
+                      </div>
+                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '26pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '13pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
+                    </div>
+                    {/* Détails — chips aérés, 3 par rangée, centrés */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '3.5mm', marginTop: '4mm' }}>
+                      {details.map((it, idx) => (
+                        <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', background: '#faf9f7', border: '1px solid rgba(10,9,8,0.07)', borderRadius: '2.5mm', padding: '3.5mm 4mm', textAlign: 'center' }}>
+                          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#78716c', fontWeight: 700, lineHeight: 1.35, minHeight: '6mm' }}>{it.k}</div>
+                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '16pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
+                            {it.v}<span style={{ fontSize: '8.5pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
-                          {/* sous-ligne (remise / année) — hauteur réservée pour l'alignement */}
-                          <div style={{ alignSelf: 'start', fontFamily: "'JetBrains Mono', monospace", fontSize: '5.6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', lineHeight: 1.2, whiteSpace: 'nowrap' }}>{it.sub || ''}</div>
+                          {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>{it.sub}</div>}
                         </div>
                       ))}
                     </div>
