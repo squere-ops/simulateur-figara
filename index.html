@@ -5681,19 +5681,23 @@
             const pW = 80, pH = 28, gap = 4;
             const bx = chartArea.left + 6, by = chartArea.top + 4;
             const firstRowY = by + hH + gap;
-            // sommet de courbe (optimiste sinon médian) à l'index de l'année
-            const curveTopY = (idx) => {
-              const cands = [optData, medData].filter(a => a && a.length).map(a => a[Math.min(a.length - 1, idx)] || 0);
-              return scales.y.getPixelForValue(cands.length ? Math.max(...cands) : 0);
+            // pixels RÉELS des courbes rendues : dataset 0 = Optimiste, 1 = Médian
+            const metaTop = chart.getDatasetMeta(0), metaMed = chart.getDatasetMeta(1);
+            const ptAt = (meta, idx) => (meta && meta.data && meta.data[Math.min(meta.data.length - 1, idx)]) || null;
+            // sommet de courbe (pixel le plus haut = y minimal) entre optimiste et médian
+            const curveTopPix = (idx) => {
+              const cands = [ptAt(metaTop, idx), ptAt(metaMed, idx)].filter(Boolean).map(p => p.y);
+              return cands.length ? Math.min(...cands) : chartArea.bottom;
             };
-            const medY = (idx) => scales.y.getPixelForValue((medData && medData.length) ? (medData[Math.min(medData.length - 1, idx)] || 0) : 0);
+            const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
             const rowRight = [];  // collision horizontale (aplomb)
             let leftStack = 0;    // empilement colonne gauche (repli)
             // pastille à l'aplomb SI place au-dessus de la courbe ; sinon repli à gauche avec trait de rappel
             const placed = sorted.map(o => {
-              const room = curveTopY(o.yr) - firstRowY;
-              const yv = medY(o.yr);
+              const mp = medPix(o.yr);
+              const room = curveTopPix(o.yr) - firstRowY;
+              const yv = mp.y;
               if (room >= pH + 6) {
                 const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
                 const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
@@ -6461,17 +6465,20 @@
             const pW = 64, pH = 20, gap = 3;
             const bx = chartArea.left + 5, by = chartArea.top + 3;
             const firstRowY = by + hH + gap;
-            const curveTopY = (idx) => {
-              const cands = [optData, medData].filter(a => a && a.length).map(a => a[Math.min(a.length - 1, idx)] || 0);
-              return scales.y.getPixelForValue(cands.length ? Math.max(...cands) : 0);
+            const metaTop = chart.getDatasetMeta(0), metaMed = chart.getDatasetMeta(1);
+            const ptAt = (meta, idx) => (meta && meta.data && meta.data[Math.min(meta.data.length - 1, idx)]) || null;
+            const curveTopPix = (idx) => {
+              const cands = [ptAt(metaTop, idx), ptAt(metaMed, idx)].filter(Boolean).map(p => p.y);
+              return cands.length ? Math.min(...cands) : chartArea.bottom;
             };
-            const medY = (idx) => scales.y.getPixelForValue((medData && medData.length) ? (medData[Math.min(medData.length - 1, idx)] || 0) : 0);
+            const medPix = (idx) => { const p = ptAt(metaMed, idx); return p ? { x: p.x, y: p.y } : { x: scales.x.getPixelForValue(idx), y: chartArea.bottom }; };
             const sorted = comps.map(v => { const yr = Math.round(Number(v.annee) || 0); return { v, yr, xt: scales.x.getPixelForValue(yr) }; }).filter(o => isFinite(o.xt)).sort((a, b) => a.xt - b.xt);
             const rowRight = [];
             let leftStack = 0;
             const placed = sorted.map(o => {
-              const room = curveTopY(o.yr) - firstRowY;
-              const yv = medY(o.yr);
+              const mp = medPix(o.yr);
+              const room = curveTopPix(o.yr) - firstRowY;
+              const yv = mp.y;
               if (room >= pH + 5) {
                 const px = Math.max(chartArea.left, Math.min(chartArea.right - pW, o.xt - pW / 2));
                 const maxRow = Math.max(0, Math.floor((room - pH) / (pH + gap)));
