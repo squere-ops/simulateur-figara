@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD graphes-v8 (pastilles a l aplomb en haut + trait vertical, style mockup)', 'color:#0f766e;font-weight:700');
+    console.log('%cBUILD v9 (multi-projet PER+AV : moteur consolide + saisie 2 blocs)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -1065,6 +1065,7 @@
     const PRODUITS = [
       { id: "av",   label: "Assurance-Vie",   desc: "Multi-supports",                                dispo: true  },
       { id: "per",  label: "PER",              desc: "Versements déductibles à l'IR",                 dispo: true  },
+      { id: "multi",label: "Multi-projet PER + AV", desc: "Une même personne : PER + Assurance-Vie",  dispo: true  },
       { id: "capi", label: "Contrat capi PM",  desc: "Trésorerie d'entreprise, taxé à l'IS",          dispo: true  },
     ];
 
@@ -1117,6 +1118,12 @@
       perModeSortie: "capital",  // 'capital' ou 'rente'
       // Capi PM : taux IS applicable
       tauxIS: 0.25,
+      // Multi-projet PER + AV (personne physique) : versements séparés par produit.
+      // Durée, âge, bénéficiaires, allocation, frais, succession sont PARTAGÉS.
+      multi: {
+        per: { versementInitial: 50000, versementMensuel: 300 },
+        av:  { versementInitial: 50000, versementMensuel: 200 },
+      },
     };
 
     // ============================================================
@@ -1132,6 +1139,22 @@
     function totalComplementaires(inp) {
       return (inp.versementsComplementaires || []).reduce((s, v) => s + (v.montant || 0), 0);
     }
+    // Versements consolidés d'un multi-projet (PER + AV)
+    function versementsMulti(inp) {
+      const per = (inp.multi && inp.multi.per) || {}, av = (inp.multi && inp.multi.av) || {};
+      return {
+        vi: (per.versementInitial || 0) + (av.versementInitial || 0),
+        vm: (per.versementMensuel || 0) + (av.versementMensuel || 0),
+      };
+    }
+    // Total versé brut, multi-conscient
+    function totalVerseBrutOf(inp) {
+      if (inp.produit === "multi") {
+        const m = versementsMulti(inp);
+        return m.vi + m.vm * 12 * (inp.dureeAnnees || 0);
+      }
+      return inp.versementInitial + inp.versementMensuel * 12 * inp.dureeAnnees + totalComplementaires(inp);
+    }
     // Regroupe les versements complémentaires par mois (m = annee*12), nets de frais d'entrée,
     // pour injection dans les boucles de capitalisation mensuelles.
     function complementairesParMois(inp, fraisEntree, Nmois) {
@@ -1145,7 +1168,32 @@
       return map;
     }
 
+    // Multi-projet : construit l'inp d'un sous-produit (per|av) en héritant tout le partagé
+    // (durée, âge, bénéf, allocation, frais, succession) et en n'imposant que ses versements.
+    function subInp(inp, which) {
+      const m = (inp.multi && inp.multi[which]) || {};
+      return {
+        ...inp,
+        produit: which,
+        versementInitial: m.versementInitial ?? 0,
+        versementMensuel: m.versementMensuel ?? 0,
+        // pas de versements complémentaires en multi v1 (évite le double comptage)
+        versementsComplementaires: [],
+      };
+    }
+
     function projection(inp, rdtNet) {
+      if (inp.produit === "multi") {
+        const p = projection(subInp(inp, "per"), rdtNet);
+        const a = projection(subInp(inp, "av"), rdtNet);
+        return {
+          capitalFin: p.capitalFin + a.capitalFin,
+          totVerseBrut: p.totVerseBrut + a.totVerseBrut,
+          totVerseNet: p.totVerseNet + a.totVerseNet,
+          plusValue: p.plusValue + a.plusValue,
+          fraisSousPay: p.fraisSousPay + a.fraisSousPay,
+        };
+      }
       const N = Math.round(inp.dureeAnnees * 12);
       const tm = Math.pow(1 + rdtNet, 1/12) - 1;
       const vIN = inp.versementInitial * (1 - inp.fraisSouscription);
@@ -1384,6 +1432,11 @@
 
     /** Year-by-year capital series for AV projection */
     function projectionSeries(inp, rdtNet) {
+      if (inp.produit === "multi") {
+        const p = projectionSeries(subInp(inp, "per"), rdtNet);
+        const a = projectionSeries(subInp(inp, "av"), rdtNet);
+        return p.map((v, i) => v + (a[i] || 0));
+      }
       const N = Math.round(inp.dureeAnnees);
       const tm = Math.pow(1 + rdtNet, 1/12) - 1;
       const vIN = inp.versementInitial * (1 - inp.fraisSouscription);
@@ -1416,6 +1469,20 @@
 
     /** Run full simulation for a given inputs snapshot. Returns metrics for given scenario level. */
     function runSimulation(inp, scenarioLvl = "med") {
+      // Multi-projet PER + AV : deux sous-simulations exactes (fiscalité propre à chaque produit)
+      // + une base consolidée (traitée comme un capital global) pour les chiffres de tête et les graphes.
+      if (inp.produit === "multi") {
+        const perSim = runSimulation(subInp(inp, "per"), scenarioLvl);
+        const avSim  = runSimulation(subInp(inp, "av"),  scenarioLvl);
+        const flat = {
+          ...inp, produit: "av",
+          versementInitial: (inp.multi?.per?.versementInitial || 0) + (inp.multi?.av?.versementInitial || 0),
+          versementMensuel: (inp.multi?.per?.versementMensuel || 0) + (inp.multi?.av?.versementMensuel || 0),
+          versementsComplementaires: [],
+        };
+        const base = runSimulation(flat, scenarioLvl);
+        return { ...base, multi: { per: perSim, av: avSim } };
+      }
       const rdtBrut = rdtPondere(inp.allocation);
       const sri = sriPondere(inp.allocation);
       const rdtPess = rdtBrut - 0.01;
@@ -1596,7 +1663,7 @@
       const sim = useMemo(() => runSimulation(inputs, scenarioLvl), [inputs, scenarioLvl]);
 
       const totalP = useMemo(() => inputs.allocation.reduce((s,v)=>s+v.poids, 0), [inputs.allocation]);
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = totalVerseBrutOf(inputs);
       const reductionCommerciale = (FRAIS_SOUSC_MAX - inputs.fraisSouscription) * totalVerseBrut;
       const reductionPCT = FRAIS_SOUSC_MAX > 0 ? (FRAIS_SOUSC_MAX - inputs.fraisSouscription) / FRAIS_SOUSC_MAX : 0;
       const fraisAuTarifMax = FRAIS_SOUSC_MAX * totalVerseBrut;
@@ -2299,6 +2366,12 @@
         setDraftCompAnnee(String(Math.min((inputs.dureeAnnees || 99), an + 1)));
         setDraftCompMontant('10000');
       };
+      const isMulti = inputs.produit === "multi";
+      // Mise à jour d'un champ de versement d'un sous-produit (per|av) du multi-projet
+      const updMulti = (prod, field, val) => upd("multi", {
+        ...(inputs.multi || {}),
+        [prod]: { ...((inputs.multi || {})[prod] || {}), [field]: val },
+      });
       // Type de client effectif (client sélectionné ou saisi)
       const effType = inputs.mode === "select" && inputs.clientSelected ? inputs.clientSelected.type : inputs.clientType;
       const isEntreprise = effType === "entreprise";
@@ -2319,7 +2392,7 @@
 
           <div className="mb-6">
             <label className="label">Enveloppe</label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
               {PRODUITS.map(p => (
                 <div key={p.id} onClick={()=> { if (dispoFor(p) && p.id !== inputs.produit) { upd("produit", p.id); resetAlloc(); } }}
                   className={`opt-card ${inputs.produit===p.id ? 'selected' : ''} ${!dispoFor(p) ? 'disabled' : ''}`}>
@@ -2344,7 +2417,7 @@
 
           {reverseOpen && <ReverseCalculator onClose={() => setReverseOpen(false)} ageDefault={inputs.ageSouscripteur} clientLabel={inputs.clientNom} />}
 
-          {(inputs.produit === "av" || inputs.produit === "per") && (
+          {(inputs.produit === "av" || inputs.produit === "per" || isMulti) && (
             <div className="mb-4 bg-white border border-stone-200 rounded-xl px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
               <div>
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-0.5">Âge du souscripteur</div>
@@ -2443,6 +2516,49 @@
               )}
             </div>
 
+            {isMulti && (() => {
+              const per = (inputs.multi && inputs.multi.per) || {};
+              const av = (inputs.multi && inputs.multi.av) || {};
+              const num = v => new Intl.NumberFormat('fr-FR').format(v || 0);
+              const Bloc = ({ prod, cfg, titre, accent }) => (
+                <div className="bg-white rounded-2xl p-5" style={{ border: `2px solid ${accent}44` }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: accent }} />
+                    <span className="text-[12px] font-extrabold uppercase tracking-wider" style={{ color: accent }}>{titre}</span>
+                  </div>
+                  <label className="label">Versement à la souscription</label>
+                  <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200 mb-3">
+                    <input type="text" inputMode="numeric" value={num(cfg.versementInitial)}
+                      onChange={e => updMulti(prod, "versementInitial", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                      className="num w-full px-3 py-2.5 text-right text-[17px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                    <span className="px-3 text-[12px] text-stone-500 font-medium">€</span>
+                  </div>
+                  <label className="label">Versement programmé</label>
+                  <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200">
+                    <input type="text" inputMode="numeric" value={num(cfg.versementMensuel)}
+                      onChange={e => updMulti(prod, "versementMensuel", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                      className="num w-full px-3 py-2 text-right text-[15px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                    <span className="px-3 text-[11px] text-stone-500 font-medium">€/mois</span>
+                  </div>
+                  {prod === "per" && (
+                    <div className="mt-3 pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+                      <span className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">TMI</span>
+                      <select value={inputs.tauxIR} onChange={e => upd("tauxIR", parseFloat(e.target.value))}
+                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                        {TMI_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              );
+              return (
+                <div className="grid grid-cols-2 gap-5">
+                  <Bloc prod="per" cfg={per} titre="PER" accent="#6d28d9" />
+                  <Bloc prod="av" cfg={av} titre="Assurance-Vie" accent="#0f766e" />
+                </div>
+              );
+            })()}
+            {!isMulti && (
             <div className="grid grid-cols-2 gap-5">
               <div className="bg-white border border-stone-200 rounded-2xl p-5">
                 <label className="label">Versement à la souscription</label>
@@ -2492,9 +2608,11 @@
                 </div>
               </div>
             </div>
+            )}
           </div>
 
-          {/* VERSEMENTS COMPLÉMENTAIRES : liste libre, illimitée */}
+          {/* VERSEMENTS COMPLÉMENTAIRES : liste libre (masqué en multi-projet v1) */}
+          {!isMulti && (
           <div className="mb-6 bg-teal-50/60 border-2 border-teal-600 rounded-2xl p-5 shadow-sm">
             <div className="flex items-end justify-between mb-3">
               <div>
@@ -2551,6 +2669,7 @@
               <button onClick={validerComp} className="px-4 py-2 text-[12px] font-bold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition">Valider</button>
             </div>
           </div>
+          )}
 
           {/* FRAIS DE SOUSCRIPTION + ÉCONOMIE COMMERCIALE EN AVANT */}
           <div>
@@ -2873,7 +2992,7 @@
       const isCapiProduit = inputs.produit === "capi";
       const refLabel = isCapiProduit ? "Compte à terme" : "Livret";
       const livretNom = isCapiProduit ? "Compte à terme" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret");
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = totalVerseBrutOf(inputs);
 
       // Mesure dynamique de la hauteur du bandeau "Hypothèse principale" pour positionner exactement le bandeau "Détail" juste en dessous (sans chevauchement, sans gap)
       const hypotheseRef = useRef(null);
@@ -3015,7 +3134,7 @@
         };
       }, [isPERProduit, sim, inputs.versementInitial, inputs.versementMensuel, inputs.dureeAnnees, inputs.tauxIR, inputs.successionLine, inputs.successionTauxIndirect, inputs.successionTauxDirect, inputs.ageSouscripteur, inputs.nbBeneficiaires, inputs.situationFamiliale]);
 
-      const produitLabel = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : "Ass Vie";
+      const produitLabel = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : inputs.produit === "multi" ? "PER + AV" : "Ass Vie";
       const solutionCol = useMemo(() => {
         const isPER = inputs.produit === "per";
         const isCapi = inputs.produit === "capi";
@@ -3053,7 +3172,7 @@
           type: "solution",
           isPER,
           isCapi,
-          name: isCapi ? "Solution Capi PM" : isPER ? "Solution PER" : `Solution assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`,
+          name: isCapi ? "Solution Capi PM" : isPER ? "Solution PER" : inputs.produit === "multi" ? "Multi-projet PER + Assurance-Vie" : `Solution assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`,
           subtitle: `Rdt ${fmtPCT(sim.rdt)} · ${scenarioLvl === "med" ? "médian" : scenarioLvl === "pess" ? "pessimiste" : "optimiste"}`,
           capital: sim.proj.capitalFin,
           versements: sim.proj.totVerseBrut,
@@ -3660,7 +3779,7 @@
     function buildComparatifCols(inputs, sim, scenarios, scenarioLvl) {
       const isPERProduit = inputs.produit === "per";
       const isCapiProduit = inputs.produit === "capi";
-      const produitLabel = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : "Ass Vie";
+      const produitLabel = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : inputs.produit === "multi" ? "PER + AV" : "Ass Vie";
       const livretNom = isCapiProduit ? "Compte à terme" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret");
       const refLabel = isCapiProduit ? "Compte à terme" : "Livret";
       const ligne = inputs.successionLine ?? 'directe';
@@ -5523,7 +5642,7 @@
       const gainPCT = isPER_Step5
         ? (finalSolution > 0 ? gainEUR / finalSolution : 0)
         : (finalLivret > 0 ? gainEUR / finalLivret : 0);
-      const totalVerseBrut = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + totalComplementaires(inputs);
+      const totalVerseBrut = totalVerseBrutOf(inputs);
 
       useEffect(() => {
         if (!chartRef.current || typeof Chart === 'undefined') return;
@@ -7718,7 +7837,7 @@
       const totalP = b.allocation.reduce((s,v)=>s+v.poids, 0);
       const isOK = Math.abs(totalP - 1) < 0.001;
 
-      const totalVerseBrut = b.versementInitial + b.versementMensuel * 12 * b.dureeAnnees + totalComplementaires(b);
+      const totalVerseBrut = totalVerseBrutOf(b);
       const reductionCommerciale = (FRAIS_SOUSC_MAX - b.fraisSouscription) * totalVerseBrut;
       const reductionPCT = FRAIS_SOUSC_MAX > 0 ? (FRAIS_SOUSC_MAX - b.fraisSouscription) / FRAIS_SOUSC_MAX : 0;
 
