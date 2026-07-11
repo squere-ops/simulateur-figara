@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v10 (multi-projet : detail par produit PER vs AV, dashboard + PDF)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v12 (multi: fix saisie, layout detail, rappel params, livret off)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -2516,48 +2516,63 @@
               )}
             </div>
 
-            {isMulti && (() => {
-              const per = (inputs.multi && inputs.multi.per) || {};
-              const av = (inputs.multi && inputs.multi.av) || {};
-              const num = v => new Intl.NumberFormat('fr-FR').format(v || 0);
-              const Bloc = ({ prod, cfg, titre, accent }) => (
-                <div className="bg-white rounded-2xl p-5" style={{ border: `2px solid ${accent}44` }}>
+            {isMulti && (
+              <div className="grid grid-cols-2 gap-5">
+                {/* Bloc PER — inline (pas de composant interne : évite le remount à chaque frappe) */}
+                <div className="bg-white rounded-2xl p-5" style={{ border: '2px solid #6d28d944' }}>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: accent }} />
-                    <span className="text-[12px] font-extrabold uppercase tracking-wider" style={{ color: accent }}>{titre}</span>
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#6d28d9' }} />
+                    <span className="text-[12px] font-extrabold uppercase tracking-wider" style={{ color: '#6d28d9' }}>PER</span>
                   </div>
                   <label className="label">Versement à la souscription</label>
                   <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200 mb-3">
-                    <input type="text" inputMode="numeric" value={num(cfg.versementInitial)}
-                      onChange={e => updMulti(prod, "versementInitial", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                    <input type="text" inputMode="numeric"
+                      value={new Intl.NumberFormat('fr-FR').format((inputs.multi?.per?.versementInitial) || 0)}
+                      onChange={e => updMulti("per", "versementInitial", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
                       className="num w-full px-3 py-2.5 text-right text-[17px] font-bold text-stone-900 bg-transparent focus:outline-none" />
                     <span className="px-3 text-[12px] text-stone-500 font-medium">€</span>
                   </div>
                   <label className="label">Versement programmé</label>
                   <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200">
-                    <input type="text" inputMode="numeric" value={num(cfg.versementMensuel)}
-                      onChange={e => updMulti(prod, "versementMensuel", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                    <input type="text" inputMode="numeric"
+                      value={new Intl.NumberFormat('fr-FR').format((inputs.multi?.per?.versementMensuel) || 0)}
+                      onChange={e => updMulti("per", "versementMensuel", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
                       className="num w-full px-3 py-2 text-right text-[15px] font-bold text-stone-900 bg-transparent focus:outline-none" />
                     <span className="px-3 text-[11px] text-stone-500 font-medium">€/mois</span>
                   </div>
-                  {prod === "per" && (
-                    <div className="mt-3 pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
-                      <span className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">TMI</span>
-                      <select value={inputs.tauxIR} onChange={e => upd("tauxIR", parseFloat(e.target.value))}
-                        className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
-                        {TMI_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-                      </select>
-                    </div>
-                  )}
+                  <div className="mt-3 pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+                    <span className="text-[11px] uppercase tracking-wider font-semibold text-stone-500">TMI</span>
+                    <select value={inputs.tauxIR} onChange={e => upd("tauxIR", parseFloat(e.target.value))}
+                      className="text-[12px] font-bold text-stone-900 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900">
+                      {TMI_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  </div>
                 </div>
-              );
-              return (
-                <div className="grid grid-cols-2 gap-5">
-                  <Bloc prod="per" cfg={per} titre="PER" accent="#6d28d9" />
-                  <Bloc prod="av" cfg={av} titre="Assurance-Vie" accent="#0f766e" />
+                {/* Bloc Assurance-Vie — inline */}
+                <div className="bg-white rounded-2xl p-5" style={{ border: '2px solid #0f766e44' }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#0f766e' }} />
+                    <span className="text-[12px] font-extrabold uppercase tracking-wider" style={{ color: '#0f766e' }}>Assurance-Vie</span>
+                  </div>
+                  <label className="label">Versement à la souscription</label>
+                  <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200 mb-3">
+                    <input type="text" inputMode="numeric"
+                      value={new Intl.NumberFormat('fr-FR').format((inputs.multi?.av?.versementInitial) || 0)}
+                      onChange={e => updMulti("av", "versementInitial", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                      className="num w-full px-3 py-2.5 text-right text-[17px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                    <span className="px-3 text-[12px] text-stone-500 font-medium">€</span>
+                  </div>
+                  <label className="label">Versement programmé</label>
+                  <div className="flex items-center bg-stone-50 rounded-lg border border-stone-200">
+                    <input type="text" inputMode="numeric"
+                      value={new Intl.NumberFormat('fr-FR').format((inputs.multi?.av?.versementMensuel) || 0)}
+                      onChange={e => updMulti("av", "versementMensuel", parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0)}
+                      className="num w-full px-3 py-2 text-right text-[15px] font-bold text-stone-900 bg-transparent focus:outline-none" />
+                    <span className="px-3 text-[11px] text-stone-500 font-medium">€/mois</span>
+                  </div>
                 </div>
-              );
-            })()}
+              </div>
+            )}
             {!isMulti && (
             <div className="grid grid-cols-2 gap-5">
               <div className="bg-white border border-stone-200 rounded-2xl p-5">
@@ -3889,9 +3904,12 @@
     function MultiDetailCards({ inputs, sim, variant = "screen" }) {
       if (!inputs || inputs.produit !== "multi" || !sim || !sim.multi) return null;
       const isPrint = variant === "print";
+      const rdtMed = sim.rdtMed != null ? sim.rdtMed : sim.rdt;
+      const dureeTxt = `${inputs.dureeAnnees} an${inputs.dureeAnnees > 1 ? 's' : ''}`;
+      const rdtTxt = (rdtMed != null && !isNaN(rdtMed)) ? `${(rdtMed * 100).toFixed(2).replace('.', ',')} %` : '—';
       const cards = [
-        { titre: "PER", accent: "#6d28d9", s: sim.multi.per, per: true },
-        { titre: "Assurance-Vie", accent: "#0f766e", s: sim.multi.av, per: false },
+        { titre: "PER", accent: "#6d28d9", s: sim.multi.per, per: true, cfg: (inputs.multi && inputs.multi.per) || {} },
+        { titre: "Assurance-Vie", accent: "#0f766e", s: sim.multi.av, per: false, cfg: (inputs.multi && inputs.multi.av) || {} },
       ];
       const Row = ({ label, value, strong, accent }) => (
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: isPrint ? "0.8mm 0" : "3px 0", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
@@ -3901,7 +3919,7 @@
       );
       return (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isPrint ? "4mm" : "12px" }}>
-          {cards.map(({ titre, accent, s, per }, k) => {
+          {cards.map(({ titre, accent, s, per, cfg }, k) => {
             const verse = s.proj.totVerseBrut;
             const capital = s.proj.capitalFin;
             const eco = per ? (s.fiscPER?.ecoFiscEntree || 0) : null;
@@ -3909,9 +3927,14 @@
             const renteMois = (s.rente?.nette || 0) / 12;
             return (
               <div key={k} style={{ background: `${accent}0a`, border: `1px solid ${accent}33`, borderRadius: isPrint ? "2.5mm" : "14px", padding: isPrint ? "2.6mm 3mm" : "14px 16px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: isPrint ? "1.4mm" : "8px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: isPrint ? "1mm" : "6px" }}>
                   <span style={{ width: 8, height: 8, borderRadius: 99, background: accent, flexShrink: 0 }} />
                   <span style={{ fontSize: isPrint ? "8pt" : "12px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", color: accent }}>{titre}</span>
+                </div>
+                {/* Rappel des paramètres de versement */}
+                <div style={{ fontSize: isPrint ? "6.5pt" : "10.5px", color: "#6b7280", lineHeight: 1.35, marginBottom: isPrint ? "1.4mm" : "8px", paddingBottom: isPrint ? "1.2mm" : "7px", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+                  Initial <b style={{ color: "#1d2735" }}>{fmtEUR(cfg.versementInitial || 0)}</b> · Périodique <b style={{ color: "#1d2735" }}>{fmtEUR(cfg.versementMensuel || 0)}/mois</b><br />
+                  Durée <b style={{ color: "#1d2735" }}>{dureeTxt}</b> · Rendement médian <b style={{ color: "#1d2735" }}>{rdtTxt}</b>
                 </div>
                 <Row label="Versé" value={fmtEUR(verse)} accent={accent} />
                 <Row label="Capital à terme" value={fmtEUR(capital)} strong accent={accent} />
@@ -3974,7 +3997,8 @@
       const primePP = `PP ${fmtEUR(prime)}/mois`;                     // prime périodique majorée
       // La colonne de référence (livret / assurance vie client) n'apparaît sur décès/rente/synthèse
       // QUE si l'utilisateur a coché le comparatif correspondant. En PER, la référence (PER seul) est intrinsèque.
-      const showRef = isPERProduit ? perReint : showLivret;
+      const isMultiWow = inputs.produit === "multi";
+      const showRef = isMultiWow ? false : (isPERProduit ? perReint : showLivret);
       const gainCapital = win.capital - refCol.capital;
       const gainNet = win.netTransmis - refCol.netTransmis;
       const gainRente = win.renteNetteMois - refCol.renteNetteMois;
@@ -4174,6 +4198,8 @@
             ref = med.map((v, i) => v + (aux[i] || 0));
             refLabel = "PER + Réintégration";
           }
+        } else if (inputs.produit === "multi") {
+          ref = [];
         } else {
           ref = showLivret ? ((useAutreAV ? projectionSeries(inputs, autreAV.rdt) : livretSeries(inputs)) || []) : [];
         }
@@ -5944,7 +5970,7 @@
             pointHoverRadius: 5,
             pointHoverBackgroundColor: s.color,
           })),
-          {
+          ...(inputs.produit === "multi" ? [] : [{
             label: livretNom,
             data: livretData,
             borderColor: isPER_Step5 ? '#0d9488' : '#a8a29e',
@@ -5957,7 +5983,7 @@
             pointHoverBackgroundColor: isPER_Step5 ? '#0d9488' : '#a8a29e',
             _endLabelBg: isPER_Step5 ? '#0d9488' : undefined,
             _endLabelSuffix: useAutreAV ? 'Ass. vie client' : livretNom,
-          },
+          }]),
         ];
 
         chartInst.current = new Chart(ctx, {
@@ -6299,16 +6325,6 @@
               </div>
             </div>
 
-            {/* MULTI-PROJET — détail par produit (PER vs AV) */}
-            {inputs.produit === "multi" && (
-              <div className="col-span-12">
-                <div className="bg-white border border-stone-200 rounded-2xl p-5 shadow-sm">
-                  <div className="text-[12px] uppercase tracking-widest font-extrabold text-stone-900 mb-3">Détail par produit</div>
-                  <MultiDetailCards inputs={inputs} sim={sim} />
-                </div>
-              </div>
-            )}
-
             {/* RIGHT — visuels adaptés au produit (donut transmission/réduction, compteur rente, allocation) */}
             <div className="col-span-12 md:col-span-3 space-y-3">
               {/* Carte 1 — Avantage fiscal selon produit (donut) */}
@@ -6480,6 +6496,14 @@
               </div>
             </div>
           </div>
+
+          {/* MULTI-PROJET — détail par produit (PER vs AV), pleine largeur sous la grille */}
+          {inputs.produit === "multi" && (
+            <div className="mt-4 bg-white border border-stone-200 rounded-2xl p-5 shadow-sm">
+              <div className="text-[12px] uppercase tracking-widest font-extrabold text-stone-900 mb-3">Détail par produit</div>
+              <MultiDetailCards inputs={inputs} sim={sim} />
+            </div>
+          )}
 
         </div>
       );
@@ -6674,8 +6698,8 @@
           { label: isPER ? 'PER seul' : 'Médian', data: medData, borderColor: '#047857', backgroundColor: gradSol, borderWidth: 4, fill: true, tension: 0.35, pointRadius: 0 },
           // Pessimiste (borne basse du tunnel + remplissage blanc sous)
           { label: 'Pessimiste', data: pessData, borderColor: 'rgba(180,83,9,0.65)', backgroundColor: '#ffffff', borderDash: [5,4], borderWidth: 1.75, fill: 3, tension: 0.35, pointRadius: 0, _endLabelSoft: true, _endLabelBg: '#b45309' },
-          // Référence (livret / PER+Réintégration) — label raccourci pour ne pas être coupé
-          { label: isPER ? 'PER + Réinvest.' : livretNom, data: livretData, borderColor: isPER ? '#0d9488' : '#a8a29e', borderDash: isPER ? [4,4] : [6,5], borderWidth: isPER ? 2.5 : 2, fill: false, tension: 0.35, pointRadius: 0, _endLabelBg: isPER ? '#0d9488' : '#78716c' },
+          // Référence (livret / PER+Réintégration) — masquée en multi-projet (aucune comparaison)
+          ...(inputs.produit === "multi" ? [] : [{ label: isPER ? 'PER + Réinvest.' : livretNom, data: livretData, borderColor: isPER ? '#0d9488' : '#a8a29e', borderDash: isPER ? [4,4] : [6,5], borderWidth: isPER ? 2.5 : 2, fill: false, tension: 0.35, pointRadius: 0, _endLabelBg: isPER ? '#0d9488' : '#78716c' }]),
         ];
         printChartInst.current = new Chart(ctx, {
           type: 'line',
