@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v13 (multi: libelles coherents PER + Assurance-Vie partout)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v14 (multi: dashboard cartes consolidees + PDF page2 recalibree)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -6218,7 +6218,21 @@
 
                 return (
                   <>
-                    {isPERMode ? (
+                    {inputs.produit === "multi" ? (
+                      <>
+                        {[
+                          { t: "Capital à terme", v: finalSolution, s: "médian · PER + AV consolidé" },
+                          { t: "Rente brute /mois", v: renteSolMois, s: `${fmtEUR(renteSolAn)}/an` },
+                          { t: "Transmission nette", v: succSol, s: `${inputs.nbBeneficiaires} bénéficiaire${inputs.nbBeneficiaires > 1 ? 's' : ''}` },
+                        ].map((c, ci) => (
+                          <div key={ci} className="bg-white border border-stone-200 rounded-2xl p-4 shadow-sm">
+                            <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500 mb-1">{c.t}</div>
+                            <div className="num text-2xl font-extrabold text-stone-900 tracking-tightest leading-none">{fmtEURc(c.v)}</div>
+                            <div className="text-[10px] text-stone-500 mt-1">{c.s}</div>
+                          </div>
+                        ))}
+                      </>
+                    ) : isPERMode ? (
                       <PERCard
                         title="Capital à terme"
                         subtitle="PER + IR vs PER Seul"
@@ -6245,7 +6259,7 @@
                     )}
                     {/* Rente comparison — masquée pour Capi (sans objet) ET pour PER
                         (fiscalité dépend du RFR du foyer, non chiffrable simplement) */}
-                    {inputs.produit !== "capi" && !isPER && (
+                    {inputs.produit !== "capi" && !isPER && inputs.produit !== "multi" && (
                       <ComparisonCard
                         title={`${produitNomComplet} VS Livret · Rente brute /mois`}
                         valSolution={renteSolMois}
@@ -6256,7 +6270,7 @@
                         sub={`${fmtEUR(renteSolAn)}/an vs ${fmtEUR(renteLivAn)}/an`}
                       />
                     )}
-                    {inputs.produit !== "capi" && !isPER && (
+                    {inputs.produit !== "capi" && !isPER && inputs.produit !== "multi" && (
                       <ComparisonCard
                         title={`${produitNomComplet} VS Livret · Transmission`}
                         valSolution={succSol}
@@ -7029,14 +7043,6 @@
                 </svg>
                 </div>
               </div>
-
-              {/* MULTI-PROJET — détail par produit (PER vs AV) */}
-              {inputs.produit === "multi" && (
-                <div style={{ marginTop: '2mm' }}>
-                  <div style={{ fontSize: '8pt', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1d2735', marginBottom: '1.5mm' }}>Détail par produit</div>
-                  <MultiDetailCards inputs={inputs} sim={sim} variant="print" />
-                </div>
-              )}
 
               {/* 3 modules dashboard : Multiplicateur · Allocation · (Rente AV/PER ou Net après IS Capi) — espacement homogène */}
               <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'2mm', marginBottom:'0'}}>
