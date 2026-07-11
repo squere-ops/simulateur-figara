@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v14 (multi: dashboard cartes consolidees + PDF page2 recalibree)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v15 (multi: comparaison desactivee partout - etape 4 + presentation)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3269,6 +3269,13 @@
       // librement. Fiscalité AV complète (abattements 152 500 € / art. 990 I).
       const [avPop, setAvPop] = useState(false);
       const [livretActive, setLivretActive] = useState(true);
+      // Multi-projet : aucune comparaison → livret + concurrence forcés OFF
+      useEffect(() => {
+        if (inputs.produit === "multi") {
+          setLivretActive(false);
+          setAutreAV(p => (p.active ? { ...p, active: false } : p));
+        }
+      }, [inputs.produit]);
       const autreAVCol = useMemo(() => {
         if (!autreAV.active || isPERProduit || isCapiProduit) return null;
         const aInputs = {
@@ -3546,6 +3553,11 @@
                 <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-50 border border-teal-200">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-teal-700">PER + Réintégration</span>
                   <span className="text-[10px] text-teal-700/70">réductions réinvesties à {fmtPCT(sim.rdt)}</span>
+                </div>
+              ) : inputs.produit === "multi" ? (
+                <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-stone-50 border border-stone-200">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-stone-500">Multi-projet · aucune comparaison</span>
+                  <span className="text-[10px] text-stone-400">PER + Assurance-Vie présentés seuls</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-3 flex-wrap">
