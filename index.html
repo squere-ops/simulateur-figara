@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v15 (multi: comparaison desactivee partout - etape 4 + presentation)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v16 (multi: libelle graphe PER+AV + calcul consolide verifie)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -4275,7 +4275,7 @@
                 <span className="text-[13px]" style={{ color: WOW_INK }}>En passant à <span className="num font-bold" style={{ color: WOW_GOLD }}>{fmtEUR(prime)}/mois</span>, votre capital atteint <span className="num font-bold" style={{ color: WOW_GOLD }}>{fmtEUR(comparFinal)}</span> — soit <span className="num font-extrabold" style={{ color: WOW_GOLD }}>+{fmtEUR(comparFinal - medFinal)}</span> au terme.</span>
               </div>
             )}
-            <div className={`${soft} p-6`} style={softStyle}><ProjChart height={400} series={{ med, pess, opt, ref, compar }} refLabel={refLabel} heroLabel={heroLabel} scenLabel={`${isPERProduit ? 'PER' : isCapiProduit ? 'Capitalisation' : 'Ass. vie'} — médian`} medSub={comparActive ? `PP ${fmtEUR(baseMensuel)}/mois` : undefined} comparSub={comparActive ? `PP ${fmtEUR(prime)}/mois` : undefined} /></div>
+            <div className={`${soft} p-6`} style={softStyle}><ProjChart height={400} series={{ med, pess, opt, ref, compar }} refLabel={refLabel} heroLabel={heroLabel} scenLabel={`${isPERProduit ? 'PER' : isCapiProduit ? 'Capitalisation' : inputs.produit === "multi" ? 'PER + Assurance-Vie' : 'Ass. vie'} — médian`} medSub={comparActive ? `PP ${fmtEUR(baseMensuel)}/mois` : undefined} comparSub={comparActive ? `PP ${fmtEUR(prime)}/mois` : undefined} /></div>
             <div className="mt-3 text-[12.5px]" style={{ color: WOW_SUB }}>Courbes <span className="font-bold" style={{ color: WOW_TEAL }}>{produitNom}</span> (médian · optimiste · prudent){comparActive ? <>, et en <span className="font-bold" style={{ color: WOW_GOLD }}>doré</span> la projection si vous versez {fmtEUR(prime)}/mois</> : ''}{isPERProduit ? (showReint ? <>, avec <span className="font-semibold">PER + réintégration</span> (pointillés).</> : <>. Active « PER + réintégration » pour l'effet du réinvestissement des réductions.</>) : (showLivret ? <>, comparées à <span className="font-semibold">{refLabel.toLowerCase()}</span> (pointillés gris).</> : '.')}</div>
           </div>
         );
