@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v17 (multi: retrait toggles comparaison + phrase, calcul verifie node)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v18 (multi: Le projet valeurs consolidees + tableau comparatif etape4 masque)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3640,8 +3640,8 @@
             </div>
           </div>
 
-          {/* TABLEAU COMPARATIF — vue d'ensemble visuelle */}
-          <BenchmarkTable allCols={allCols} livretCol={benchRefCol} refLabel={benchRefLabel} inputs={inputs} scenarioLvl={scenarioLvl} />
+          {/* TABLEAU COMPARATIF — vue d'ensemble visuelle (masqué en multi : aucune comparaison) */}
+          {inputs.produit !== "multi" && <BenchmarkTable allCols={allCols} livretCol={benchRefCol} refLabel={benchRefLabel} inputs={inputs} scenarioLvl={scenarioLvl} />}
 
           {/* DÉTAIL PAR SOLUTION — chaque phase (Vie · Décès · Rente) est wrappée dans son propre conteneur
               avec son sticky bandeau qui se libère naturellement à la fin de la phase. */}
@@ -4011,7 +4011,10 @@
       const gainRente = win.renteNetteMois - refCol.renteNetteMois;
       const plusValue = Math.max(0, win.capital - win.versements);
       const compl = (typeof totalComplementaires === "function") ? totalComplementaires(inputs) : 0;
-      const totalVerse = inputs.versementInitial + inputs.versementMensuel * 12 * inputs.dureeAnnees + compl;
+      const _vMulti = versementsMulti(inputs);
+      const _viShow = inputs.produit === "multi" ? _vMulti.vi : inputs.versementInitial;
+      const _vmShow = inputs.produit === "multi" ? _vMulti.vm : inputs.versementMensuel;
+      const totalVerse = _viShow + _vmShow * 12 * inputs.dureeAnnees + compl;
       const age = inputs.ageSouscripteur;
       const av70 = age < 70;
       const rdtAlloc = rdtPondere(inputs.allocation);
@@ -4428,9 +4431,9 @@
             const compList = (inputs.versementsComplementaires || []).filter(v => (Number(v.montant) || 0) > 0);
             // Ordre demandé : initial · compl (année X) · mensuel · durée · bénéficiaires · rendement (· TMI en PER)
             const cards = [
-              { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(inputs.versementInitial), c: WOW_TEAL },
+              { ic: <Ico d={<><circle cx="12" cy="12" r="9" /><path d="M14.5 9.5a3 3 0 0 0-2.5-1.3c-1.7 0-3 1.7-3 3.8s1.3 3.8 3 3.8a3 3 0 0 0 2.5-1.3" /><line x1="8" y1="11" x2="13" y2="11" /></>} />, l: "Versement à la souscription", v: fmtEUR(_viShow), c: WOW_TEAL },
               ...(compl > 0 ? [{ ic: <Ico d={<><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></>} />, l: "Versements complémentaires", v: fmtEUR(compl), sub: compList.length === 1 ? `année ${compList[0].annee}` : `années ${compList.slice(0, -1).map(v => v.annee).join(', ')} & ${compList[compList.length - 1].annee}`, c: WOW_TEAL }] : []),
-              { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: <>{new Intl.NumberFormat('fr-FR').format(inputs.versementMensuel)}<span className="text-[15px] font-medium ml-1" style={{ color: WOW_SUB }}>€/mois</span></>, c: WOW_GOLD },
+              { ic: <Ico d={<><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></>} />, l: "Versement programmé", v: <>{new Intl.NumberFormat('fr-FR').format(_vmShow)}<span className="text-[15px] font-medium ml-1" style={{ color: WOW_SUB }}>€/mois</span></>, c: WOW_GOLD },
               { ic: <Ico d={<><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>} />, l: "Durée du placement", v: `${inputs.dureeAnnees} ans`, c: WOW_TEAL },
               ...(!isCapiProduit ? [{ ic: <Ico d={<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>} />, l: "Bénéficiaires", v: `${inputs.nbBeneficiaires}`, c: WOW_GOLD }] : []),
               { ic: <Ico d={<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></>} />, l: "Hypothèse de rendement", v: <>{fmtPCT(sim.rdtMed)}<span className="text-[13px] font-medium ml-1.5" style={{ color: WOW_SUB }}>médian</span></>, sub: `prudent ${fmtPCT(sim.rdtPess)} · optimiste ${fmtPCT(sim.rdtOpt)}`, vc: WOW_TEAL, c: WOW_TEAL },
