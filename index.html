@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v18 (multi: Le projet valeurs consolidees + tableau comparatif etape4 masque)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v19 (multi: versements/PP affiches = somme reelle PER+AV partout)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3363,12 +3363,12 @@
                 <div className="flex items-center gap-4 md:gap-5 flex-wrap text-[12px]">
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-stone-500">Initial</span>
-                    <span className="num font-bold text-stone-900">{fmtEUR(inputs.versementInitial)}</span>
+                    <span className="num font-bold text-stone-900">{fmtEUR(inputs.produit === "multi" ? versementsMulti(inputs).vi : inputs.versementInitial)}</span>
                   </div>
                   <span className="text-stone-300">·</span>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-stone-500">Mensuel</span>
-                    <span className="num font-bold text-stone-900">{fmtEUR(inputs.versementMensuel)}<span className="text-[10px] text-stone-500">/mois</span></span>
+                    <span className="num font-bold text-stone-900">{fmtEUR(inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel)}<span className="text-[10px] text-stone-500">/mois</span></span>
                   </div>
                   <span className="text-stone-300">·</span>
                   <div className="flex items-baseline gap-1.5">
@@ -3408,7 +3408,7 @@
                     <span className="text-stone-300">·</span>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-stone-500">Mensuel</span>
-                      <span className="num font-bold text-stone-900">{fmtEUR(inputs.versementMensuel)}<span className="text-[10px] text-stone-500">/mois</span></span>
+                      <span className="num font-bold text-stone-900">{fmtEUR(inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel)}<span className="text-[10px] text-stone-500">/mois</span></span>
                     </div>
                     <span className="text-stone-300">·</span>
                     <div className="flex items-baseline gap-1.5">
@@ -3990,8 +3990,11 @@
       const refNom = isPERProduit ? "PER seul" : (useAutreAV ? "Assurance vie client" : livretNom);
       // Nom de la solution mise en avant
       const winNom = isPERProduit ? (perReint ? "PER + réintégration IR" : "PER") : produitNom;
+      // Versements EFFECTIFS affichés : sommes multi (PER+AV) en multi-projet, sinon champs mono-produit
+      const effVI = inputs.produit === "multi" ? versementsMulti(inputs).vi : inputs.versementInitial;
+      const effVM = inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel;
       // Colonne « prime majorée » — même solution recalculée avec le versement mensuel choisi dans la projection
-      const baseMensuelWow = inputs.versementMensuel;
+      const baseMensuelWow = effVM;
       const primeActive = comparOn && prime > 0 && Math.round(prime) !== Math.round(baseMensuelWow);
       const primeCol = primeActive ? (() => {
         const pInputs = { ...inputs, versementMensuel: prime };
@@ -4000,7 +4003,7 @@
         return isPERProduit ? (perReint ? pcb.perReinvestCol : pcb.solutionCol) : pcb.solutionCol;
       })() : null;
       const primeNom = `Prime ${fmtEUR(prime)}/mois`;
-      const basePP = `PP ${fmtEUR(inputs.versementMensuel)}/mois`;   // prime périodique de base
+      const basePP = `PP ${fmtEUR(effVM)}/mois`;   // prime périodique de base (somme multi si multi-projet)
       const primePP = `PP ${fmtEUR(prime)}/mois`;                     // prime périodique majorée
       // La colonne de référence (livret / assurance vie client) n'apparaît sur décès/rente/synthèse
       // QUE si l'utilisateur a coché le comparatif correspondant. En PER, la référence (PER seul) est intrinsèque.
@@ -4194,7 +4197,7 @@
 
       // Slide Projection interactive : rappel des versements + comparatif prime périodique (courbe en +) + (PER) réintégration
       const ProjSlide = () => {
-        const baseMensuel = inputs.versementMensuel;
+        const baseMensuel = effVM;
         // showReint / showLivret / showScen remontés dans ClientWowScreen (persistent entre re-rendus)
         // Courbes de BASE (versement mensuel réel, inchangé)
         const med = projectionSeries(inputs, sim.rdtMed ?? sim.rdt) || [];
@@ -4225,7 +4228,7 @@
             <H className="text-4xl md:text-5xl mb-3">L'évolution de votre capital</H>
             {/* Rappel des versements sous le titre */}
             <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1 mb-5 text-[13.5px]" style={{ color: WOW_SUB }}>
-              <span>Versement initial <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(inputs.versementInitial)}</span></span>
+              <span>Versement initial <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(effVI)}</span></span>
               <span>· versement mensuel <span className="num font-bold" style={{ color: WOW_INK }}>{fmtEUR(baseMensuel)}</span>/mois</span>
               <span>· durée <span className="num font-bold" style={{ color: WOW_INK }}>{inputs.dureeAnnees} ans</span></span>
               <span>· hypothèse de rendement médian <span className="num font-bold" style={{ color: WOW_TEAL }}>{fmtPCT(sim.rdtMed)}</span></span>
@@ -4653,8 +4656,8 @@
                     <div className="serif text-[22px] font-bold" style={{ color: WOW_INK }}>{produitNom}</div>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-                    <EL k="Versement initial" v={fmtEUR(inputs.versementInitial)} c="#0f766e" />
-                    <EL k="Versement mensuel" v={`${fmtEUR(inputs.versementMensuel)}`} s="par mois" c="#b8924e" />
+                    <EL k="Versement initial" v={fmtEUR(effVI)} c="#0f766e" />
+                    <EL k="Versement mensuel" v={`${fmtEUR(effVM)}`} s="par mois" c="#b8924e" />
                     <EL k="Durée" v={`${inputs.dureeAnnees} ans`} c="#0369a1" />
                     <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} c="#047857" />
                     <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} c="#b45309" />
@@ -6088,11 +6091,11 @@
             <div className="px-4 py-3 grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 items-center">
               <div>
                 <div className="text-[9px] uppercase tracking-widest font-bold text-stone-400 mb-0.5">Versement initial</div>
-                <div className="num text-[16px] font-bold text-stone-900 tracking-tightest leading-none">{fmtEUR(inputs.versementInitial)}</div>
+                <div className="num text-[16px] font-bold text-stone-900 tracking-tightest leading-none">{fmtEUR(inputs.produit === "multi" ? versementsMulti(inputs).vi : inputs.versementInitial)}</div>
               </div>
               <div>
                 <div className="text-[9px] uppercase tracking-widest font-bold text-stone-400 mb-0.5">Versement périodique</div>
-                <div className="num text-[16px] font-bold text-stone-900 tracking-tightest leading-none">{fmtEUR(inputs.versementMensuel)}<span className="text-[11px] font-medium text-stone-500"> /mois</span></div>
+                <div className="num text-[16px] font-bold text-stone-900 tracking-tightest leading-none">{fmtEUR(inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel)}<span className="text-[11px] font-medium text-stone-500"> /mois</span></div>
               </div>
               <div>
                 <div className="text-[9px] uppercase tracking-widest font-bold text-stone-400 mb-0.5">Durée</div>
@@ -6964,9 +6967,9 @@
                 const totalNet = totalVerseBrut * (1 - frais);
                 // Détails (chips lisibles) — le total net est un hero à part
                 const details = [
-                  { k: 'Versement initial brut', v: nf(inputs.versementInitial), u: '€', c: '#0f766e' },
+                  { k: 'Versement initial brut', v: nf(inputs.produit === "multi" ? versementsMulti(inputs).vi : inputs.versementInitial), u: '€', c: '#0f766e' },
                   ...(comps.length ? [{ k: 'Versements compl. bruts', v: nf(totalComp), u: '€', sub: comps.map(v => `${nf(Number(v.montant) || 0)} € · année ${v.annee}`).join('\n'), c: '#b8924e' }] : []),
-                  { k: 'Versement mensuel brut', v: nf(inputs.versementMensuel), u: '€/m', c: '#0369a1' },
+                  { k: 'Versement mensuel brut', v: nf(inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel), u: '€/m', c: '#0369a1' },
                   { k: 'Durée', v: `${N}`, u: 'ans', c: '#1c2735' },
                   { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', c: '#047857' },
                   { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null, c: '#b45309' },
