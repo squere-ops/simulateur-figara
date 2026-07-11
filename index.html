@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v19 (multi: versements/PP affiches = somme reelle PER+AV partout)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v20 (multi: medaille off, PP somme reelle, comparaison PDF retiree, rente centree, alignement)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3740,7 +3740,7 @@
                             <DetailDecesCell
                               key={`dec-${col.type === 'scenario' ? `s${col.idx}` : col.type}`}
                               col={col}
-                              isBest={col.netTransmis === bestNetTransmis}
+                              isBest={inputs.produit !== "multi" && col.netTransmis === bestNetTransmis}
                             />
                           ))}
                         </div>
@@ -3760,7 +3760,7 @@
                             <DetailRenteCell
                               key={`rente-${col.type === 'scenario' ? `s${col.idx}` : col.type}`}
                               col={col}
-                              isBest={col.renteNetteMois === bestRente}
+                              isBest={inputs.produit !== "multi" && col.renteNetteMois === bestRente}
                             />
                           ))}
                         </div>
@@ -4618,7 +4618,7 @@
                 <Eyebrow>Revenu à vie</Eyebrow>
                 <H className="text-4xl md:text-5xl mb-5">Complément de revenu à vie</H>
                 <p className="text-[16px] mb-6 max-w-3xl" style={{ color: WOW_SUB }}>Au terme des {inputs.dureeAnnees} ans et selon les hypothèses de rendement, vous pourrez percevoir un revenu à vie — sans entamer votre capital.</p>
-                <div className={`grid grid-cols-1 gap-5 ${(1 + (showRef ? 1 : 0) + (primeCol ? 1 : 0)) >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} justify-center`}>
+                <div className={`grid grid-cols-1 gap-5 ${(1 + (showRef ? 1 : 0) + (primeCol ? 1 : 0)) >= 3 ? 'md:grid-cols-3' : (1 + (showRef ? 1 : 0) + (primeCol ? 1 : 0)) === 2 ? 'md:grid-cols-2' : 'md:max-w-md md:mx-auto'} justify-center`}>
                   {showRef && <RenteAdjust col={refCol} nom={refNom} accent={WOW_SUB} primary={false} hero={false} pp={basePP} />}
                   <RenteAdjust col={win} nom={winNom} accent={WOW_TEAL} primary={true} hero={true} pp={basePP} />
                   {primeCol && <RenteAdjust col={primeCol} nom={`${winNom} · ${primeNom}`} accent={WOW_GOLD} primary={false} hero={false} pp={primePP} />}
@@ -4691,7 +4691,7 @@
                           </div>
                           <div className="text-[11px]" style={{ color: WOW_SUB }}>{m.sub}</div>
                         </div>
-                        <div className="mb-3"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-bold px-2 py-0.5 rounded-md" style={{ color: WOW_TEAL, background: "rgba(15,118,110,0.10)", border: "1px solid rgba(15,118,110,0.3)" }}>{winNom.length > 22 ? "Votre solution" : winNom}</span><span className="num font-extrabold text-[16px]" style={{ color: WOW_TEAL }}>{m.fmt(m.av)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: WOW_TEAL }}>{basePP}</div><div className="h-3 rounded-full" style={{ width: `${(m.av / max) * 100}%`, background: "linear-gradient(90deg,#0f766e,#34d399)" }}></div></div>
+                        <div className="mb-3"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-bold px-2 py-0.5 rounded-md" style={{ color: WOW_TEAL, background: "rgba(15,118,110,0.10)", border: "1px solid rgba(15,118,110,0.3)" }}>{winNom.length > 16 ? "Votre solution" : winNom}</span><span className="num font-extrabold text-[16px]" style={{ color: WOW_TEAL }}>{m.fmt(m.av)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: WOW_TEAL }}>{basePP}</div><div className="h-3 rounded-full" style={{ width: `${(m.av / max) * 100}%`, background: "linear-gradient(90deg,#0f766e,#34d399)" }}></div></div>
                         {m.pr != null && (
                           <div className="mb-3"><div className="flex justify-between items-center text-[13px] mb-1"><span className="font-bold px-2 py-0.5 rounded-md" style={{ color: "#a07f3f", background: "rgba(184,146,78,0.14)", border: "1px solid rgba(184,146,78,0.4)" }}>Prime majorée</span><span className="num font-extrabold text-[15px]" style={{ color: WOW_GOLD }}>{m.fmt(m.pr)}</span></div><div className="text-[10.5px] uppercase tracking-widest font-extrabold text-center mb-1.5" style={{ color: "#a07f3f" }}>{primePP}</div><div className="h-3 rounded-full" style={{ width: `${(m.pr / max) * 100}%`, background: `linear-gradient(90deg,#a07f3f,${WOW_GOLD})` }}></div></div>
                         )}
@@ -7288,7 +7288,7 @@
               {/* Head — sans pagination (déplacée en bas) */}
               <div className="pres-spread-head">
                 <div>
-                  <div className="pres-spread-pretitle">{isPER ? `PER · Avec ou sans réintégration des réductions · ${N} ans` : `${produitNomComplet} VS ${livretNom} · ${N} ans`}</div>
+                  <div className="pres-spread-pretitle">{inputs.produit === "multi" ? `${produitNomComplet} · ${N} ans` : isPER ? `PER · Avec ou sans réintégration des réductions · ${N} ans` : `${produitNomComplet} VS ${livretNom} · ${N} ans`}</div>
                   <h2 className="pres-spread-title"><em>En synthèse.</em></h2>
                 </div>
               </div>
@@ -7297,8 +7297,9 @@
               {!isCapi ? (
                 <div style={{display:'flex', flexDirection:'column', gap:'3mm', marginTop:'10mm'}}>
                   {(() => {
+                    const isMultiPrint = inputs.produit === "multi";
                     const CmpCard = ({ title, valSol, valLiv, fmt = fmtEURc, sub, gainPct, solLabel, livLabel, winLabel, accent }) => {
-                      const max = Math.max(valSol, valLiv, 1);
+                      const max = Math.max(valSol, isMultiPrint ? 0 : valLiv, 1);
                       const gain = valSol - valLiv;
                       const wSol = (valSol / max) * 100;
                       const wLiv = (valLiv / max) * 100;
@@ -7308,31 +7309,35 @@
                           <div style={{width:'36mm', flexShrink:0, margin:'2.5mm 0 2.5mm 2.5mm', borderRadius:'2mm', background: accent || 'linear-gradient(150deg,#0b3b37 0%,#0f766e 60%,#12897f 100%)', display:'flex', alignItems:'center', justifyContent:'center', padding:'2.5mm 4mm', boxShadow:'0 2mm 5mm -3mm rgba(15,118,110,0.5)'}}>
                             <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'8.5pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em', textAlign:'center'}}>{title}</div>
                           </div>
-                          {/* Colonne 2 — Barres comparatives */}
-                          <div style={{flex:1, padding:'3mm 5mm', display:'flex', flexDirection:'column', gap:'2mm', borderRight:'1px solid rgba(10,9,8,0.07)'}}>
-                            {/* Barre PER + Réintégration — valeur mise en avant */}
+                          {/* Colonne 2 — Barre(s) */}
+                          <div style={{flex:1, padding:'3mm 5mm', display:'flex', flexDirection:'column', gap:'2mm', borderRight: isMultiPrint ? 'none' : '1px solid rgba(10,9,8,0.07)'}}>
+                            {/* Barre solution — valeur mise en avant */}
                             <div style={{display:'flex', alignItems:'center', gap:'2.5mm'}}>
-                              <div style={{width:'28mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#047857', fontWeight:700, letterSpacing:'0.05em'}}>{solLabel || produitNomComplet}</div>
+                              <div style={{width:'32mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#047857', fontWeight:700, letterSpacing:'0.05em'}}>{solLabel || produitNomComplet}</div>
                               <div style={{flex:1, height:'6px', borderRadius:'3px', background:'#d1fae5', position:'relative'}}>
                                 <div style={{position:'absolute', inset:'0', borderRadius:'3px', background:'linear-gradient(90deg,#059669,#10b981)', width:`${wSol}%`, boxShadow:'0 1px 4px rgba(5,150,105,0.35)'}}></div>
                               </div>
-                              <div style={{width:'20mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valSol)}</div>
+                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valSol)}</div>
                             </div>
-                            {/* Barre PER seul */}
+                            {/* Barre livret — masquée en multi (aucune comparaison) */}
+                            {!isMultiPrint && (
                             <div style={{display:'flex', alignItems:'center', gap:'2.5mm', opacity:0.7}}>
-                              <div style={{width:'28mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#78716c', fontWeight:600, letterSpacing:'0.05em'}}>{livLabel || livretNom}</div>
+                              <div style={{width:'32mm', flexShrink:0, fontFamily:"'JetBrains Mono',monospace", fontSize:'6pt', color:'#78716c', fontWeight:600, letterSpacing:'0.05em'}}>{livLabel || livretNom}</div>
                               <div style={{flex:1, height:'4px', borderRadius:'2px', background:'#e7e5e4', position:'relative'}}>
                                 <div style={{position:'absolute', inset:'0', borderRadius:'2px', background:'#a8a29e', width:`${wLiv}%`}}></div>
                               </div>
-                              <div style={{width:'20mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'10pt', fontWeight:700, color:'#78716c', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valLiv)}</div>
+                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'10pt', fontWeight:700, color:'#78716c', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valLiv)}</div>
                             </div>
+                            )}
                           </div>
-                          {/* Colonne 3 — Gain */}
+                          {/* Colonne 3 — Gain (masquée en multi) */}
+                          {!isMultiPrint && (
                           <div style={{width:'34mm', flexShrink:0, padding:'3mm 4mm', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'linear-gradient(135deg,#f0fdf4,#ecfdf5)'}}>
                             <div style={{fontFamily:"'JetBrains Mono',monospace", fontSize:'5.5pt', letterSpacing:'0.12em', textTransform:'uppercase', color:'#047857', fontWeight:700, textAlign:'center', lineHeight:1.3, marginBottom:'1mm'}}>{winLabel || 'Gain'}</div>
                             <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>+{fmt(gain)}</div>
                             {gainPct != null && <div style={{fontFamily:"'JetBrains Mono',monospace", fontSize:'7pt', color:'#059669', fontWeight:700, marginTop:'0.5mm'}}>+{(gainPct*100).toFixed(0)} %</div>}
                           </div>
+                          )}
                         </div>
                       );
                     };
