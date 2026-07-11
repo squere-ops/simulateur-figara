@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v12 (multi: fix saisie, layout detail, rappel params, livret off)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v13 (multi: libelles coherents PER + Assurance-Vie partout)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3958,7 +3958,7 @@
       const cb = buildComparatifCols(inputs, sim, scenarios, scenarioLvl);
       const { isPERProduit, isCapiProduit, produitLabel, livretNom, livretCol, perReinvestCol, solutionCol, referenceCol } = cb;
 
-      const produitNom = produitLabel === "Ass Vie" ? `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}` : produitLabel === "Capi PM" ? "Capitalisation" : "PER";
+      const produitNom = inputs.produit === "multi" ? "PER + Assurance-Vie" : produitLabel === "Ass Vie" ? `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}` : produitLabel === "Capi PM" ? "Capitalisation" : "PER";
       // Comparateur « Assurance vie client » (autre AV) — remplace le livret si renseigné
       const useAutreAV = !isPERProduit && !isCapiProduit && autreAV && autreAV.active;
       const autreAVColP = useAutreAV ? (() => {
@@ -6039,7 +6039,7 @@
       const reductionImpotCumulee = isPER ? (sim.fiscPER?.ecoFiscEntree || 0) : 0;
       const reductionImpotAnnuelle = isPER ? (inputs.versementInitial / Math.max(1, inputs.dureeAnnees) + inputs.versementMensuel * 12) * inputs.tauxIR : 0;
 
-      const produitNomComplet = inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`;
+      const produitNomComplet = inputs.produit === "multi" ? "PER + Assurance-Vie" : inputs.produit === "per" ? "PER" : inputs.produit === "capi" ? "Capi PM" : `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`;
       return (
         <div className="max-w-screen-xl mx-auto page-enter">
           {presOpen && <ClientWowScreen inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} onClose={() => setPresOpen(false)} autreAV={autreAV} prime={prime} setPrime={setPrime} comparOn={comparOn} setComparOn={setComparOn} />}
@@ -6560,7 +6560,7 @@
       const succSol = sim.fisc?.direct ?? 0;
       const succLiv = useAutreAV ? avComp.succ : (sim.livretFisc?.net ?? 0);
 
-      const produitNomComplet = isPER ? "PER" : isCapi ? "Capi PM" : `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`;
+      const produitNomComplet = inputs.produit === "multi" ? "PER + Assurance-Vie" : isPER ? "PER" : isCapi ? "Capi PM" : `Assurance vie${inputs.cabinetNom ? ' · ' + inputs.cabinetNom : ''}`;
       const reductionImpotCumulee = isPER ? (sim.fiscPER?.ecoFiscEntree || 0) : 0;
       const reductionImpotAnnuelle = isPER ? (inputs.versementInitial / Math.max(1, inputs.dureeAnnees) + inputs.versementMensuel * 12) * inputs.tauxIR : 0;
 
