@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v9 (multi-projet PER+AV : moteur consolide + saisie 2 blocs)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v10 (multi-projet : detail par produit PER vs AV, dashboard + PDF)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3884,6 +3884,47 @@
     // contexte d'empilement du simulateur (sinon le header/breadcrumb traverse).
     // ============================================================
     const WOW_GOLD = "#b8924e", WOW_INK = "#1d2735", WOW_TEAL = "#0f766e", WOW_SUB = "#6b7280";
+
+    // Détail par produit d'un multi-projet PER + AV (2 cartes). variant: "screen" | "print"
+    function MultiDetailCards({ inputs, sim, variant = "screen" }) {
+      if (!inputs || inputs.produit !== "multi" || !sim || !sim.multi) return null;
+      const isPrint = variant === "print";
+      const cards = [
+        { titre: "PER", accent: "#6d28d9", s: sim.multi.per, per: true },
+        { titre: "Assurance-Vie", accent: "#0f766e", s: sim.multi.av, per: false },
+      ];
+      const Row = ({ label, value, strong, accent }) => (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: isPrint ? "0.8mm 0" : "3px 0", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+          <span style={{ fontSize: isPrint ? "7.5pt" : "12px", color: "#6b7280" }}>{label}</span>
+          <span className="num" style={{ fontSize: isPrint ? "8.5pt" : "13px", fontWeight: strong ? 800 : 700, color: strong ? accent : "#1d2735" }}>{value}</span>
+        </div>
+      );
+      return (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isPrint ? "4mm" : "12px" }}>
+          {cards.map(({ titre, accent, s, per }, k) => {
+            const verse = s.proj.totVerseBrut;
+            const capital = s.proj.capitalFin;
+            const eco = per ? (s.fiscPER?.ecoFiscEntree || 0) : null;
+            const transmission = s.fisc?.direct || 0;
+            const renteMois = (s.rente?.nette || 0) / 12;
+            return (
+              <div key={k} style={{ background: `${accent}0a`, border: `1px solid ${accent}33`, borderRadius: isPrint ? "2.5mm" : "14px", padding: isPrint ? "2.6mm 3mm" : "14px 16px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: isPrint ? "1.4mm" : "8px" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 99, background: accent, flexShrink: 0 }} />
+                  <span style={{ fontSize: isPrint ? "8pt" : "12px", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase", color: accent }}>{titre}</span>
+                </div>
+                <Row label="Versé" value={fmtEUR(verse)} accent={accent} />
+                <Row label="Capital à terme" value={fmtEUR(capital)} strong accent={accent} />
+                {eco != null && <Row label="Économie d'impôt" value={fmtEUR(eco)} accent={accent} />}
+                <Row label="Transmission nette" value={fmtEUR(transmission)} accent={accent} />
+                <Row label="Rente estimée" value={`${fmtEUR(renteMois)}/mois`} accent={accent} />
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
     function ClientWowScreen({ inputs, sim, scenarios, scenarioLvl, onClose, autreAV, prime, setPrime, comparOn, setComparOn }) {
       const [i, setI] = useState(0);
       // Scénario « prime périodique majorée » — état remonté (App) pour être partagé avec le PDF
@@ -6258,6 +6299,16 @@
               </div>
             </div>
 
+            {/* MULTI-PROJET — détail par produit (PER vs AV) */}
+            {inputs.produit === "multi" && (
+              <div className="col-span-12">
+                <div className="bg-white border border-stone-200 rounded-2xl p-5 shadow-sm">
+                  <div className="text-[12px] uppercase tracking-widest font-extrabold text-stone-900 mb-3">Détail par produit</div>
+                  <MultiDetailCards inputs={inputs} sim={sim} />
+                </div>
+              </div>
+            )}
+
             {/* RIGHT — visuels adaptés au produit (donut transmission/réduction, compteur rente, allocation) */}
             <div className="col-span-12 md:col-span-3 space-y-3">
               {/* Carte 1 — Avantage fiscal selon produit (donut) */}
@@ -6954,6 +7005,14 @@
                 </svg>
                 </div>
               </div>
+
+              {/* MULTI-PROJET — détail par produit (PER vs AV) */}
+              {inputs.produit === "multi" && (
+                <div style={{ marginTop: '2mm' }}>
+                  <div style={{ fontSize: '8pt', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1d2735', marginBottom: '1.5mm' }}>Détail par produit</div>
+                  <MultiDetailCards inputs={inputs} sim={sim} variant="print" />
+                </div>
+              )}
 
               {/* 3 modules dashboard : Multiplicateur · Allocation · (Rente AV/PER ou Net après IS Capi) — espacement homogène */}
               <div className="pres-modules-row" style={{gridTemplateColumns:'1fr 1.1fr 1fr', marginTop:'2mm', marginBottom:'0'}}>
