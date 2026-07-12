@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v20 (multi: medaille off, PP somme reelle, comparaison PDF retiree, rente centree, alignement)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v21 (multi: comparatif Vie+Deces cote a cote, Rente dessous)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3707,6 +3707,46 @@
               </>
             );
 
+            // MULTI-PROJET : Vie + Décès côte à côte, Rente en dessous (gain de place, pas de comparaison)
+            if (inputs.produit === "multi") {
+              const col = allCols[0];
+              const BlockTitle = ({ children }) => (
+                <div className="rounded-xl px-4 py-2 mb-2 text-center text-[12px] uppercase tracking-widest font-extrabold text-white overflow-hidden" style={{ background: 'linear-gradient(180deg, rgba(68,64,60,0.9), rgba(87,83,78,0.85))' }}>
+                  <div className="h-[2px] -mx-4 -mt-2 mb-2 bg-gradient-to-r from-red-700 via-red-500 to-red-700"></div>
+                  {children}
+                </div>
+              );
+              return (
+                <div className="mt-5 space-y-4">
+                  {/* Sélecteur de scénario */}
+                  <div className="flex items-center justify-end gap-2">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-stone-500">Scénario</span>
+                    <div className="inline-flex bg-stone-100 rounded-lg p-1 ring-1 ring-stone-200">
+                      {[{id:"pess",label:"Pess."},{id:"med",label:"Médian"},{id:"opt",label:"Opt."}].map(l => (
+                        <button key={l.id} onClick={()=>setScenarioLvl(l.id)}
+                          className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition ${scenarioLvl===l.id ? 'bg-stone-900 shadow-sm text-white' : 'text-stone-500 hover:text-stone-900'}`}>{l.label}</button>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Vie + Décès côte à côte */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                    <div>
+                      <BlockTitle>En cas de vie</BlockTitle>
+                      <div className="bg-white p-3 rounded-2xl shadow-lg"><DetailHeaderInvestCell col={col} onRemove={null} /></div>
+                    </div>
+                    <div>
+                      <BlockTitle>En cas de décès</BlockTitle>
+                      <div className="bg-white p-3 rounded-2xl shadow-lg"><DetailDecesCell col={col} isBest={false} /></div>
+                    </div>
+                  </div>
+                  {/* Rente en dessous, plus claire (pleine largeur) */}
+                  <div>
+                    <BlockTitle>Rente à vie</BlockTitle>
+                    <div className="bg-white p-3 rounded-2xl shadow-lg md:max-w-2xl md:mx-auto"><DetailRenteCell col={col} isBest={false} /></div>
+                  </div>
+                </div>
+              );
+            }
             return (
               <>
                 {/* ────── PHASE VIE ────── */}
