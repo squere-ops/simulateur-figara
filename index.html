@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v23 (multi: Vie/Deces hauteur egale, rente eclaircie, effort reel = net - reduction)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v24 (multi: rente brute separee PER / Assurance-Vie + total)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -3739,11 +3739,37 @@
                       <div className="bg-white p-3 rounded-2xl shadow-lg flex-1 flex flex-col [&>*]:flex-1 [&>*]:flex [&>*]:flex-col"><DetailDecesCell col={col} isBest={false} /></div>
                     </div>
                   </div>
-                  {/* Rente en dessous, plus claire (pleine largeur) */}
-                  <div>
-                    <BlockTitle>Rente à vie</BlockTitle>
-                    <div className="bg-white p-3 rounded-2xl shadow-lg md:max-w-2xl md:mx-auto"><DetailRenteCell col={col} isBest={false} cardStyle={{ background: 'linear-gradient(180deg, rgba(15,118,110,0.85) 0%, rgba(20,137,127,0.78) 55%, rgba(52,211,153,0.72) 100%)' }} /></div>
-                  </div>
+                  {/* Rente à vie BRUTE, séparée PER / Assurance-Vie (capital préservé) */}
+                  {(() => {
+                    const rm = sim.rdt > 0 ? Math.pow(1 + sim.rdt, 1 / 12) - 1 : 0;
+                    const perCap = sim.multi?.per?.proj?.capitalFin || 0;
+                    const avCap = sim.multi?.av?.proj?.capitalFin || 0;
+                    const perRB = perCap * rm, avRB = avCap * rm;
+                    const RenteBrutCard = ({ titre, accent, cap, rb }) => (
+                      <div className="rounded-2xl p-5 text-center shadow-sm" style={{ background: `${accent}0c`, border: `1px solid ${accent}44` }}>
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          <span className="w-2.5 h-2.5 rounded-full" style={{ background: accent }} />
+                          <span className="text-[12px] uppercase tracking-widest font-extrabold" style={{ color: accent }}>{titre}</span>
+                        </div>
+                        <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500 mb-1">Rente mensuelle brute</div>
+                        <div className="num text-[30px] font-extrabold tracking-tightest leading-none" style={{ color: accent }}>{fmtEUR(rb)}<span className="text-sm font-medium text-stone-400"> /mois</span></div>
+                        <div className="text-[10px] text-stone-500 mt-2 pt-2 border-t border-stone-100">Capital {fmtEURc(cap)} · à vie, capital préservé</div>
+                      </div>
+                    );
+                    return (
+                      <div>
+                        <BlockTitle>Rente à vie brute · par produit</BlockTitle>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <RenteBrutCard titre="PER" accent="#6d28d9" cap={perCap} rb={perRB} />
+                          <RenteBrutCard titre="Assurance-Vie" accent="#0f766e" cap={avCap} rb={avRB} />
+                        </div>
+                        <div className="mt-3 rounded-2xl px-6 py-4 flex items-center justify-center gap-3 flex-wrap text-center" style={{ background: 'rgba(15,118,110,0.06)', border: '1px solid rgba(15,118,110,0.25)' }}>
+                          <span className="text-[12px] uppercase tracking-widest font-bold text-stone-500">Rente brute totale à vie</span>
+                          <span className="num text-[30px] font-extrabold tracking-tightest leading-none text-teal-700">{fmtEUR(perRB + avRB)}<span className="text-sm font-medium text-stone-400"> /mois</span></span>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               );
             }
