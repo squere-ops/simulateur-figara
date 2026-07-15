@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v28 (frais remise economie + rente prime sans doublon + survol courbe)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v29 (survol courbe + slide Pourquoi PER : PER seul et PER+AV en multi)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -4108,7 +4108,7 @@
 
       const isAV = !isPERProduit && !isCapiProduit;
       // Capi (personne morale / entreprise) = placement pur : pas de transmission (décès) ni de rente viagère.
-      const slideDefs = [["cover", "Couverture"], ...(isAV ? [["piliers", "Pourquoi"]] : []), ["projet", "Le projet"], ["alloc", "Allocation"], ["proj", "Projection"], ...(isCapiProduit ? [] : [["succ", "Décès"], ["rente", "Rente"]]), ["synth", "Synthèse"]];
+      const slideDefs = [["cover", "Couverture"], ...(isAV ? [["piliers", inputs.produit === "multi" ? "Pourquoi AV" : "Pourquoi"]] : []), ...((isPERProduit || inputs.produit === "multi") ? [["piliersPER", inputs.produit === "multi" ? "Pourquoi PER" : "Pourquoi"]] : []), ["projet", "Le projet"], ["alloc", "Allocation"], ["proj", "Projection"], ...(isCapiProduit ? [] : [["succ", "Décès"], ["rente", "Rente"]]), ["synth", "Synthèse"]];
       const titles = slideDefs.map(d => d[1]);
       const N = slideDefs.length;
       const skey = slideDefs[i] ? slideDefs[i][0] : "cover";
@@ -4498,6 +4498,33 @@
                 <H className="text-5xl md:text-6xl mb-9">l'assurance-vie&nbsp;?</H>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {blocs.map((b, k) => (
+                    <div key={k} className={`${soft} p-7`} style={softStyle}>
+                      <div className="flex items-center gap-3.5 mb-4">
+                        <span className="num inline-flex items-center justify-center w-11 h-11 rounded-xl text-[18px] font-extrabold text-white flex-shrink-0" style={{ background: b.c }}>{String(k + 1).padStart(2, '0')}</span>
+                        <div className="text-[19px] font-bold leading-tight" style={{ color: WOW_INK }}>{b.t}</div>
+                      </div>
+                      <div className="space-y-2.5">
+                        {b.pts.map((x, j) => (<div key={j} className="flex gap-2.5 text-[14px] leading-relaxed" style={{ color: WOW_INK }}><span className="flex-shrink-0 text-[18px] leading-none font-bold" style={{ color: b.c }}>•</span><span>{x}</span></div>))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+          case "piliersPER": {
+            const blocsPER = [
+              { t: "Un avantage fiscal a l'entree", c: "#6d28d9", pts: [`Versements deductibles du revenu imposable : economie = versement x votre TMI (${(inputs.tauxIR * 100).toFixed(0)} %)`, "Reduction d'impot immediate, chaque annee de versement"] },
+              { t: "Capitalisation sans friction fiscale", c: WOW_TEAL, pts: ["Aucune imposition des plus-values pendant la phase d'epargne", "Les gains travaillent en franchise d'impot jusqu'a la sortie"] },
+              { t: "Preparer la retraite", c: "#6d28d9", pts: ["Sortie au choix : capital, rente viagere, ou mixte", "Complement de revenu a vie a la retraite"] },
+              { t: "Souplesse & transmission", c: WOW_TEAL, pts: ["Deblocage anticipe : achat residence principale, accidents de la vie", "Deces avant 70 ans : abattement 152 500 EUR par beneficiaire (990 I)"] },
+            ];
+            return (
+              <div>
+                <div className="text-[18px] md:text-[20px] font-semibold mb-1" style={{ color: WOW_SUB }}>Pourquoi</div>
+                <H className="text-5xl md:text-6xl mb-9">le PER&nbsp;?</H>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {blocsPER.map((b, k) => (
                     <div key={k} className={`${soft} p-7`} style={softStyle}>
                       <div className="flex items-center gap-3.5 mb-4">
                         <span className="num inline-flex items-center justify-center w-11 h-11 rounded-xl text-[18px] font-extrabold text-white flex-shrink-0" style={{ background: b.c }}>{String(k + 1).padStart(2, '0')}</span>
