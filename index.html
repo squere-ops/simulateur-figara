@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v26 (synthese: chips libelles hauteur fixe -> valeurs alignees)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v28 (frais remise economie + rente prime sans doublon + survol courbe)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -4148,6 +4148,7 @@
       };
 
       const ProjChart = ({ height = 360, series, refLabel, heroLabel, comparLabel, scenLabel, medSub, comparSub }) => {
+        const [hoverIdx, setHoverIdx] = useState(null);
         const Sx = series || { med: S.med, pess: S.pess, opt: S.opt, ref: S.livret };
         const rLabel = refLabel || refNom;
         const hLabel = heroLabel || "ASSURANCE-VIE";
@@ -4175,7 +4176,7 @@
         const hasSec = labels.some(l => l.sec);   // scénarios (opt/prudent) affichés → zone droite occupée
         const yticks = [0, 0.5, 1];
         return (
-          <svg viewBox={`0 0 ${W} ${Hh}`} className="w-full" style={{ maxHeight: height + 10 }}>
+          <svg viewBox={`0 0 ${W} ${Hh}`} className="w-full" style={{ maxHeight: height + 10, cursor: 'crosshair' }} onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); const sx = (e.clientX - r.left) / r.width * W; let idx = Math.round((sx - pl) / (W - pl - pr) * (n - 1)); idx = Math.max(0, Math.min(n - 1, idx)); setHoverIdx(idx); }} onMouseLeave={() => setHoverIdx(null)}>
             <defs><linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#0f766e" stopOpacity="0.16" /><stop offset="100%" stopColor="#0f766e" stopOpacity="0" /></linearGradient></defs>
             {yticks.map((p, k) => (<g key={k}><line x1={pl} y1={pt + (1 - p) * (Hh - pt - pb)} x2={W - pr} y2={pt + (1 - p) * (Hh - pt - pb)} stroke="rgba(29,39,53,0.09)" strokeWidth="1" /><text x={pl - 10} y={pt + (1 - p) * (Hh - pt - pb) + 4} textAnchor="end" fontSize="12" fill={WOW_SUB} className="num">{kEUR(p * maxV)}</text></g>))}
             <circle cx={W - pr} cy={Hh - pb} r="2.5" fill={WOW_SUB} />
@@ -4256,6 +4257,22 @@
                       <text x={p.xt} y={p.py + 21} textAnchor="middle" fontSize="8" fontWeight="700" fill="#a07f3f" style={{ textTransform: 'uppercase', letterSpacing: '0.04em' }}>année {p.v.annee}</text>
                     </g>
                   ))}
+                </g>
+              );
+            })()}
+            {/* SURVOL — ligne verticale + point + bulle An X / capital */}
+            {hoverIdx != null && Sx.med && Sx.med.length > hoverIdx && (() => {
+              const hx = x(hoverIdx), hv = Sx.med[hoverIdx] || 0, hyv = y(hv);
+              const bW = 104, bH = 36;
+              const bx = Math.min(W - pr - bW, Math.max(pl, hx - bW / 2));
+              const byT = Math.max(pt, hyv - bH - 12);
+              return (
+                <g style={{ pointerEvents: 'none' }}>
+                  <line x1={hx} y1={pt} x2={hx} y2={Hh - pb} stroke={WOW_TEAL} strokeWidth="1" strokeDasharray="3 3" opacity="0.55" />
+                  <circle cx={hx} cy={hyv} r="5.5" fill={WOW_TEAL} stroke="#fff" strokeWidth="2" />
+                  <rect x={bx} y={byT} width={bW} height={bH} rx="7" fill={WOW_INK} opacity="0.96" />
+                  <text x={bx + bW / 2} y={byT + 14} textAnchor="middle" fontSize="10" fontWeight="700" fill="rgba(255,255,255,0.85)" style={{ letterSpacing: '0.08em' }}>AN {hoverIdx}</text>
+                  <text x={bx + bW / 2} y={byT + 28} textAnchor="middle" fontSize="13" fontWeight="800" fill="#fff" className="num">{fmtEUR(hv)}</text>
                 </g>
               );
             })()}
@@ -4792,7 +4809,7 @@
                     <EL k="Versement mensuel" v={`${fmtEUR(effVM)}`} s="par mois" c="#b8924e" />
                     <EL k="Durée" v={`${inputs.dureeAnnees} ans`} c="#0369a1" />
                     <EL k="Hypothèse de rendement médian" v={fmtPCT(sim.rdtMed)} s={`prudent ${fmtPCT(sim.rdtPess)} · opt. ${fmtPCT(sim.rdtOpt)}`} c="#047857" />
-                    <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} c="#b45309" />
+                    <EL k="Frais d'entrée" v={`${((inputs.fraisSouscription||0)*100).toFixed(2).replace('.',',')} %`} s={(() => { const rem = Math.max(0, (FRAIS_SOUSC_MAX - (inputs.fraisSouscription||0))) * totalVerse; return rem > 0 ? `Remise ${(Math.max(0,(FRAIS_SOUSC_MAX-(inputs.fraisSouscription||0)))/FRAIS_SOUSC_MAX*100).toFixed(0)} % soit ${new Intl.NumberFormat('fr-FR').format(Math.round(rem))} € d'économie` : undefined; })()} c="#b45309" />
                     <EL k="Profil de risque" v={`SRI ${sriAlloc}/7`} c="#6d28d9" />
                   </div>
                   {Array.isArray(inputs.versementsComplementaires) && inputs.versementsComplementaires.filter(v => (Number(v.montant)||0) > 0).length > 0 && (
@@ -7105,7 +7122,7 @@
                   { k: 'Versement mensuel brut', v: nf(inputs.produit === "multi" ? versementsMulti(inputs).vm : inputs.versementMensuel), u: '€/m', c: '#0369a1' },
                   { k: 'Durée', v: `${N}`, u: 'ans', c: '#1c2735' },
                   { k: 'Rendement médian', v: (sim.rdtMed * 100).toFixed(2).replace('.', ','), u: '%', c: '#047857' },
-                  { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} €` : null, c: '#b45309' },
+                  { k: "Frais d'entrée", v: (frais * 100).toFixed(2).replace('.', ','), u: '%', sub: remiseEur > 0 ? `Remise ${remisePct.toFixed(0)} % soit ${nf(remiseEur)} € d'économie` : null, c: '#b45309' },
                   ...(inputs.produit === "multi" && (sim.multi?.per?.fiscPER?.ecoFiscEntree || 0) > 0 ? [{ k: "Réduction d'impôt PER", v: nf(sim.multi.per.fiscPER.ecoFiscEntree), u: '€', c: '#6d28d9' }] : []),
                 ];
                 return (
