@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v25 (multi: PDF sub retire, Vie/Deces alignes, rente brute deck, reduction en chip + cout reel)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v26 (synthese: chips libelles hauteur fixe -> valeurs alignees)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -4768,10 +4768,12 @@
               ...(!isCapiProduit ? [{ t: "Rente à vie / mois", sub: "capital préservé", av: win.renteNetteMois, liv: refCol.renteNetteMois, pr: primeCol ? primeCol.renteNetteMois : null, fmt: v => `${fmtEUR(v)}/mois` }] : []),
             ];
             const EL = ({ k, v, s, c = WOW_TEAL }) => (
-              <div className="rounded-xl px-3 py-3 text-center flex flex-col justify-center" style={{ background: `${c}0f`, border: `1px solid ${c}44`, minHeight: '5.4rem' }}>
-                <div className="text-[9px] uppercase tracking-widest font-bold leading-tight" style={{ color: c, minHeight: '2.4em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k}</div>
+              <div className="rounded-xl px-3 py-3 text-center flex flex-col justify-start" style={{ background: `${c}0f`, border: `1px solid ${c}44`, minHeight: '5.4rem' }}>
+                {/* Libellé à hauteur FIXE → toutes les valeurs alignées sur la même ligne */}
+                <div className="text-[9px] uppercase tracking-widest font-bold leading-tight" style={{ color: c, height: '3.2em', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{k}</div>
                 <div className="num text-[18px] font-extrabold tracking-tightest leading-none mt-1" style={{ color: WOW_INK }}>{v}</div>
-                {s && <div className="text-[9.5px] mt-0.5" style={{ color: WOW_SUB }}>{s}</div>}
+                {/* Sous-texte à hauteur réservée pour ne pas décaler les valeurs voisines */}
+                <div className="text-[9.5px] mt-0.5" style={{ color: WOW_SUB, minHeight: '1.1em' }}>{s || ''}</div>
               </div>
             );
             return (
