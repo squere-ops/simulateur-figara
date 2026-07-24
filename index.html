@@ -986,7 +986,7 @@
     });
   </script>
   <script type="text/babel">
-    console.log('%cBUILD v29 (survol courbe + slide Pourquoi PER : PER seul et PER+AV en multi)', 'color:#6d28d9;font-weight:700');
+    console.log('%cBUILD v30 (saisie libre taux comparatif + email/tél facultatifs + supports ETF & Fonds immobilier)', 'color:#6d28d9;font-weight:700');
     const { useState, useMemo, useEffect, useRef, useLayoutEffect } = React;
 
     // ============================================================
@@ -1043,6 +1043,8 @@
       fondsEuro:      { label: "Fonds en Euros",   color: "#047857", base: true,  rdtNetDef: 0.025, sriDef: 1 },
       fondsStructure: { label: "Fonds Structurés", color: "#7c3aed", base: false, rdtNetDef: 0.052, sriDef: 4 },
       fondsActions:   { label: "Fonds Actions",    color: "#dc2626", base: false, rdtNetDef: 0.067, sriDef: 6 },
+      etf:            { label: "ETF",              color: "#2563eb", base: false, rdtNetDef: 0.060, sriDef: 6 },
+      fondsImmo:      { label: "Fonds immobilier", color: "#b45309", base: false, rdtNetDef: 0.045, sriDef: 3 },
     };
 
     // Charte pédagogique SRI : 1-2 turquoise (Prudent), 3-4 vert lime (Équilibré), 5-6 jaune (Dynamique), 7 rose (Offensif)
@@ -1670,7 +1672,7 @@
       const fraisActuels = inputs.fraisSouscription * totalVerseBrut;
 
       const completable = {
-        1: inputs.mode === "select" ? !!inputs.clientSelected : (inputs.clientNom.trim() && (inputs.clientType === 'entreprise' || inputs.clientPrenom.trim()) && inputs.clientEmail.trim()),
+        1: inputs.mode === "select" ? !!inputs.clientSelected : (inputs.clientNom.trim() && (inputs.clientType === 'entreprise' || inputs.clientPrenom.trim())),
         2: inputs.versementInitial >= 0 && inputs.dureeAnnees > 0 && inputs.nbBeneficiaires >= 1,
         3: Math.abs(totalP - 1) < 0.001,
         4: true,
@@ -2099,11 +2101,11 @@
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="label">Téléphone</label>
+                  <label className="label">Téléphone <span className="normal-case font-normal text-stone-400">(facultatif)</span></label>
                   <input type="tel" value={inputs.clientTel} onChange={e=>upd("clientTel", e.target.value)} className="field" placeholder="06 12 34 56 78" />
                 </div>
                 <div>
-                  <label className="label">Email</label>
+                  <label className="label">Email <span className="normal-case font-normal text-stone-400">(facultatif)</span></label>
                   <input type="email" value={inputs.clientEmail} onChange={e=>upd("clientEmail", e.target.value)} className="field" placeholder="contact@email.fr" />
                 </div>
               </div>
@@ -2789,6 +2791,47 @@
           }}
           placeholder="0"
           className="num flex-1 min-w-0 px-3 py-2.5 text-right text-[16px] font-bold text-stone-900 bg-transparent focus:outline-none"
+        />
+      );
+    }
+
+    // Saisie libre d'un taux en % (draft local, commit sur blur/Entrée) — accepte « 3,25 » ou « 3.25 »
+    function PctDraftInput({ value, onChange, disabled, autoFocus, maxPct = 50, className }) {
+      // value = taux décimal (0.0325 = 3,25 %)
+      const toDisplay = (v) => {
+        if (v == null || isNaN(v)) return "";
+        const pct = v * 100;
+        return Number.isInteger(pct) ? String(pct) : pct.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+      };
+      const [text, setText] = useState(toDisplay(value));
+      const [focused, setFocused] = useState(false);
+      // Resynchronise si le taux change côté parent (ex : choix d'un livret dans le select) hors édition
+      useEffect(() => { if (!focused) setText(toDisplay(value)); }, [value, focused]);
+      const commit = () => {
+        const cleaned = text.replace(",", ".").trim();
+        if (cleaned === "" || cleaned === "-") { setText(toDisplay(value)); return; }
+        const num = parseFloat(cleaned);
+        if (isFinite(num)) {
+          const decimal = Math.max(0, Math.min(maxPct / 100, num / 100));
+          onChange(decimal);
+          setText(toDisplay(decimal));
+        } else {
+          setText(toDisplay(value));
+        }
+      };
+      return (
+        <input
+          type="text"
+          inputMode="decimal"
+          value={text}
+          disabled={disabled}
+          autoFocus={autoFocus}
+          onChange={(e) => setText(e.target.value)}
+          onFocus={(e) => { setFocused(true); e.target.select(); }}
+          onBlur={() => { setFocused(false); commit(); }}
+          onKeyDown={(e) => { if (e.key === "Enter") e.target.blur(); }}
+          placeholder="0"
+          className={className}
         />
       );
     }
@@ -3572,7 +3615,7 @@
                         </select>
                       )}
                       <div className={`flex items-center bg-white border border-stone-200 rounded-lg ${livretActive ? '' : 'opacity-60'}`}>
-                        <input type="number" value={(inputs.livretTaux*100).toFixed(2)} disabled={!livretActive} onChange={e => upd("livretTaux", parseFloat(e.target.value)/100||0)} step={0.05}
+                        <PctDraftInput value={inputs.livretTaux} disabled={!livretActive} onChange={v => upd("livretTaux", v)} maxPct={20}
                           className="num w-14 px-2 py-1.5 text-right text-[12px] font-bold bg-transparent focus:outline-none disabled:cursor-not-allowed" />
                         <span className="px-1.5 text-[10px] text-stone-400">%</span>
                       </div>
@@ -3604,8 +3647,8 @@
                                 <div>
                                   <div className="text-[10px] uppercase tracking-wider font-semibold text-stone-400 mb-1">Performance annuelle nette</div>
                                   <div className="flex items-center bg-stone-50 border border-stone-200 rounded-lg">
-                                    <input type="number" autoFocus value={(autreAV.rdt*100).toFixed(2)} step={0.25} min={0} max={12}
-                                      onChange={e=>setAutreAV(p=>({...p, active:true, rdt: Math.max(0, parseFloat(e.target.value)/100||0)}))}
+                                    <PctDraftInput autoFocus value={autreAV.rdt} maxPct={12}
+                                      onChange={v=>setAutreAV(p=>({...p, active:true, rdt: v}))}
                                       className="num flex-1 w-full px-3 py-2 text-right text-[16px] font-bold text-slate-800 bg-transparent focus:outline-none" />
                                     <span className="px-3 text-[12px] text-slate-400">%</span>
                                   </div>
