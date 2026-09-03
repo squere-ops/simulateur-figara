@@ -7606,6 +7606,7 @@
                             const totalRembourse = M * nMois;
                             const coutCredit = totalRembourse - capital;
                             const coutGlobal = totalRembourse + ap;
+                            const eur = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0))) + " €";
                             const L = ({ l, v, fort }) => (
                               <div className="flex justify-between items-baseline py-1.5" style={{ borderBottom: "1px solid rgba(10,9,8,0.06)" }}>
                                 <span className="text-[11.5px]" style={{ color: fort ? "#0a0908" : "#57534e", fontWeight: fort ? 700 : 500 }}>{l}</span>
