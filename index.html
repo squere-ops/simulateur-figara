@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v206 (10/09 : (1) un nouveau placement s ouvre sur « -- Choisir -- » : il etait pre-rempli « Livrets » a la creation (addList type livrets) -- j avais repondu a tort que c etait deja le cas. (2) Telephone et email du CONJOINT saisissables (etape 1, bloc Conjoint) et repris sous les tuiles Telephone / Email de la synthese. (3) « Matelas recommande » devient « Epargne de precaution recommandee » ; objectif « Precaution -- reserve de securite ».', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v207 (10/09 : PROJECTION, retours du CGP. (1) « SANS RIEN CHANGER » = LIVRETS A 1,7 pct (tLiv), jamais 2,5 pct -- et cette epargne entre en totalite dans la succession ; avec les preconisations, assurance-vie ET PER assurance sont transmis hors succession (art. 990 I, abattement 152 500 € par beneficiaire). L ecart de droits est desormais reel. (2) « Ou trouver l epargne » plus compact : intro d une ligne, pieds courts, cartes resserrees ; arbitrage et redirection affichent le gain sur la periode, l equivalent PAR MOIS et le rendement avant → apres (1,7 pct → 5,2 pct).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cANCIEN BUILD v206 (10/09 : (1) un nouveau placement s ouvre sur « -- Choisir -- » : il etait pre-rempli « Livrets » a la creation (addList type livrets) -- j avais repondu a tort que c etait deja le cas. (2) Telephone et email du CONJOINT saisissables (etape 1, bloc Conjoint) et repris sous les tuiles Telephone / Email de la synthese. (3) « Matelas recommande » devient « Epargne de precaution recommandee » ; objectif « Precaution -- reserve de securite ».', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v203 (10/09 : PDF DE LA PROJECTION -- le regime locatif imprime etait toujours « Nu au reel » (dossier Rami declare Jeanbrun) : cloneNode ne recopie ni l option choisie d un select ni l etat des cases (React les pose en propriete, pas en attribut). L etat reel des select et des input est recopie dans le clone avant impression. Controle t_rp : regime imprime lu dans le clone.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -3744,19 +3745,19 @@
        et rendements. On ignore desormais tout clic issu d un controle de saisie. */
     const Carte = ({ on, toggle, titre, children, eff, effSub, pot }) => (
       <div onClick={(e) => { if (e.target && e.target.closest && e.target.closest("input,select,button,label,textarea")) return; toggle(); }}
-        className="rounded-xl px-4 py-4 border cursor-pointer transition relative overflow-hidden"
+        className="rounded-xl px-4 py-3 border cursor-pointer transition relative overflow-hidden"
         style={{ borderColor: on ? NCP_C.vertBord : NCP_C.bord, background: on ? "linear-gradient(135deg,#ecfdf5,#ffffff 60%)" : "#fff" }}>
         {on ? <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,#10b981,#047857)" }} /> : null}
-        <div className="flex items-center gap-2.5 mb-3">
+        <div className="flex items-center gap-2.5 mb-2">
           <input type="checkbox" checked={on} onChange={toggle} onClick={e => e.stopPropagation()} className="w-4 h-4" style={{ accentColor: NCP_C.vert }} />
           <span className="text-[13px] font-extrabold leading-tight" style={{ color: on ? NCP_C.encre : NCP_C.gris }}>{titre}</span>
         </div>
-        <div className="text-[11px]" style={{ color: NCP_C.gris, lineHeight: 2.1 }}>{children}</div>
+        <div className="text-[11px]" style={{ color: NCP_C.gris, lineHeight: 1.9 }}>{children}</div>
         {/* 03/09 : un levier NON RETENU n affiche plus un chiffre d apparence
             acquise. Sa valeur passe au conditionnel — plus petite, en italique,
             en gris — et n entre dans aucun total. */}
-        <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: pot ? 16 : 20, fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: 12, letterSpacing: "-0.02em" }}>{eff}</div>
-        {effSub ? <div style={{ fontSize: 9.5, fontWeight: 600, fontStyle: pot ? "italic" : "normal", color: pot ? NCP_C.gris3 : NCP_C.gris2, marginTop: 4, lineHeight: 1.5 }}>{effSub}</div> : null}
+        <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: pot ? 16 : 20, fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: 8, letterSpacing: "-0.02em" }}>{eff}</div>
+        {effSub ? <div style={{ fontSize: 10.5, fontWeight: 600, fontStyle: pot ? "italic" : "normal", color: pot ? NCP_C.gris3 : NCP_C.gris2, marginTop: 4, lineHeight: 1.5 }}>{effSub}</div> : null}
       </div>
     );
     /* ═══ FAMILLE DE GISEMENTS (03/09) ═══
@@ -6066,7 +6067,11 @@
            RÉALLOCATION — le seul que le conseil apporte réellement.
            L'enveloppe du « avant » est envPoche (ce que le client sort de sa poche) :
            la trésorerie libérée par une délégation d'assurance n'existe pas encore. */
-        const epargneAvant = (y) => auMoinsUn ? ncpCap(0, envPoche, tAv0, y) : 0;
+        /* 10/09/2026 — LE CGP (« comme je te l'ai dit 10 000 fois ») : sans rien changer,
+           le client epargne sur ses LIVRETS, a 1,7 % (tLiv) — jamais 2,5 % (tAv0, qui
+           est le taux des placements EXISTANTS en assurance-vie / PER). Et cette
+           epargne entre dans la succession (livrets), sans abattement. */
+        const epargneAvant = (y) => auMoinsUn ? ncpCap(0, envPoche, tLiv, y) : 0;
         const sans = [], avec = [], avecB = [], avecH2 = [];
         for (let y = 0; y <= H; y++) {
           const b = socleAt(y) + epargneAvant(y);
@@ -6131,7 +6136,11 @@
             const versPP = ncpCap(0, socle.ppMens, tAv0, H);
             if (versPP > 0) avoirsH.push({ id: 9001, type: "autre", valeur: String(Math.round(versPP)), titulaire: titNouveau, precision: "versements programmés actuels" });
             if (apres) {
-              if (L.per) avoirsH.push({ id: 9002, type: "per", valeur: String(Math.round(ncpCap(0, vPer, tMed, H))), titulaire: titNouveau });
+              /* PER ASSURANCE souscrit avec le cabinet : au deces avant 70 ans, le capital
+                 est transmis hors succession sous le regime de l art. 990 I (abattement
+                 152 500 € par beneficiaire), comme l assurance-vie — on le range donc
+                 comme « av » dans le dossier d horizon. */
+              if (L.per) avoirsH.push({ id: 9002, type: "av", valeur: String(Math.round(ncpCap(0, vPer, tMed, H))), titulaire: titNouveau, precision: "PER assurance (art. 990 I)" });
               if (L.av) avoirsH.push({ id: 9003, type: "av", valeur: String(Math.round(ncpCap(0, vAv, tMed, H))), titulaire: titNouveau });
               const tr = treso(H); if (tr > 0) avoirsH.push({ id: 9004, type: "livrets", valeur: String(Math.round(tr)), titulaire: titNouveau });
               if (G.arb && montArb > 0) avoirsH.push({ id: 9005, type: "av", valeur: String(Math.round(montArb * Math.pow(1 + tMed, H))), titulaire: titNouveau });
@@ -6176,7 +6185,7 @@
         /* PART EXACTE DE LA REALLOCATION : la meme enveloppe capitalisee au taux des
            supports actuels, puis au taux retenu. On n attribue pas a l ecart de
            rendement ce qui vient du locatif ou des gisements. */
-        const gainReallocation = auMoinsUn ? Math.max(0, ncpCap(0, ENV, tMed, H) - ncpCap(0, ENV, tAv0, H)) : 0;
+        const gainReallocation = auMoinsUn ? Math.max(0, ncpCap(0, ENV, tMed, H) - ncpCap(0, ENV, tLiv, H)) : 0;
         /* PEDAGOGIE (02/09) : « 79 120 € de capital gagné » ne se comprend pas seul.
            On montre les DEUX trajectoires du meme argent : ce qu il devient en
            restant ou il est, et ce qu il devient replace. L ecart parle de lui-meme. */
@@ -6505,8 +6514,11 @@
               bandeau collant en haut de page suit le défilement (écran seulement). */}
           <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
-            <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7, lineHeight: 1.6 }}>
-              Avant de demander un effort nouveau, on cherche l'argent qui dort déjà. Ces gisements sont de <b style={{ color: C.encre }}>deux natures qui ne s'additionnent pas</b> : de la trésorerie disponible <b style={{ color: C.encre }}>chaque mois</b>, et du capital gagné <b style={{ color: C.encre }}>à l'horizon</b>. Chacune a donc son propre total. Un levier que vous ne retenez pas affiche en gris ce qu'il aurait rapporté, sans entrer dans aucun total.
+            {/* 10/09 (CGP) : « fais simple et plus court » — une ligne d'introduction, des
+                cartes compactes, et pour chaque levier l'économie PAR MOIS, SUR LA PÉRIODE,
+                et le rendement avant → après. */}
+            <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
+              L'argent qui dort déjà, avant tout effort nouveau. Deux natures : de la <b style={{ color: C.encre }}>trésorerie chaque mois</b>, et du <b style={{ color: C.encre }}>capital à l'horizon</b> — elles ne s'additionnent pas.
             </div>
 
             {/* ═══ FAMILLE 1 — DE L ARGENT DISPONIBLE CHAQUE MOIS ═══ */}
@@ -6515,8 +6527,8 @@
               total={G.ass && R.ecoAss > 0 ? eur(R.ecoAss) + "/mois" : "—"}
               sousTotal={G.ass && R.ecoAss > 0 ? "d'argent disponible en plus" : "aucun levier retenu"}
               pied={G.ass && R.ecoAss > 0
-                ? "Cette somme s'ajoute à votre enveloppe : elle est réellement disponible chaque mois, dès la mise en place, et finance les préconisations sans effort nouveau. Sur les " + Math.round(nb(G.dRest, 0)) + " ans restants du crédit, elle représente " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + "."
-                : "Aucune trésorerie n'est libérée tant que ce levier n'est pas retenu : votre enveloppe reste celle de votre poche."}>
+                ? "Disponible chaque mois dès la mise en place : " + eur(R.ecoAss) + "/mois, soit " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + " sur " + Math.round(nb(G.dRest, 0)) + " ans."
+                : "Non retenu : votre enveloppe reste celle de votre poche."}>
               {/* un seul levier dans cette famille : on borne sa largeur, sinon la
                   carte s etire sur toute la page et sa valeur se perd a gauche */}
               <div className="grid gap-3.5" style={{ gridTemplateColumns: "minmax(260px,430px)" }}>
@@ -6540,24 +6552,24 @@
               total={R.gainRendCap > 0 ? eur(R.gainRendCap) : "—"}
               sousTotal={R.gainRendCap > 0 ? "de capital en plus dans " + R.H + " ans" : "aucun levier retenu"}
               pied={R.gainRendCap > 0
-                ? "Le même argent, mieux placé : ce gain ne demande pas un euro d'effort supplémentaire. Il se constitue progressivement et se lit à l'horizon — il n'est pas disponible chaque mois, à la différence de la trésorerie ci-dessus."
-                : "Ces leviers ne coûtent rien : ils replacent de l'argent que vous détenez déjà. Cochez-les pour que le gain entre dans la projection."}>
+                ? "Le même argent, mieux placé — sans effort nouveau. Gain lu à l'horizon, soit ≈ " + eur(Math.round(R.gainRendCap / (12 * Math.max(1, R.H)))) + "/mois en moyenne."
+                : "Non retenus : ils replacent l'argent que vous détenez déjà."}>
               <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
                 <Carte on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
                   pot={!G.arb && R.gainArbPot > 0}
-                  eff={G.arb ? eur(R.gainArbCap) : (R.gainArbPot > 0 ? eur(R.gainArbPot) : "—")}
+                  eff={G.arb ? "+ " + eur(R.gainArbCap) : (R.gainArbPot > 0 ? "+ " + eur(R.gainArbPot) : "—")}
                   effSub={G.arb
-                    ? eur(nb(G.montArb, 0)) + " deviennent " + eur(R.arbApres) + " dans " + R.H + " ans, au lieu de " + eur(R.arbAvant) + " en restant sur vos supports actuels"
-                    : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le montant et son rendement actuel")}>
+                    ? "sur " + R.H + " ans, soit ≈ " + eur(Math.round(R.gainArbCap / (12 * Math.max(1, R.H)))) + "/mois · " + String(nb(G.txArbAct, 2.5)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % · " + eur(nb(G.montArb, 0)) + " → " + eur(R.arbApres) + " au lieu de " + eur(R.arbAvant)
+                    : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · " + String(nb(G.txArbAct, 2.5)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " %" : "renseignez le montant et son rendement actuel")}>
                   Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
                   Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
                   <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Vers l'hypothèse cabinet</span>
                 </Carte>
                 <Carte on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
                   pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
-                  eff={R.redActif ? eur(R.gainRedCap) : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? eur(R.gainRedPot) : "—"))}
+                  eff={R.redActif ? "+ " + eur(R.gainRedCap) : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? "+ " + eur(R.gainRedPot) : "—"))}
                   effSub={R.redActif
-                    ? "les mêmes versements donnent " + eur(R.redApres) + " dans " + R.H + " ans, au lieu de " + eur(R.redAvant)
+                    ? "sur " + R.H + " ans, soit ≈ " + eur(Math.round(R.gainRedCap / (12 * Math.max(1, R.H)))) + "/mois · " + String(nb(G.txVersAct, 1.7)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % · les mêmes " + eur(nb(G.versMens, 0)) + "/mois donnent " + eur(R.redApres) + " au lieu de " + eur(R.redAvant)
                     : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le versement et son rendement actuel"))}>
                   Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
                   Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
@@ -6760,7 +6772,7 @@
           <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
             <div className="nc-ctitre mb-1">À {R.ageFin} ans, votre situation<span className="sfx">dans {R.H} ans</span></div>
             <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7 }}>
-              Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.envPoche)}/mois</b> : à gauche sur vos supports actuels, à droite selon les préconisations retenues.
+              Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.envPoche)}/mois</b> : à gauche sur vos livrets ({(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %), à droite selon les préconisations retenues ({(nb(h.tMed, 5.2)).toString().replace(".", ",")} %).
             </div>
             {/* ═══ 10/09/2026 — decision A du CGP : UN TABLEAU avant / apres, tres lisible :
                 patrimoine, revenus, impot, succession (droits, assurance-vie hors
@@ -6813,7 +6825,7 @@
                     </tbody>
                   </table>
                   <div className="px-3 py-2 italic" style={{ fontSize: 9.5, color: C.gris2, background: "#fafaf9", borderTop: "1px solid " + C.bord, lineHeight: 1.5 }}>
-                    Succession : droits estimés par le moteur du constat sur le patrimoine projeté à {R.ageFin} ans (crédits soldés par l'assurance de prêt, barème et abattements 2026, première option légale) ; assurance-vie hors succession, taxée à 20 % au-delà de 152 500 € par bénéficiaire (art. 990 I CGI). Les placements existants restent sur leurs supports actuels dans les deux colonnes.
+                    Succession : droits estimés par le moteur du constat sur le patrimoine projeté à {R.ageFin} ans (crédits soldés par l'assurance de prêt, barème et abattements 2026, première option légale). Sans rien changer, l'épargne reste sur les livrets : elle entre en totalité dans la succession. Avec les préconisations, assurance-vie et PER assurance sont transmis hors succession, taxés à 20 % au-delà de 152 500 € par bénéficiaire (art. 990 I CGI, décès avant 70 ans). Les placements existants restent sur leurs supports actuels dans les deux colonnes.
                     <span className="nc-syn-noprint"> Quotité <Mini v={h.quotRP} on={v => sh('quotRP', v)} w={40} /> % sur les crédits en cours{L.loc ? <span> · <Mini v={L.quotLoc} on={v => sl('quotLoc', v)} w={40} /> % sur le nouveau crédit</span> : null}.</span>
                   </div>
                 </div>
@@ -6843,8 +6855,8 @@
                 <div className="text-[11px] font-bold mb-1" style={{ color: C.encre }}>D'où vient la différence ?</div>
                 <div className="text-[11.5px]" style={{ color: C.gris, lineHeight: 1.65 }}>
                   Dans les deux cas vous épargnez <b>{eur(R.ENV)}/mois</b> pendant <b>{R.H} ans</b>, soit <b>{eur(R.ENV * 12 * R.H)}</b> versés.
-                  {" "}À gauche, cette épargne reste sur vos supports actuels, dont le rendement constaté est de <b>{(nb(h.tAv0, 2.5)).toString().replace(".", ",")} %</b> par an.
-                  {" "}À droite, elle est placée selon les préconisations, à l'hypothèse retenue de <b>{(nb(h.tMed, 5.2)).toString().replace(".", ",")} %</b>.
+                  {" "}À gauche, cette épargne reste sur vos livrets, à <b>{(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %</b> par an, et entre dans votre succession.
+                  {" "}À droite, elle est placée selon les préconisations, à l'hypothèse retenue de <b>{(nb(h.tMed, 5.2)).toString().replace(".", ",")} %</b>, en assurance-vie et PER transmis hors succession (abattement de 152 500 € par bénéficiaire, art. 990 I).
                   {" "}Sur {R.H} ans, ce seul écart de rendement produit <b style={{ color: C.vert }}>{eur(Math.max(0, R.gainReallocation))}</b> de patrimoine en plus,
                   {" "}sans un euro d'effort supplémentaire.
                   {R.locNouveau ? " S'y ajoute l'immobilier financé à crédit : sa valeur est bâtie par les loyers et par l'effet de levier, pas par votre épargne." : ""}
