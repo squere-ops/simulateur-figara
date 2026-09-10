@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v206 (10/09 : (1) un nouveau placement s ouvre sur « -- Choisir -- » : il etait pre-rempli « Livrets » a la creation (addList type livrets) -- j avais repondu a tort que c etait deja le cas. (2) Telephone et email du CONJOINT saisissables (etape 1, bloc Conjoint) et repris sous les tuiles Telephone / Email de la synthese. (3) « Matelas recommande » devient « Epargne de precaution recommandee » ; objectif « Precaution -- reserve de securite ».', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cANCIEN BUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v203 (10/09 : PDF DE LA PROJECTION -- le regime locatif imprime etait toujours « Nu au reel » (dossier Rami declare Jeanbrun) : cloneNode ne recopie ni l option choisie d un select ni l etat des cases (React les pose en propriete, pas en attribut). L etat reel des select et des input est recopie dans le clone avant impression. Controle t_rp : regime imprime lu dans le clone.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v202 (10/09 : SYNTHESE -- retours du CGP sur le dossier Rami. (1) POINTS FORTS EN PUCES COURTES : chaque point fort = un chiffre en tete puis des puces, plus de longues phrases (endettement, capacite d emprunt, epargne, RP, PER, assurance-vie, patrimoine). (2) PATRIMOINE NET SIGNIFICATIF : format « 312 500 € d actif net, Monsieur x €, Madame y €, dont z € en commun » ; la ventilation par personne vient d une fonction UNIQUE ncRepartNet, partagee avec la tuile Patrimoine net -- un terrain declare a Monsieur n est plus annonce « non rattache a un titulaire ». (3) JAMAIS DEUX FOIS LA MEME PHRASE D AFFILEE : l axe Partenaire sans droits repetait sa phrase de tete en premiere puce ; garde ncSansDoublon au rendu + controle du banc (58 controles). (4) PASTILLES sur les tuiles Le foyer / Coordonnees (etat civil, activite, foyer, adresse, telephone, email).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -5024,8 +5025,14 @@
         // Retour cabinet 27/08 : le nom ne figure QU'UNE fois (bandeau) — ici, les
         // coordonnées complètes : adresse, téléphone, email (toujours affichés).
         phrases.push({ info: true, t: "Adresse", d: (d.adresseQ === "oui" && (d.adresse || d.ville)) ? [d.adresse, [d.codePostal, d.ville].filter(Boolean).join(" ")].filter(Boolean).join(", ") : "non renseignée" });
-        phrases.push({ info: true, t: "Téléphone", d: (d.tel || "").trim() || "non renseigné" });
-        phrases.push({ info: true, t: "Email", d: (d.email || "").trim() || "non renseigné" });
+        /* 10/09 : coordonnées du conjoint sous celles du client (sub de la tuile). */
+        {
+          const cj = d.conjoint || {};
+          const enCpl = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
+          const civCj = d.civilite === "Mme" ? "Monsieur" : "Madame";
+          phrases.push({ info: true, t: "Téléphone", d: (d.tel || "").trim() || "non renseigné", sub: enCpl && (cj.tel || "").trim() ? `${civCj} : ${cj.tel.trim()}` : undefined });
+          phrases.push({ info: true, t: "Email", d: (d.email || "").trim() || "non renseigné", sub: enCpl && (cj.email || "").trim() ? `${civCj} : ${cj.email.trim()}` : undefined });
+        }
         // Activité professionnelle de chacun : métier, entreprise, 12/13/14 mois.
         {
           const actLib = (pd, quiCiv) => {
@@ -7874,6 +7881,11 @@
                               className="num w-full px-3 py-2 text-[13px] bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900" />
                           </div>
                         </div>
+                        {/* 10/09/2026 — demande du CGP : téléphone et email du conjoint aussi. */}
+                        <div className="grid grid-cols-2 gap-3 mt-2">
+                          <div><div className="text-[11.5px] font-bold text-stone-700 mb-1">Téléphone du conjoint <span className="font-normal text-stone-400">(facultatif)</span></div><Txt v={(d.conjoint||{}).tel || ""} on={v => setAct("conjoint", "tel", v)} ph="06 12 34 56 78" cls="bg-white" /></div>
+                          <div><div className="text-[11.5px] font-bold text-stone-700 mb-1">Email du conjoint <span className="font-normal text-stone-400">(facultatif)</span></div><Txt v={(d.conjoint||{}).email || ""} on={v => setAct("conjoint", "email", v)} ph="contact@email.fr" cls="bg-white" /></div>
+                        </div>
                         <div className="mt-2">
                           <div className="text-[11.5px] font-bold text-stone-700 mb-1">Nationalité du conjoint</div>
                           <div className="flex flex-wrap items-center gap-1.5">
@@ -9005,7 +9017,7 @@
                     <button type="button" onClick={() => addList("credits", { nature: "conso", mensualite: "", crd: "", fin: "" })}
                       className="w-full border-2 border-dashed border-stone-300 hover:border-stone-900 rounded-lg px-3 py-2 text-[12px] font-bold text-stone-600 hover:text-stone-900 transition flex items-center justify-center gap-1.5"><I.plus/> Ajouter un crédit</button>
                   </Q>
-                  <Q q="Avez-vous de l'épargne ou des placements ?" val={d.avoirsQ} on={v => { set("avoirsQ", v); if (v === "oui" && d.avoirs.length === 0) addList("avoirs", { type: "livrets", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "" }); }}>
+                  <Q q="Avez-vous de l'épargne ou des placements ?" val={d.avoirsQ} on={v => { set("avoirsQ", v); if (v === "oui" && d.avoirs.length === 0) addList("avoirs", { type: "", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "" }); }}>
                     <NcReveal key={d.avoirs.length} last>
                     {d.avoirs.map((a, i) => {
                       const T = NC_TYPES_AVOIR.find(x => x.v === a.type) || NC_TYPES_AVOIR[0];
@@ -9167,7 +9179,9 @@
                         </div>
                       )
                     )}
-                    <button type="button" onClick={() => addList("avoirs", { type: "livrets", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "" })}
+                    {/* 10/09/2026 — le CGP : un nouveau placement s'ouvre sur « — Choisir — »,
+                        plus jamais pré-rempli « Livrets » (idem à la première ouverture ci-dessus). */}
+                    <button type="button" onClick={() => addList("avoirs", { type: "", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "" })}
                       className="w-full border-2 border-dashed border-stone-300 hover:border-stone-900 rounded-lg px-3 py-2 text-[12px] font-bold text-stone-600 hover:text-stone-900 transition flex items-center justify-center gap-1.5"><I.plus/> Ajouter un avoir</button>
                   </Q>
 
@@ -10118,7 +10132,7 @@
                                             <div className="num font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", fontSize: 24, color: BLEU, lineHeight: 1.1 }}>{nfG(courtT)} €</div>
                                             {pctPreco != null ? (
                                               <>
-                                                <div className="text-[10px] text-stone-500 mt-2">Matelas recommandé : <b className="num text-stone-700">{nfG(cibleHaut)} €</b></div>
+                                                <div className="text-[10px] text-stone-500 mt-2">Épargne de précaution recommandée : <b className="num text-stone-700">{nfG(cibleHaut)} €</b></div>
                                                 <div className="text-[10.5px] mt-1 font-bold" style={{ color: cCT }}>
                                                   {courtT > cibleHaut ? `${nfG(courtT - cibleHaut)} € au-delà`
                                                     : courtT < cibleBas ? `Il manque ${nfG(cibleBas - courtT)} €`
@@ -11318,7 +11332,7 @@
                       <FL>Où est-il logé ? <span className="font-normal text-stone-400">(établissement, contrat)</span></FL>
                       <Txt v={fa.etablissement || ""} on={v => setList("avoirs", fa.id, "etablissement", v)} ph="Ex. Generali, Crédit Agricole…" />
                       <FL>À quoi sert-il pour le client ?</FL>
-                      <Select opts={[{v:"precaution",l:"Précaution — matelas de sécurité"},{v:"retraite",l:"Retraite"},{v:"projet",l:"Un projet"},{v:"transmission",l:"Transmission"},{v:"rendement",l:"Rendement"},{v:"aucun",l:"Aucun / ne sait pas"}]} val={fa.objectif || ""} on={v => setList("avoirs", fa.id, "objectif", v)} />
+                      <Select opts={[{v:"precaution",l:"Précaution — réserve de sécurité"},{v:"retraite",l:"Retraite"},{v:"projet",l:"Un projet"},{v:"transmission",l:"Transmission"},{v:"rendement",l:"Rendement"},{v:"aucun",l:"Aucun / ne sait pas"}]} val={fa.objectif || ""} on={v => setList("avoirs", fa.id, "objectif", v)} />
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <FL>Qui le gère ?</FL>
