@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v207 (10/09 : PROJECTION, retours du CGP. (1) « SANS RIEN CHANGER » = LIVRETS A 1,7 pct (tLiv), jamais 2,5 pct -- et cette epargne entre en totalite dans la succession ; avec les preconisations, assurance-vie ET PER assurance sont transmis hors succession (art. 990 I, abattement 152 500 € par beneficiaire). L ecart de droits est desormais reel. (2) « Ou trouver l epargne » plus compact : intro d une ligne, pieds courts, cartes resserrees ; arbitrage et redirection affichent le gain sur la periode, l equivalent PAR MOIS et le rendement avant → apres (1,7 pct → 5,2 pct).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v208 (10/09 : SUCCESSION — LE PER EST TRAITE COMME L ASSURANCE-VIE. Regle du CGP : « je veux que le PER soit traite comme l assurance-vie, ce sont les livrets et autres placements bancaires qui ne doivent beneficier d aucun abattement ». ncCalcSuccession range desormais les avoirs de type « per » (et le PER declare a l etape Fiscalite) avec l assurance-vie HORS succession (art. 990 I, abattement 152 500 € par beneficiaire, 20 pct au-dela) ; livrets, compte courant, PEA, CTO, epargne salariale et autres restent dans l assiette sans abattement. Le PER nouveau de la projection est range en type « per ». Libelles du constat et du tableau avant / apres : « assurance-vie et PER ». Banc : controle 3 octies (PER hors assiette, livrets dedans).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v207 (10/09 : PROJECTION, retours du CGP. (1) « SANS RIEN CHANGER » = LIVRETS A 1,7 pct (tLiv), jamais 2,5 pct -- et cette epargne entre en totalite dans la succession ; avec les preconisations, assurance-vie ET PER assurance sont transmis hors succession (art. 990 I, abattement 152 500 € par beneficiaire). L ecart de droits est desormais reel. (2) « Ou trouver l epargne » plus compact : intro d une ligne, pieds courts, cartes resserrees ; arbitrage et redirection affichent le gain sur la periode, l equivalent PAR MOIS et le rendement avant → apres (1,7 pct → 5,2 pct).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v206 (10/09 : (1) un nouveau placement s ouvre sur « -- Choisir -- » : il etait pre-rempli « Livrets » a la creation (addList type livrets) -- j avais repondu a tort que c etait deja le cas. (2) Telephone et email du CONJOINT saisissables (etape 1, bloc Conjoint) et repris sous les tuiles Telephone / Email de la synthese. (3) « Matelas recommande » devient « Epargne de precaution recommandee » ; objectif « Precaution -- reserve de securite ».', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -3180,15 +3181,18 @@
       (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => ventS(ncBienValeur(b) - ncInt(b.crd), ncTit(b.titulaire), pat));
       (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventS(ncInt(l.valeur) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire), pat));
       (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => {
-        // L'assurance-vie est HORS SUCCESSION (art. 990 I) : isolée, jamais dans l'assiette.
-        if (a.type === "av") ventS(ncInt(a.valeur), a.titulaire, avHors);
+        // L'assurance-vie ET le PER sont HORS SUCCESSION (art. 990 I) : isolés, jamais dans l'assiette.
+        // Décision du CGP (10/09/2026) : le PER est traité comme l'assurance-vie ; seuls les livrets
+        // et autres placements bancaires (compte courant, PEA, CTO, épargne salariale…) restent
+        // dans l'assiette, sans aucun abattement.
+        if (a.type === "av" || a.type === "per") ventS(ncInt(a.valeur), a.titulaire, avHors);
         else ventS(ncInt(a.valeur), a.titulaire, pat);
       });
       (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(c => ventS(-ncInt(c.crd), null, pat));
       // PER saisi à l'étape Fiscalité sans avoir correspondant (29/08) : son encours
-      // entre dans l'assiette de son titulaire (le PER n'est pas hors succession).
+      // rejoint l'assurance-vie hors succession (art. 990 I) — règle du CGP du 10/09/2026.
       if (d.reductionsPer && !(d.avoirs || []).some(a => a.type === "per" && ncInt(a.valeur) > 0)) {
-        ventS(ncInt(d.reductionsPer.valeur), d.reductionsPer.titulaire || "client", pat);
+        ventS(ncInt(d.reductionsPer.valeur), d.reductionsPer.titulaire || "client", avHors);
       }
       // Abattement de 20 % sur la RP occupée par le conjoint (art. 764 bis) — couple seulement.
       const rpAbatt = enCoupleS && (marieS || pacseS);
@@ -6136,11 +6140,10 @@
             const versPP = ncpCap(0, socle.ppMens, tAv0, H);
             if (versPP > 0) avoirsH.push({ id: 9001, type: "autre", valeur: String(Math.round(versPP)), titulaire: titNouveau, precision: "versements programmés actuels" });
             if (apres) {
-              /* PER ASSURANCE souscrit avec le cabinet : au deces avant 70 ans, le capital
-                 est transmis hors succession sous le regime de l art. 990 I (abattement
-                 152 500 € par beneficiaire), comme l assurance-vie — on le range donc
-                 comme « av » dans le dossier d horizon. */
-              if (L.per) avoirsH.push({ id: 9002, type: "av", valeur: String(Math.round(ncpCap(0, vPer, tMed, H))), titulaire: titNouveau, precision: "PER assurance (art. 990 I)" });
+              /* PER souscrit avec le cabinet : traite comme l assurance-vie (art. 990 I,
+                 abattement 152 500 € par beneficiaire) — regle du CGP du 10/09/2026,
+                 portee par ncCalcSuccession (type « per » = hors succession). */
+              if (L.per) avoirsH.push({ id: 9002, type: "per", valeur: String(Math.round(ncpCap(0, vPer, tMed, H))), titulaire: titNouveau, precision: "PER (art. 990 I)" });
               if (L.av) avoirsH.push({ id: 9003, type: "av", valeur: String(Math.round(ncpCap(0, vAv, tMed, H))), titulaire: titNouveau });
               const tr = treso(H); if (tr > 0) avoirsH.push({ id: 9004, type: "livrets", valeur: String(Math.round(tr)), titulaire: titNouveau });
               if (G.arb && montArb > 0) avoirsH.push({ id: 9005, type: "av", valeur: String(Math.round(montArb * Math.pow(1 + tMed, H))), titulaire: titNouveau });
@@ -6793,8 +6796,8 @@
                 { l: "Impôt économisé par an", a: 0, b: R.ecoImpot, unit: "/an", note: R.ecoRegimeAn > 0 ? "PER + dispositif locatif" : "" },
                 { sec: `En cas de décès à ${R.ageFin} ans` },
                 sS && sA ? { l: "Droits de succession estimés", a: sS.total, b: sA.total, fort: true, inv: true, note: sS.lib || "" } : null,
-                sS && sA ? { l: "dont droits sur l'assurance-vie (au-delà de 152 500 € par bénéficiaire, art. 990 I)", a: sS.droitsAV, b: sA.droitsAV, sub: true, inv: true } : null,
-                sS && sA ? { l: "Transmis hors succession par l'assurance-vie", a: sS.avHors, b: sA.avHors, sub: true } : null,
+                sS && sA ? { l: "dont droits sur l'assurance-vie et le PER (au-delà de 152 500 € par bénéficiaire, art. 990 I)", a: sS.droitsAV, b: sA.droitsAV, sub: true, inv: true } : null,
+                sS && sA ? { l: "Transmis hors succession (assurance-vie et PER)", a: sS.avHors, b: sA.avHors, sub: true } : null,
                 { l: "Crédits soldés par l'assurance de prêt (aujourd'hui)", a: prevAvant, b: prevApres, note: "les biens sont transmis libres de dette" },
               ].filter(Boolean);
               const ecart = (r) => { const e = (r.b || 0) - (r.a || 0); if (Math.abs(e) < 1) return { t: "—", c: C.gris2 }; const bon = r.inv ? e < 0 : e > 0; return { t: (e > 0 ? "+ " : "− ") + eur(Math.abs(e)) + (r.unit || ""), c: bon ? C.vert : "#b91c1c" }; };
@@ -6825,7 +6828,7 @@
                     </tbody>
                   </table>
                   <div className="px-3 py-2 italic" style={{ fontSize: 9.5, color: C.gris2, background: "#fafaf9", borderTop: "1px solid " + C.bord, lineHeight: 1.5 }}>
-                    Succession : droits estimés par le moteur du constat sur le patrimoine projeté à {R.ageFin} ans (crédits soldés par l'assurance de prêt, barème et abattements 2026, première option légale). Sans rien changer, l'épargne reste sur les livrets : elle entre en totalité dans la succession. Avec les préconisations, assurance-vie et PER assurance sont transmis hors succession, taxés à 20 % au-delà de 152 500 € par bénéficiaire (art. 990 I CGI, décès avant 70 ans). Les placements existants restent sur leurs supports actuels dans les deux colonnes.
+                    Succession : droits estimés par le moteur du constat sur le patrimoine projeté à {R.ageFin} ans (crédits soldés par l'assurance de prêt, barème et abattements 2026, première option légale). Sans rien changer, l'épargne reste sur les livrets : elle entre en totalité dans la succession. Avec les préconisations, assurance-vie et PER sont transmis hors succession, taxés à 20 % au-delà de 152 500 € par bénéficiaire (art. 990 I CGI, décès avant 70 ans). Les placements existants restent sur leurs supports actuels dans les deux colonnes.
                     <span className="nc-syn-noprint"> Quotité <Mini v={h.quotRP} on={v => sh('quotRP', v)} w={40} /> % sur les crédits en cours{L.loc ? <span> · <Mini v={L.quotLoc} on={v => sl('quotLoc', v)} w={40} /> % sur le nouveau crédit</span> : null}.</span>
                   </div>
                 </div>
@@ -10856,7 +10859,7 @@
                                     <div className="text-[10px] text-stone-500 leading-relaxed"><b className="text-stone-700">Hypothèse retenue</b> : prêts non couverts, capitaux restant dus déduits de l'actif. <b className="text-stone-700">Hypothèse alternative</b> (non retenue ici) : assurance emprunteur à 100 % — le crédit s'éteindrait au décès et l'actif transmissible augmenterait d'autant. Les deux ne se cumulent pas : vérifier les quotités au relevé avant toute préconisation.</div>
                                   </div>
                                   {v.avHors > 0 && (
-                                    <div className="text-[10.5px] font-semibold mb-1" style={{ color: "#0f766e" }}>+ {nfS(v.avHors)} € d'assurance-vie HORS succession (art. 990 I — abattement 152 500 € par bénéficiaire, clause bénéficiaire à vérifier)</div>
+                                    <div className="text-[10.5px] font-semibold mb-1" style={{ color: "#0f766e" }}>+ {nfS(v.avHors)} € d'assurance-vie et de PER HORS succession (art. 990 I — abattement 152 500 € par bénéficiaire, clause bénéficiaire à vérifier)</div>
                                   )}
                                   {/* RDV 1 = CONSTAT, RDV 2 = SOLUTIONS. Les scénarios qui
                                       chiffrent une solution (testament, donation au dernier
