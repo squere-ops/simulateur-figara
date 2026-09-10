@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v201 (10/09 : LES CHIFFRES DU DOSSIER -- retours du CGP. (1) RESIDENCE SECONDAIRE retiree de la capacite d emprunt (carte, forces, synthese) : deux usages seulement, investissement locatif et residence principale. (2) LES QUATRE COMPTEURS a la meme hauteur : zone de jauge de hauteur fixe (196 px), compteur seul cale en haut avec le retrait du titre des doubles jauges ; les lignes de detail de « Mensualite disponible » sortent de la zone. (3) COMPTEUR « LE FINANCIER » POUR TOUS : la part FINANCIERE du patrimoine remplace la part immobiliere sur tous les dossiers (regle du 28/08 « proprietaire et > 65 pct » remplacee) ; avec un projet d achat de RP, la part est DATEE « aujourd hui, avant l achat de la residence principale (projet a 1 a 3 ans) ». (4) t_ordre_fiscal : regroupement des tuiles par bande de proche en proche, plus de faux echec quand une frontiere de 40 px tombe entre deux tuiles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v202 (10/09 : SYNTHESE -- retours du CGP sur le dossier Rami. (1) POINTS FORTS EN PUCES COURTES : chaque point fort = un chiffre en tete puis des puces, plus de longues phrases (endettement, capacite d emprunt, epargne, RP, PER, assurance-vie, patrimoine). (2) PATRIMOINE NET SIGNIFICATIF : format « 312 500 € d actif net, Monsieur x €, Madame y €, dont z € en commun » ; la ventilation par personne vient d une fonction UNIQUE ncRepartNet, partagee avec la tuile Patrimoine net -- un terrain declare a Monsieur n est plus annonce « non rattache a un titulaire ». (3) JAMAIS DEUX FOIS LA MEME PHRASE D AFFILEE : l axe Partenaire sans droits repetait sa phrase de tete en premiere puce ; garde ncSansDoublon au rendu + controle du banc (58 controles). (4) PASTILLES sur les tuiles Le foyer / Coordonnees (etat civil, activite, foyer, adresse, telephone, email).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cANCIEN BUILD v201 (10/09 : LES CHIFFRES DU DOSSIER -- retours du CGP. (1) RESIDENCE SECONDAIRE retiree de la capacite d emprunt (carte, forces, synthese) : deux usages seulement, investissement locatif et residence principale. (2) LES QUATRE COMPTEURS a la meme hauteur : zone de jauge de hauteur fixe (196 px), compteur seul cale en haut avec le retrait du titre des doubles jauges ; les lignes de detail de « Mensualite disponible » sortent de la zone. (3) COMPTEUR « LE FINANCIER » POUR TOUS : la part FINANCIERE du patrimoine remplace la part immobiliere sur tous les dossiers (regle du 28/08 « proprietaire et > 65 pct » remplacee) ; avec un projet d achat de RP, la part est DATEE « aujourd hui, avant l achat de la residence principale (projet a 1 a 3 ans) ». (4) t_ordre_fiscal : regroupement des tuiles par bande de proche en proche, plus de faux echec quand une frontiere de 40 px tombe entre deux tuiles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v200 (04/09 : AXES DE TRAVAIL -- decisions du CGP sur le dossier test Jean Claude. (1) EPARGNE DE PRECAUTION : montants FIXES selon le foyer -- personne seule 10 000 a 15 000 €, couple sans enfant 20 000 €, couple avec enfant(s) 25 000 € -- quels que soient revenus et statut, sans supplement locatif ; remplace partout (jauge, barre, axe, problematique, projection) la regle « X mois de depenses par profil » du 31/08. (2) L axe « Locataire » est SUPPRIME : l objectif n est pas de pousser a l achat de la RP mais vers le locatif, le PER, l assurance-vie et la renegociation de l assurance de pret. (3) Les axes d epargne (precaution, tres faible vs revenus, long terme, performance inconnue, versements) sont VOISINS. (4) Assurance de pret : axe « simulation de renegociation » des qu un credit existe (RP, locatif, autre bien, conso), meme deja renegociee, s il reste au moins 8 ans ; seuil de 10 ans du 28/08 abandonne. Banc : 54 controles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v199 (03/09 : (1) PLANTAGE « Une erreur technique est survenue » a la saisie Duree/Apport/Taux du projet d achat RP -- la carte « Cout global de l operation » appelait eur() jamais defini dans NouveauClientModal ; defini localement. (2) Curseur « Taux du credit envisage » affichait 350 % pour 3,5 : prop dec manquant sur ce Slider (le point etait supprime par parseInt) ; plafond garde a 7 % sur decision CGP. (3) DECISION CGP (item 9) : la « phrase rouge » Conjoint insuffisamment protege -- famille recomposee sans DDV -- est CHIFFREE des le RDV 1 : part du survivant 1/4 PP vs option mixte 1/4 PP + usufruit des 3/4 (art. 669), droits des enfants evites ; nombres issus de ncCalcSuccession (v.ddvImpact), aucun scenario ajoute, filtre RDV 2 intact. Banc : t_rp.js entre dans verif.sh (11/11), 3 controles DDV ajoutes (52).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v198 (03/09 : SERIE DE CORRECTIONS SUR LE « CONSTAT » (synthese). Retours du CGP, dossier oliugjrvcf : (1) l en-tete du document affichait le conjoint SANS civilite et les deux prenoms sans majuscule initiale (ex. « martine IKUG » au lieu de « Madame Martine IKUG ») -- fonction ncCapNom ajoutee, civilite du conjoint deduite comme pour le prenom. (2) « 2.5 parts fiscales » affichait un POINT au lieu d une virgule dans la branche hors-union-libre du resume narratif (la branche union libre le faisait deja). (3) Les libelles de tuiles d etat civil (« Etat civil », « Activite -- Monsieur »...) et les en-tetes « Le foyer » / « Coordonnees » etaient en gris quasi transparent (text-stone-400) -- passes en encre pleine #1d2735. (4) REGLE CABINET : les loyers retenus pour la capacite d emprunt passent de 80 % a 75 % (les 3 formules dupliquees -- lignes ~3906, ~9982 et ~11007 -- et tous les libelles/texte associes ont ete harmonises ensemble). (5) Le paragraphe « les deux leviers les plus puissants » (transmission) ressort desormais dans un encadre teal au lieu d une simple phrase grise. (6) Les blocs « Si Monsieur/Madame decedait » -- juges illisibles, « comme les petites lignes d un contrat qu il ne faut pas lire » -- sont reformates en encarts avec plus d aeration, les mentions « hypothese retenue » / « hypothese alternative » mises en gras ; le contenu juridique n a pas ete modifie. (7) La mention « fourchette indiquee » / « montant precis indique », auparavant concatenee au nombre et donc desalignee selon la longueur de ce nombre, ressort desormais sur sa propre ligne a position fixe (champ l.sub) -- corrige le desalignement entre « Participation mensuelle envisagee » et « Apport initial mobilisable ». (8) La fenetre de correction d un point fort/axe (bouton crayon) utilisait window.prompt, trop exigu -- remplacee par une modale dediee (textarea, Enregistrer/Annuler) ; un repere « texte personnalise » avec bouton de retour au texte genere apparait desormais sur tout point corrige a la main, pour expliquer pourquoi un point fort peut sembler ne plus suivre les ameliorations du moteur (mecanisme d.synthEdits, deja existant, non modifie). En suspens, a clarifier avec le CGP avant tout code : typo « ff » non localisee page 2 malgre relecture complete ; propositions de pictogrammes alternatifs pour Objectifs exprimes ; chiffrage precis de l impact d une donation au dernier vivant, actuellement hors doctrine RDV1/RDV2 du cabinet.)','font-weight:bold;color:#047857');
@@ -2830,6 +2831,60 @@
       return v;
     };
     const ncMens = (montant, periode) => { const m = ncInt(montant); return periode === "an" ? m / 12 : m; };
+    /* 10/09/2026 — REPARTITION DU PATRIMOINE NET PAR PERSONNE : UNE SEULE fonction.
+       Le point fort « Patrimoine net significatif » ne ventilait que la RP et les
+       placements : un terrain de 240 000 € declare a Monsieur ressortait comme « non
+       rattache a un titulaire », alors que la tuile « Patrimoine net » (qui, elle,
+       comptait biens, locatifs, PER et credits) affichait Monsieur ≈ 283 500 €.
+       Deux calculs, deux verites — le CGP l a vu. Desormais la tuile ET le point
+       fort lisent ici. Regle : la detention DECLAREE (RP : rpDetenteur, biens et
+       locatifs : titulaire, placements : titulaire), les credits suivent le bien,
+       le commun est partage par moitie ; `commun` = total des actifs communs. */
+    /* 10/09/2026 — JAMAIS DEUX FOIS LA MEME PHRASE D AFFILEE (regle du CGP : « ca n a
+       pas de sens »). Une puce identique a la phrase de tete, ou a une puce
+       precedente, est retiree au rendu. Le banc verifie aussi la source. */
+    const ncNormPhrase = (x) => String(x || "").toLowerCase().replace(/[\s\u00a0\u202f]+/g, " ").replace(/[.\s]+$/, "").trim();
+    const ncSansDoublon = (tete, puces) => {
+      const vus = new Set([ncNormPhrase(tete)]);
+      return (puces || []).filter(x => { const n = ncNormPhrase(x); if (!n || vus.has(n)) return false; vus.add(n); return true; });
+    };
+    /* 10/09/2026 — pastilles des tuiles d identification (Le foyer / Coordonnees).
+       Choix du picto par le TITRE de la tuile ; disque or pale, trait encre. */
+    function NcPastilleTuile({ t }) {
+      const k = /état civil/i.test(t) ? "civil" : /activité/i.test(t) ? "activite" : /composition|foyer/i.test(t) ? "foyer"
+        : /adresse/i.test(t) ? "adresse" : /téléphone/i.test(t) ? "tel" : /email|e-mail|mail/i.test(t) ? "email" : "autre";
+      const P = {
+        civil: <><circle cx="9" cy="12" r="3.2" /><circle cx="15" cy="12" r="3.2" /></>,
+        activite: <><rect x="4" y="8" width="16" height="11" rx="2" /><path d="M9 8V6.5A1.5 1.5 0 0 1 10.5 5h3A1.5 1.5 0 0 1 15 6.5V8M4 12.5h16" /></>,
+        foyer: <><circle cx="9" cy="8.5" r="2.6" /><circle cx="16" cy="9.5" r="2.1" /><path d="M4.5 18.5c0-3 2-5 4.5-5s4.5 2 4.5 5M14 18.5c0-2.3 1.2-4 3-4s3 1.7 3 4" /></>,
+        adresse: <><path d="M12 20s-5.5-5.2-5.5-9.5a5.5 5.5 0 0 1 11 0C17.5 14.8 12 20 12 20z" /><circle cx="12" cy="10.5" r="1.9" /></>,
+        tel: <><path d="M7 4.5h3l1.5 4-2 1.5a10 10 0 0 0 4.5 4.5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A13.5 13.5 0 0 1 5 6.5a2 2 0 0 1 2-2z" /></>,
+        email: <><rect x="4" y="6.5" width="16" height="11" rx="2" /><path d="M4.5 8l7.5 5.5L19.5 8" /></>,
+        autre: <><circle cx="12" cy="12" r="3" /></>,
+      };
+      return (
+        <span className="inline-flex items-center justify-center flex-shrink-0 rounded-full" style={{ width: 20, height: 20, background: "rgba(184,146,78,0.16)", border: "1px solid rgba(184,146,78,0.45)" }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a6d34" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{P[k]}</svg>
+        </span>
+      );
+    }
+    function ncRepartNet(d) {
+      const pRP = d.rpDetenteur === "client" ? 1 : d.rpDetenteur === "conjoint" ? 0
+        : d.rpDetenteur === "libre" ? Math.min(100, Math.max(0, ncInt(d.rpPartClient))) / 100 : 0.5;
+      let c = 0, j = 0, commun = 0;
+      if (d.logement === "proprietaire") {
+        const v = ncInt(d.rpValeur) - (d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0);
+        c += v * pRP; j += v * (1 - pRP);
+        if (d.rpDetenteur !== "client" && d.rpDetenteur !== "conjoint" && d.rpDetenteur !== "libre") commun += v;
+      }
+      const ventile = (v, t) => { if (t === "client") c += v; else if (t === "conjoint") j += v; else { c += v / 2; j += v / 2; commun += v; } };
+      (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => ventile(ncBienValeur(b) - ncInt(b.crd), ncTit(b.titulaire)));
+      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventile(ncInt(l.valeur) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire)));
+      (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => ventile(ncInt(a.valeur), a.titulaire));
+      if (d.reductionsPer && !(d.avoirs || []).some(a => a.type === "per" && ncInt(a.valeur) > 0)) ventile(ncInt(d.reductionsPer.valeur), d.reductionsPer.titulaire || "client");
+      (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(cr => ventile(-ncInt(cr.crd), null));
+      return { c: Math.round(c), j: Math.round(j), commun: Math.round(commun) };
+    }
     function ncCalcEndettement(d) {
       const revenus = []; const charges = [];
       // meta = { qui: "client" | "conjoint" | "foyer", cat: "activite" | "patrimoine" | "pension" }
@@ -4568,15 +4623,21 @@
            adverbe : on donne la MENSUALITÉ encore disponible, seul chiffre qui
            dise ce que la marge permet réellement. */
         const margeMens = Math.max(0, Math.round(revFoyer * 0.35 - chFoyer));
-        const qualif = "sous le plafond bancaire de 35 %"
-          + (margeMens > 0 ? `, soit ${eur(margeMens)}/mois de mensualité encore disponible` : "");
         const dureeRPf = parseFloat(String(d.rpDureeRestante || "").replace(",", "."));
         const finRP = proprio && d.rpCreditQ === "oui" && isFinite(dureeRPf) && dureeRPf > 0
           ? (dureeRPf <= 2 ? ` — et le crédit RP se termine dans ${String(dureeRPf).replace(".", ",")} an${dureeRPf > 1 ? "s" : ""} : cet endettement disparaît à très court terme` : dureeRPf >= 10 ? ` (crédit RP : encore ${Math.round(dureeRPf)} ans à courir)` : "")
           : "";
+        /* 10/09/2026 — le CGP : « oublie les grandes phrases, va droit au but en mode
+           bullet point, et ce pour chaque point ». Chaque point fort = un chiffre en
+           tete (d), puis des puces courtes (puces). Les textes longs sont abandonnes. */
+        const pucesEnd = ["Plafond bancaire : 35 %"];
+        if (margeMens > 0) pucesEnd.push(`Mensualité encore disponible : ${eur(margeMens)}/mois`);
+        if (proprio) pucesEnd.push("Mobilisable pour un investissement locatif");
+        else if (margeMens > 0) pucesEnd.push("Montant finançable : selon la durée et le taux retenus");
+        if (finRP) pucesEnd.push(finRP.replace(/^\s*—\s*(?:et )?le crédit RP se termine dans (.*?) : cet endettement disparaît à très court terme$/, "Crédit RP terminé dans $1 : cet endettement disparaît à très court terme").replace(/^\s*\(crédit RP : encore (\d+) ans à courir\)$/, "Crédit RP : encore $1 ans à courir"));
         if (proprio) {
-          if (0.35 - taux >= 0.05) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement, ${qualif} : mobilisable pour un investissement locatif${finRP}.` });
-        } else if (largement) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement, ${qualif}${margeMens > 0 ? " — le montant finançable se chiffre à partir de cette mensualité, selon la durée et le taux retenus" : ""}.` });
+          if (0.35 - taux >= 0.05) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement`, puces: pucesEnd });
+        } else if (largement) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement`, puces: pucesEnd });
         // 31/08 (règle cabinet) : entre 25 et 30 % consommés, « la capacité est
         // intacte » est FAUX et la phrase n'apporte rien — aucun point fort.
       }
@@ -4587,28 +4648,33 @@
       // résidence principale ni la secondaire. Et une RÉSIDENCE SECONDAIRE ne
       // produit AUCUN loyer : sa capacité est inférieure à celle du locatif — les
       // annoncer au même montant était faux et surestimait le budget du client.
-      if (capMax >= 80000) forces.push({ t: "Capacité d'emprunt disponible", d: (proprio
-        ? `≈ ${eur(capLocMax)} finançables sur ${dureeMax} ans en investissement locatif : les loyers attendus s'ajoutent aux revenus pris en compte par la banque, c'est l'usage qui ouvre la plus grande capacité (hypothèses cabinet août 2026 : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance).`
-        : `≈ ${eur(capLocMax)} finançables sur ${dureeMax} ans en investissement locatif, ${d.logement === "gratuit" ? "le logement actuel étant conservé" : "la location actuelle étant conservée"} : les loyers attendus s'ajoutent aux revenus pris en compte par la banque. Les autres usages ouvrent moins : ${eur(capMax)} pour l'achat de la résidence principale (${d.logement === "gratuit" ? "le forfait logement de 600 €/mois disparaît" : "le loyer actuel disparaît"} à l'achat). Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement (hypothèses cabinet août 2026).`)
-        + (unionLibre && d.conjointQ === "oui" ? " Union libre : montant calculé pour un emprunt à deux — un emprunt individuel repose sur les seuls revenus de l'emprunteur." : "") });
+      if (capMax >= 80000) {
+        const pucesCap = ["Loyers attendus ajoutés aux revenus retenus par la banque"];
+        if (!proprio) pucesCap.push(`Résidence principale : ≈ ${eur(capMax)} (${d.logement === "gratuit" ? "forfait logement de 600 €/mois supprimé" : "loyer actuel supprimé"} à l'achat)`);
+        if (!proprio) pucesCap.push("Les deux montants ne s'additionnent pas : même enveloppe d'endettement");
+        pucesCap.push("Hypothèses cabinet août 2026 : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance");
+        if (unionLibre && d.conjointQ === "oui") pucesCap.push("Union libre : calculé pour un emprunt à deux — seul, sur les seuls revenus de l'emprunteur");
+        forces.push({ t: "Capacité d'emprunt disponible", d: `≈ ${eur(capLocMax)} en investissement locatif sur ${dureeMax} ans${proprio ? "" : (d.logement === "gratuit" ? ", logement actuel conservé" : ", location actuelle conservée")}`, puces: pucesCap });
+      }
       // RÈGLE CABINET (28/08) : trop de précaution n'est JAMAIS un point fort — le point
       // fort ne s'affiche que si le court terme est DANS la cible du profil.
       if (chFoyer > 0 && cibleBasM > 0 && courtTermeM >= cibleBasM && !surDoteM) forces.push({ t: "Épargne de précaution constituée", d: `${eur(courtTermeM)} d'épargne disponible en court terme.` });
-      if (proprio && d.rpCreditQ !== "oui") forces.push({ t: `Résidence principale payée${age != null ? ` à ${age} ans` : ""}`, d: `${eur(ncInt(d.rpValeur))} d'actif net acquis, sans aucun crédit — une position rare${age != null && age <= 55 ? " à cet âge" : ""}. La dynamique est excellente : la prolonger par l'immobilier locatif serait vivement recommandé.` });
+      if (proprio && d.rpCreditQ !== "oui") forces.push({ t: `Résidence principale payée${age != null ? ` à ${age} ans` : ""}`, d: `${eur(ncInt(d.rpValeur))} d'actif net, sans aucun crédit`,
+        puces: [age != null && age <= 55 ? "Position rare à cet âge" : "Position solide", "À prolonger par l'immobilier locatif"] });
       if (proprio && d.rpCreditQ === "oui") {
         // RÈGLE CABINET (28/08) : un CRD de 10 % ou de 90 % de la valeur, 2 ans ou
         // 15 ans restants — ce n'est pas du tout pareil : le constat le dit.
         const ratioCrd = ncInt(d.rpValeur) > 0 ? ncInt(d.rpCrd) / ncInt(d.rpValeur) : null;
         const dRPp = parseFloat(String(d.rpDureeRestante || "").replace(",", "."));
-        const compl = ratioCrd != null && ratioCrd <= 0.25
-          ? ` (seulement ${pc(ratioCrd)} de la valeur${isFinite(dRPp) && dRPp > 0 ? `, ${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""} restants` : ""}) — le bien est presque intégralement acquis`
-          : ratioCrd != null && ratioCrd >= 0.75
-          ? ` (${pc(ratioCrd)} de la valeur${isFinite(dRPp) && dRPp > 0 ? `, ${Math.round(dRPp)} ans restants` : ""}) — l'acquisition est engagée, le capital se construit`
-          : (isFinite(dRPp) && dRPp > 0 ? ` (${Math.round(dRPp)} an${dRPp > 1 ? "s" : ""} restants)` : "");
-        forces.push({ t: "Propriétaire de la résidence principale", d: `${eur(ncInt(d.rpValeur))} de valeur estimée, dont ${eur(ncInt(d.rpCrd))} de capital restant dû${compl} — le socle patrimonial est posé.` });
+        const pucesRP = [`Capital restant dû : ${eur(ncInt(d.rpCrd))}${ratioCrd != null ? ` (${pc(ratioCrd)} de la valeur)` : ""}`];
+        if (isFinite(dRPp) && dRPp > 0) pucesRP.push(`${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""} restants`);
+        if (ratioCrd != null && ratioCrd <= 0.25) pucesRP.push("Bien presque intégralement acquis");
+        else if (ratioCrd != null && ratioCrd >= 0.75) pucesRP.push("Acquisition engagée : le capital se construit");
+        pucesRP.push("Le socle patrimonial est posé");
+        forces.push({ t: "Propriétaire de la résidence principale", d: `${eur(ncInt(d.rpValeur))} de valeur estimée`, puces: pucesRP });
       }
-      if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place : le survivant choisira son option au moment du décès (art. 1094-1 C. civ.)." });
-      if ((pacse || unionLibre) && d.testamentQ === "oui") forces.push({ t: "Testament rédigé", d: `Le ${unionLibre ? "concubin" : "partenaire"} est désigné, ce qui lui donne une vocation successorale qu'il n'aurait pas légalement.` });
+      if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place", puces: ["Le survivant choisira son option au moment du décès (art. 1094-1 C. civ.)"] });
+      if ((pacse || unionLibre) && d.testamentQ === "oui") forces.push({ t: "Testament rédigé", d: `Le ${unionLibre ? "concubin" : "partenaire"} est désigné`, puces: ["Vocation successorale qu'il n'aurait pas légalement"] });
       // RÈGLE CABINET (28/08) : dire À QUI appartient chaque AV / PER, et ressortir
       // la note saisie sur le contrat.
       {
@@ -4623,9 +4689,11 @@
            détenu est cité, on demande la VÉRIFICATION DE L'ALLOCATION ET DE LA
            PERFORMANCE des supports — c'est le premier geste de conseil, et il ouvre
            l'audit du contrat existant. */
-        const VERIF_SUPPORTS = " Prochaine étape : vérifier l'allocation et la performance des supports sélectionnés — un contrat ouvert ne travaille pas forcément.";
-        if (per > 0) forces.push({ t: "Retraite déjà amorcée", d: `${eur(per)} sur un PER${titDe("per") ? ` détenu par ${titDe("per")}` : ""} — le dispositif est ouvert, il reste à calibrer les versements sur le plafond disponible.${VERIF_SUPPORTS}${noteDe("per") ? ` Note : ${noteDe("per")}.` : ""}` });
-        if (avVie > 0) forces.push({ t: "Assurance-vie ouverte", d: `${eur(avVie)} placés${titDe("av") ? ` par ${titDe("av")}` : ""} : l'antériorité fiscale court et l'outil de transmission est en place (art. 990 I CGI).${VERIF_SUPPORTS}${noteDe("av") ? ` Note : ${noteDe("av")}.` : ""}` });
+        const VERIF_SUPPORTS = "À vérifier : allocation et performance des supports — un contrat ouvert ne travaille pas forcément";
+        if (per > 0) forces.push({ t: "Retraite déjà amorcée", d: `${eur(per)} sur un PER${titDe("per") ? ` détenu par ${titDe("per")}` : ""}`,
+          puces: ["Versements à calibrer sur le plafond disponible", VERIF_SUPPORTS].concat(noteDe("per") ? [`Note : ${noteDe("per")}`] : []) });
+        if (avVie > 0) forces.push({ t: "Assurance-vie ouverte", d: `${eur(avVie)} placés${titDe("av") ? ` par ${titDe("av")}` : ""}`,
+          puces: ["Antériorité fiscale en cours", "Outil de transmission en place (art. 990 I CGI)", VERIF_SUPPORTS].concat(noteDe("av") ? [`Note : ${noteDe("av")}`] : []) });
       }
       // 31/08 (contrôle expert n°4) : « diversifié » ne se dit JAMAIS quand la poche
       // financière dort intégralement en court terme (livrets / comptes courants) —
@@ -4633,37 +4701,32 @@
       const finTotF = Math.max(0, S.actifTotal - S.actifImmo);
       const ctFinF = av.filter(a => a.type === "livrets" || a.type === "compte_courant").reduce((s2, a) => s2 + ncInt(a.valeur), 0);
       const ltPartF = finTotF > 0 ? Math.max(0, finTotF - ctFinF) / finTotF : 0;
-      if (S.actifTotal > 0 && partImmo > 0.2 && partImmo < 0.75 && S.actifTotal >= 100000 && ltPartF > 0.2) forces.push({ t: "Patrimoine diversifié", d: `${pc(partImmo)} d'immobilier et ${pc(1 - partImmo)} de financier : l'allocation est équilibrée entre rendement et liquidité. Reste à vérifier l'allocation et la performance des supports à l'intérieur de la poche financière.` });
+      if (S.actifTotal > 0 && partImmo > 0.2 && partImmo < 0.75 && S.actifTotal >= 100000 && ltPartF > 0.2) forces.push({ t: "Patrimoine diversifié", d: `${pc(partImmo)} d'immobilier · ${pc(1 - partImmo)} de financier`, puces: ["Allocation équilibrée entre rendement et liquidité", "À vérifier : allocation et performance des supports financiers"] });
       // 29/08 (contrôle expert) : ce chiffre vient de la PARTICIPATION DÉCLARÉE par le
       // client (fourchette de l'étape Objectifs) — le nommer, jamais « réelle » sans base.
       const CAP_LIB_F = { "<100": "moins de 100 €", "100-300": "100 – 300 €", "300-500": "300 – 500 €", "500-1000": "500 – 1 000 €", ">1000": "plus de 1 000 €" };
-      if (capEpargne >= 300) forces.push({ t: "Capacité d'épargne déclarée", d: `${eur(capEpargne)} par mois mobilisables${d.capaciteEpargne !== "libre" && CAP_LIB_F[d.capaciteEpargne] ? ` (milieu de la fourchette indiquée par le client : ${CAP_LIB_F[d.capaciteEpargne]}/mois)` : " (montant indiqué par le client)"} — de quoi financer un projet structurant sans dégrader le train de vie.` });
-      if (S.ppMensuels > 0 && (revFoyer <= 0 || S.ppMensuels / revFoyer >= NC_EPARGNE_MOYENNE_FR)) forces.push({ t: "Discipline d'épargne", d: `${eur(S.ppMensuels)} de versements programmés déjà en place : la participation est automatisée.` });
+      if (capEpargne >= 300) forces.push({ t: "Capacité d'épargne déclarée", d: `${eur(capEpargne)}/mois mobilisables`,
+        puces: [d.capaciteEpargne !== "libre" && CAP_LIB_F[d.capaciteEpargne] ? `Milieu de la fourchette indiquée par le client : ${CAP_LIB_F[d.capaciteEpargne]}/mois` : "Montant indiqué par le client", "De quoi financer un projet structurant sans dégrader le train de vie"] });
+      if (S.ppMensuels > 0 && (revFoyer <= 0 || S.ppMensuels / revFoyer >= NC_EPARGNE_MOYENNE_FR)) forces.push({ t: "Discipline d'épargne", d: `${eur(S.ppMensuels)} de versements programmés`, puces: ["Participation déjà automatisée"] });
       // RÈGLE CABINET (28/08) : « Fiscalité déjà optimisée » ne se dit JAMAIS pour un
       // montant symbolique (ex. 360 € face à 22 581 € d'impôt, moins de 2 %) — le
       // point fort exige une économie d'au moins 10 % de l'impôt sans avantage.
       const gainSignificatif = F.gainTotal > 0 && F.impotSansAvantage > 0 && F.gainTotal >= F.impotSansAvantage * 0.10;
-      if ((F.deductions > 0 || F.reductions > 0) && gainSignificatif) forces.push({ t: "Fiscalité déjà optimisée", d: `${eur(F.gainTotal)} d'économie d'impôt générée cette année par les dispositifs en place.` });
-      if (deuxRevenus && bas.r > 0 && disparite < 1.4) forces.push({ t: "Deux revenus équilibrés", d: `${eur(revC)} et ${eur(revJ)} : la disparition d'un revenu ne ferait pas basculer le foyer, la structure est robuste.` });
+      if ((F.deductions > 0 || F.reductions > 0) && gainSignificatif) forces.push({ t: "Fiscalité déjà optimisée", d: `${eur(F.gainTotal)} d'économie d'impôt cette année`, puces: ["Générée par les dispositifs en place"] });
+      if (deuxRevenus && bas.r > 0 && disparite < 1.4) forces.push({ t: "Deux revenus équilibrés", d: `${eur(revC)} et ${eur(revJ)}`, puces: ["La disparition d'un revenu ne ferait pas basculer le foyer"] });
       if (S.patrimoineNet >= 300000) {
         /* 02/09 : en couple, le total seul ne dit pas QUI detient. La repartition
            se lit a partir de la detention DECLAREE — residence principale
            (rpDetenteur), biens locatifs et avoirs par titulaire. Ce qui n est pas
            attribuable est signale comme tel : on ne repartit jamais au hasard. */
-        const partRP = d.rpDetenteur === "client" ? 1 : d.rpDetenteur === "conjoint" ? 0
-          : d.rpDetenteur === "libre" ? Math.min(100, Math.max(0, ncInt(d.rpPartClient))) / 100 : 0.5;
-        const netRP = Math.max(0, ncInt(d.rpValeur) - ncInt(d.rpCrd));
-        const parPers = { c: 0, j: 0, indivis: 0 };
-        if (d.logement === "proprietaire" && netRP > 0) { parPers.c += netRP * partRP; parPers.j += netRP * (1 - partRP); }
-        (d.avoirs || []).forEach(a => {
-          const v = ncInt(a.valeur);
-          if (a.titulaire === "client") parPers.c += v;
-          else if (a.titulaire === "conjoint") parPers.j += v;
-          else parPers.indivis += v;
-        });
-        const repartis = parPers.c + parPers.j;
-        const detail = d.conjointQ === "oui" && repartis > 0
-          ? ` — ${civ} ${eur(parPers.c)}, ${civJ} ${eur(parPers.j)}${parPers.indivis > 0 ? `, ${eur(parPers.indivis)} en commun` : ""}${Math.abs(S.patrimoineNet - repartis - parPers.indivis) > 1000 ? `, le solde n'étant pas rattaché à un titulaire dans le dossier` : ""} (selon la détention déclarée)`
+        /* 10/09/2026 — le CGP : « fais le plus simple possible » : « 312 500 € d'actif
+           net, Monsieur x €, Madame y €, dont z € en commun ». La ventilation vient
+           de ncRepartNet (la MEME que la tuile « Patrimoine net ») : biens, terrains
+           et locatifs compris — le terrain declare a Monsieur n est plus annonce
+           « non rattache a un titulaire ». */
+        const rn = ncRepartNet(d);
+        const detail = d.conjointQ === "oui" && (rn.c !== 0 || rn.j !== 0)
+          ? `, ${civ} ${eur(rn.c)}, ${civJ} ${eur(rn.j)}${rn.commun > 0 ? `, dont ${eur(rn.commun)} en commun` : ""}`
           : "";
         forces.push({ t: "Patrimoine net significatif", d: `${eur(S.patrimoineNet)} d'actif net${detail}.` });
       }
@@ -4786,8 +4849,14 @@
         const detRPseul = d.logement === "proprietaire" && (d.rpDetenteur === "client" || d.rpDetenteur === "conjoint");
         const nomRPseul = d.rpDetenteur === "client" ? civ : civJ;
         const nomSurv = d.rpDetenteur === "client" ? civJ : civ;
+        /* 10/09/2026 — le CGP : « pourquoi écris-tu 2 fois la même phrase ? ». La
+           phrase de tête et la premiere puce etaient identiques (« Sans testament, le
+           survivant n'hérite de rien. »). REGLE : jamais deux fois la meme phrase
+           d affilee — la tete pose le constat, la puce apporte la raison. */
         const pucesProt = [];
-        pucesProt.push("Sans testament, le survivant n'hérite de rien.");
+        pucesProt.push(unionLibre
+          ? "Le concubin n'est pas héritier légal — sans testament, aucun droit ; avec testament, 60 % de droits (art. 777 CGI)."
+          : "Le partenaire de PACS n'est pas héritier légal — seul un testament lui donne des droits, sans droits de succession (art. 796-0 bis CGI).");
         if (detRPseul) pucesProt.push(`La résidence principale est détenue à 100 % par ${nomRPseul} : au décès, elle revient à ses héritiers — ${nomSurv} n'y a aucun droit et peut devoir quitter le logement.`);
         if (detRPseul && ncInt(d.rpCrd) > 0) pucesProt.push(`L'assurance de prêt solde le crédit, mais au profit des héritiers du propriétaire : elle ne protège pas ${nomSurv}.`);
         if (disparRev) pucesProt.push(`${pc(partHaut)} des revenus du foyer reposent sur ${haut.n} : au décès, le survivant perdrait l'essentiel des ressources.`);
@@ -7291,7 +7360,7 @@
               if (!n) return null;
               return {
                   resume: n.resume,
-                  forces: n.forces.map(f => ({ titre: f.t, detail: f.d })),
+                  forces: n.forces.map(f => ({ titre: f.t, detail: f.d, puces: f.puces || [] })),
                   faiblesses: n.faiblesses.map(f => ({ titre: f.t, detail: f.d, puces: f.puces || [] })),
                   problematiques: n.problematiques.map(q => ({
                     code: q.code, priorite: q.priorite, famille: q.famille, titre: q.titre,
@@ -9434,7 +9503,13 @@
                             }
                             return (
                               <div className="rounded-lg bg-white border border-stone-200 px-3 py-2" style={{ borderLeft: "3px solid rgba(184,146,78,0.5)" }}>
-                                <div className="text-[8.5px] uppercase tracking-[0.14em] font-bold mb-0.5" style={{ color: "#1d2735" }}>{it.t}</div>
+                                {/* 10/09 (demande du CGP) : une PASTILLE par titre de tuile — petit
+                                    disque or pâle avec un pictogramme trait (état civil, activité,
+                                    foyer, adresse, téléphone, email). SVG inline : imprimé tel quel. */}
+                                <div className="flex items-center gap-1.5 mb-1">
+                                  <NcPastilleTuile t={it.t} />
+                                  <div className="text-[8.5px] uppercase tracking-[0.14em] font-bold" style={{ color: "#1d2735" }}>{it.t}</div>
+                                </div>
                                 {/* même typographie que le reste du document : valeurs en serif (28/08) */}
                                 <div className="text-[12.5px] leading-snug" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
                                   {/* 29/08 (dossier Quoifeur) : dans le complément, les LIBELLÉS
@@ -10212,19 +10287,8 @@
                         const nfP = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
                         const moiP = d.civilite === "Mme" ? "Madame" : "Monsieur";
                         const luiP = d.civilite === "Mme" ? "Monsieur" : "Madame";
-                        const pRP = d.rpDetenteur === "client" ? 1 : d.rpDetenteur === "conjoint" ? 0
-                          : d.rpDetenteur === "libre" ? Math.min(100, Math.max(0, ncInt(d.rpPartClient))) / 100 : 0.5;
-                        let aC = 0, aJ = 0;
-                        if (d.logement === "proprietaire") {
-                          const v = ncInt(d.rpValeur) - (d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0);
-                          aC += v * pRP; aJ += v * (1 - pRP);
-                        }
-                        const ventile = (v, t) => { if (t === "client") aC += v; else if (t === "conjoint") aJ += v; else { aC += v / 2; aJ += v / 2; } };
-                        (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => ventile(ncBienValeur(b) - ncInt(b.crd), ncTit(b.titulaire)));
-                        (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventile(ncInt(l.valeur) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire)));
-                        (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => ventile(ncInt(a.valeur), a.titulaire));
-                        if (d.reductionsPer && !(d.avoirs || []).some(a => a.type === "per" && ncInt(a.valeur) > 0)) ventile(ncInt(d.reductionsPer.valeur), d.reductionsPer.titulaire || "client");
-                        (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(c => ventile(-ncInt(c.crd), null));
+                        // 10/09 : même calcul que le point fort « Patrimoine net significatif » (ncRepartNet).
+                        const { c: aC, j: aJ } = ncRepartNet(d);
                         return (
                           <div className="text-[10px]" style={{ color: "rgba(245,239,227,0.75)" }}>
                             <span className="whitespace-nowrap"><NcPers nom={moiP} clair /> ≈ <b className="num" style={{ color: "#f5efe3" }}>{nfP(aC)} €</b></span> · <span className="whitespace-nowrap"><NcPers nom={luiP} clair /> ≈ <b className="num" style={{ color: "#f5efe3" }}>{nfP(aJ)} €</b></span>
@@ -10703,7 +10767,19 @@
                                 {forcesAff.map((f, i) => (
                                   <li key={i} className="text-[12px] leading-snug flex gap-2.5">
                                     <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#0f766e" }}></span>
-                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="text-stone-500"> — {f.d}</span><Controles f={f} axes={false} /></span>
+                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="font-semibold text-stone-700"> — {f.d}</span>
+                                      {/* 10/09 : les points forts se lisent en PUCES courtes, comme les axes (demande du CGP) ; le chiffre de tête en semi-gras pour l'impact. */}
+                                      {Array.isArray(f.puces) && f.puces.length ? (
+                                        <span className="block mt-1.5">
+                                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
+                                            <span key={k} className="flex gap-2 items-start mt-1">
+                                              <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
+                                              <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
+                                            </span>
+                                          ))}
+                                        </span>
+                                      ) : null}
+                                      <Controles f={f} axes={false} /></span>
                                   </li>
                                 ))}
                               </ul>
@@ -10725,7 +10801,7 @@
                                           Six idees a la file, en petits caracteres, ne se lisent pas. */}
                                       {Array.isArray(f.puces) && f.puces.length ? (
                                         <span className="block mt-1.5">
-                                          {f.puces.map((x, k) => (
+                                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
                                             <span key={k} className="flex gap-2 items-start mt-1">
                                               <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
                                               <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
