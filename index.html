@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cANCIEN BUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v203 (10/09 : PDF DE LA PROJECTION -- le regime locatif imprime etait toujours « Nu au reel » (dossier Rami declare Jeanbrun) : cloneNode ne recopie ni l option choisie d un select ni l etat des cases (React les pose en propriete, pas en attribut). L etat reel des select et des input est recopie dans le clone avant impression. Controle t_rp : regime imprime lu dans le clone.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v202 (10/09 : SYNTHESE -- retours du CGP sur le dossier Rami. (1) POINTS FORTS EN PUCES COURTES : chaque point fort = un chiffre en tete puis des puces, plus de longues phrases (endettement, capacite d emprunt, epargne, RP, PER, assurance-vie, patrimoine). (2) PATRIMOINE NET SIGNIFICATIF : format « 312 500 € d actif net, Monsieur x €, Madame y €, dont z € en commun » ; la ventilation par personne vient d une fonction UNIQUE ncRepartNet, partagee avec la tuile Patrimoine net -- un terrain declare a Monsieur n est plus annonce « non rattache a un titulaire ». (3) JAMAIS DEUX FOIS LA MEME PHRASE D AFFILEE : l axe Partenaire sans droits repetait sa phrase de tete en premiere puce ; garde ncSansDoublon au rendu + controle du banc (58 controles). (4) PASTILLES sur les tuiles Le foyer / Coordonnees (etat civil, activite, foyer, adresse, telephone, email).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v201 (10/09 : LES CHIFFRES DU DOSSIER -- retours du CGP. (1) RESIDENCE SECONDAIRE retiree de la capacite d emprunt (carte, forces, synthese) : deux usages seulement, investissement locatif et residence principale. (2) LES QUATRE COMPTEURS a la meme hauteur : zone de jauge de hauteur fixe (196 px), compteur seul cale en haut avec le retrait du titre des doubles jauges ; les lignes de detail de « Mensualite disponible » sortent de la zone. (3) COMPTEUR « LE FINANCIER » POUR TOUS : la part FINANCIERE du patrimoine remplace la part immobiliere sur tous les dossiers (regle du 28/08 « proprietaire et > 65 pct » remplacee) ; avec un projet d achat de RP, la part est DATEE « aujourd hui, avant l achat de la residence principale (projet a 1 a 3 ans) ». (4) t_ordre_fiscal : regroupement des tuiles par bande de proche en proche, plus de faux echec quand une frontiere de 40 px tombe entre deux tuiles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -5708,7 +5709,7 @@
       return c;
     }
 
-    function NcProjection({ d, synth, syn, ageClient, estTNS }) {
+    function NcProjection({ d, synth, syn, ageClient, estTNS, inputs }) {
       const eur = (n) => ncNbsp((Math.round(n || 0)).toLocaleString('fr-FR')) + ' €';
       const nb = (v, def) => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? def : n; };
 
@@ -5767,10 +5768,18 @@
       const sh = (k, v) => setH(p => ({ ...p, [k]: v }));
 
       /* ——— LEVIERS ——— */
+      /* 10/09/2026 — decision C du CGP : l apport du locatif part de l APPORT DECLARE a
+         l audit (« aucun apport au depart » → 0), plus d un 20 000 € par defaut qui
+         contredisait la phrase d en-tete. Milieu de la tranche declaree. */
+      const apportDecl = (() => {
+        const T = { aucun: 0, "<10000": 5000, "10000-30000": 20000, "30000-50000": 40000, "50000-100000": 75000, ">100000": 100000 };
+        if (d.apportInitial === "libre") return ncInt(d.apportInitialLibre);
+        return T[d.apportInitial] != null ? T[d.apportInitial] : 0;
+      })();
       const [L, setL] = React.useState({
         per: true, vPer: "150",
         av: true, vAv: "200",
-        loc: false, pBien: "150000", fBien: "13000", apport: "20000", dCred: "25", tCred: "3,6", loyer: "600", chLoc: "20", redIr: "", redDuree: "9", travaux: "", tfAn: "1200", chAn: "600", gestPct: "8", renoEnerg: false,
+        loc: false, pBien: "150000", fBien: "13000", apport: String(apportDecl), dCred: "25", tCred: "3,6", loyer: "600", chLoc: "20", redIr: "", redDuree: "9", travaux: "", tfAn: "1200", chAn: "600", gestPct: "8", renoEnerg: false,
         /* regime du bien locatif projete : nu au reel (defaut) ou meuble au reel */
         locRegime: "nu", mobilier: "8000", partTerrain: "20", dureeBati: "40", dureeMob: "10", comptaAn: "500", fraisAmortis: false,
         /* dispositifs : Denormandie, Malraux, LLI */
@@ -5866,6 +5875,23 @@
         });
         const gainFiscalTot = fiscAn.reduce((a, b) => a - b.coutFiscal, 0);
         const gainFiscalAn1 = fiscAn.length ? -fiscAn[0].coutFiscal : 0;
+        /* 10/09/2026 — decision B du CGP : « le pave Reduction d impot ne tient compte que
+           du PER et en aucun cas du locatif (Malraux, MH, Jeanbrun...) ». Jeanbrun et
+           Monument historique ne sont pas des reductions mais des DEDUCTIONS : on
+           mesure ce qu ils font gagner PAR RAPPORT A LA MEME OPERATION EN LOCATION NUE
+           CLASSIQUE (nu au reel, memes loyers, memes charges). Meme calcul pour le
+           meuble. Cet ecart entre dans la tuile « Impot economise par an » (moyenne
+           annuelle) et s affiche dans « Fiscalite de l operation ». */
+        const foncNu = (!L.loc || L.locRegime === "nu") ? [] : ncpFoncierNuReel({ ...oLoc, plafond: plafondDef, deficitSansLimite: false, travauxDeductibles: true, amortAnnuel: 0, amortPlafondAn: Infinity });
+        const coutNuTot = foncNu.reduce((a, f) => {
+          const varRNI = f.resultatImposable - f.imputableGlobal;
+          let irAvec = irBase;
+          try { irAvec = ncCalcFisc({ ...d, rniFoyer: String(Math.max(0, Math.round(rniBase + varRNI))) }, new Date().getFullYear()).impotNet || 0; } catch (e) { }
+          return a + (irAvec - irBase) + f.ps;
+        }, 0);
+        const coutRegimeTot = fiscAn.reduce((a, b) => a + b.coutFiscal, 0);
+        const ecoRegimeTot = foncNu.length ? Math.max(0, coutNuTot - coutRegimeTot) : 0;
+        const ecoRegimeAn = foncNu.length && H > 0 ? ecoRegimeTot / H : 0;
         /* ——— MEUBLE : comparaison micro-BIC vs reel, meme mecanique fiscale ——— */
         const microAn = estMeuble ? fonc.map((f) => {
           if (!f.microDispo) return null;
@@ -5954,9 +5980,13 @@
         /* reducAn est calcule plus haut : moyenne annuelle sur les annees ou la
            reduction court, pas sur tout l horizon */
         const reducMoy = reducAn.length ? reducTot / reducAn.filter(x => x.utilisee > 0).length || 0 : 0;
-        const ecoImpot = ecoImpotPer + (isFinite(reducMoy) ? reducMoy : 0);
+        const ecoImpot = ecoImpotPer + (isFinite(reducMoy) ? reducMoy : 0) + (isFinite(ecoRegimeAn) ? ecoRegimeAn : 0);
         const ecoM = ecoImpotPer / 12;
-        const effortBrut = (L.per ? vPer : 0) + (L.av ? vAv : 0) + (L.loc ? effLoc : 0);
+        /* 10/09/2026 — l effort TOTAL comptait le locatif en BRUT (mensualite − loyer net)
+           alors que la carte affiche l effort REEL (charges, fiscalite, reduction) et que
+           le solde annuel (soldeAn) le retient aussi : « 584 €/mois employes » a cote d une
+           carte a 393 € et d une alerte a 255 €. Un seul effort partout : effAn(0). */
+        const effortBrut = (L.per ? vPer : 0) + (L.av ? vAv : 0) + (L.loc ? effAn(0) : 0);
         const effort = effortBrut - ecoM;
         /* ENVELOPPE — ce que le client a DECLARE pouvoir epargner a l audit.
            Elle ne se deduit PAS des solutions cochees : sinon le compteur
@@ -5988,10 +6018,15 @@
         const ENV = envPoche + ecoAss;
 
         const soldeAn = (y) => auMoinsUn ? (ENV - (L.per ? vPer - ecoM : 0) - (L.av ? vAv : 0) - (L.loc ? effAn(y) : 0)) * 12 : 0;
-        let soldeMin = 1e12;
-        for (let y = 0; y < H; y++) soldeMin = Math.min(soldeMin, soldeAn(y) / 12);
+        let soldeMin = 1e12, anneeMin = 0;
+        for (let y = 0; y < H; y++) { const sm = soldeAn(y) / 12; if (sm < soldeMin) { soldeMin = sm; anneeMin = y + 1; } }
         if (!isFinite(soldeMin)) soldeMin = 0;
-        const treso = (n) => { let t = 0; for (let y = 0; y < n; y++) t = t * (1 + tMed) + soldeAn(y); return t; };
+        /* 10/09/2026 — decision D du CGP : quand les solutions cochees depassent
+           l enveloppe, le manque est une ALERTE (a trouver dans les gisements ou en
+           ajustant), il ne vient plus AMPUTER le patrimoine « avec les preconisations »
+           — c est ce qui faisait se rejoindre les deux colonnes (dossier Rami : ≈ 60 000 €
+           retranches a l horizon). Seul un solde POSITIF est capitalise. */
+        const treso = (n) => { let t = 0; for (let y = 0; y < n; y++) t = t * (1 + tMed) + Math.max(0, soldeAn(y)); return t; };
 
         /* valeurs de depart, surchargeables par le conseiller (travaux, extension, reevaluation) */
         const rpVal0 = h.rpValMod !== "" ? ncInt(h.rpValMod) : socle.rpVal;
@@ -6048,7 +6083,12 @@
 
         const tm = Math.pow(1 + tMed, 1 / 12) - 1;
         const revPla = natPla * tm;
-        const revLoc = socle.locLoyer * (1 - ch) + (L.loc && H >= dC ? loy * Math.pow(1 + irl, H) * (1 - ch) : 0);
+        /* 10/09/2026 — decision A du CGP : les loyers du NOUVEAU bien sont comptes a
+           l horizon meme si le credit court encore — nets de la mensualite restante
+           (et jamais negatifs : un bien qui coute encore ne rapporte pas). L ancienne
+           regle (0 € tant que le credit n est pas fini) faisait afficher « − 567 €/mois
+           de revenus » avec les preconisations. */
+        const revLoc = socle.locLoyer * (1 - ch) + (L.loc ? Math.max(0, loy * Math.pow(1 + irl, H) * (1 - ch) - chargesExpMens(H) - (H >= dC ? 0 : mTot)) : 0);
         const revTot = revPla + revLoc;
         /* revenus du AVANT : rente des placements au meme taux + loyers existants */
         const avRevPla = avPla * tm;
@@ -6067,6 +6107,49 @@
         const prevTotalNow = prevRPnow + prevLocNow + prevNewNow;
         const prevNewFin = L.loc ? ncpCrd(K, tC, dC, H) * qLoc : 0;
 
+        /* ═══ 10/09/2026 — decision A du CGP : TRANSMISSION A L HORIZON, avant / apres ═══
+           « on ne distingue pas le levier de l abattement des 152 500 € sur l assurance-vie ».
+           On reconstruit le dossier tel qu il serait a l horizon (memes titulaires, valeurs
+           projetees, credits soldes par l assurance de pret) et on le passe dans le MEME
+           moteur que le constat (ncCalcSuccession). L assurance-vie est hors succession :
+           droits estimes a 20 % au-dela de 152 500 € par beneficiaire (art. 990 I),
+           beneficiaires = les enfants. Sans enfant ni conjoint : pas de chiffrage. */
+        const succHorizon = (apres) => {
+          try {
+            const gI = Math.pow(1 + gImmo, H);
+            const enC = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
+            const titNouveau = enC ? "commun" : "client";
+            const capF = (v, tx) => Math.round(v * Math.pow(1 + tx, H));
+            const avoirsH = (d.avoirsQ === "oui" ? (d.avoirs || []) : []).map(a => ({ ...a, ppQ: "non", valeur: String(capF(ncInt(a.valeur), (a.type === "livrets" || a.type === "compte_courant") ? tLiv : tAv0)) }));
+            const versPP = ncpCap(0, socle.ppMens, tAv0, H);
+            if (versPP > 0) avoirsH.push({ id: 9001, type: "autre", valeur: String(Math.round(versPP)), titulaire: titNouveau, precision: "versements programmés actuels" });
+            if (apres) {
+              if (L.per) avoirsH.push({ id: 9002, type: "per", valeur: String(Math.round(ncpCap(0, vPer, tMed, H))), titulaire: titNouveau });
+              if (L.av) avoirsH.push({ id: 9003, type: "av", valeur: String(Math.round(ncpCap(0, vAv, tMed, H))), titulaire: titNouveau });
+              const tr = treso(H); if (tr > 0) avoirsH.push({ id: 9004, type: "livrets", valeur: String(Math.round(tr)), titulaire: titNouveau });
+              if (G.arb && montArb > 0) avoirsH.push({ id: 9005, type: "av", valeur: String(Math.round(montArb * Math.pow(1 + tMed, H))), titulaire: titNouveau });
+            } else {
+              const ep = epargneAvant(H); if (ep > 0) avoirsH.push({ id: 9006, type: "livrets", valeur: String(Math.round(ep)), titulaire: titNouveau });
+            }
+            const biensH = (d.biensQ === "oui" ? (d.biens || []) : []).map(b => ({ ...b, valeur: String(Math.round(ncInt(b.valeur) * gI)), crd: "0" }));
+            const locH = (d.fonciersQ === "oui" ? (d.locatifs || []) : []).map(l => ({ ...l, valeur: String(Math.round(ncInt(l.valeur) * gI)), creditQ: "non", crd: "0" }));
+            if (apres && L.loc) locH.push({ id: 9007, nom: "bien locatif projeté", valeur: String(Math.round(pB * gI)), titulaire: titNouveau, creditQ: "non", crd: "0", loyer: String(Math.round(loy)) });
+            const rpH = rpVal0 > 0 ? Math.round(rpVal0 * gI) : 0;
+            const dH = { ...d, avoirsQ: avoirsH.length ? "oui" : "non", avoirs: avoirsH, biensQ: biensH.length ? "oui" : "non", biens: biensH,
+              fonciersQ: locH.length ? "oui" : "non", locatifs: locH, creditsQ: "non", credits: [], reductionsPer: null,
+              logement: rpH > 0 ? "proprietaire" : "locataire", rpValeur: String(rpH), rpCreditQ: "non", rpCrd: "0" };
+            const sc = ncCalcSuccession(dH);
+            if (!sc || !sc.volets || !sc.volets.length) return null;
+            const v = sc.volets[0];
+            const droits = v.scenarios && v.scenarios.length ? Math.round(v.scenarios[0].droitsTotal || 0) : 0;
+            const nbB = Math.max(1, sc.nbEnfants || 0);
+            const avH = v.avHors || 0;
+            const droitsAV = Math.round(Math.max(0, avH - 152500 * nbB) * 0.20);
+            return { assiette: v.assiette, droits, avHors: avH, droitsAV, nbBenef: nbB, total: droits + droitsAV, lib: v.scenarios && v.scenarios.length ? v.scenarios[0].lib : "" };
+          } catch (e) { return null; }
+        };
+        const succSans = auMoinsUn ? succHorizon(false) : null;
+        const succAvec = auMoinsUn ? succHorizon(true) : null;
         const capCree = avec[H] - sans[H], capB = avecB[H] - sans[H], capH = avecH2[H] - sans[H];
         const verse = auMoinsUn ? ((L.loc ? ap : 0) + ENV * 12 * H) : 0;
         const endet = (synth && synth.taux ? synth.taux * 100 : 0) + (L.loc && synth && synth.totalRevenus > 0 ? mTot / synth.totalRevenus * 100 : 0);
@@ -6116,7 +6199,9 @@
           avRP, avLoc, avPla, avTot, avRevPla, avRevLoc, avRevTot,
           qRP: qRP * 100, qLoc: qLoc * 100, prevRPnow, prevLocNow, prevNewNow, prevTotalNow, prevNewFin,
           revPla, revLoc, revTot, capCree, capB, capH, coutReel: verse, gain: capCree - verse,
-          effort, effortBrut, ecoM, ecoImpot, ENV, envPoche, envDeclaree, envBasse, envBasEff, soldeMin, endet, auMoinsUn,
+          effort, effortBrut, ecoM, ecoImpot, ENV, envPoche, envDeclaree, envBasse, envBasEff, soldeMin, anneeMin, endet, auMoinsUn,
+          ecoRegimeTot, ecoRegimeAn, coutNuTot, coutRegimeTot, succSans, succAvec,
+          rsValH: socle.rsVal * Math.pow(1 + gImmo, H), locExistH: socle.locVal * Math.pow(1 + gImmo, H) - crdLoc(H),
           /* effLoc restait l effort BRUT (mensualite - loyer net) : il ignorait la
              fiscalite et la reduction d impot, donc une reduction massive la
              premiere annee n apparaissait pas. On affiche l effort REEL. */
@@ -6238,13 +6323,61 @@
 
       return (
         <div className="mb-5">
-          {(intro.baisse > 0 || intro.objectifs.length > 0 || intro.preco.length > 0) ? (
-            <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+          {/* BANDEAU COLLANT (10/09, decision E) : enveloppe · employé · reste, toujours
+              visible pendant le défilement — écran seulement, jamais imprimé. */}
+          <div className="nc-syn-noprint" style={{ position: "sticky", top: 0, zIndex: 30, marginBottom: 12 }}>
+            <div className="rounded-xl px-4 py-2 flex flex-wrap items-center gap-x-6 gap-y-1 border" style={{ background: R.ENV - R.effort < -1 ? "#fef2f2" : "rgba(255,255,255,0.96)", borderColor: R.ENV - R.effort < -1 ? "#fecaca" : C.bord, boxShadow: "0 2px 8px rgba(29,39,53,0.10)", backdropFilter: "blur(4px)" }}>
+              {[
+                { l: "Enveloppe", v: eur(R.ENV) + "/mois", c: C.encre },
+                { l: "Employée", v: eur(R.effort) + "/mois", c: C.vert },
+                { l: R.ENV - R.effort >= 0 ? "Reste" : "Manque", v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)) + "/mois", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c" },
+                R.mTreso > 0 ? { l: "Libéré par les gisements", v: "+ " + eur(R.mTreso) + "/mois", c: C.vert } : null
+              ].filter(Boolean).map((x, i) => (
+                <span key={i} className="inline-flex items-baseline gap-1.5">
+                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gris2, fontWeight: 700 }}>{x.l}</span>
+                  <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 16, fontWeight: 800, color: x.c }}>{x.v}</span>
+                </span>
+              ))}
+              <span className="text-[10px] italic ml-auto" style={{ color: C.gris2 }}>se recalcule à chaque case cochée</span>
+            </div>
+          </div>
+          {/* ═══ PAGE DE GARDE (10/09/2026, decision F du CGP) ═══
+              « 1re page très moche : tout est compressé tout en haut et les 3/4 de la page
+              sont vides ». Ce bloc est désormais une vraie page de garde : identité du
+              cabinet (logo si renseigné), titre, noms, date, puis le chiffre retraite et les
+              deux colonnes objectifs / préconisations, aérés. La page suivante commence
+              TOUJOURS sur une nouvelle feuille (data-nc-force-break sur le bloc suivant). */}
+          {(() => {
+            const cab = (inputs && inputs.cabinetNom) || "Universel Patrimoine";
+            const logo = inputs && inputs.cabinetLogo;
+            const cons = inputs && inputs.conseillerNom;
+            const nomC = `${civMoi} ${ncCapNom(d.prenom || "")} ${(d.nom || "").toUpperCase()}`.replace(/\s+/g, " ").trim();
+            const enC = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
+            const cj = d.conjoint || {};
+            const nomJ = enC ? `${civLui} ${ncCapNom(cj.prenom || "")} ${(cj.nom || d.nom || "").toUpperCase()}`.replace(/\s+/g, " ").trim() : "";
+            return (
+            <div className="rounded-2xl bg-white mb-4 border nc-print-avoid flex flex-col" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040 }}>
+              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
+                <div className="flex items-center gap-3">
+                  {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
+                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: C.or, fontWeight: 800 }}>{cab}</div>
+                </div>
+                <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2 }}>Projection patrimoniale · {new Date().toLocaleDateString('fr-FR')}</div>
+              </div>
+              <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
+              <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 30, fontWeight: 800, color: C.encre, lineHeight: 1.15, letterSpacing: "-0.01em" }}>Votre projection patrimoniale</div>
+              <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, color: C.encre, marginTop: 10, lineHeight: 1.4 }}>
+                {nomC}{nomJ ? <span> <span style={{ color: C.or }}>&amp;</span> {nomJ}</span> : null}
+              </div>
+              <div className="text-[12px]" style={{ color: C.gris, marginTop: 8, lineHeight: 1.6, maxWidth: 620 }}>
+                Ce document projette votre situation à {R.ageFin} ans, dans {R.H} ans : ce que devient votre patrimoine sans rien changer, et ce qu'il devient avec les préconisations retenues ensemble — même effort d'épargne, autrement placé.
+              </div>
+              <div style={{ flex: 1, minHeight: 24 }}></div>
               {intro.baisse > 0 ? (
-                <div className="pb-5 mb-5" style={{ borderBottom: "1px solid " + C.bord }}>
+                <div className="rounded-xl px-5 py-5" style={{ marginTop: 10, marginBottom: 34, background: "#fafaf9", border: "1px solid " + C.bord, borderLeft: "4px solid #b91c1c" }}>
                   {/* 02/09 : UN chiffre median, et le montant reste INSECABLE avec son
                       unite — « € par mois » se retrouvait seul a la ligne suivante. */}
-                  <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 19, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
+                  <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
                     Prévision de baisse de vos revenus à la retraite estimée à{" "}
                     <span style={{ color: "#b91c1c", whiteSpace: "nowrap" }}>{eur((intro.baisse + intro.baisseH) / 2)} par mois</span>.
                   </div>
@@ -6257,7 +6390,7 @@
                   </div>
                 </div>
               ) : null}
-              <div className="text-[12.5px] mb-4" style={{ color: C.encre, fontWeight: 600 }}>
+              <div className="text-[12.5px] mb-4" style={{ color: C.encre, fontWeight: 600, marginTop: intro.baisse > 0 ? 0 : 26 }}>
                 Vos objectifs et les préconisations de votre audit sont les suivants :
               </div>
               {/* les préconisations portent bien plus de texte que les objectifs :
@@ -6292,9 +6425,15 @@
                   </div>
                 ) : null}
               </div>
+              <div style={{ flex: 1, minHeight: 24 }}></div>
+              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid " + C.bord }}>
+                <div className="text-[10.5px]" style={{ color: C.gris2 }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
+                <div className="text-[10px] italic" style={{ color: C.gris3 }}>Projection non contractuelle — hypothèses détaillées en fin de document</div>
+              </div>
             </div>
-          ) : null}
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+            );
+          })()}
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-force-break="1">
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Votre participation et les préconisations</div>
             {!engagement.aucun ? (
               <div className="text-[13px]" style={{ color: C.encre, marginTop: 10, lineHeight: 1.6 }}>
@@ -6341,7 +6480,7 @@
               </div>
               {R.ENV - R.effort < -1 ? (
                 <div className="mt-2.5 pt-2.5 text-[11.5px] font-semibold" style={{ borderTop: "1px solid #fecaca", color: "#7f1d1d" }}>
-                  Il manque {eur(R.effort - R.ENV)}/mois pour financer les solutions cochées — voir « Où trouver l'épargne » plus bas, ou ajuster les montants.
+                  Il manque {eur(R.effort - R.ENV)}/mois pour financer les solutions cochées — voir « Où trouver l'épargne » juste en dessous, ou ajuster les montants.
                 </div>
               ) : R.envBasEff < R.envPoche && R.effort > R.envBasEff + 1 ? (
                 /* la fourchette est respectee, mais on sollicite le HAUT de ce que le
@@ -6351,7 +6490,86 @@
                 </div>
               ) : null}
             </div>
-            <div className="text-[11.5px] mb-5" style={{ color: C.gris2 }}>Cochez, décochez, ajustez : tout se recalcule immédiatement.</div>
+          </div>
+
+          {/* 10/09/2026 — decision E du CGP : « Où trouver l'épargne » remonte JUSTE SOUS
+              l'enveloppe, avant les solutions — « là elle est trop loin, je suis obligé de
+              scroller en bas pour faire des économies puis en haut pour vérifier ». Le
+              bandeau collant en haut de page suit le défilement (écran seulement). */}
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
+            <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7, lineHeight: 1.6 }}>
+              Avant de demander un effort nouveau, on cherche l'argent qui dort déjà. Ces gisements sont de <b style={{ color: C.encre }}>deux natures qui ne s'additionnent pas</b> : de la trésorerie disponible <b style={{ color: C.encre }}>chaque mois</b>, et du capital gagné <b style={{ color: C.encre }}>à l'horizon</b>. Chacune a donc son propre total. Un levier que vous ne retenez pas affiche en gris ce qu'il aurait rapporté, sans entrer dans aucun total.
+            </div>
+
+            {/* ═══ FAMILLE 1 — DE L ARGENT DISPONIBLE CHAQUE MOIS ═══ */}
+            <Fam actif={G.ass && R.ecoAss > 0}
+              titre="Trésorerie libérée chaque mois"
+              total={G.ass && R.ecoAss > 0 ? eur(R.ecoAss) + "/mois" : "—"}
+              sousTotal={G.ass && R.ecoAss > 0 ? "d'argent disponible en plus" : "aucun levier retenu"}
+              pied={G.ass && R.ecoAss > 0
+                ? "Cette somme s'ajoute à votre enveloppe : elle est réellement disponible chaque mois, dès la mise en place, et finance les préconisations sans effort nouveau. Sur les " + Math.round(nb(G.dRest, 0)) + " ans restants du crédit, elle représente " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + "."
+                : "Aucune trésorerie n'est libérée tant que ce levier n'est pas retenu : votre enveloppe reste celle de votre poche."}>
+              {/* un seul levier dans cette famille : on borne sa largeur, sinon la
+                  carte s etire sur toute la page et sa valeur se perd a gauche */}
+              <div className="grid gap-3.5" style={{ gridTemplateColumns: "minmax(260px,430px)" }}>
+                <Carte on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
+                  pot={!G.ass && R.ecoAssPot > 0}
+                  eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
+                  effSub={G.ass
+                    ? "libérés chaque mois, soit " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + " sur la durée restante"
+                    : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
+                  Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
+                  Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
+                  Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
+                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Résiliable à tout moment (loi Lemoine)</span>
+                </Carte>
+              </div>
+            </Fam>
+
+            {/* ═══ FAMILLE 2 — DU CAPITAL GAGNE A L HORIZON ═══ */}
+            <Fam actif={R.gainRendCap > 0}
+              titre="Meilleur rendement sur la durée"
+              total={R.gainRendCap > 0 ? eur(R.gainRendCap) : "—"}
+              sousTotal={R.gainRendCap > 0 ? "de capital en plus dans " + R.H + " ans" : "aucun levier retenu"}
+              pied={R.gainRendCap > 0
+                ? "Le même argent, mieux placé : ce gain ne demande pas un euro d'effort supplémentaire. Il se constitue progressivement et se lit à l'horizon — il n'est pas disponible chaque mois, à la différence de la trésorerie ci-dessus."
+                : "Ces leviers ne coûtent rien : ils replacent de l'argent que vous détenez déjà. Cochez-les pour que le gain entre dans la projection."}>
+              <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
+                <Carte on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
+                  pot={!G.arb && R.gainArbPot > 0}
+                  eff={G.arb ? eur(R.gainArbCap) : (R.gainArbPot > 0 ? eur(R.gainArbPot) : "—")}
+                  effSub={G.arb
+                    ? eur(nb(G.montArb, 0)) + " deviennent " + eur(R.arbApres) + " dans " + R.H + " ans, au lieu de " + eur(R.arbAvant) + " en restant sur vos supports actuels"
+                    : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le montant et son rendement actuel")}>
+                  Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
+                  Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
+                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Vers l'hypothèse cabinet</span>
+                </Carte>
+                <Carte on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
+                  pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
+                  eff={R.redActif ? eur(R.gainRedCap) : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? eur(R.gainRedPot) : "—"))}
+                  effSub={R.redActif
+                    ? "les mêmes versements donnent " + eur(R.redApres) + " dans " + R.H + " ans, au lieu de " + eur(R.redAvant)
+                    : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le versement et son rendement actuel"))}>
+                  Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
+                  Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
+                  <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
+                    <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
+                    <span style={{ fontSize: 11 }}>versé sur un livret</span>
+                  </label>
+                </Carte>
+              </div>
+            </Fam>
+            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
+            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
+            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
+          </div>
+
+
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-proj-solutions="1">
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Les solutions retenues</div>
+            <div className="text-[11.5px] mb-5" style={{ color: C.gris2, marginTop: 7 }}>Cochez, décochez, ajustez : tout se recalcule immédiatement.</div>
             <div className="grid grid-cols-3 gap-3.5">
               <Carte on={L.per} toggle={() => sl('per', !L.per)} titre="Plan d'épargne retraite"
                 eff={eur(Math.max(0, nb(L.vPer, 0) - R.ecoM))}
@@ -6480,6 +6698,11 @@
                     </div>
                   ))}
                 </div>
+                {R.ecoRegimeTot > 0 ? (
+                  <div className="rounded-lg px-3 py-2 mt-3 text-[11px]" style={{ background: "#fff", border: "1px solid " + C.vertBord, color: C.gris }}>
+                    <b style={{ color: C.vert }}>{eur(R.ecoRegimeTot)} d'impôt en moins sur {R.H} ans</b> par rapport à la même opération en location nue classique (≈ {eur(Math.round(R.ecoRegimeAn))} par an) — <b style={{ color: C.encre }}>compris dans « Impôt économisé par an »</b>.
+                  </div>
+                ) : null}
                 {R.estMeuble && R.microPossible ? (
                   <div className="rounded-lg px-3 py-2 mt-3 text-[11px]" style={{ background: "#fff", border: "1px solid " + C.bord, color: C.gris }}>
                     <b style={{ color: C.encre }}>Micro-BIC comparé au réel</b> — impôt et prélèvements cumulés sur {R.H} ans : <b style={{ color: C.encre }}>{eur(R.coutReelTot)}</b> au réel contre <b style={{ color: C.encre }}>{eur(R.coutMicroTot)}</b> au micro-BIC (abattement de 50 %, seuil de recettes 83 600 €).{" "}
@@ -6512,80 +6735,12 @@
                 Aucune préconisation cochée : la courbe verte est confondue avec la grise.
               </div>
             ) : R.soldeMin < -1 ? (
-              <Alerte>L'enveloppe de <b>{eur(R.ENV)}/mois</b> ne couvre pas les préconisations : il manque <b>{eur(-R.soldeMin)}/mois</b> l'année la plus tendue.</Alerte>
+              <Alerte>{R.effort - R.ENV > 1
+                ? <span>Il manque <b>{eur(R.effort - R.ENV)}/mois</b> dès la première année pour financer les solutions cochées{-R.soldeMin > (R.effort - R.ENV) + 1 ? <span> — et jusqu'à <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés)</span> : null}. À trouver dans « Où trouver l'épargne » ci-dessus, ou en ajustant les montants.</span>
+                : <span>L'enveloppe de <b>{eur(R.ENV)}/mois</b> couvre la première année, mais il manquera <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés).</span>}</Alerte>
             ) : (
               <Alerte ok>Enveloppe de <b>{eur(R.ENV)}/mois</b> : les préconisations consomment <b>{eur(R.effort)}</b> nets la première année, le solde de <b>{eur(Math.max(0, R.ENV - R.effort))}/mois</b> est épargné et capitalisé.</Alerte>
             )}
-          </div>
-
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
-            <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7, lineHeight: 1.6 }}>
-              Avant de demander un effort nouveau, on cherche l'argent qui dort déjà. Ces gisements sont de <b style={{ color: C.encre }}>deux natures qui ne s'additionnent pas</b> : de la trésorerie disponible <b style={{ color: C.encre }}>chaque mois</b>, et du capital gagné <b style={{ color: C.encre }}>à l'horizon</b>. Chacune a donc son propre total. Un levier que vous ne retenez pas affiche en gris ce qu'il aurait rapporté, sans entrer dans aucun total.
-            </div>
-
-            {/* ═══ FAMILLE 1 — DE L ARGENT DISPONIBLE CHAQUE MOIS ═══ */}
-            <Fam actif={G.ass && R.ecoAss > 0}
-              titre="Trésorerie libérée chaque mois"
-              total={G.ass && R.ecoAss > 0 ? eur(R.ecoAss) + "/mois" : "—"}
-              sousTotal={G.ass && R.ecoAss > 0 ? "d'argent disponible en plus" : "aucun levier retenu"}
-              pied={G.ass && R.ecoAss > 0
-                ? "Cette somme s'ajoute à votre enveloppe : elle est réellement disponible chaque mois, dès la mise en place, et finance les préconisations sans effort nouveau. Sur les " + Math.round(nb(G.dRest, 0)) + " ans restants du crédit, elle représente " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + "."
-                : "Aucune trésorerie n'est libérée tant que ce levier n'est pas retenu : votre enveloppe reste celle de votre poche."}>
-              {/* un seul levier dans cette famille : on borne sa largeur, sinon la
-                  carte s etire sur toute la page et sa valeur se perd a gauche */}
-              <div className="grid gap-3.5" style={{ gridTemplateColumns: "minmax(260px,430px)" }}>
-                <Carte on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
-                  pot={!G.ass && R.ecoAssPot > 0}
-                  eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
-                  effSub={G.ass
-                    ? "libérés chaque mois, soit " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + " sur la durée restante"
-                    : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
-                  Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
-                  Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
-                  Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
-                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Résiliable à tout moment (loi Lemoine)</span>
-                </Carte>
-              </div>
-            </Fam>
-
-            {/* ═══ FAMILLE 2 — DU CAPITAL GAGNE A L HORIZON ═══ */}
-            <Fam actif={R.gainRendCap > 0}
-              titre="Meilleur rendement sur la durée"
-              total={R.gainRendCap > 0 ? eur(R.gainRendCap) : "—"}
-              sousTotal={R.gainRendCap > 0 ? "de capital en plus dans " + R.H + " ans" : "aucun levier retenu"}
-              pied={R.gainRendCap > 0
-                ? "Le même argent, mieux placé : ce gain ne demande pas un euro d'effort supplémentaire. Il se constitue progressivement et se lit à l'horizon — il n'est pas disponible chaque mois, à la différence de la trésorerie ci-dessus."
-                : "Ces leviers ne coûtent rien : ils replacent de l'argent que vous détenez déjà. Cochez-les pour que le gain entre dans la projection."}>
-              <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
-                <Carte on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
-                  pot={!G.arb && R.gainArbPot > 0}
-                  eff={G.arb ? eur(R.gainArbCap) : (R.gainArbPot > 0 ? eur(R.gainArbPot) : "—")}
-                  effSub={G.arb
-                    ? eur(nb(G.montArb, 0)) + " deviennent " + eur(R.arbApres) + " dans " + R.H + " ans, au lieu de " + eur(R.arbAvant) + " en restant sur vos supports actuels"
-                    : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le montant et son rendement actuel")}>
-                  Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
-                  Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
-                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Vers l'hypothèse cabinet</span>
-                </Carte>
-                <Carte on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
-                  pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
-                  eff={R.redActif ? eur(R.gainRedCap) : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? eur(R.gainRedPot) : "—"))}
-                  effSub={R.redActif
-                    ? "les mêmes versements donnent " + eur(R.redApres) + " dans " + R.H + " ans, au lieu de " + eur(R.redAvant)
-                    : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le versement et son rendement actuel"))}>
-                  Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
-                  Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
-                  <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
-                    <span style={{ fontSize: 11 }}>versé sur un livret</span>
-                  </label>
-                </Carte>
-              </div>
-            </Fam>
-            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
-            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
-            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
           </div>
 
           {/* ═══ LA PHOTO : AVANT / APRÈS (02/09) ═══
@@ -6600,33 +6755,64 @@
             <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7 }}>
               Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.envPoche)}/mois</b> : à gauche sur vos supports actuels, à droite selon les préconisations retenues.
             </div>
-            <div className="grid gap-3.5" style={{ gridTemplateColumns: "1fr 1fr" }}>
-              {[
-                { t: "Sans rien changer", sous: "épargne placée sur vos supports actuels", c: C.gris2, bord: C.bord, fond: "#fafaf9",
-                  tot: R.sans[R.H], rp: R.avRP, loc: R.avLoc, pla: R.avPla, rev: R.avRevTot },
-                { t: "Avec les préconisations", sous: "même effort, autrement placé", c: C.vert, bord: C.vertBord, fond: "linear-gradient(135deg,#ecfdf5,#ffffff 60%)",
-                  tot: R.avec[R.H], rp: R.natRP, loc: R.natLoc, pla: R.natPla, rev: R.revTot }
-              ].map((col, i) => (
-                <div key={i} className="rounded-xl px-4 py-4 border" style={{ borderColor: col.bord, background: col.fond, borderTop: "3px solid " + col.c }}>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.18em", textTransform: "uppercase", color: col.c, fontWeight: 700 }}>{col.t}</div>
-                  <div className="italic" style={{ fontSize: 10, color: C.gris2, marginTop: 3 }}>{col.sous}</div>
-                  <div className="tabular-nums" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 30, fontWeight: 800, color: col.c, marginTop: 10, letterSpacing: "-0.02em", lineHeight: 1 }}>{eur(col.tot)}</div>
-                  <Lab>Patrimoine à {R.ageFin} ans</Lab>
-                  <div className="mt-3 pt-2.5" style={{ borderTop: "1px solid " + C.bord }}>
-                    {[["Résidence principale", col.rp], ["Immobilier locatif", col.loc], ["Placements financiers", col.pla]].map((l, k) => (
-                      <div key={k} className="flex items-baseline justify-between gap-2 text-[11px] py-0.5" style={{ justifyContent: "space-between" }}>
-                        <span style={{ color: C.gris }}>{l[0]}</span>
-                        <span className="tabular-nums font-bold whitespace-nowrap" style={{ color: C.encre }}>{eur(l[1])}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3 pt-2.5 flex items-baseline justify-between gap-2" style={{ borderTop: "1px solid " + C.bord, justifyContent: "space-between" }}>
-                    <span className="text-[11px]" style={{ color: C.gris }}>Complément de revenus</span>
-                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: col.c }}>{eur(col.rev)}<span className="text-[10px] font-semibold" style={{ color: C.gris2 }}>/mois</span></span>
+            {/* ═══ 10/09/2026 — decision A du CGP : UN TABLEAU avant / apres, tres lisible :
+                patrimoine, revenus, impot, succession (droits, assurance-vie hors
+                succession), prevoyance (credits soldes par l assurance de pret). Les deux
+                colonnes de cartes et le bloc « Ce que le credit protege » sont fondus ici. */}
+            {(() => {
+              const libLoc = socle.rsVal > 0 && socle.locVal === 0 && !R.locNouveau ? "Autres biens (terrain, résidence secondaire)" : socle.rsVal > 0 ? "Immobilier locatif et autres biens" : "Immobilier locatif";
+              const sS = R.succSans, sA = R.succAvec;
+              const prevAvant = R.prevRPnow + R.prevLocNow, prevApres = R.prevTotalNow;
+              const ROWS = [
+                { sec: `Patrimoine à ${R.ageFin} ans` },
+                { l: "Patrimoine total", a: R.sans[R.H], b: R.avec[R.H], fort: true },
+                { l: "Résidence principale", a: R.avRP, b: R.natRP, sub: true },
+                { l: libLoc, a: R.avLoc, b: R.natLoc, sub: true },
+                { l: "Placements financiers", a: R.avPla, b: R.natPla, sub: true },
+                { sec: "Chaque mois, chaque année" },
+                { l: "Complément de revenus mensuel", a: R.avRevTot, b: R.revTot, fort: true, unit: "/mois", note: "rente des placements + loyers nets" },
+                { l: "Impôt économisé par an", a: 0, b: R.ecoImpot, unit: "/an", note: R.ecoRegimeAn > 0 ? "PER + dispositif locatif" : "" },
+                { sec: `En cas de décès à ${R.ageFin} ans` },
+                sS && sA ? { l: "Droits de succession estimés", a: sS.total, b: sA.total, fort: true, inv: true, note: sS.lib || "" } : null,
+                sS && sA ? { l: "dont droits sur l'assurance-vie (au-delà de 152 500 € par bénéficiaire, art. 990 I)", a: sS.droitsAV, b: sA.droitsAV, sub: true, inv: true } : null,
+                sS && sA ? { l: "Transmis hors succession par l'assurance-vie", a: sS.avHors, b: sA.avHors, sub: true } : null,
+                { l: "Crédits soldés par l'assurance de prêt (aujourd'hui)", a: prevAvant, b: prevApres, note: "les biens sont transmis libres de dette" },
+              ].filter(Boolean);
+              const ecart = (r) => { const e = (r.b || 0) - (r.a || 0); if (Math.abs(e) < 1) return { t: "—", c: C.gris2 }; const bon = r.inv ? e < 0 : e > 0; return { t: (e > 0 ? "+ " : "− ") + eur(Math.abs(e)) + (r.unit || ""), c: bon ? C.vert : "#b91c1c" }; };
+              return (
+                <div className="rounded-xl border overflow-hidden" style={{ borderColor: C.bord }}>
+                  <table className="w-full text-[11.5px]" style={{ borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr style={{ background: "#fafaf9" }}>
+                        <th className="text-left px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris, fontWeight: 700 }}></th>
+                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2, fontWeight: 700, width: "21%" }}>Sans rien changer</th>
+                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.vert, fontWeight: 800, width: "21%", background: "#ecfdf5" }}>Avec les préconisations</th>
+                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris, fontWeight: 700, width: "17%" }}>Écart</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ROWS.map((r, i) => r.sec ? (
+                        <tr key={i}><td colSpan={4} className="px-3 pt-3 pb-1" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.18em", textTransform: "uppercase", color: C.or, fontWeight: 800, borderTop: i > 0 ? "1px solid " + C.bord : "none" }}>{r.sec}</td></tr>
+                      ) : (
+                        <tr key={i} style={{ borderTop: "1px solid rgba(10,9,8,0.05)" }}>
+                          <td className="px-3 py-1.5" style={{ color: r.sub ? C.gris : C.encre, fontWeight: r.fort ? 700 : r.sub ? 400 : 600, paddingLeft: r.sub ? 22 : 12 }}>
+                            {r.l}{r.note ? <span className="italic" style={{ color: C.gris2, fontSize: 9.5 }}> — {r.note}</span> : null}
+                          </td>
+                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.encre, fontWeight: r.fort ? 800 : 600, fontFamily: r.fort ? "'Fraunces','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.a)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
+                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.vert, fontWeight: r.fort ? 800 : 700, background: "#f4fbf7", fontFamily: r.fort ? "'Fraunces','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.b)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
+                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap font-bold" style={{ color: ecart(r).c }}>{ecart(r).t}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="px-3 py-2 italic" style={{ fontSize: 9.5, color: C.gris2, background: "#fafaf9", borderTop: "1px solid " + C.bord, lineHeight: 1.5 }}>
+                    Succession : droits estimés par le moteur du constat sur le patrimoine projeté à {R.ageFin} ans (crédits soldés par l'assurance de prêt, barème et abattements 2026, première option légale) ; assurance-vie hors succession, taxée à 20 % au-delà de 152 500 € par bénéficiaire (art. 990 I CGI). Les placements existants restent sur leurs supports actuels dans les deux colonnes.
+                    <span className="nc-syn-noprint"> Quotité <Mini v={h.quotRP} on={v => sh('quotRP', v)} w={40} /> % sur les crédits en cours{L.loc ? <span> · <Mini v={L.quotLoc} on={v => sl('quotLoc', v)} w={40} /> % sur le nouveau crédit</span> : null}.</span>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })()}
+
             {R.auMoinsUn ? (
               <div className="rounded-xl px-4 py-3.5 mt-3.5 flex flex-wrap items-baseline gap-x-7 gap-y-2" style={{ background: "linear-gradient(135deg,#ecfdf5,#ffffff)", border: "1px solid " + C.vertBord, display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 28, rowGap: 8 }}>
                 <span>
@@ -6638,37 +6824,6 @@
                   <span className="text-[11px]" style={{ color: C.gris, marginLeft: 8 }}>de revenus par mois</span>
                 </span>
                 <span className="text-[10.5px] italic flex-1" style={{ color: C.gris2, minWidth: 200 }}>à effort d'épargne identique — c'est le gain de la réallocation, pas celui d'épargner</span>
-              </div>
-            ) : null}
-            {R.prevTotalNow > 0 ? (
-              <div className="rounded-xl px-4 py-3.5 mt-3" style={{ background: "#fafaf9", border: "1px solid " + C.bord }}>
-                <div className="nc-ctitre mb-2.5">Ce que le crédit protège<span className="sfx">assurance emprunteur, en cas de décès</span></div>
-                <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" }}>
-                  {(() => {
-                    const part = [
-                      R.prevRPnow > 0 ? { v: eur(R.prevRPnow), l: "Crédit de la résidence principale soldé", c: C.or } : null,
-                      R.prevLocNow > 0 ? { v: eur(R.prevLocNow), l: "Crédits locatifs en cours soldés", c: C.locC } : null,
-                      R.prevNewNow > 0 ? { v: eur(R.prevNewNow), l: "Nouveau crédit locatif soldé", c: C.vert } : null
-                    ].filter(Boolean);
-                    /* le total ne s ajoute QUE s il y a plusieurs credits :
-                       sinon la meme somme s affichait deux fois de suite */
-                    return part.length > 1
-                      ? part.concat([{ v: eur(R.prevTotalNow), l: "Dette effacée au décès", c: C.encre }])
-                      : [{ v: eur(R.prevTotalNow), l: part.length === 1 ? part[0].l + " — dette effacée au décès" : "Dette effacée au décès", c: part.length === 1 ? part[0].c : C.encre }];
-                  })().map((x, i) => (
-                    <div key={i}>
-                      <div className="tabular-nums truncate" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 18, fontWeight: 800, color: x.c }}>{x.v}</div>
-                      <Lab>{x.l}</Lab>
-                    </div>
-                  ))}
-                </div>
-                <div className="italic mt-2.5" style={{ fontSize: 10.5, color: C.gris2, lineHeight: 1.5 }}>
-                  L'assurance emprunteur rembourse le capital restant dû à hauteur de la quotité souscrite : les biens sont transmis libres de dette, sans que la famille ait à les vendre. L'effet de levier du crédit protège autant qu'il construit.
-                </div>
-                <div className="nc-syn-noprint mt-2 text-[10.5px] flex flex-wrap items-center gap-x-4 gap-y-1" style={{ color: C.gris }}>
-                  <span className="inline-flex items-center gap-1.5">Quotité <Mini v={h.quotRP} on={v => sh('quotRP', v)} w={40} /> % sur les crédits en cours</span>
-                  {L.loc ? <span className="inline-flex items-center gap-1.5"><Mini v={L.quotLoc} on={v => sl('quotLoc', v)} w={40} /> % sur le nouveau crédit</span> : null}
-                </div>
               </div>
             ) : null}
             {/* ═══ D OU VIENT LA DIFFERENCE (02/09) ═══
@@ -9533,7 +9688,7 @@
                     <div style={{ height: 3, background: "linear-gradient(90deg, #b8924e, #d8bc86 45%, rgba(216,188,134,0))" }}></div>
                   </div>
 
-                  {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} />}
+                  {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} />}
                   {syn && synMode !== "proj" && (
                     <div className="mb-5">
                       {/* Identification du foyer : état civil, adresse, composition — constat pur, sans chiffre. */}
