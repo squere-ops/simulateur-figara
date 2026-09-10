@@ -1062,7 +1062,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v203 (10/09 : PDF DE LA PROJECTION -- le regime locatif imprime etait toujours « Nu au reel » (dossier Rami declare Jeanbrun) : cloneNode ne recopie ni l option choisie d un select ni l etat des cases (React les pose en propriete, pas en attribut). L etat reel des select et des input est recopie dans le clone avant impression. Controle t_rp : regime imprime lu dans le clone.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cBUILD v204 (10/09 : retours du CGP sur le dossier Martin. (1) CAPACITE D EMPRUNT d un locataire AVEC projet RP : le projet est chiffre tel quel (mensualite, duree, taux, apport de l etape 2 -- fonction unique ncProjetRP) et la jauge met en avant la PLACE RESTANTE pour un investissement locatif : « une fois qu il a valide son projet RP, quelle place il reste pour faire du locatif ». Sans projet : jauge locatif, RP en ligne 2. (2) POINTS FORTS : « Montant finançable pour du locatif : Oui » ; taux d endettement date (avec le projet RP / aujourd hui). (3) AXES DE TRAVAIL en tete + puces, comme les points forts (precaution, performance inconnue, epargne faible, disparite, retraite, AV, TNS, taux d effort, fiscalite, succession, long terme, versements, assurance de pret, etudes, absence d epargne). (4) Pastilles des tuiles du foyer : disque plein colore par nature, picto blanc.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
+        console.log('%cANCIEN BUILD v203 (10/09 : PDF DE LA PROJECTION -- le regime locatif imprime etait toujours « Nu au reel » (dossier Rami declare Jeanbrun) : cloneNode ne recopie ni l option choisie d un select ni l etat des cases (React les pose en propriete, pas en attribut). L etat reel des select et des input est recopie dans le clone avant impression. Controle t_rp : regime imprime lu dans le clone.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v202 (10/09 : SYNTHESE -- retours du CGP sur le dossier Rami. (1) POINTS FORTS EN PUCES COURTES : chaque point fort = un chiffre en tete puis des puces, plus de longues phrases (endettement, capacite d emprunt, epargne, RP, PER, assurance-vie, patrimoine). (2) PATRIMOINE NET SIGNIFICATIF : format « 312 500 € d actif net, Monsieur x €, Madame y €, dont z € en commun » ; la ventilation par personne vient d une fonction UNIQUE ncRepartNet, partagee avec la tuile Patrimoine net -- un terrain declare a Monsieur n est plus annonce « non rattache a un titulaire ». (3) JAMAIS DEUX FOIS LA MEME PHRASE D AFFILEE : l axe Partenaire sans droits repetait sa phrase de tete en premiere puce ; garde ncSansDoublon au rendu + controle du banc (58 controles). (4) PASTILLES sur les tuiles Le foyer / Coordonnees (etat civil, activite, foyer, adresse, telephone, email).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v201 (10/09 : LES CHIFFRES DU DOSSIER -- retours du CGP. (1) RESIDENCE SECONDAIRE retiree de la capacite d emprunt (carte, forces, synthese) : deux usages seulement, investissement locatif et residence principale. (2) LES QUATRE COMPTEURS a la meme hauteur : zone de jauge de hauteur fixe (196 px), compteur seul cale en haut avec le retrait du titre des doubles jauges ; les lignes de detail de « Mensualite disponible » sortent de la zone. (3) COMPTEUR « LE FINANCIER » POUR TOUS : la part FINANCIERE du patrimoine remplace la part immobiliere sur tous les dossiers (regle du 28/08 « proprietaire et > 65 pct » remplacee) ; avec un projet d achat de RP, la part est DATEE « aujourd hui, avant l achat de la residence principale (projet a 1 a 3 ans) ». (4) t_ordre_fiscal : regroupement des tuiles par bande de proche en proche, plus de faux echec quand une frontiere de 40 px tombe entre deux tuiles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v200 (04/09 : AXES DE TRAVAIL -- decisions du CGP sur le dossier test Jean Claude. (1) EPARGNE DE PRECAUTION : montants FIXES selon le foyer -- personne seule 10 000 a 15 000 €, couple sans enfant 20 000 €, couple avec enfant(s) 25 000 € -- quels que soient revenus et statut, sans supplement locatif ; remplace partout (jauge, barre, axe, problematique, projection) la regle « X mois de depenses par profil » du 31/08. (2) L axe « Locataire » est SUPPRIME : l objectif n est pas de pousser a l achat de la RP mais vers le locatif, le PER, l assurance-vie et la renegociation de l assurance de pret. (3) Les axes d epargne (precaution, tres faible vs revenus, long terme, performance inconnue, versements) sont VOISINS. (4) Assurance de pret : axe « simulation de renegociation » des qu un credit existe (RP, locatif, autre bien, conso), meme deja renegociee, s il reste au moins 8 ans ; seuil de 10 ans du 28/08 abandonne. Banc : 54 controles.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -2863,11 +2864,32 @@
         email: <><rect x="4" y="6.5" width="16" height="11" rx="2" /><path d="M4.5 8l7.5 5.5L19.5 8" /></>,
         autre: <><circle cx="12" cy="12" r="3" /></>,
       };
+      /* 10/09 (2e retour du CGP) : « un peu plus flashy tout en restant pro » — disque
+         plein, une couleur par nature d'information, pictogramme blanc, léger relief. */
+      const C = { civil: "#7c3aed", activite: "#0369a1", foyer: "#0f766e", adresse: "#b8924e", tel: "#047857", email: "#c2410c", autre: "#57534e" };
       return (
-        <span className="inline-flex items-center justify-center flex-shrink-0 rounded-full" style={{ width: 20, height: 20, background: "rgba(184,146,78,0.16)", border: "1px solid rgba(184,146,78,0.45)" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a6d34" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{P[k]}</svg>
+        <span className="inline-flex items-center justify-center flex-shrink-0 rounded-full" style={{ width: 22, height: 22, background: `linear-gradient(135deg, ${C[k]}, ${C[k]}cc)`, boxShadow: `0 1px 3px ${C[k]}55` }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">{P[k]}</svg>
         </span>
       );
+    }
+    /* 10/09/2026 — PROJET D ACHAT DE RESIDENCE PRINCIPALE : UNE fonction pour le
+       chiffrer (budget = capital empruntable avec la mensualite envisagee + apport).
+       Le CGP : « calcule son projet de RP uniquement et mets en avant la place qu il
+       va lui rester pour faire autre chose » — la capacite d emprunt d un locataire
+       qui a DEJA un projet RP ne lui explique plus qu il peut acheter une RP. */
+    function ncProjetRP(d) {
+      const actif = d.logement === "locataire" && d.rpProjetQ === "oui";
+      const mens = ncInt(d.rpProjetMensualite);
+      const ans = parseFloat(String(d.rpProjetDuree || "").replace(",", ".")) || 0;
+      const tx = (parseFloat(String(d.rpProjetTaux || "").replace(",", ".")) || 0) / 100;
+      const apport = ncInt(d.rpProjetApport);
+      let capital = 0;
+      if (actif && mens > 0 && ans > 0) {
+        const i = tx / 12, n = Math.round(ans * 12);
+        capital = Math.round(i === 0 ? mens * n : mens * (1 - Math.pow(1 + i, -n)) / i);
+      }
+      return { actif, mens, ans, tx, apport, capital, budget: capital + (capital > 0 ? apport : 0), chiffre: actif && capital > 0 };
     }
     function ncRepartNet(d) {
       const pRP = d.rpDetenteur === "client" ? 1 : d.rpDetenteur === "conjoint" ? 0
@@ -4633,12 +4655,12 @@
            tete (d), puis des puces courtes (puces). Les textes longs sont abandonnes. */
         const pucesEnd = ["Plafond bancaire : 35 %"];
         if (margeMens > 0) pucesEnd.push(`Mensualité encore disponible : ${eur(margeMens)}/mois`);
-        if (proprio) pucesEnd.push("Mobilisable pour un investissement locatif");
-        else if (margeMens > 0) pucesEnd.push("Montant finançable : selon la durée et le taux retenus");
+        /* 10/09 — le CGP : « indique tout simplement : Montant finançable pour du locatif : Oui ». */
+        pucesEnd.push(`Montant finançable pour du locatif : ${capLocMax >= 80000 ? "Oui" : "Non"}`);
         if (finRP) pucesEnd.push(finRP.replace(/^\s*—\s*(?:et )?le crédit RP se termine dans (.*?) : cet endettement disparaît à très court terme$/, "Crédit RP terminé dans $1 : cet endettement disparaît à très court terme").replace(/^\s*\(crédit RP : encore (\d+) ans à courir\)$/, "Crédit RP : encore $1 ans à courir"));
         if (proprio) {
           if (0.35 - taux >= 0.05) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement`, puces: pucesEnd });
-        } else if (largement) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement`, puces: pucesEnd });
+        } else if (largement) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement${S.rpProjetRetenu > 0 ? " avec le projet RP (futur crédit compté à la place du loyer)" : ", aujourd'hui"}`, puces: pucesEnd });
         // 31/08 (règle cabinet) : entre 25 et 30 % consommés, « la capacité est
         // intacte » est FAUX et la phrase n'apporte rien — aucun point fort.
       }
@@ -4650,12 +4672,20 @@
       // produit AUCUN loyer : sa capacité est inférieure à celle du locatif — les
       // annoncer au même montant était faux et surestimait le budget du client.
       if (capMax >= 80000) {
-        const pucesCap = ["Loyers attendus ajoutés aux revenus retenus par la banque"];
-        if (!proprio) pucesCap.push(`Résidence principale : ≈ ${eur(capMax)} (${d.logement === "gratuit" ? "forfait logement de 600 €/mois supprimé" : "loyer actuel supprimé"} à l'achat)`);
-        if (!proprio) pucesCap.push("Les deux montants ne s'additionnent pas : même enveloppe d'endettement");
+        const pRP = ncProjetRP(d);
+        const pucesCap = [];
+        if (pRP.chiffre) {
+          /* 10/09 — locataire AVEC projet RP : le projet est chiffre tel quel, et on met
+             en avant la place qui RESTE pour du locatif (le lead du cabinet). */
+          pucesCap.push(`Projet de résidence principale : ${eur(pRP.budget)} (${eur(pRP.mens)}/mois sur ${pRP.ans} ans à ${String(Math.round(pRP.tx * 10000) / 100).replace(".", ",")} %${pRP.apport > 0 ? `, apport ${eur(pRP.apport)}` : ""})`);
+          pucesCap.push(`Mensualité encore disponible après ce projet : ${eur(S.dispo35)}/mois`);
+        }
+        pucesCap.push("Loyers attendus ajoutés aux revenus retenus par la banque");
+        if (!proprio && !pRP.chiffre) pucesCap.push(`Résidence principale : ≈ ${eur(capMax)} (${d.logement === "gratuit" ? "forfait logement de 600 €/mois supprimé" : "loyer actuel supprimé"} à l'achat)`);
+        if (!proprio && !pRP.chiffre) pucesCap.push("Les deux montants ne s'additionnent pas : même enveloppe d'endettement");
         pucesCap.push("Hypothèses cabinet août 2026 : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance");
         if (unionLibre && d.conjointQ === "oui") pucesCap.push("Union libre : calculé pour un emprunt à deux — seul, sur les seuls revenus de l'emprunteur");
-        forces.push({ t: "Capacité d'emprunt disponible", d: `≈ ${eur(capLocMax)} en investissement locatif sur ${dureeMax} ans${proprio ? "" : (d.logement === "gratuit" ? ", logement actuel conservé" : ", location actuelle conservée")}`, puces: pucesCap });
+        forces.push({ t: "Capacité d'emprunt disponible", d: `≈ ${eur(capLocMax)} pour un investissement locatif sur ${dureeMax} ans${pRP.chiffre ? ", une fois le projet RP financé" : proprio ? "" : (d.logement === "gratuit" ? ", logement actuel conservé" : ", location actuelle conservée")}`, puces: pucesCap });
       }
       // RÈGLE CABINET (28/08) : trop de précaution n'est JAMAIS un point fort — le point
       // fort ne s'affiche que si le court terme est DANS la cible du profil.
@@ -4741,7 +4771,11 @@
          le PER, l assurance-vie et la renegociation de l assurance de pret. Le
          projet RP eventuel reste visible dans les charges et le bloc Logement.
          NE PAS REINTRODUIRE sans accord explicite du CGP. */
-      if (cibleBasM > 0 && courtTermeM < cibleBasM) faiblesses.push({ t: "Épargne de précaution / court terme", d: `${eur(courtTermeM)} de court terme seulement — la règle du cabinet pour votre foyer (${profPrecLib}) situe la cible ${cibleHautM > cibleBasM ? `entre ${eur(cibleBasM)} et ${eur(cibleHautM)}` : `autour de ${eur(cibleBasM)}`}.` });
+      /* 10/09/2026 — le CGP : « sur les axes de travail, fonctionne en bullet point encore
+         plus, comme sur les points forts ». Chaque axe = un constat court (d) + des
+         puces (puces) : chiffre, règle, geste. */
+      if (cibleBasM > 0 && courtTermeM < cibleBasM) faiblesses.push({ t: "Épargne de précaution / court terme", d: `${eur(courtTermeM)} de court terme seulement`,
+        puces: [`Cible du cabinet — ${profPrecLib}`, "À reconstituer avant tout placement long terme"] });
       {
         // RÈGLE CABINET (28/08) : NOMMER les placements concernés (« le PER chez
         // Generali ») — le lecteur doit savoir de quoi on parle sans remonter au tableau.
@@ -4749,11 +4783,14 @@
         const inconnus = (d.avoirsQ === "oui" ? (d.avoirs || []) : []).filter(x => x.type !== "livrets" && x.type !== "compte_courant" && ncInt(x.valeur) > 0 && x.rendementNsp === "oui");
         if (inconnus.length > 0) {
           const noms = inconnus.map(x => `${TYPES_NOM[x.type] || "le placement"}${(x.etablissement || "").trim() ? ` chez ${x.etablissement.trim()}` : ""} (${eur(ncInt(x.valeur))})`).join(", ");
-          faiblesses.push({ t: "Performance de l'épargne inconnue", d: `vous ne savez pas ce que rapporte${inconnus.length > 1 ? "nt" : ""} ${noms} — on ne peut pas piloter une épargne sans connaître son rendement : relevé${inconnus.length > 1 ? "s" : ""} de situation à demander.` });
+          faiblesses.push({ t: "Performance de l'épargne inconnue", d: `rendement inconnu : ${noms}`,
+            puces: ["On ne pilote pas une épargne sans connaître son rendement", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander`] });
         }
       }
-      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne très faible au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels — à ce niveau de revenus, moins de six mois d'épargne est une anomalie${age != null && age >= 45 ? ", d'autant plus à " + age + " ans" : ""}.` });
-      if (deuxRevenus && partHaut >= 0.6 && disparite >= 1.6) faiblesses.push({ t: "Disparité de revenus dans le couple", d: `${pc(partHaut)} des revenus du foyer reposent sur ${haut.n} — optimiser la protection de ${bas.n}.` });
+      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne très faible au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels`,
+        puces: [`Moins de six mois de revenus : une anomalie à ce niveau de revenus${age != null && age >= 45 ? `, d'autant plus à ${age} ans` : ""}`] });
+      if (deuxRevenus && partHaut >= 0.6 && disparite >= 1.6) faiblesses.push({ t: "Disparité de revenus dans le couple", d: `${pc(partHaut)} des revenus du foyer reposent sur ${haut.n}`,
+        puces: [`Protection de ${bas.n} à optimiser`] });
       const perFiscDecl = (Array.isArray(d.reductionsLignes) && d.reductionsLignes.some(x => x.type === "per")) || (d.reductionsTypes || []).includes("per");
       if (per === 0 && !perFiscDecl) {
         // 31/08 (contrôle expert n°4) : pour un TNS à TMI >= 30 %, le PER (déductible,
@@ -4766,7 +4803,8 @@
         const chiffragePER = estTNS && F.tmi >= 0.30 && plafTNS > 0
           ? ` Pour un indépendant (TNS) à ${pc(F.tmi)} de tranche marginale, c'est LE levier n° 1 : plafond de déduction estimé ≈ ${eur(plafTNS)}/an (10 % du bénéfice + 15 % de la fraction au-delà d'un PASS — 48 060 € en 2026), soit jusqu'à ≈ ${eur(Math.round(plafTNS * F.tmi))} d'impôt en moins par an — estimation sur les revenus déclarés, à confirmer avec le disponible fiscal de l'avis d'imposition.`
           : "";
-        faiblesses.push({ t: "Aucun dispositif retraite en place", d: `pas de PER : ni préparation de complément de revenu, ni déduction fiscale.${chiffragePER}` });
+        faiblesses.push({ t: "Aucun dispositif retraite en place", d: "pas de PER",
+          puces: ["Ni complément de revenu préparé, ni déduction fiscale"].concat(chiffragePER ? [chiffragePER.trim()] : []) });
       }
       else if (enCouple && d.conjointQ === "oui") {
         // RÈGLE CABINET (28/08) : la retraite s'analyse PAR PERSONNE — socle commun
@@ -4781,18 +4819,20 @@
         const civLuiR = d.civilite === "Mme" ? "Monsieur" : "Madame";
         const sansPer = perMoiT > 0 && perLuiT === 0 ? { n: civLuiR, r: revJ, autre: civMoiR, rAutre: revC }
                       : perLuiT > 0 && perMoiT === 0 ? { n: civMoiR, r: revC, autre: civLuiR, rAutre: revJ } : null;
-        if (sansPer) faiblesses.push({ t: `Retraite de ${sansPer.n} non préparée — axe important`, d: `un PER est en place pour ${sansPer.autre}, mais rien pour ${sansPer.n}${sansPer.r > 0 && sansPer.rAutre > sansPer.r ? `, alors que ses revenus sont plus faibles (${eur(sansPer.r)} contre ${eur(sansPer.rAutre)} par mois)` : ""} : sa retraite sera moins bonne et rien n'est cotisé pour la préparer. Ouvrir un PER à son nom (versements déductibles) rétablirait l'équilibre du foyer.` });
+        if (sansPer) faiblesses.push({ t: `Retraite de ${sansPer.n} non préparée — axe important`, d: `un PER pour ${sansPer.autre}, rien pour ${sansPer.n}`,
+          puces: [sansPer.r > 0 && sansPer.rAutre > sansPer.r ? `Ses revenus sont plus faibles (${eur(sansPer.r)} contre ${eur(sansPer.rAutre)} par mois) : sa retraite sera moins bonne` : "Sa retraite sera moins bonne et rien n'est cotisé pour la préparer", "Ouvrir un PER à son nom (versements déductibles) rétablirait l'équilibre du foyer"] });
       }
-      if (avVie === 0) faiblesses.push({ t: "Pas d'assurance-vie", d: "Ni antériorité fiscale, ni outil de transmission hors succession." });
-      if (estTNS && prevQ !== "oui") faiblesses.push({ t: "Prévoyance TNS non confirmée", d: "Le revenu professionnel n'est pas sécurisé en cas d'arrêt de travail." });
-      if (estTNS && prevQ === "oui") faiblesses.push({ t: "Couverture prévoyance à auditer", d: `une couverture est en place${prevAssureur ? ` chez ${prevAssureur}` : ""} — il faudra étudier et benchmarker cette couverture afin de savoir s'il faut la conserver ou faire un arbitrage.` });
+      if (avVie === 0) faiblesses.push({ t: "Pas d'assurance-vie", d: "aucun contrat ouvert", puces: ["Pas d'antériorité fiscale", "Pas d'outil de transmission hors succession (abattement 152 500 € par bénéficiaire, art. 990 I CGI)"] });
+      if (estTNS && prevQ !== "oui") faiblesses.push({ t: "Prévoyance TNS non confirmée", d: "revenu professionnel non sécurisé", puces: ["En cas d'arrêt de travail, aucune garantie de revenu confirmée"] });
+      if (estTNS && prevQ === "oui") faiblesses.push({ t: "Couverture prévoyance à auditer", d: `une couverture est en place${prevAssureur ? ` chez ${prevAssureur}` : ""}`, puces: ["À étudier et comparer : conserver, ou arbitrer"] });
       // 31/08 (contrôle expert n°4) : pour un LOCATAIRE, le loyer n'est pas une dette
       // bancaire — le libellé le dit, et il n'est JAMAIS écrit « plus aucun financement »
       // en face d'un point fort qui affiche une capacité d'achat RP : les deux chiffres
       // s'expliquent l'un l'autre (le loyer disparaît à l'achat de la RP).
       if (taux != null && taux > 0.35) {
-        if (d.logement === "locataire") faiblesses.push({ t: "Taux d'effort supérieur à 35 % (loyer compris)", d: `${pc(taux)} des revenus absorbés par le loyer et les charges — aucun financement supplémentaire n'est envisageable en CONSERVANT cette location. Seul un achat de résidence principale reste finançable : le loyer disparaît à l'achat (c'est la capacité indiquée dans les points forts).` });
-        else faiblesses.push({ t: "Endettement supérieur à 35 %", d: `${pc(taux)} — plus aucun financement accessible en l'état.` });
+        if (d.logement === "locataire") faiblesses.push({ t: "Taux d'effort supérieur à 35 % (loyer compris)", d: `${pc(taux)} des revenus absorbés par le loyer et les charges`,
+          puces: ["Aucun financement supplémentaire en conservant cette location", "Seul un achat de résidence principale reste finançable : le loyer disparaît à l'achat"] });
+        else faiblesses.push({ t: "Endettement supérieur à 35 %", d: `${pc(taux)} de taux d'endettement`, puces: ["Plus aucun financement accessible en l'état"] });
       }
       // 29/08 (demande cabinet + contrôle expert n°3) : enfant MAJEUR RATTACHÉ avec une
       // TMI élevée → l'arbitrage rattachement (demi-part) vs pension alimentaire
@@ -4811,8 +4851,10 @@
         faiblesses.push({ t: `Optimiser l'arbitrage rattachement / pension alimentaire pour ${prenomM}`, d: `l'avantage du rattachement est écrêté par le plafonnement du quotient familial — au plus ${eur(NC_PLAFOND_DEMI_PART)} par demi-part, quel que soit le revenu. À ${pc(F.tmi)} de TMI, le détachement avec pension alimentaire déductible (art. 156, II, 2° CGI) devient gagnant dès ≈ ${eur(basculeM)} de pension réellement versée et justifiée par an (≈ ${eur(Math.round(basculeM / 12 / 10) * 10)}/mois) — souvent atteint pour un étudiant logé, nourri et dont la scolarité est financée. Rattachement et pension sont exclusifs la même année, l'option se rejoue CHAQUE année ; la pension est imposable chez ${prenomM} (déclaration propre, incidence possible sur bourses et APL) ; le plafond légal de déduction est à confirmer sur le millésime en vigueur avant chiffrage définitif.` });
       });
       const pensVA = d.pensionQ === "oui" ? Math.round(ncMens(d.pensionVersee, d.pensionPeriode) * 12) : 0;
-      if (F.impotNet >= 2000 && F.deductions === 0 && F.reductions === 0) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale${pensVA > 0 ? ` — seule la pension alimentaire versée est déjà déduite (${eur(pensVA)}/an, art. 156, II-2°), aucun autre levier activé` : ", sans aucun levier activé"} — soit plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} sur 10 ans à situation constante.` });
-      else if (F.impotNet >= 2000 && !gainSignificatif && (F.deductions > 0 || F.reductions > 0)) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale, pour seulement ${eur(F.gainTotal)} d'avantages en place — un montant symbolique (${Math.round(F.gainTotal / Math.max(1, F.impotSansAvantage) * 100)} % de l'impôt) : le levier fiscal reste à activer.` });
+      if (F.impotNet >= 2000 && F.deductions === 0 && F.reductions === 0) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
+        puces: [pensVA > 0 ? `Seule la pension alimentaire versée est déjà déduite (${eur(pensVA)}/an, art. 156, II-2°) — aucun autre levier activé` : "Aucun levier activé", `Plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} sur 10 ans à situation constante`] });
+      else if (F.impotNet >= 2000 && !gainSignificatif && (F.deductions > 0 || F.reductions > 0)) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
+        puces: [`Avantages en place : ${eur(F.gainTotal)} seulement (${Math.round(F.gainTotal / Math.max(1, F.impotSansAvantage) * 100)} % de l'impôt) — un montant symbolique`, "Le levier fiscal reste à activer"] });
       if (marie && d.ddvQ !== "oui") {
         /* 03/09/2026 — décision du CGP : la phrase rouge se CHIFFRE au RDV 1 (item 9).
            Les nombres viennent de ncCalcSuccession (v.ddvImpact), jamais recalculés ici.
@@ -4867,7 +4909,8 @@
           d: detRPseul ? `Le survivant n'est protégé ni par la succession, ni par l'assurance de prêt.` : `Sans testament, le survivant n'hérite de rien.`,
           puces: pucesProt });
       }
-      if (S.actifTotal >= 100000 && age != null && age >= 50 && (d.locatifs || []).length > 0 && revFoyer > 0 && epargne < revFoyer * 3) faiblesses.push({ t: "Succession à préparer — épargne faible face au locatif", d: `arbitrer quelques biens locatifs vers l'assurance-vie (abattement 152 500 € par parent et par enfant) peut éviter de très lourds droits de succession — arbitrage d'optimisation.` });
+      if (S.actifTotal >= 100000 && age != null && age >= 50 && (d.locatifs || []).length > 0 && revFoyer > 0 && epargne < revFoyer * 3) faiblesses.push({ t: "Succession à préparer — épargne faible face au locatif", d: "patrimoine surtout immobilier, épargne faible",
+        puces: ["Arbitrer quelques biens locatifs vers l'assurance-vie (abattement 152 500 € par parent et par enfant)", "Évite de très lourds droits de succession — arbitrage d'optimisation"] });
       // RÈGLE CABINET (28/08) : JAMAIS deux conclusions contradictoires dans le même
       // document. Quand l'épargne globale est FAIBLE au regard des revenus (ou que le
       // long terme est à zéro), on ne dit pas « trésorerie court terme trop importante »
@@ -4882,9 +4925,12 @@
           // des droits > 0. À 0 € de droits (abattements suffisants), l'argument de
           // l'assurance-vie est la GESTION et la disponibilité hors succession.
           const succAvecDroits = (() => { try { const scS = ncCalcSuccession(d); const tots = (scS.volets || []).flatMap(v2 => (v2.scenarios || []).map(s2 => s2.droitsTotal || 0)); return tots.length > 0 && Math.max(...tots) > 0; } catch (e2) { return false; } })();
-          faiblesses.push({ t: "Épargne long terme", d: `Attention : aucune épargne long terme n'est mise en place — l'épargne du foyer (${eur(courtTermeM)}) dort intégralement sur livrets et comptes courants — situation anormale${locataire ? ", d'autant plus en étant locataire" : ""}. Ces capitaux sont rémunérés à peine plus que l'inflation${succAvecDroits ? " et seraient frappés de plein fouet par les droits de succession" : ""}. Placés en assurance-vie ou en PER, ils vous permettraient d'opter pour un choix de gestion bien plus pertinent${succAvecDroits ? ", tout en vous permettant de bénéficier de l'abattement des 152 500 € par bénéficiaire (art. 990 I CGI)" : " — et, en assurance-vie, de rester disponibles à tout moment tout en se transmettant hors succession, avec une clause bénéficiaire sur mesure (art. 990 I CGI)"}.` });
+          faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} dorment sur livrets et comptes courants`,
+            puces: [`Situation anormale${locataire ? ", d'autant plus en étant locataire" : ""}`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession" : ""}`,
+              succAvecDroits ? "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)" : "Placés en assurance-vie ou en PER : gestion plus pertinente ; l'assurance-vie reste disponible à tout moment et se transmet hors succession, clause bénéficiaire sur mesure (art. 990 I CGI)"] });
         } else if (surDoteM) {
-          faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants pour un besoin de précaution de ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""} — rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès. Placés en assurance-vie ou en PER, ils vous permettraient d'opter pour un choix de gestion bien plus pertinent, tout en vous permettant de bénéficier de l'abattement des 152 500 € par bénéficiaire (art. 990 I CGI).` });
+          faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants`,
+            puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès", "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)"] });
         }
       }
       // AXE CABINET (27/08) : endettement non utilisé — l'effet de levier du financement
@@ -4899,7 +4945,7 @@
            Et elle ne dicte plus l ordre des operations au client : on ne connait
            pas la nature de la relation du couple. On ECLAIRE le risque, on ne
            conditionne pas — la decision reste celle du client et du conseiller. */
-        d: `Endettement à ${pc(taux)} seulement, pour ${proprio ? `≈ ${eur(capLocMax)} de capacité en investissement locatif` : `${eur(capMax)} de capacité d'emprunt`}.`,
+        d: `Endettement à ${pc(taux)} seulement${S.rpProjetRetenu > 0 ? " avec le projet RP" : ""}, pour ≈ ${eur(capLocMax)} de capacité en investissement locatif${ncProjetRP(d).chiffre ? " une fois le projet RP financé" : ""}`,
         puces: [
           "L'effet de levier du crédit construit du patrimoine sans mobiliser d'épargne : c'est le temps qui travaille, et il ne se rattrape pas.",
           "L'assurance de prêt solde le capital restant dû au décès : les biens sont transmis libres de dette.",
@@ -4909,10 +4955,13 @@
         ] });
       // AXE CABINET (27/08) : versements programmés trop faibles au vu des revenus du foyer
       // (repère : 18 % du revenu, moyenne des Français — INSEE).
-      if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés beaucoup trop faibles au vu des revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)} — contre 18 % en moyenne pour les Français.` });
-      if (bienNonRenego > 0) faiblesses.push({ t: "Assurance de prêt", d: `${bienNonRenego > 1 ? `${bienNonRenego} crédits en cours` : "un crédit en cours"} — faire une simulation de renégociation de l'assurance de prêt pour vérifier si des économies sont possibles.` });
-      if (enfantsJeunes > 0 && budgetEtudes === 0 && epargne < 15000 * enfantsJeunes) faiblesses.push({ t: "Études des enfants non provisionnées", d: `${enfantsJeunes} enfant${enfantsJeunes > 1 ? "s" : ""} mineur${enfantsJeunes > 1 ? "s" : ""}, aucune épargne dédiée.` });
-      if (S.ppMensuels === 0 && (revC > 0 || revJ > 0)) faiblesses.push({ t: "Absence totale d'épargne mensuelle", d: `aucun versement programmé — une petite épargne régulière sur une longue durée permettra d'atteindre un capital significatif : 200 €/mois avec une hypothèse de rendement de 4 % pendant 20 ans représentent ${eur(Math.round(200 * ((Math.pow(1 + 0.04 / 12, 240) - 1) / (0.04 / 12))))}.` });
+      if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés beaucoup trop faibles au vu des revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
+        puces: ["Moyenne des Français : 18 %"] });
+      if (bienNonRenego > 0) faiblesses.push({ t: "Assurance de prêt", d: bienNonRenego > 1 ? `${bienNonRenego} crédits en cours` : "un crédit en cours",
+        puces: ["Simulation de renégociation de l'assurance de prêt à faire : des économies sont souvent possibles"] });
+      if (enfantsJeunes > 0 && budgetEtudes === 0 && epargne < 15000 * enfantsJeunes) faiblesses.push({ t: "Études des enfants non provisionnées", d: `${enfantsJeunes} enfant${enfantsJeunes > 1 ? "s" : ""} mineur${enfantsJeunes > 1 ? "s" : ""}`, puces: ["Aucune épargne dédiée"] });
+      if (S.ppMensuels === 0 && (revC > 0 || revJ > 0)) faiblesses.push({ t: "Absence totale d'épargne mensuelle", d: "aucun versement programmé",
+        puces: [`Une petite épargne régulière sur une longue durée fait un capital significatif : 200 €/mois à 4 % pendant 20 ans = ${eur(Math.round(200 * ((Math.pow(1 + 0.04 / 12, 240) - 1) / (0.04 / 12))))}`] });
       // 29/08 (contrôle expert) : pour un divorcé, les vrais risques sont le testament
       // antérieur (non révoqué automatiquement) et la clause bénéficiaire nominative.
       // RÈGLE CABINET (28/08) : la protection du conjoint suit IMMÉDIATEMENT la
@@ -10160,6 +10209,15 @@
                       /* 10/09/2026 — decision du CGP : plus de residence secondaire dans la
                          capacite d emprunt. Deux usages : locatif (mis en avant) et RP. */
                       const maxCap = Math.max(capRetenu, capLoc, 1);
+                      /* 10/09/2026 — LE CGP : « ce qui m'intéresse, c'est une fois qu'il a validé son
+                         projet RP, quelle place il reste pour faire du locatif ». Locataire AVEC projet
+                         RP : le projet est chiffré tel quel (mensualité, durée, taux, apport saisis à
+                         l'étape 2) et la jauge montre la place qui RESTE pour un investissement
+                         locatif — c'est le lead. On ne lui explique plus qu'il « peut acheter une RP » :
+                         c'est déjà son projet. Sans projet RP : le locatif reste mis en avant (jauge),
+                         la RP en second. */
+                      const pRP = ncProjetRP(d);
+                      const txP = (x) => String(Math.round(x * 10000) / 100).replace(".", ",");
                       const nfC = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
                       return (
                         <div className="rounded-2xl p-5 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
@@ -10182,25 +10240,41 @@
                           ) : (
                             <>
                               <div className="nc-zone-jauge flex flex-col items-center justify-start">
-                              <NcCompteur solo pct={maxCap > 0 ? capRetenu / maxCap : 0} marker={null}
-                                minLib="0 €" maxLib={`${nfC(maxCap)} €`}
-                                couleur="#1d2735" piste="#dcdfe4" valeur={`${nfC(capRetenu)} €`}
-                                sous={d.logement === "locataire" ? "achat de la RÉSIDENCE PRINCIPALE exclusivement (le loyer actuel disparaît à l'achat) — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance" : d.logement === "gratuit" ? "achat de la RÉSIDENCE PRINCIPALE (le forfait logement de 600 € disparaît à l'achat) — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance" : "achat de la RÉSIDENCE PRINCIPALE — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance"} />
+                              <NcCompteur solo pct={1} marker={null}
+                                minLib="0 €" maxLib={`${nfC(capLoc)} €`}
+                                couleur="#0f766e" piste="#d9ebe7" valeur={`≈ ${nfC(capLoc)} €`}
+                                sous={pRP.chiffre ? "place pour un INVESTISSEMENT LOCATIF, une fois le projet de résidence principale financé — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance" : `INVESTISSEMENT LOCATIF, ${d.logement === "gratuit" ? "logement actuel conservé" : "location actuelle conservée"} — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance`} />
                               </div>
                               <div className="w-full mt-2 pt-2 border-t border-stone-100 space-y-1">
                                 {/* 02/09 : options EXCLUSIVES, jamais cumulables — c est la MEME
                                     enveloppe d endettement. 10/09 : la residence secondaire est
                                     retiree (decision CGP) — locatif et RP seulement. */}
-                                <div className="flex items-baseline justify-between gap-2">
-                                  <span className="text-[10px] font-semibold" style={{ color: "#0f766e" }}>① Investissement locatif <span className="font-normal text-stone-400">— loyers attendus pris en compte</span></span>
-                                  <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: "#0f766e" }}>≈ {nfC(capLoc)} €</span>
-                                </div>
-                                <div className="flex items-baseline justify-between gap-2">
-                                  <span className="text-[10px] font-semibold text-stone-500">② Résidence principale <span className="font-normal text-stone-400">— {d.logement === "gratuit" ? "forfait logement supprimé" : "loyer actuel supprimé"}</span></span>
-                                  <span className="num text-[11.5px] font-extrabold whitespace-nowrap text-stone-600">≈ {nfC(capRetenu)} €</span>
-                                </div>
-                                <div className="text-[9px] leading-snug" style={{ color: "#b45309" }}>Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement, selon l'usage du bien.</div>
-                                <div className="text-[9px] text-stone-400">retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus{loyerCapT > 0 ? " · achat RP : loyer actuel quitté, retiré des charges" : ""} · hypothèses cabinet août 2026</div>
+                                {pRP.chiffre ? (
+                                  <>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                      <span className="text-[10px] font-semibold text-stone-500">① Votre projet de résidence principale <span className="font-normal text-stone-400">— {nfC(pRP.mens)} €/mois · {pRP.ans} ans à {txP(pRP.tx)} %{pRP.apport > 0 ? ` · apport ${nfC(pRP.apport)} €` : ""}</span></span>
+                                      <span className="num text-[11.5px] font-extrabold whitespace-nowrap text-stone-600">{nfC(pRP.budget)} €</span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                      <span className="text-[10px] font-semibold" style={{ color: "#0f766e" }}>② Place restante pour du locatif <span className="font-normal text-stone-400">— {nfC(synth.dispo35)} €/mois encore disponibles + loyers attendus</span></span>
+                                      <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: "#0f766e" }}>≈ {nfC(capLoc)} €</span>
+                                    </div>
+                                    <div className="text-[9px] text-stone-400">le futur crédit RP est compté dans l'endettement à la place du loyer actuel · retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus · hypothèses cabinet août 2026</div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                      <span className="text-[10px] font-semibold" style={{ color: "#0f766e" }}>① Investissement locatif <span className="font-normal text-stone-400">— loyers attendus pris en compte</span></span>
+                                      <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: "#0f766e" }}>≈ {nfC(capLoc)} €</span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                      <span className="text-[10px] font-semibold text-stone-500">② Résidence principale <span className="font-normal text-stone-400">— {d.logement === "gratuit" ? "forfait logement supprimé" : "loyer actuel supprimé"}</span></span>
+                                      <span className="num text-[11.5px] font-extrabold whitespace-nowrap text-stone-600">≈ {nfC(capRetenu)} €</span>
+                                    </div>
+                                    <div className="text-[9px] leading-snug" style={{ color: "#b45309" }}>Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement, selon l'usage du bien.</div>
+                                    <div className="text-[9px] text-stone-400">retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus{loyerCapT > 0 ? " · achat RP : loyer actuel quitté, retiré des charges" : ""} · hypothèses cabinet août 2026</div>
+                                  </>
+                                )}
                                 {/* 29/08 (contrôle expert n°3) : en union libre, le montant global
                                     suppose un emprunt À DEUX — un emprunt individuel repose sur les
                                     seuls revenus de l'emprunteur. Capacités indicatives par personne. */}
