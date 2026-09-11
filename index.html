@@ -1067,7 +1067,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v210 (11/09 : tuiles Coordonnees -- la ligne « Madame : … » (conjoint) est a la meme taille que la ligne « Monsieur : … » (12,5 px), demande du CGP.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v211 (11/09 : CONSTAT, retours du CGP sur le dossier Mars/Avril. Points forts : « Loyers attendus ajoutes aux revenus retenus par la banque » supprime (une hypothese de calcul n est pas un point fort) ; « Duree restante : 11,5 ans » ; « Capacite d epargne declaree » = fourchette declaree (« 300 a 500 € mensuellement ») puis « Apport en numeraire de … », plus de « milieu de la fourchette » ni de commentaire ; patrimoine net en puces (total, Monsieur, Madame, dont en commun). Axes : « Epargne insuffisante au regard des revenus » (plus « tres faible ») ; « Epargne long terme » : « droits de succession en cas de deces », phrase « Places en assurance-vie ou en PER… » supprimee (etat des lieux, pas de preconisation).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v210 (11/09 : tuiles Coordonnees -- la ligne « Madame : … » (conjoint) est a la meme taille que la ligne « Monsieur : … » (12,5 px), demande du CGP.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v209 (11/09 : SYNTHESE, tuiles Coordonnees -- (1) en couple, la ligne du client porte sa civilite comme celle du conjoint : « Monsieur : 06… » / « Madame : 06… » sur telephone et email (demande du CGP). (2) La tuile Adresse, seule sans seconde ligne, descend un peu sa valeur (my-auto dans une tuile flex-col) pour equilibrer la rangee avec Telephone et Email. (3) POLICE (PDF Bon/Riu) : le nom du conjoint sortait en Inter a cote du client en Fraunces dans l en-tete -- la regle CSS « * » remettait Inter sur les <span> imbriques ; fontFamily inherit pose sur ces span. (4) La ligature « ff » de Fraunces (« chiffres ») est coupee : font-variant-ligatures none partout. Banc : controle 3 nonies (couple prefixe, celibataire sans prefixe). Verifie : le bloc « Details (credit, objectif de vente, note…) » des autres biens est inchange depuis v69 (rendu compare v197 / v208 : memes dimensions).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v208 (10/09 : SUCCESSION — LE PER EST TRAITE COMME L ASSURANCE-VIE. Regle du CGP : « je veux que le PER soit traite comme l assurance-vie, ce sont les livrets et autres placements bancaires qui ne doivent beneficier d aucun abattement ». ncCalcSuccession range desormais les avoirs de type « per » (et le PER declare a l etape Fiscalite) avec l assurance-vie HORS succession (art. 990 I, abattement 152 500 € par beneficiaire, 20 pct au-dela) ; livrets, compte courant, PEA, CTO, epargne salariale et autres restent dans l assiette sans abattement. Le PER nouveau de la projection est range en type « per ». Libelles du constat et du tableau avant / apres : « assurance-vie et PER ». Banc : controle 3 octies (PER hors assiette, livrets dedans).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v207 (10/09 : PROJECTION, retours du CGP. (1) « SANS RIEN CHANGER » = LIVRETS A 1,7 pct (tLiv), jamais 2,5 pct -- et cette epargne entre en totalite dans la succession ; avec les preconisations, assurance-vie ET PER assurance sont transmis hors succession (art. 990 I, abattement 152 500 € par beneficiaire). L ecart de droits est desormais reel. (2) « Ou trouver l epargne » plus compact : intro d une ligne, pieds courts, cartes resserrees ; arbitrage et redirection affichent le gain sur la periode, l equivalent PAR MOIS et le rendement avant → apres (1,7 pct → 5,2 pct).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -4694,7 +4695,8 @@
           pucesCap.push(`Projet de résidence principale : ${eur(pRP.budget)} (${eur(pRP.mens)}/mois sur ${pRP.ans} ans à ${String(Math.round(pRP.tx * 10000) / 100).replace(".", ",")} %${pRP.apport > 0 ? `, apport ${eur(pRP.apport)}` : ""})`);
           pucesCap.push(`Mensualité encore disponible après ce projet : ${eur(S.dispo35)}/mois`);
         }
-        pucesCap.push("Loyers attendus ajoutés aux revenus retenus par la banque");
+        /* 11/09 (CGP) : « Loyers attendus ajoutés aux revenus retenus par la banque »
+           supprimé — une hypothèse de calcul n'est pas un point fort du dossier. */
         if (!proprio && !pRP.chiffre) pucesCap.push(`Résidence principale : ≈ ${eur(capMax)} (${d.logement === "gratuit" ? "forfait logement de 600 €/mois supprimé" : "loyer actuel supprimé"} à l'achat)`);
         if (!proprio && !pRP.chiffre) pucesCap.push("Les deux montants ne s'additionnent pas : même enveloppe d'endettement");
         pucesCap.push("Hypothèses cabinet août 2026 : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance");
@@ -4712,7 +4714,7 @@
         const ratioCrd = ncInt(d.rpValeur) > 0 ? ncInt(d.rpCrd) / ncInt(d.rpValeur) : null;
         const dRPp = parseFloat(String(d.rpDureeRestante || "").replace(",", "."));
         const pucesRP = [`Capital restant dû : ${eur(ncInt(d.rpCrd))}${ratioCrd != null ? ` (${pc(ratioCrd)} de la valeur)` : ""}`];
-        if (isFinite(dRPp) && dRPp > 0) pucesRP.push(`${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""} restants`);
+        if (isFinite(dRPp) && dRPp > 0) pucesRP.push(`Durée restante : ${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""}`);
         if (ratioCrd != null && ratioCrd <= 0.25) pucesRP.push("Bien presque intégralement acquis");
         else if (ratioCrd != null && ratioCrd >= 0.75) pucesRP.push("Acquisition engagée : le capital se construit");
         pucesRP.push("Le socle patrimonial est posé");
@@ -4749,9 +4751,18 @@
       if (S.actifTotal > 0 && partImmo > 0.2 && partImmo < 0.75 && S.actifTotal >= 100000 && ltPartF > 0.2) forces.push({ t: "Patrimoine diversifié", d: `${pc(partImmo)} d'immobilier · ${pc(1 - partImmo)} de financier`, puces: ["Allocation équilibrée entre rendement et liquidité", "À vérifier : allocation et performance des supports financiers"] });
       // 29/08 (contrôle expert) : ce chiffre vient de la PARTICIPATION DÉCLARÉE par le
       // client (fourchette de l'étape Objectifs) — le nommer, jamais « réelle » sans base.
-      const CAP_LIB_F = { "<100": "moins de 100 €", "100-300": "100 – 300 €", "300-500": "300 – 500 €", "500-1000": "500 – 1 000 €", ">1000": "plus de 1 000 €" };
-      if (capEpargne >= 300) forces.push({ t: "Capacité d'épargne déclarée", d: `${eur(capEpargne)}/mois mobilisables`,
-        puces: [d.capaciteEpargne !== "libre" && CAP_LIB_F[d.capaciteEpargne] ? `Milieu de la fourchette indiquée par le client : ${CAP_LIB_F[d.capaciteEpargne]}/mois` : "Montant indiqué par le client", "De quoi financer un projet structurant sans dégrader le train de vie"] });
+      /* 11/09 (CGP) : le document est lu par le CLIENT — plus de « milieu de la
+         fourchette indiquée par le client » ni de commentaire. Titre, puis la
+         fourchette telle que déclarée (« 300 à 500 € mensuellement »), puis l'apport
+         en numéraire déclaré. */
+      const CAP_LIB_F = { "<100": "moins de 100 € mensuellement", "100-300": "100 à 300 € mensuellement", "300-500": "300 à 500 € mensuellement", "500-1000": "500 à 1 000 € mensuellement", ">1000": "plus de 1 000 € mensuellement" };
+      if (capEpargne >= 300) {
+        const capTxt = d.capaciteEpargne !== "libre" && CAP_LIB_F[d.capaciteEpargne] ? CAP_LIB_F[d.capaciteEpargne] : `${eur(capEpargne)} mensuellement`;
+        const apportTxt = !d.apportInitial || d.apportInitial === "aucun" ? null
+          : d.apportInitial === "libre" ? `Apport en numéraire de ${eur(ncInt(d.apportInitialLibre))}`
+          : `Apport en numéraire de ${(NC_APPORT_LIB[d.apportInitial] || d.apportInitial)}`;
+        forces.push({ t: "Capacité d'épargne déclarée", d: capTxt, puces: apportTxt ? [apportTxt] : [] });
+      }
       if (S.ppMensuels > 0 && (revFoyer <= 0 || S.ppMensuels / revFoyer >= NC_EPARGNE_MOYENNE_FR)) forces.push({ t: "Discipline d'épargne", d: `${eur(S.ppMensuels)} de versements programmés`, puces: ["Participation déjà automatisée"] });
       // RÈGLE CABINET (28/08) : « Fiscalité déjà optimisée » ne se dit JAMAIS pour un
       // montant symbolique (ex. 360 € face à 22 581 € d'impôt, moins de 2 %) — le
@@ -4769,11 +4780,14 @@
            de ncRepartNet (la MEME que la tuile « Patrimoine net ») : biens, terrains
            et locatifs compris — le terrain declare a Monsieur n est plus annonce
            « non rattache a un titulaire ». */
+        /* 11/09 (CGP) : « je n'aime pas ces présentations où tu me fais une phrase
+           avec plein d'infos à la queue leu leu » — le total en tête, la répartition
+           en puces, une personne par ligne. */
         const rn = ncRepartNet(d);
-        const detail = d.conjointQ === "oui" && (rn.c !== 0 || rn.j !== 0)
-          ? `, ${civ} ${eur(rn.c)}, ${civJ} ${eur(rn.j)}${rn.commun > 0 ? `, dont ${eur(rn.commun)} en commun` : ""}`
-          : "";
-        forces.push({ t: "Patrimoine net significatif", d: `${eur(S.patrimoineNet)} d'actif net${detail}.` });
+        const pucesPN = d.conjointQ === "oui" && (rn.c !== 0 || rn.j !== 0)
+          ? [`${civ} : ${eur(rn.c)}`, `${civJ} : ${eur(rn.j)}`].concat(rn.commun > 0 ? [`dont ${eur(rn.commun)} détenus en commun`] : [])
+          : [];
+        forces.push({ t: "Patrimoine net significatif", d: `${eur(S.patrimoineNet)} d'actif net`, puces: pucesPN });
       }
 
       // ———————————————————————————————————————————————
@@ -4801,7 +4815,7 @@
             puces: ["On ne pilote pas une épargne sans connaître son rendement", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander`] });
         }
       }
-      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne très faible au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels`,
+      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne insuffisante au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels`,
         puces: [`Moins de six mois de revenus : une anomalie à ce niveau de revenus${age != null && age >= 45 ? `, d'autant plus à ${age} ans` : ""}`] });
       if (deuxRevenus && partHaut >= 0.6 && disparite >= 1.6) faiblesses.push({ t: "Disparité de revenus dans le couple", d: `${pc(partHaut)} des revenus du foyer reposent sur ${haut.n}`,
         puces: [`Protection de ${bas.n} à optimiser`] });
@@ -4940,8 +4954,10 @@
           // l'assurance-vie est la GESTION et la disponibilité hors succession.
           const succAvecDroits = (() => { try { const scS = ncCalcSuccession(d); const tots = (scS.volets || []).flatMap(v2 => (v2.scenarios || []).map(s2 => s2.droitsTotal || 0)); return tots.length > 0 && Math.max(...tots) > 0; } catch (e2) { return false; } })();
           faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} dorment sur livrets et comptes courants`,
-            puces: [`Situation anormale${locataire ? ", d'autant plus en étant locataire" : ""}`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession" : ""}`,
-              succAvecDroits ? "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)" : "Placés en assurance-vie ou en PER : gestion plus pertinente ; l'assurance-vie reste disponible à tout moment et se transmet hors succession, clause bénéficiaire sur mesure (art. 990 I CGI)"] });
+            /* 11/09 (CGP) : « en cas de décès » après « droits de succession » ; la phrase
+               « Placés en assurance-vie ou en PER… » est SUPPRIMÉE — le constat est un état
+               des lieux, pas une préconisation. */
+            puces: [`Situation anormale${locataire ? ", d'autant plus en étant locataire" : ""}`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`] });
         } else if (surDoteM) {
           faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants`,
             puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès", "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)"] });
