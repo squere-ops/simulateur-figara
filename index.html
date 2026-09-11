@@ -43,7 +43,7 @@
   <title>Simulateur Assurance-Vie — Figara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700;1,9..144,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
@@ -61,10 +61,13 @@
     }
   </script>
   <style>
-    /* 11/09/2026 (CGP, PDF Bon/Riu) : Fraunces dessine une ligature « ff » (« chiffres »)
+    /* 11/09/2026 v214 : police d affichage FRAUNCES -> LORA partout (decision D du CGP) :
+       le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes
+       ses variantes ; Lora a un J sur la ligne de base. Ne pas remettre Fraunces.
+       11/09/2026 (CGP, PDF Bon/Riu) : Fraunces dessinait une ligature « ff » (« chiffres »)
        que le CGP refuse — ligatures coupées PARTOUT (Inter n'en a que d'insignifiantes).
        Attention : cette règle « * » s'applique AUSSI aux <span> imbriqués dans un bloc en
-       Fraunces posé en style inline — un enfant qui doit rester en Fraunces le dit
+       Lora posé en style inline — un enfant qui doit rester en Lora le dit
        explicitement (fontFamily: "inherit"), cf. l'en-tête de la synthèse. */
     * { font-family: 'Inter', system-ui, sans-serif; font-variant-ligatures: none; }
     /* Charte Figara : fond clair aéré avec touches brand (rouge + accents anthracite légers) */
@@ -210,7 +213,7 @@
         border-top: 1.5px solid rgba(184,146,78,0.55);
       }
       body.nc-print-syn #nc-print-holder .nc-print-footpage .fp-cab {
-        font-family: 'Fraunces', 'Playfair Display', serif;
+        font-family: 'Lora', 'Playfair Display', serif;
         font-size: 13px; font-weight: 700; letter-spacing: 0.18em;
         text-transform: uppercase; color: #8a6d34; line-height: 1.25;
       }
@@ -309,7 +312,7 @@
       display: flex; justify-content: space-between; align-items: flex-start;
     }
     .pres-cover-mark {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       letter-spacing: 0.28em; text-transform: uppercase;
       font-size: 9.5pt; font-weight: 600; color: #1c1917;
     }
@@ -327,7 +330,7 @@
       color: #78716c; line-height: 1; margin-bottom: 1.5mm;
     }
     .pres-cover-brand-name {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 13pt; font-weight: 600;
       letter-spacing: 0.04em; color: #1c1917;
       line-height: 1;
@@ -366,7 +369,7 @@
       width: 14mm; height: 0.6pt; background: #DC2626;
     }
     .pres-cover-title {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-weight: 400; font-size: 54pt; line-height: 1.02;
       letter-spacing: -0.03em; color: #1c1917;
       margin: 0;
@@ -378,7 +381,7 @@
       height: 0; margin: 8mm 0 6mm 0;
     }
     .pres-cover-sub {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-style: italic; font-size: 13pt; color: #57534e;
       line-height: 1.4; margin: 0;
     }
@@ -408,7 +411,7 @@
       color: #78716c; font-weight: 600; margin-bottom: 2mm;
     }
     .pres-cover-meta-v {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 13pt; font-weight: 500; color: #1c1917;
       letter-spacing: -0.005em; line-height: 1.3;
     }
@@ -447,7 +450,7 @@
       color: #57534e; font-weight: 600;
     }
     .pres-spread-title {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 30pt; font-weight: 700; letter-spacing: -0.025em; line-height: 1.05;
       color: #0a0908; margin: 2mm 0 0 0;
     }
@@ -475,7 +478,7 @@
       color: #57534e; font-weight: 600; margin-bottom: 4mm;
     }
     .pres-stat .figure {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 36pt; font-weight: 700; letter-spacing: -0.025em;
       color: #0a0908; line-height: 1; font-variant-numeric: tabular-nums;
     }
@@ -495,7 +498,7 @@
       color: #57534e; font-weight: 600;
     }
     .pres-section-h {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 18pt; font-weight: 700; color: #0a0908;
       margin: 1mm 0 0 0; letter-spacing: -0.015em; line-height: 1.15;
     }
@@ -523,7 +526,7 @@
       white-space: nowrap;
     }
     .pres-hyp-v {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 12pt; font-weight: 700; color: #0a0908; line-height: 1;
       letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
       display: inline-flex; align-items: baseline; gap: 2px;
@@ -555,12 +558,12 @@
       margin-bottom: 4mm;
     }
     .pres-vs-name {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 13pt; font-weight: 700; color: #0a0908; letter-spacing: -0.005em;
     }
     .pres-vs-name em { font-style: italic; color: #57534e; font-weight: 500; }
     .pres-vs-win {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 22pt; font-weight: 700; color: #047857;
       letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
     }
@@ -579,7 +582,7 @@
     }
     .pres-vs-line-top .nm.win { color: #047857; }
     .pres-vs-line-top .vl {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 14pt; font-weight: 700; color: #0a0908; letter-spacing: -0.015em;
       font-variant-numeric: tabular-nums;
     }
@@ -609,7 +612,7 @@
     .pres-alloc-list-row .swatch { width: 10px; height: 10px; border-radius: 50%; }
     .pres-alloc-list-row .nm { color: #44403c; font-weight: 600; }
     .pres-alloc-list-row .pc {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 13pt; font-weight: 700; color: #0a0908;
       font-variant-numeric: tabular-nums;
     }
@@ -623,7 +626,7 @@
       color: #57534e; font-weight: 600;
     }
     .pres-alloc-sri .v {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 16pt; font-weight: 700; letter-spacing: -0.02em;
     }
 
@@ -675,7 +678,7 @@
     }
     .pres-cmp-row .head .nm.win { font-weight: 800; color: #047857; }
     .pres-cmp-row .head .vl {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 12pt; font-weight: 700;
       font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
       color: #0a0908;
@@ -700,7 +703,7 @@
     }
     .pres-cmp-foot .win-side { text-align: right; }
     .pres-cmp-foot .win-val {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 14pt; font-weight: 700; color: #047857;
       letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -740,7 +743,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .pres-donut-card .dn-pct {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 16pt; font-weight: 800; line-height: 1; letter-spacing: -0.02em;
     }
     .pres-donut-card .dn-pct-sub {
@@ -748,7 +751,7 @@
       letter-spacing: 0.04em;
     }
     .pres-donut-card .dn-amount {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 16pt; font-weight: 700; line-height: 1;
       letter-spacing: -0.015em; font-variant-numeric: tabular-nums;
       margin-top: 2mm;
@@ -775,7 +778,7 @@
       white-space: nowrap;
     }
     .pres-rente-card .rt-num {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 22pt; font-weight: 700; line-height: 1; color: #047857;
       letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
     }
@@ -795,7 +798,7 @@
       color: #78716c; font-weight: 600;
     }
     .pres-rente-card .rt-grid .v {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 11pt; font-weight: 700; color: #0a0908;
       font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
     }
@@ -840,7 +843,7 @@
       overflow: hidden; text-overflow: ellipsis;
     }
     .pres-alloc-card .al-supp-row .pc {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 11pt; font-weight: 700; color: #0a0908;
       font-variant-numeric: tabular-nums;
       flex-shrink: 0;
@@ -872,7 +875,7 @@
       font-size: 5.5pt; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
     }
     .pres-alloc-card .al-rdt-cell .val {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-size: 11pt; font-weight: 700;
       font-variant-numeric: tabular-nums; line-height: 1;
       margin-top: 0.5mm;
@@ -932,7 +935,7 @@
       display: flex; justify-content: space-between; align-items: flex-end;
     }
     .pres-signature-name {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       font-style: italic; font-size: 16pt; color: #0a0908; line-height: 1;
     }
     .pres-signature-role {
@@ -961,7 +964,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     }
     .pres-toolbar .pres-brand {
-      font-family: 'Fraunces', 'Playfair Display', serif;
+      font-family: 'Lora', 'Playfair Display', serif;
       letter-spacing: 0.28em; text-transform: uppercase;
       font-size: 11pt; font-weight: 500; color: #f5f5f4;
     }
@@ -1067,7 +1070,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v213 (11/09 : PROJECTION, retours du CGP sur le dossier Drouot. (1) Page de garde : la phrase « Ce document projette votre situation a X ans… » est supprimee ; le bandeau enveloppe · employee · reste s imprime SOUS les objectifs et preconisations. (2) Ordre : garde -> LES SOLUTIONS RETENUES (bandeau EN FIXE en tete, en grand, imprime ; phrase d engagement) -> OU TROUVER L EPARGNE (compact, ECONOMIE MENSUALISEE : le €/mois est le chiffre principal, le gain sur N ans en second) -> tableau a l horizon, avec « dans N ans » sous « Sans rien changer » et « Avec les preconisations ». La rubrique « Votre participation et les preconisations » est fondue dans les solutions. Le bandeau collant (ecran) ne s affiche que lorsqu aucun bandeau imprime n est visible. (3) BUG apport : parseFloat("10 000") = 10 -> la tuile « Apport mobilise » affichait 10 € ; nb() retire espaces, € et accepte « 10k ».', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v214 (11/09 : POLICE D AFFICHAGE : Fraunces -> LORA partout (lien Google Fonts, ~120 fontFamily, textes SVG, classes .pres-*). Decision D du CGP sur image comparative : le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes ses variantes, Lora a un J sur la ligne de base. Fraunces ne doit plus revenir.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v213 (11/09 : PROJECTION, retours du CGP sur le dossier Drouot. (1) Page de garde : la phrase « Ce document projette votre situation a X ans… » est supprimee ; le bandeau enveloppe · employee · reste s imprime SOUS les objectifs et preconisations. (2) Ordre : garde -> LES SOLUTIONS RETENUES (bandeau EN FIXE en tete, en grand, imprime ; phrase d engagement) -> OU TROUVER L EPARGNE (compact, ECONOMIE MENSUALISEE : le €/mois est le chiffre principal, le gain sur N ans en second) -> tableau a l horizon, avec « dans N ans » sous « Sans rien changer » et « Avec les preconisations ». La rubrique « Votre participation et les preconisations » est fondue dans les solutions. Le bandeau collant (ecran) ne s affiche que lorsqu aucun bandeau imprime n est visible. (3) BUG apport : parseFloat("10 000") = 10 -> la tuile « Apport mobilise » affichait 10 € ; nb() retire espaces, € et accepte « 10k ».', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v212 (11/09 : axe « Capacite d endettement non utilisee » reecrit avec la formulation EXACTE du CGP (dossier Drouot) : « Endettement a 14 pct seulement » puis trois puces -- « Votre capacite d endettement vous permettrait de realiser un investissement locatif pour un montant de X € », « L effet de levier du credit est indispensable dans une bonne gestion de patrimoine », « Il vous permet de capitaliser dans le temps, tout en protegeant vos heritiers en cas de deces ». Les phrases « Avant tout engagement : stress-test… » (aussi dans la carte Capacite d emprunt, note union libre) et « Utilisations possibles… » sont supprimees DEFINITIVEMENT. Banc 3 decies etendu.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v211 (11/09 : CONSTAT, retours du CGP sur le dossier Mars/Avril. Points forts : « Loyers attendus ajoutes aux revenus retenus par la banque » supprime (une hypothese de calcul n est pas un point fort) ; « Duree restante : 11,5 ans » ; « Capacite d epargne declaree » = fourchette declaree (« 300 a 500 € mensuellement ») puis « Apport en numeraire de … », plus de « milieu de la fourchette » ni de commentaire ; patrimoine net en puces (total, Monsieur, Madame, dont en commun). Axes : « Epargne insuffisante au regard des revenus » (plus « tres faible ») ; « Epargne long terme » : « droits de succession en cas de deces », phrase « Places en assurance-vie ou en PER… » supprimee (etat des lieux, pas de preconisation).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v210 (11/09 : tuiles Coordonnees -- la ligne « Madame : … » (conjoint) est a la meme taille que la ligne « Monsieur : … » (12,5 px), demande du CGP.', 'color:#7c3aed;font-weight:bold');
@@ -2447,7 +2451,7 @@
             {mTxt && markerLib && <text x={mTxt[0]} y={mTxt[1] + 3} textAnchor={marker > 0.55 ? "start" : marker < 0.45 ? "end" : "middle"} fontSize="8.5" fontWeight="700" fill="#78716c">{markerLib}</text>}
             {minLib && <text x="22" y="90" textAnchor="middle" fontSize="8.5" fill="#a8a29e">{minLib}</text>}
             {maxLib && <text x="138" y="90" textAnchor="middle" fontSize="8.5" fill="#a8a29e">{maxLib}</text>}
-            <text x="80" y="72" textAnchor="middle" fontSize={fsV} fontWeight="800" fill={couleur} style={{ fontFamily: "'Fraunces', 'Playfair Display', serif" }}>{valeur}</text>
+            <text x="80" y="72" textAnchor="middle" fontSize={fsV} fontWeight="800" fill={couleur} style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}>{valeur}</text>
           </svg>
           {sous ? <div className="text-[9.5px] text-stone-400 mt-1 text-center leading-snug">{sous}</div> : null}
         </div>
@@ -2489,7 +2493,7 @@
       <div className="mb-2 last:mb-0">
         <div className="flex items-baseline justify-between gap-2 mb-0.5">
           <span className="text-[10px] font-semibold text-stone-500">{label}</span>
-          <span className="num text-[12.5px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: couleur }}>{montant}</span>
+          <span className="num text-[12.5px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: couleur }}>{montant}</span>
         </div>
         <div className="h-2.5 rounded-full overflow-hidden" style={{ background: "#eeece8" }}>
           <div className="h-full rounded-full" style={{ width: `${max > 0 ? Math.min(100, Math.max(2, v / max * 100)) : 2}%`, background: couleur }}></div>
@@ -2760,7 +2764,7 @@
           <span className="flex items-center justify-center rounded-lg" style={{ width: 26, height: 26, background: o.c }}>
             <NcIcone n={o.v} s={15} c="#ffffff" />
           </span>
-          <span className="text-[13px] font-extrabold" style={{ color: o.c, fontFamily: "'Fraunces', 'Playfair Display', serif" }}>{o.l}</span>
+          <span className="text-[13px] font-extrabold" style={{ color: o.c, fontFamily: "'Lora', 'Playfair Display', serif" }}>{o.l}</span>
         </div>
         <div className="p-3.5">{children}</div>
       </div>
@@ -3749,7 +3753,7 @@
     );
     const Tuile = ({ v, l, sous, fort, couleur }) => (
       <div className="rounded-xl px-4 py-3.5 border overflow-hidden" style={{ borderColor: fort ? NCP_C.vertBord : NCP_C.bord, background: fort ? "linear-gradient(135deg,#ecfdf5,#fff)" : "#fff" }}>
-        <div className="truncate tabular-nums" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 21, fontWeight: 800, color: couleur || NCP_C.encre, letterSpacing: "-0.02em", lineHeight: 1.1 }}>{v}</div>
+        <div className="truncate tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 21, fontWeight: 800, color: couleur || NCP_C.encre, letterSpacing: "-0.02em", lineHeight: 1.25 }}>{v}</div>
         <Lab>{l}</Lab>
         {sous ? <div className="italic" style={{ fontSize: 10, color: NCP_C.gris2, marginTop: 5, lineHeight: 1.5 }}>{sous}</div> : null}
       </div>
@@ -3772,7 +3776,7 @@
         {/* 03/09 : un levier NON RETENU n affiche plus un chiffre d apparence
             acquise. Sa valeur passe au conditionnel — plus petite, en italique,
             en gris — et n entre dans aucun total. */}
-        <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: pot ? (petit ? 14 : 16) : (petit ? 18 : 20), fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: petit ? 5 : 8, letterSpacing: "-0.02em" }}>{eff}</div>
+        <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: pot ? (petit ? 14 : 16) : (petit ? 18 : 20), fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: petit ? 5 : 8, letterSpacing: "-0.02em" }}>{eff}</div>
         {effSub ? <div style={{ fontSize: petit ? 10 : 10.5, fontWeight: 600, fontStyle: pot ? "italic" : "normal", color: pot ? NCP_C.gris3 : NCP_C.gris2, marginTop: petit ? 2 : 4, lineHeight: 1.5 }}>{effSub}</div> : null}
       </div>
     );
@@ -3786,7 +3790,7 @@
         <div className="px-4 py-2.5" style={{ background: actif ? NCP_C.vertPale : "#fafaf9", borderBottom: "1px solid " + (actif ? NCP_C.vertBord : NCP_C.bord), display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", columnGap: 14, rowGap: 4 }}>
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8pt", letterSpacing: "0.18em", textTransform: "uppercase", color: actif ? NCP_C.vert : NCP_C.gris, fontWeight: 800 }}>{titre}</span>
           <span className="whitespace-nowrap">
-            <span className="tabular-nums" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 20, fontWeight: 800, color: actif ? NCP_C.vert : NCP_C.gris3, letterSpacing: "-0.02em" }}>{total}</span>
+            <span className="tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 20, fontWeight: 800, color: actif ? NCP_C.vert : NCP_C.gris3, letterSpacing: "-0.02em" }}>{total}</span>
             {sousTotal ? <span style={{ fontSize: 10.5, fontWeight: 600, color: NCP_C.gris2, marginLeft: 8 }}>{sousTotal}</span> : null}
           </span>
         </div>
@@ -6430,7 +6434,7 @@
             {barItems.map((x, i) => (
               <span key={i} className="inline-flex items-baseline gap-1.5">
                 <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gris2, fontWeight: 700 }}>{x.l}</span>
-                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 16, fontWeight: 800, color: x.c }}>{x.v}</span>
+                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 16, fontWeight: 800, color: x.c }}>{x.v}</span>
               </span>
             ))}
             <span className="text-[10px] italic ml-auto" style={{ color: C.gris2 }}>se recalcule à chaque case cochée</span>
@@ -6441,7 +6445,7 @@
             <div className="flex flex-wrap items-start" style={{ columnGap: fixe ? 36 : 28, rowGap: 10 }}>
               {barItems.map((x, i) => (
                 <div key={i} style={{ flex: "1 1 150px", minWidth: 140, maxWidth: 300 }}>
-                  <div className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: fixe ? (x.fort ? 30 : 24) : (x.fort ? 22 : 19), fontWeight: 800, color: x.c, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                  <div className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: fixe ? (x.fort ? 30 : 24) : (x.fort ? 22 : 19), fontWeight: 800, color: x.c, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
                     {fixe && x.fourchette ? x.fourchette : x.v.replace("/mois", "")}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: fixe ? 11 : 10, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span>
                   </div>
                   <Lab>{x.l}</Lab>
@@ -6485,9 +6489,9 @@
                 <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2 }}>Projection patrimoniale · {new Date().toLocaleDateString('fr-FR')}</div>
               </div>
               <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
-              <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 30, fontWeight: 800, color: C.encre, lineHeight: 1.15, letterSpacing: "-0.01em" }}>Votre projection patrimoniale</div>
-              <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, color: C.encre, marginTop: 10, lineHeight: 1.4 }}>
-                {nomC}{nomJ ? <span> <span style={{ color: C.or }}>&amp;</span> {nomJ}</span> : null}
+              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 800, color: C.encre, lineHeight: 1.15, letterSpacing: "-0.01em" }}>Votre projection patrimoniale</div>
+              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, color: C.encre, marginTop: 10, lineHeight: 1.4 }}>
+                {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: C.or, fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
               </div>
               {/* 11/09 (CGP) : la phrase « Ce document projette votre situation à X ans… »
                   est supprimée de la page de garde. */}
@@ -6496,7 +6500,7 @@
                 <div className="rounded-xl px-5 py-5" style={{ marginTop: 10, marginBottom: 34, background: "#fafaf9", border: "1px solid " + C.bord, borderLeft: "4px solid #b91c1c" }}>
                   {/* 02/09 : UN chiffre median, et le montant reste INSECABLE avec son
                       unite — « € par mois » se retrouvait seul a la ligne suivante. */}
-                  <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
+                  <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
                     Prévision de baisse de vos revenus à la retraite estimée à{" "}
                     <span style={{ color: "#b91c1c", whiteSpace: "nowrap" }}>{eur((intro.baisse + intro.baisseH) / 2)} par mois</span>.
                   </div>
@@ -6709,7 +6713,7 @@
                     { v: (R.gainFiscalTot >= 0 ? "+ " : "− ") + eur(Math.abs(R.gainFiscalTot)), l: "Effet fiscal cumulé", c: R.gainFiscalTot >= 0 ? C.vert : "#b91c1c" }
                   ]).map((x, i) => (
                     <div key={i}>
-                      <div className="truncate tabular-nums" style={{ fontFamily: "'Fraunces',serif", fontSize: 18, fontWeight: 800, color: x.c }}>{x.v}</div>
+                      <div className="truncate tabular-nums" style={{ fontFamily: "'Lora',serif", fontSize: 18, fontWeight: 800, color: x.c }}>{x.v}</div>
                       <Lab>{x.l}</Lab>
                     </div>
                   ))}
@@ -6831,7 +6835,7 @@
                 <div key={i} className="rounded-xl px-3.5 py-2 border" style={{ borderColor: f.actif ? C.vertBord : C.bord, background: f.actif ? C.vertPale : "#fafaf9" }}>
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: f.actif ? C.vert : C.gris, fontWeight: 800, display: "block" }}>{f.titre}</span>
                   <span style={{ display: "block", marginTop: 2, lineHeight: 1.3 }}>
-                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
                     <span style={{ fontSize: 10, fontWeight: 600, color: C.gris2, marginLeft: 7 }}>{f.sous}</span>
                   </span>
                 </div>
@@ -6905,8 +6909,8 @@
                           <td className="px-3 py-1.5" style={{ color: r.sub ? C.gris : C.encre, fontWeight: r.fort ? 700 : r.sub ? 400 : 600, paddingLeft: r.sub ? 22 : 12 }}>
                             {r.l}{r.note ? <span className="italic" style={{ color: C.gris2, fontSize: 9.5 }}> — {r.note}</span> : null}
                           </td>
-                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.encre, fontWeight: r.fort ? 800 : 600, fontFamily: r.fort ? "'Fraunces','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.a)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
-                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.vert, fontWeight: r.fort ? 800 : 700, background: "#f4fbf7", fontFamily: r.fort ? "'Fraunces','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.b)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
+                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.encre, fontWeight: r.fort ? 800 : 600, fontFamily: r.fort ? "'Lora','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.a)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
+                          <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap" style={{ color: r.sub ? C.gris : C.vert, fontWeight: r.fort ? 800 : 700, background: "#f4fbf7", fontFamily: r.fort ? "'Lora','Playfair Display',serif" : undefined, fontSize: r.fort ? 14 : undefined }}>{eur(r.b)}{r.unit ? <span style={{ fontSize: 9, color: C.gris2 }}>{r.unit}</span> : null}</td>
                           <td className="px-3 py-1.5 text-right tabular-nums whitespace-nowrap font-bold" style={{ color: ecart(r).c }}>{ecart(r).t}</td>
                         </tr>
                       ))}
@@ -6924,11 +6928,11 @@
             {R.auMoinsUn ? (
               <div className="rounded-xl px-4 py-3.5 mt-3.5 flex flex-wrap items-baseline gap-x-7 gap-y-2" style={{ background: "linear-gradient(135deg,#ecfdf5,#ffffff)", border: "1px solid " + C.vertBord, display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 28, rowGap: 8 }}>
                 <span>
-                  <span className="tabular-nums" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{(R.capCree >= 0 ? "+ " : "− ") + eur(Math.abs(R.capCree))}</span>
+                  <span className="tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{(R.capCree >= 0 ? "+ " : "− ") + eur(Math.abs(R.capCree))}</span>
                   <span className="text-[11px]" style={{ color: C.gris, marginLeft: 8 }}>de patrimoine en plus</span>
                 </span>
                 <span>
-                  <span className="tabular-nums" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{((R.revTot - R.avRevTot) >= 0 ? "+ " : "− ") + eur(Math.abs(R.revTot - R.avRevTot))}</span>
+                  <span className="tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{((R.revTot - R.avRevTot) >= 0 ? "+ " : "− ") + eur(Math.abs(R.revTot - R.avRevTot))}</span>
                   <span className="text-[11px]" style={{ color: C.gris, marginLeft: 8 }}>de revenus par mois</span>
                 </span>
                 <span className="text-[10.5px] italic flex-1" style={{ color: C.gris2, minWidth: 200 }}>à effort d'épargne identique — c'est le gain de la réallocation, pas celui d'épargner</span>
@@ -7010,8 +7014,8 @@
                 <path d={graphe.pAvec} fill="none" stroke={C.vert} strokeWidth="3" />
                 <circle cx={graphe.xf} cy={graphe.yA} r="5" fill={C.vert} />
                 <circle cx={graphe.xf} cy={graphe.yS} r="5" fill={C.gris3} />
-                <text x={graphe.X1 + 6} y={graphe.ya + 4} fontFamily="Fraunces, serif" fontSize="13" fontWeight="800" fill={C.vert}>{eur(R.avec[R.H])}</text>
-                <text x={graphe.X1 + 6} y={graphe.ys + 4} fontFamily="Fraunces, serif" fontSize="13" fontWeight="800" fill={C.gris2}>{eur(R.sans[R.H])}</text>
+                <text x={graphe.X1 + 6} y={graphe.ya + 4} fontFamily="Lora, serif" fontSize="13" fontWeight="800" fill={C.vert}>{eur(R.avec[R.H])}</text>
+                <text x={graphe.X1 + 6} y={graphe.ys + 4} fontFamily="Lora, serif" fontSize="13" fontWeight="800" fill={C.gris2}>{eur(R.sans[R.H])}</text>
               </svg>
               <div className="flex gap-6 flex-wrap items-center text-[11px] font-semibold mt-3" style={{ color: C.gris }}>
                 <span><span className="inline-block rounded-sm mr-2" style={{ width: 22, height: 4, background: C.gris3, verticalAlign: 3 }} />Sans rien mettre en place</span>
@@ -8087,7 +8091,7 @@
                             const L = ({ l, v, fort }) => (
                               <div className="flex justify-between items-baseline py-1.5" style={{ borderBottom: "1px solid rgba(10,9,8,0.06)" }}>
                                 <span className="text-[11.5px]" style={{ color: fort ? "#0a0908" : "#57534e", fontWeight: fort ? 700 : 500 }}>{l}</span>
-                                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: fort ? 15 : 13, fontWeight: 800, color: fort ? "#047857" : "#0a0908" }}>{eur(v)}</span>
+                                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: fort ? 15 : 13, fontWeight: 800, color: fort ? "#047857" : "#0a0908" }}>{eur(v)}</span>
                               </div>
                             );
                             return (
@@ -9676,7 +9680,7 @@
                     return (
                   <div className="mt-5 rounded-xl overflow-hidden border-2" style={{ borderColor: "#6d28d9", boxShadow: "0 2px 10px rgba(109,40,217,0.22)" }}>
                     <div className="px-4 py-3 flex items-center justify-between gap-3 flex-wrap" style={{ background: "linear-gradient(90deg, #5b21b6, #7c3aed)" }}>
-                      <span className="text-[15px] font-extrabold text-white" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif" }}>Questionnaire de profil de risque</span>
+                      <span className="text-[15px] font-extrabold text-white" style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}>Questionnaire de profil de risque</span>
                       {prBan
                         ? <span className="rounded-full px-3 py-1 text-[10.5px] font-extrabold uppercase tracking-wider" style={{ background: "#ffffff", color: "#0f766e" }}>✓ réalisé — {prBan.profil} · SRI {prBan.sri}/7</span>
                         : <span className="rounded-full px-3 py-1 text-[10.5px] font-extrabold uppercase tracking-wider text-white" style={{ background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.6)" }}>à proposer au client — 6 questions</span>}
@@ -9772,10 +9776,10 @@
                       <div className="flex items-end justify-between gap-4 flex-wrap">
                         <div>
                           <div className="text-[10px] uppercase tracking-[0.22em] font-bold mb-1.5" style={{ color: "#8a6d34" }}>Étude patrimoniale · Synthèse</div>
-                          <div className="text-[27px] font-bold leading-tight" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                          <div className="text-[27px] font-bold leading-tight" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                             {d.civilite === "Mme" ? "Madame" : "Monsieur"} {ncCapNom(d.prenom)} {(d.nom || "").toUpperCase()}
                             {/* 11/09 : fontFamily inherit sur ces <span> — sinon la règle CSS « * » y remet
-                                Inter et le conjoint sort en sans-serif à côté du client en Fraunces. */}
+                                Inter et le conjoint sort en sans-serif à côté du client en Lora. */}
                             {enCouple && ((d.conjoint || {}).prenom || (d.conjoint || {}).nom) ? (
                               <span className="font-normal text-stone-400" style={{ fontFamily: "inherit" }}> &amp; <span className="font-bold" style={{ color: "#1d2735", fontFamily: "inherit" }}>{((d.conjoint || {}).civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur"} {ncCapNom((d.conjoint || {}).prenom)} {((d.conjoint || {}).nom || "").toUpperCase()}</span></span>
                             ) : null}
@@ -9812,7 +9816,7 @@
                       {/* Identification du foyer : état civil, adresse, composition — constat pur, sans chiffre. */}
                       <div className="rounded-2xl bg-white p-5 mb-4 border" style={{ borderColor: "rgba(184,146,78,0.4)", boxShadow: "0 1px 3px rgba(29,39,53,0.06)" }}>
                         {syn.resume.filter(it => it.t == null).map((it, i) => (
-                          <p key={i} className="text-[16px] leading-relaxed text-stone-800 mb-3" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif" }}>{it.d}</p>
+                          <p key={i} className="text-[16px] leading-relaxed text-stone-800 mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}>{it.d}</p>
                         ))}
                         {(() => {
                           // Identification en TUILES (28/08) : fini les deux colonnes libellé/valeur
@@ -9848,7 +9852,7 @@
                                     11/09 (CGP) : la tuile Adresse, seule sans seconde ligne, descend
                                     un peu sa valeur (centrée dans l'espace restant) pour équilibrer
                                     la rangée avec Téléphone et Email. */}
-                                <div className={"text-[12.5px] leading-snug" + (it.t === "Adresse" ? " my-auto" : "")} style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                                <div className={"text-[12.5px] leading-snug" + (it.t === "Adresse" ? " my-auto" : "")} style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                                   {/* 29/08 (dossier Quoifeur) : dans le complément, les LIBELLÉS
                                       (« régime », « donation au dernier vivant », « banque »…)
                                       restent en gras — seules les VALEURS passent en poids normal. */}
@@ -9861,7 +9865,7 @@
                                 </div>
                                 {/* 11/09 (CGP) : la ligne du conjoint a LA MÊME taille que celle du client. */}
                                 {it.sub ? (
-                                  <div className="text-[12.5px] leading-snug mt-0.5" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#57534e" }}>
+                                  <div className="text-[12.5px] leading-snug mt-0.5" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#57534e" }}>
                                     {(() => { const jB = it.sub.indexOf(" : "); return jB > 0
                                       ? (<><span className="font-bold" style={{ color: "#1d2735" }}>{it.sub.slice(0, jB)}</span><span className="font-normal"> : {it.sub.slice(jB + 3)}</span></>)
                                       : <span>{it.sub}</span>; })()}
@@ -10014,7 +10018,7 @@
                                   <div className="flex-1 space-y-2.5">
                                     {l.items.map((it, k) => (
                                       <div key={k}>
-                                        <div className="text-[13px] font-bold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{it.d}</div>
+                                        <div className="text-[13px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{it.d}</div>
                                         {it.rows && it.rows.length > 0 && (
                                           <div className="flex flex-wrap gap-x-5 gap-y-1 mt-1">
                                             {it.rows.map((r, m) => (
@@ -10125,7 +10129,7 @@
                                             ? { gridColumn: "1 / -1", width: "calc(50% - 6px)", justifySelf: "center" } : {}) }}>
                                         <div className="flex items-baseline justify-between gap-2 pb-1.5 mb-0.5" style={{ borderBottom: `1px solid ${(NC_PERS_C[g.k] || "#0e7490")}2e` }}>
                                           <span className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: NC_PERS_C[g.k] || "#0e7490" }}>{NC_PERS_C[g.k] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.k], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.k}</span>
-                                          <span className="num text-[14px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: NC_PERS_C[g.k] || "#0e7490" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
+                                          <span className="num text-[14px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: NC_PERS_C[g.k] || "#0e7490" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
                                         </div>
                                         {g.list.map((x, i) => (
                                           <div key={i} className="py-2 border-t border-stone-100 first:border-t-0">
@@ -10205,7 +10209,7 @@
                                 <div className="rounded-xl px-5 py-4 border border-stone-200 mt-4" style={{ background: "#fafaf8", borderLeft: `3px solid ${cV}` }}>
                                   <div className="flex items-baseline justify-between gap-2 mb-3.5" style={{ borderBottom: "1px solid rgba(120,113,108,0.15)", paddingBottom: 8 }}>
                                     <span className="nc-ctitre">Épargne constituée — total</span>
-                                    <span className="num text-[21px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#0e7490" }}>{nfG(total)} €</span>
+                                    <span className="num text-[21px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0e7490" }}>{nfG(total)} €</span>
                                   </div>
                                   {/* ═══ COURT TERME / LONG TERME — DEUX CARTES DISTINCTES (02/09) ═══
                                       Les deux lignes empilees, avec deux barres qui se ressemblaient,
@@ -10237,7 +10241,7 @@
                                           <div className="rounded-xl px-4 py-3.5 bg-white" style={{ border: "1px solid rgba(3,105,161,0.28)", borderTop: `3px solid ${BLEU}` }}>
                                             <div className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: BLEU }}>Court terme</div>
                                             <div className="text-[10px] text-stone-400 mb-1.5">livrets, comptes courants — disponible immédiatement</div>
-                                            <div className="num font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", fontSize: 24, color: BLEU, lineHeight: 1.1 }}>{nfG(courtT)} €</div>
+                                            <div className="num font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 24, color: BLEU, lineHeight: 1.1 }}>{nfG(courtT)} €</div>
                                             {pctPreco != null ? (
                                               <>
                                                 <div className="text-[10px] text-stone-500 mt-2">Épargne de précaution recommandée : <b className="num text-stone-700">{nfG(cibleHaut)} €</b></div>
@@ -10254,7 +10258,7 @@
                                           <div className="rounded-xl px-4 py-3.5 bg-white" style={{ border: `1px solid ${longT > 0 ? "rgba(15,118,110,0.28)" : "rgba(185,28,28,0.28)"}`, borderTop: `3px solid ${cLT}` }}>
                                             <div className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: cLT }}>Long terme</div>
                                             <div className="text-[10px] text-stone-400 mb-1.5">assurance-vie, PER, titres — placé pour durer</div>
-                                            <div className="num font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", fontSize: 24, color: cLT, lineHeight: 1.1 }}>{nfG(longT)} €</div>
+                                            <div className="num font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 24, color: cLT, lineHeight: 1.1 }}>{nfG(longT)} €</div>
                                             <div className="text-[10.5px] mt-2 font-bold" style={{ color: cLT }}>
                                               {longT > 0 ? `${Math.round(pLT)} % de votre épargne` : "Aucune épargne placée à long terme"}
                                             </div>
@@ -10272,7 +10276,7 @@
                       })()}
 
                       <div className="flex items-center gap-3 mt-5 mb-3">
-                        <div className="text-[17px] font-bold whitespace-nowrap" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>Les chiffres du dossier</div>
+                        <div className="text-[17px] font-bold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Les chiffres du dossier</div>
                         <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, rgba(184,146,78,0.5), rgba(184,146,78,0))" }}></div>
                       </div>
                   <div className="grid grid-cols-2 gap-3 mb-4">
@@ -10287,7 +10291,7 @@
                       ))}
                       <div className="flex items-baseline justify-between gap-2 mt-auto pt-1.5 border-t border-stone-200" style={{ marginTop: "auto" }}>
                         <span className="text-[12px] font-bold text-stone-800">Total</span>
-                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#0f766e" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalRevenus)} €/mois</span>
+                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalRevenus)} €/mois</span>
                       </div>
                     </div>
                     {/* Total ancré en BAS de la carte : les deux totaux revenus/charges restent
@@ -10303,7 +10307,7 @@
                       ))}
                       <div className="flex items-baseline justify-between gap-2 mt-auto pt-1.5 border-t border-stone-200" style={{ marginTop: "auto" }}>
                         <span className="text-[12px] font-bold text-stone-800">Total</span>
-                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#b91c1c" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalCharges)} €/mois</span>
+                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#b91c1c" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalCharges)} €/mois</span>
                       </div>
                     </div>
                   </div>
@@ -10466,7 +10470,7 @@
                           </div>
                           {loyerMd > 0 && (
                             <div className="mt-2 pt-2 border-t border-stone-100 text-center">
-                              <div className="num text-[13px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#0f766e" }}>{nfMd(synth.dispo35 + loyerMd)} €<span className="text-[9.5px] font-medium text-stone-500"> · achat RP ({d.logement === "gratuit" ? "forfait logement supprimé" : "loyer supprimé"})</span></div>
+                              <div className="num text-[13px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfMd(synth.dispo35 + loyerMd)} €<span className="text-[9.5px] font-medium text-stone-500"> · achat RP ({d.logement === "gratuit" ? "forfait logement supprimé" : "loyer supprimé"})</span></div>
                               <div className="text-[9.5px] text-stone-400">{nfMd(synth.dispo35)} € en investissement locatif ({d.logement === "gratuit" ? "forfait conservé" : "loyer conservé"})</div>
                             </div>
                           )}
@@ -10631,17 +10635,17 @@
                   <div className="grid grid-cols-3 gap-3 mb-4">
                     <div className="rounded-2xl p-3.5 bg-white border border-stone-200" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                       <div className="nc-ctitre mb-2">Actif total</div>
-                      <div className="num text-[21px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{new Intl.NumberFormat('fr-FR').format(synth.actifTotal)} €</div>
+                      <div className="num text-[21px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{new Intl.NumberFormat('fr-FR').format(synth.actifTotal)} €</div>
                       <div className="text-[10px] text-stone-500">immobilier {new Intl.NumberFormat('fr-FR').format(synth.actifImmo)} € + épargne {new Intl.NumberFormat('fr-FR').format(synth.epargneConstituee)} €</div>
                     </div>
                     <div className="rounded-2xl p-3.5 bg-white border border-stone-200" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                       <div className="text-[10px] uppercase tracking-wider font-bold text-stone-400 mb-1">Passif (dettes & crédits)</div>
-                      <div className="num text-[21px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#b91c1c" }}>− {new Intl.NumberFormat('fr-FR').format(synth.passif)} €</div>
+                      <div className="num text-[21px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#b91c1c" }}>− {new Intl.NumberFormat('fr-FR').format(synth.passif)} €</div>
                       <div className="text-[10px] text-stone-500">capitaux restant dus</div>
                     </div>
                     <div className="rounded-2xl p-3.5" style={{ background: "linear-gradient(135deg, #1d2735, #2a3a52)", boxShadow: "0 2px 6px rgba(29,39,53,0.25)" }}>
                       <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#d8bc86" }}>Patrimoine net</div>
-                      <div className="num text-[24px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#f5efe3" }}>{new Intl.NumberFormat('fr-FR').format(synth.patrimoineNet)} €</div>
+                      <div className="num text-[24px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#f5efe3" }}>{new Intl.NumberFormat('fr-FR').format(synth.patrimoineNet)} €</div>
                       {/* Valorisation PAR PERSONNE (28/08) : la détention de la RP (100 % Mr,
                           100 % Mme, 50/50, libre), des biens et des placements est répartie —
                           les crédits suivent la détention du bien, le reste 50/50. */}
@@ -10686,12 +10690,12 @@
                             <div className="grid grid-cols-4 gap-2 mt-2">
                               <div className="rounded-xl px-3 py-2.5 border border-stone-200 bg-white">
                                 <div className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400 mb-1">Revenu net imposable</div>
-                                <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{nf7(fisc7.rniBrut)} €</div>
+                                <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{nf7(fisc7.rniBrut)} €</div>
                                 <div className="text-[9.5px] text-stone-400">{duo7 ? `${civM7} ${nf7(duo7.rniClient)} € · ${civC7} ${nf7(duo7.rniConjoint)} €` : `${String(fisc7.parts).replace(".", ",")} part${fisc7.parts > 1 ? "s" : ""} fiscale${fisc7.parts > 1 ? "s" : ""}`}{pensV7 > 0 ? ` · dont pension alimentaire versée déduite − ${nf7(pensV7)} €/an (art. 156, II-2°)` : ""}</div>
                               </div>
                               <div className="rounded-xl px-3 py-3 border-2" style={{ borderColor: "#6d28d9", background: "#6d28d90c" }}>
                                 <div className="text-[9.5px] uppercase tracking-wider font-bold mb-1" style={{ color: "#6d28d9" }}>Tranche marginale (TMI)</div>
-                                <div className="num text-[24px] font-extrabold leading-none" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#6d28d9" }}>{(fisc7.tmi * 100).toFixed(0)} %</div>
+                                <div className="num text-[24px] font-extrabold leading-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#6d28d9" }}>{(fisc7.tmi * 100).toFixed(0)} %</div>
                                 <div className="text-[9.5px] text-stone-400 mt-1">{duo7 ? `${civM7} ${((fisc7.ir ? fisc7.ir.tmi : 0) * 100).toFixed(0)} % · ${civC7} ${(duo7.tmiConjoint * 100).toFixed(0)} %` : `quotient familial ${nf7(fisc7.ir.qf)} €/part${fisc7.deductions > 0 ? ` (après ${nf7(fisc7.deductions)} € déduits)` : ""}`}</div>
                               </div>
                               {/* 02/09 : ORDRE DE LECTURE demandé par le CGP — la chaîne se lit
@@ -10701,12 +10705,12 @@
                                   baisse. Ne pas réordonner sans lui redemander. */}
                               <div className="rounded-xl px-3 py-2.5 border border-stone-200 bg-white">
                                 <div className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400 mb-1">Taux moyen</div>
-                                <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{(fisc7.tauxMoyen * 100).toFixed(1).replace(".", ",")} %</div>
+                                <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{(fisc7.tauxMoyen * 100).toFixed(1).replace(".", ",")} %</div>
                                 <div className="text-[9.5px] text-stone-400">impôt / revenu imposable</div>
                               </div>
                               <div className="rounded-xl px-3 py-3 border-2" style={{ borderColor: "#6d28d9", background: "#6d28d90c" }}>
                                 <div className="text-[9.5px] uppercase tracking-wider font-bold mb-1" style={{ color: "#6d28d9" }}>Impôt estimé</div>
-                                <div className="num text-[24px] font-extrabold leading-none" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#6d28d9" }}>{nf7(fisc7.impotNet)} €</div>
+                                <div className="num text-[24px] font-extrabold leading-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#6d28d9" }}>{nf7(fisc7.impotNet)} €</div>
                                 <div className="text-[9.5px] text-stone-400 mt-1">{duo7 ? `${civM7} ${nf7(fisc7.impotNet - duo7.impotConjoint)} € · ${civC7} ${nf7(duo7.impotConjoint)} €` : (fisc7.gainTotal > 0 ? `après ${nf7(fisc7.gainTotal)} € d'avantages` : pensV7 > 0 ? `pension déduite − ${nf7(pensV7)} €/an · aucun autre levier` : "aucun levier activé")}</div>
                               </div>
                               {(fisc7.reductions > 0 || fisc7.deductions > 0) && (
@@ -10714,7 +10718,7 @@
                                   {/* 29/08 (contrôle expert) : une DÉDUCTION du revenu n'est pas une
                                       « réduction d'impôt » — le libellé suit la nature de l'avantage. */}
                                   <div className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400 mb-1">{fisc7.reductions > 0 && fisc7.deductions > 0 ? "Avantages fiscaux" : fisc7.deductions > 0 ? "Déduction du revenu" : "Réductions d'impôt"}</div>
-                                  <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#0f766e" }}>− {nf7(fisc7.gainTotal)} €/an{fisc7.reductions === 0 && fisc7.deductions > 0 ? <span className="text-[10px] font-semibold text-stone-400"> d'économie</span> : null}</div>
+                                  <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>− {nf7(fisc7.gainTotal)} €/an{fisc7.reductions === 0 && fisc7.deductions > 0 ? <span className="text-[10px] font-semibold text-stone-400"> d'économie</span> : null}</div>
                                   <div className="text-[9.5px] text-stone-400">{fisc7.deductions > 0 ? `${nf7(fisc7.deductions)} € déduits du revenu imposable${fisc7.reductions === 0 ? ` (économie = ${nf7(fisc7.deductions)} € × TMI ${((fisc7.tmi || 0) * 100).toFixed(0)} %)` : ""}` : ""}{fisc7.deductions > 0 && fisc7.reductions > 0 ? " · " : ""}{fisc7.reductions > 0 ? `${nf7(fisc7.reductions)} € retranchés de l'impôt` : ""}</div>
                                 </div>
                               )}
@@ -10755,7 +10759,7 @@
                                       <div className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400 mb-1">Revenus estimés à la retraite</div>
                                       {/* mediane, comme la tuile de baisse juste en dessous : deux
                                           presentations differentes de la meme estimation ne collent pas */}
-                                      <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>≈ {nf7((pensBas7 + pensHaut7) / 2)} €/mois</div>
+                                      <div className="num text-[16px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>≈ {nf7((pensBas7 + pensHaut7) / 2)} €/mois</div>
                                       <div className="text-[9.5px] text-stone-400">pour {nf7(act7)} € aujourd'hui — {hyp7}</div>
                                       {/* 02/09 : saisie DIRECTE du montant relevé sur info-retraite.fr,
                                           là où le CGP en a besoin — pendant le rendez-vous, écran
@@ -10786,7 +10790,7 @@
                                         {/* 02/09 : UN SEUL CHIFFRE, la mediane. La fourchette « − X a − Y €/mois »
                                             ne tenait pas dans la tuile (le mot « mois » passait a la ligne) et
                                             deux nombres pour une meme idee brouillent la lecture du client. */}
-                                        <div className="num text-[19px] font-extrabold leading-none whitespace-nowrap tracking-tight" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#b91c1c" }}>− {nf7((baisse7 + baisseHaut7) / 2)} €/mois</div>
+                                        <div className="num text-[19px] font-extrabold leading-none whitespace-nowrap tracking-tight" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#b91c1c" }}>− {nf7((baisse7 + baisseHaut7) / 2)} €/mois</div>
                                         <div className="text-[9.5px] text-stone-400 mt-1">de {nf7(act7)} € aujourd'hui à ≈ {nf7((pensBas7 + pensHaut7) / 2)} €/mois estimés (− {Math.round((baisse7 + baisseHaut7) / 2 / act7 * 100)} %){fourchette7 ? " · estimation médiane, plafonnement PASS" : ""}</div>
                                       </div>
                                     )}
@@ -10845,7 +10849,7 @@
                                   const P = ncPrecoParts(li);
                                   return <>
                                     <NcPicto texte={P.plein} c={it.c || "#b8924e"} />
-                                    <span className="leading-snug text-[14px]" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                                    <span className="leading-snug text-[14px]" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                                       <b style={{ fontWeight: 800 }}>{P.titre}</b>
                                       {P.suite ? <span style={{ fontWeight: 400 }}>{P.suite}</span> : null}
                                       {P.href ? <>{" "}
@@ -10896,7 +10900,7 @@
                                 {lignes.map((l, i) => (
                                   <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
                                     <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{l.t}</div>
-                                    <div className={l.t === "Notes d'entretien" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
+                                    <div className={l.t === "Notes d'entretien" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
                                     {/* 03/09 : ligne dédiée, toujours à la même position sous le nombre —
                                         ne dépend plus du retour à la ligne du texte du dessus (cf. tuile
                                         voisine, dont le nombre peut être plus court ou plus long). */}
@@ -10941,7 +10945,7 @@
                             <div className={succ.volets.length > 1 ? "grid grid-cols-2 gap-3" : ""}>
                               {succ.volets.map((v, iV) => (
                                 <div key={iV} className="rounded-xl border border-stone-200 p-3.5" style={{ background: "#7c2d1206" }}>
-                                  <div className="text-[14px] font-extrabold mb-2" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>Si {v.nom} décédait</div>
+                                  <div className="text-[14px] font-extrabold mb-2" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Si {v.nom} décédait</div>
                                   <div className="flex items-baseline justify-between gap-2 mb-0.5">
                                     <span className="text-[11px] font-semibold text-stone-600">Patrimoine transmissible estimé</span>
                                     <span className="num text-[15px] font-extrabold text-stone-900 whitespace-nowrap">{nfS(v.assiette)} €</span>
@@ -10963,7 +10967,7 @@
                                       style={sc.rdv2 ? { borderColor: "#0f766e55", background: "#0f766e08" } : { borderColor: "#e7e5e4", background: "#fff" }}>
                                       <div className="flex items-baseline justify-between gap-2">
                                         <span className="text-[11.5px] font-bold text-stone-800">{sc.lib}</span>
-                                        <span className="num text-[16px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: sc.droitsTotal > 0 ? "#b91c1c" : "#0f766e" }}>{sc.droitsTotal > 0 ? `${nfS(sc.droitsTotal)} € de droits` : "0 € de droits"}</span>
+                                        <span className="num text-[16px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: sc.droitsTotal > 0 ? "#b91c1c" : "#0f766e" }}>{sc.droitsTotal > 0 ? `${nfS(sc.droitsTotal)} € de droits` : "0 € de droits"}</span>
                                       </div>
                                       {sc.sub && <div className="text-[10px] text-stone-500 mt-1 leading-relaxed">{sc.sub}</div>}
                                       <div className="mt-1.5 space-y-0.5">
@@ -11015,10 +11019,10 @@
                           if (!prC8 && !prJ8) return null;
                           const CarteR = ({ nom, pr8 }) => (
                             <div className="rounded-xl border border-stone-200 bg-white px-3.5 py-3">
-                              <div className="text-[11px] font-extrabold mb-1.5" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif" }}><NcPers nom={nom} /></div>
+                              <div className="text-[11px] font-extrabold mb-1.5" style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}><NcPers nom={nom} /></div>
                               {pr8 ? (
                                 <>
-                                  <div className="num text-[18px] font-extrabold leading-none" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#6d28d9" }}>{pr8.profil}</div>
+                                  <div className="num text-[18px] font-extrabold leading-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#6d28d9" }}>{pr8.profil}</div>
                                   <div className="text-[9.5px] text-stone-400 mt-0.5 mb-1.5">{pr8.score != null ? `score ${pr8.score} / 52` : "résultat reporté du questionnaire du cabinet"} · SRI {pr8.sri} / 7</div>
                                   <div className="flex gap-1">{[1,2,3,4,5,6,7].map(n => <div key={n} className="flex-1 h-2.5 rounded-sm" style={{ background: n <= pr8.sri ? "#6d28d9" : "#e7e5e4", opacity: n <= pr8.sri ? 0.45 + 0.55 * n / 7 : 1 }}></div>)}</div>
                                 </>
@@ -11042,13 +11046,13 @@
                             <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-2.5" style={{ color: "#6d28d9" }}>Profil de risque — questionnaire réalisé</div>
                             <div className="flex items-center gap-6 flex-wrap">
                               <div>
-                                <div className="num text-[22px] font-extrabold leading-none" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#6d28d9" }}>{pr.profil}</div>
+                                <div className="num text-[22px] font-extrabold leading-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#6d28d9" }}>{pr.profil}</div>
                                 <div className="text-[10px] text-stone-400 mt-1">{pr.score != null ? `score ${pr.score} / 52` : "résultat reporté du questionnaire du cabinet"}</div>
                               </div>
                               <div className="flex-1" style={{ minWidth: 230 }}>
                                 <div className="flex items-baseline justify-between mb-1">
                                   <span className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400">Indicateur synthétique de risque (SRI)</span>
-                                  <span className="num text-[16px] font-extrabold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#6d28d9" }}>{pr.sri} / 7</span>
+                                  <span className="num text-[16px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#6d28d9" }}>{pr.sri} / 7</span>
                                 </div>
                                 <div className="flex gap-1">
                                   {[1, 2, 3, 4, 5, 6, 7].map(n => (
@@ -11221,11 +11225,11 @@
                                             value={prioNum[ch.k] || ""}
                                             onChange={(e) => { const v = e.target.value.replace(/[^1-9]/g, "").slice(0, 1); setPrioNum(p => ({ ...p, [ch.k]: v })); }}
                                             className="nc-syn-noprint absolute inset-0 w-full h-full text-center bg-transparent border-0 outline-none"
-                                            style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }} />
-                                          <span className="nc-print-only" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }}>{prioNum[ch.k] || ""}</span>
+                                            style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }} />
+                                          <span className="nc-print-only" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }}>{prioNum[ch.k] || ""}</span>
                                         </span>
                                         <span className="flex-1">
-                                          <span className="text-[13px] font-bold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{ch.l}</span>
+                                          <span className="text-[13px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{ch.l}</span>
                                           <span className="block text-[10.5px] text-stone-500 leading-snug mt-0.5">{ch.items.join(" · ")}</span>
                                         </span>
                                       </div>
@@ -11242,7 +11246,7 @@
                       {synMode === "preco" && (<>
                       {/* Problématiques : constat → conséquence → préconisation */}
                       <div className="flex items-baseline justify-between mb-2.5 mt-6">
-                        <div className="text-[17px] font-bold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                        <div className="text-[17px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                           Problématiques à traiter
                         </div>
                         <div className="text-[10px] uppercase tracking-widest font-bold" style={{ color: "#b8924e" }}>
@@ -11271,7 +11275,7 @@
                                   {q.famille}
                                 </span>
                               </div>
-                              <div className="text-[16px] font-bold leading-snug mb-2" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>{q.titre}</div>
+                              <div className="text-[16px] font-bold leading-snug mb-2" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{q.titre}</div>
 
                               <div className="space-y-1.5 mb-3">
                                 <p className="text-[12px] leading-relaxed text-stone-700">
@@ -11300,7 +11304,7 @@
                                 <div className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-1.5" style={{ color: "#d8bc86" }}>
                                   Notre préconisation{q.enjeu ? <span className="normal-case tracking-normal font-semibold" style={{ color: "rgba(245,239,227,0.6)" }}> — {q.enjeu}</span> : null}
                                 </div>
-                                <p className="text-[13.5px] leading-relaxed font-semibold" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#f5efe3" }}>{q.preconisation}</p>
+                                <p className="text-[13.5px] leading-relaxed font-semibold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#f5efe3" }}>{q.preconisation}</p>
                                 {q.solutions && q.solutions.length > 0 && (
                                   <div className="mt-2.5 flex flex-wrap gap-1.5">
                                     {q.solutions.map((s, k) => (
@@ -11431,7 +11435,7 @@
                     <div className="px-5 py-4 flex items-center gap-3" style={{ background: `linear-gradient(135deg, ${T.c}18, ${T.c}08)`, borderBottom: `2px solid ${T.c}55` }}>
                       <span className="flex items-center justify-center rounded-xl text-white font-extrabold" style={{ width: 34, height: 34, background: T.c }}>{(T.l || "?").charAt(0)}</span>
                       <div className="min-w-0">
-                        <div className="text-[15px] font-extrabold" style={{ color: T.c, fontFamily: "'Fraunces', 'Playfair Display', serif" }}>Parlons de ce placement</div>
+                        <div className="text-[15px] font-extrabold" style={{ color: T.c, fontFamily: "'Lora', 'Playfair Display', serif" }}>Parlons de ce placement</div>
                         <div className="text-[11px] text-stone-500">{T.l}{ncInt(fa.valeur) > 0 ? ` · ${new Intl.NumberFormat('fr-FR').format(ncInt(fa.valeur))} €` : ""}</div>
                       </div>
                       <button onClick={() => setFicheAvoir(null)} className="ml-auto p-1.5 text-stone-400 hover:text-stone-900 transition"><I.x/></button>
@@ -11485,7 +11489,7 @@
                 <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden" style={{ borderTop: "4px solid var(--nc-accent, #b45309)" }}>
                   <div className="px-6 pt-5 pb-4">
                     <div className="text-[11px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "var(--nc-accent, #b45309)" }}>Un instant — sujet essentiel</div>
-                    <div className="text-[19px] font-bold leading-snug mb-1.5" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                    <div className="text-[19px] font-bold leading-snug mb-1.5" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                       Quel montant souhaitez-vous consacrer à la réalisation de vos objectifs ?
                     </div>
                     <div className="text-[12px] text-stone-500 mb-4">Toutes les préconisations de l'étude se calent sur ce montant — sans lui, la synthèse tourne à vide.</div>
@@ -11495,7 +11499,7 @@
                     </div>
                     {/* RÈGLE CABINET (29/08) : demander AUSSI l'apport initial mobilisable —
                         un capital de départ change les préconisations (assurance-vie, PER…). */}
-                    <div className="text-[13px] font-bold leading-snug mb-1.5" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                    <div className="text-[13px] font-bold leading-snug mb-1.5" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
                       Et quel apport initial pourriez-vous mobiliser au départ ?
                     </div>
                     <div className="flex flex-wrap items-center gap-1.5 mb-2">
@@ -11522,7 +11526,7 @@
               <div className="fixed inset-0 z-[2147483620] flex items-center justify-center p-6" style={{ background: "rgba(29,39,53,0.45)" }} onClick={() => setPdfHintOpen(null)}>
                 <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
                   <div className="px-5 py-4" style={{ background: "linear-gradient(135deg, #1d273522, #1d273508)", borderBottom: "2px solid rgba(29,39,53,0.25)" }}>
-                    <div className="text-[15px] font-extrabold" style={{ color: "#1d2735", fontFamily: "'Fraunces', 'Playfair Display', serif" }}>Enregistrer en PDF — comment ça marche</div>
+                    <div className="text-[15px] font-extrabold" style={{ color: "#1d2735", fontFamily: "'Lora', 'Playfair Display', serif" }}>Enregistrer en PDF — comment ça marche</div>
                   </div>
                   <div className="px-5 py-4 text-[13px] text-stone-700 leading-relaxed">
                     Rien ne va s'imprimer : la fenêtre d'impression qui s'ouvre est <b>l'outil du navigateur qui fabrique le PDF</b> (texte net, qualité professionnelle).
@@ -11546,7 +11550,7 @@
               <div className="fixed inset-0 z-[2147483630] flex items-center justify-center p-6" style={{ background: "rgba(29,39,53,0.45)" }} onClick={() => setEditOpen(null)}>
                 <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
                   <div className="px-5 py-4 flex items-center gap-3" style={{ background: "linear-gradient(135deg, #b8924e22, #b8924e08)", borderBottom: "2px solid rgba(184,146,78,0.4)" }}>
-                    <div className="text-[15px] font-extrabold" style={{ color: "#8a6d34", fontFamily: "'Fraunces', 'Playfair Display', serif" }}>Corriger « {editOpen.f.t} »</div>
+                    <div className="text-[15px] font-extrabold" style={{ color: "#8a6d34", fontFamily: "'Lora', 'Playfair Display', serif" }}>Corriger « {editOpen.f.t} »</div>
                     <button onClick={() => setEditOpen(null)} className="ml-auto p-1.5 text-stone-400 hover:text-stone-900 transition"><I.x/></button>
                   </div>
                   <div className="px-5 py-4">
@@ -11600,7 +11604,7 @@
                 <div className="fixed inset-0 z-[2147483620] flex items-center justify-center p-6" style={{ background: "rgba(29,39,53,0.45)" }} onClick={() => setHypoOpen(false)}>
                   <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
                     <div className="px-5 py-4 flex items-center gap-3" style={{ background: "linear-gradient(135deg, #b8924e22, #b8924e08)", borderBottom: "2px solid rgba(184,146,78,0.4)" }}>
-                      <div className="text-[15px] font-extrabold" style={{ color: "#8a6d34", fontFamily: "'Fraunces', 'Playfair Display', serif" }}>Capacité d'emprunt — hypothèses retenues</div>
+                      <div className="text-[15px] font-extrabold" style={{ color: "#8a6d34", fontFamily: "'Lora', 'Playfair Display', serif" }}>Capacité d'emprunt — hypothèses retenues</div>
                       <button onClick={() => setHypoOpen(false)} className="ml-auto p-1.5 text-stone-400 hover:text-stone-900 transition"><I.x/></button>
                     </div>
                     <div className="px-5 py-3">
@@ -16698,7 +16702,7 @@
                       {details.map((it, idx) => (
                         <div key={idx} style={{ flex: '0 0 30%', minWidth: '44mm', minHeight: '23mm', background: `${it.c}0d`, border: `1px solid ${it.c}44`, borderRadius: '2.5mm', padding: '2.6mm 3.5mm', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '6.4pt', letterSpacing: '0.16em', textTransform: 'uppercase', color: it.c, fontWeight: 700, lineHeight: 1.3 }}>{it.k}</div>
-                          <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: '15pt', fontWeight: 700, color: '#0a0908', lineHeight: 1, fontVariantNumeric: 'tabular-nums', marginTop: '1.5mm', whiteSpace: 'nowrap' }}>
                             {it.v}<span style={{ fontSize: '8pt', fontWeight: 500, color: '#78716c', marginLeft: '1.5px' }}>{it.u}</span>
                           </div>
                           {it.sub && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '5.8pt', fontWeight: 700, color: '#b45309', letterSpacing: '0.02em', marginTop: '1.5mm', whiteSpace: 'pre-line', lineHeight: 1.5, display: 'inline-block', textAlign: 'left' }}>{it.sub}</div>}
@@ -16711,7 +16715,7 @@
                         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7pt', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', fontWeight: 700 }}>Total net versé</div>
                         <div style={{ fontSize: '7.5pt', color: 'rgba(255,255,255,0.7)', marginTop: '0.8mm' }}>net de frais d'entrée · investi réellement</div>
                       </div>
-                      <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: '22pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '11pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
+                      <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: '22pt', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>{nf(totalNet)}<span style={{ fontSize: '11pt', fontWeight: 600, opacity: 0.85, marginLeft: '2px' }}>€</span></div>
                     </div>
                   </div>
                 );
@@ -16801,7 +16805,7 @@
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#57534e" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct1/100)*c} ${c}`}/>
                               </g>
                               <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
-                                fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#0a0908" letterSpacing="-0.5">×{multipleSeul.toFixed(2)}</text>
+                                fontFamily="Lora, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#0a0908" letterSpacing="-0.5">×{multipleSeul.toFixed(2)}</text>
                             </svg>
                           </div>
                           {/* PER + IR */}
@@ -16813,7 +16817,7 @@
                                 <circle cx="50" cy="50" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(pct2/100)*c} ${c}`}/>
                               </g>
                               <text x="50" y="50" textAnchor="middle" dominantBaseline="central"
-                                fontFamily="Fraunces, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#047857" letterSpacing="-0.5">×{multipleReinv.toFixed(2)}</text>
+                                fontFamily="Lora, 'Playfair Display', serif" fontSize="20" fontWeight="800" fill="#047857" letterSpacing="-0.5">×{multipleReinv.toFixed(2)}</text>
                             </svg>
                           </div>
                         </div>
@@ -16840,7 +16844,7 @@
                             <circle cx="62" cy="62" r={r} fill="none" stroke="#047857" strokeWidth="10" strokeLinecap="round" strokeDasharray={`${dash} ${c}`}/>
                           </g>
                           <text x="62" y="58" textAnchor="middle" dominantBaseline="central"
-                            fontFamily="Fraunces, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
+                            fontFamily="Lora, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
                             letterSpacing="-0.5">×{multiple.toFixed(2)}</text>
                           <text x="62" y="76" textAnchor="middle" dominantBaseline="central"
                             fontFamily="Inter, sans-serif" fontSize="8" fontWeight="600" fill="#78716c"
@@ -16887,7 +16891,7 @@
                           <span>Hypothèses de rendement</span>
                           <span style={{display:'inline-flex', alignItems:'baseline', gap:'2px', padding:'1mm 2mm', background:'#fafaf9', border:'0.5pt solid '+SRI_COLORS[Math.round(sim.sri)], borderRadius:'1.5mm'}}>
                             <span style={{fontSize:'5.5pt', color:'#57534e', fontWeight:600}}>SRI</span>
-                            <span style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'10pt', fontWeight:800, color: SRI_COLORS[Math.round(sim.sri)], letterSpacing:'-0.01em'}}>{sim.sri.toFixed(1)}</span>
+                            <span style={{fontFamily:"'Lora','Playfair Display',serif", fontSize:'10pt', fontWeight:800, color: SRI_COLORS[Math.round(sim.sri)], letterSpacing:'-0.01em'}}>{sim.sri.toFixed(1)}</span>
                             <span style={{fontSize:'6pt', color:'#78716c'}}>/7</span>
                           </span>
                         </div>
@@ -16925,11 +16929,11 @@
                         <div style={{display:'flex', flexDirection:'column', gap:'1.5mm', width:'100%', marginTop:'1mm'}}>
                           <div style={{padding:'1.5mm 2.5mm', border:'1px solid rgba(120,113,108,0.30)', borderRadius:'1.5mm', background:'rgba(245,245,244,0.45)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'2mm'}}>
                             <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#57534e'}}>PER seul</div>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteSeulMois)}<span style={{fontSize:'6.5pt', color:'#78716c', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
+                            <div style={{fontFamily:"'Lora','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteSeulMois)}<span style={{fontSize:'6.5pt', color:'#78716c', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
                           <div style={{padding:'1.5mm 2.5mm', border:'2px solid #047857', borderRadius:'1.5mm', background:'linear-gradient(180deg, rgba(236,253,245,0.65) 0%, #ffffff 100%)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'2mm'}}>
                             <div style={{fontSize:'6.5pt', textTransform:'uppercase', letterSpacing:'0.10em', fontWeight:700, color:'#047857'}}>PER + IR</div>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteReinvMois)}<span style={{fontSize:'6.5pt', color:'#047857', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
+                            <div style={{fontFamily:"'Lora','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEUR(renteReinvMois)}<span style={{fontSize:'6.5pt', color:'#047857', marginLeft:'1mm', fontWeight:500}}>/mois</span></div>
                           </div>
                         </div>
                         <div style={{marginTop:'2mm', paddingTop:'1.5mm', width:'100%', fontSize:'6.5pt', color:'#57534e', textAlign:'center', fontStyle:'italic', lineHeight:1.4, borderTop:'1px solid rgba(167,243,208,0.6)'}}>
@@ -16979,7 +16983,7 @@
                               <circle cx="46" cy="46" r={r} fill="none" stroke="#047857" strokeWidth="7" strokeLinecap="round" strokeDasharray={`${dash} ${c}`}/>
                             </g>
                             <text x="46" y="44" textAnchor="middle" dominantBaseline="central"
-                              fontFamily="Fraunces, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
+                              fontFamily="Lora, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
                               letterSpacing="-0.5">{(ratio*100).toFixed(0)}%</text>
                             <text x="46" y="60" textAnchor="middle" dominantBaseline="central"
                               fontFamily="Inter, sans-serif" fontSize="7" fontWeight="500" fill="#78716c"
@@ -17023,7 +17027,7 @@
                         <div style={{display:'flex', alignItems:'center', gap:'0', border:'1px solid rgba(10,9,8,0.10)', borderRadius:'3mm', overflow:'hidden', background:'#fff', minHeight:'18mm'}}>
                           {/* Colonne 1 — Titre */}
                           <div style={{width:'36mm', flexShrink:0, margin:'2.5mm 0 2.5mm 2.5mm', borderRadius:'2mm', background: accent || 'linear-gradient(150deg,#0b3b37 0%,#0f766e 60%,#12897f 100%)', display:'flex', alignItems:'center', justifyContent:'center', padding:'2.5mm 4mm', boxShadow:'0 2mm 5mm -3mm rgba(15,118,110,0.5)'}}>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'8.5pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em', textAlign:'center'}}>{title}</div>
+                            <div style={{fontFamily:"'Lora','Playfair Display',serif", fontSize:'8.5pt', fontWeight:800, color:'#ffffff', lineHeight:1.25, letterSpacing:'-0.01em', textAlign:'center'}}>{title}</div>
                           </div>
                           {/* Colonne 2 — Barre(s) */}
                           <div style={{flex:1, padding:'3mm 5mm', display:'flex', flexDirection:'column', gap:'2mm', borderRight: isMultiPrint ? 'none' : '1px solid rgba(10,9,8,0.07)'}}>
@@ -17033,7 +17037,7 @@
                               <div style={{flex:1, height:'6px', borderRadius:'3px', background:'#d1fae5', position:'relative'}}>
                                 <div style={{position:'absolute', inset:'0', borderRadius:'3px', background:'linear-gradient(90deg,#059669,#10b981)', width:`${wSol}%`, boxShadow:'0 1px 4px rgba(5,150,105,0.35)'}}></div>
                               </div>
-                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valSol)}</div>
+                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Lora','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valSol)}</div>
                             </div>
                             {/* Barre livret — masquée en multi (aucune comparaison) */}
                             {!isMultiPrint && (
@@ -17042,7 +17046,7 @@
                               <div style={{flex:1, height:'4px', borderRadius:'2px', background:'#e7e5e4', position:'relative'}}>
                                 <div style={{position:'absolute', inset:'0', borderRadius:'2px', background:'#a8a29e', width:`${wLiv}%`}}></div>
                               </div>
-                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'10pt', fontWeight:700, color:'#78716c', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valLiv)}</div>
+                              <div style={{width:'24mm', flexShrink:0, textAlign:'right', fontFamily:"'Lora','Playfair Display',serif", fontSize:'10pt', fontWeight:700, color:'#78716c', letterSpacing:'-0.02em', lineHeight:1}}>{fmt(valLiv)}</div>
                             </div>
                             )}
                           </div>
@@ -17050,7 +17054,7 @@
                           {!isMultiPrint && (
                           <div style={{width:'34mm', flexShrink:0, padding:'3mm 4mm', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'linear-gradient(135deg,#f0fdf4,#ecfdf5)'}}>
                             <div style={{fontFamily:"'JetBrains Mono',monospace", fontSize:'5.5pt', letterSpacing:'0.12em', textTransform:'uppercase', color:'#047857', fontWeight:700, textAlign:'center', lineHeight:1.3, marginBottom:'1mm'}}>{winLabel || 'Gain'}</div>
-                            <div style={{fontFamily:"'Fraunces','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>+{fmt(gain)}</div>
+                            <div style={{fontFamily:"'Lora','Playfair Display',serif", fontSize:'13pt', fontWeight:800, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>+{fmt(gain)}</div>
                             {gainPct != null && <div style={{fontFamily:"'JetBrains Mono',monospace", fontSize:'7pt', color:'#059669', fontWeight:700, marginTop:'0.5mm'}}>+{(gainPct*100).toFixed(0)} %</div>}
                           </div>
                           )}
@@ -17169,17 +17173,17 @@
                       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'4mm', marginTop:'5mm'}}>
                         <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center'}}>
                           <div className="cmp-title" style={{marginBottom:'2mm', textAlign:'left'}}>Plus-value brute</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>+{fmtEURc(plusValue)}</div>
+                          <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>+{fmtEURc(plusValue)}</div>
                           <div style={{fontSize:'8pt', color:'#78716c', marginTop:'2mm', fontStyle:'italic'}}>intérêts générés sur {N} ans</div>
                         </div>
                         <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center'}}>
                           <div className="cmp-title" style={{marginBottom:'2mm', textAlign:'left'}}>Versements</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(totalVerseBrut)}</div>
+                          <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#0a0908', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(totalVerseBrut)}</div>
                           <div style={{fontSize:'8pt', color:'#78716c', marginTop:'2mm', fontStyle:'italic'}}>capital investi</div>
                         </div>
                         <div className="pres-cmp-card" style={{padding:'4mm 5mm', textAlign:'center', background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
                           <div className="cmp-title" style={{color:'#047857', marginBottom:'2mm', textAlign:'left'}}>Capital à terme</div>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(finalSolution)}</div>
+                          <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'22pt', fontWeight:700, color:'#047857', letterSpacing:'-0.02em', lineHeight:1}}>{fmtEURc(finalSolution)}</div>
                           <div style={{fontSize:'8pt', color:'#047857', opacity:0.75, marginTop:'2mm', fontStyle:'italic'}}>rendement net {(tauxEffectif*100).toFixed(2).replace('.',',')} %/an</div>
                         </div>
                       </div>
@@ -17207,7 +17211,7 @@
                             <circle cx="54" cy="54" r={r} fill="none" stroke="#047857" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${dash} ${c}`}/>
                           </g>
                           <text x="54" y="52" textAnchor="middle" dominantBaseline="central"
-                            fontFamily="Fraunces, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
+                            fontFamily="Lora, 'Playfair Display', serif" fontSize="22" fontWeight="800" fill="#047857"
                             letterSpacing="-0.5">{(ratio*100).toFixed(0)}%</text>
                           <text x="54" y="68" textAnchor="middle" dominantBaseline="central"
                             fontFamily="Inter, sans-serif" fontSize="8" fontWeight="500" fill="#78716c"
@@ -17245,7 +17249,7 @@
                             <circle cx="85" cy="85" r={r} fill="none" stroke="#047857" strokeWidth="13" strokeLinecap="butt" strokeDasharray={`${dash} ${c}`}/>
                           </g>
                           <text x="85" y="80" textAnchor="middle" dominantBaseline="central"
-                            fontFamily="Fraunces, 'Playfair Display', serif" fontSize="36" fontWeight="800" fill="#047857"
+                            fontFamily="Lora, 'Playfair Display', serif" fontSize="36" fontWeight="800" fill="#047857"
                             letterSpacing="-0.5">{(ratioExo*100).toFixed(0)}%</text>
                           <text x="85" y="106" textAnchor="middle" dominantBaseline="central"
                             fontFamily="Inter, sans-serif" fontSize="10" fontWeight="600" fill="#78716c"
@@ -17263,7 +17267,7 @@
                   <div className="pres-cmp-card" style={{background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
                     <div className="cmp-title" style={{color:'#047857'}}>Coût réel pour l'épargnant</div>
                     <div style={{display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:'3mm'}}>
-                      <span style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
+                      <span style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
                         {fmtEUR(Math.max(0, totalVerseBrut - reductionImpotCumulee))}
                       </span>
                     </div>
@@ -17273,11 +17277,11 @@
                     <div style={{paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
                       <div>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>Versements bruts</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEUR(totalVerseBrut)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEUR(totalVerseBrut)}</div>
                       </div>
                       <div>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1mm'}}>− Réduction</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>−{fmtEUR(reductionImpotCumulee)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>−{fmtEUR(reductionImpotCumulee)}</div>
                       </div>
                     </div>
                   </div>
@@ -17285,7 +17289,7 @@
                   <div className="pres-cmp-card" style={{background:'linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%)', border:'1px solid #a7f3d0'}}>
                     <div className="cmp-title" style={{color:'#047857'}}>Plus-value générée</div>
                     <div style={{display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:'3mm'}}>
-                      <span style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
+                      <span style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'28pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
                         +{fmtEUR(Math.max(0, finalSolution - totalVerseBrut))}
                       </span>
                     </div>
@@ -17295,11 +17299,11 @@
                     <div style={{paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
                       <div>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1mm'}}>Versements</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(totalVerseBrut)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(totalVerseBrut)}</div>
                       </div>
                       <div>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1mm'}}>Capital à terme</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>{fmtEURc(finalSolution)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'13pt', fontWeight:700, color:'#047857'}}>{fmtEURc(finalSolution)}</div>
                       </div>
                     </div>
                   </div>
@@ -17308,7 +17312,7 @@
                     <div className="cmp-title" style={{color:'#047857', textAlign:'center'}}>Capital transmis & exonération</div>
                     {/* Montant principal — centré horizontalement sur sa propre ligne */}
                     <div style={{textAlign:'center', marginBottom:'2mm'}}>
-                      <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'30pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
+                      <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'30pt', fontWeight:800, color:'#047857', letterSpacing:'-0.025em', lineHeight:1}}>
                         {fmtEUR(sim.fisc.abattTotal)}
                       </div>
                       <div style={{fontSize:'9pt', color:'#57534e', lineHeight:1.5, marginTop:'2mm', fontStyle:'italic'}}>
@@ -17320,18 +17324,18 @@
                     <div style={{marginTop:'4mm', paddingTop:'3mm', borderTop:'1px solid rgba(4,120,87,0.18)', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4mm'}}>
                       <div style={{textAlign:'center'}}>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#78716c', fontWeight:600, marginBottom:'1.5mm'}}>Taxe AV</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(sim.fisc.taxe)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#0a0908'}}>{fmtEURc(sim.fisc.taxe)}</div>
                       </div>
                       <div style={{textAlign:'center'}}>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.22em', textTransform:'uppercase', color:'#047857', fontWeight:600, marginBottom:'1.5mm'}}>Net transmis</div>
-                        <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#047857'}}>{fmtEURc(sim.fisc.direct)}</div>
+                        <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'14pt', fontWeight:700, color:'#047857'}}>{fmtEURc(sim.fisc.direct)}</div>
                       </div>
                     </div>
                     {primeCompar && (
                       <div style={{marginTop:'3mm', paddingTop:'3mm', borderTop:'1px dashed rgba(184,146,78,0.5)', display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:'3mm'}}>
                         <div style={{fontFamily:"'JetBrains Mono', monospace", fontSize:'6.5pt', letterSpacing:'0.14em', textTransform:'uppercase', color:'#a07f3f', fontWeight:700, lineHeight:1.4}}>Avec prime majorée<br/>{fmtEUR(primeCompar.prime)}/mois</div>
                         <div style={{textAlign:'right'}}>
-                          <div style={{fontFamily:"'Fraunces', 'Playfair Display', serif", fontSize:'15pt', fontWeight:800, color:'#a07f3f', letterSpacing:'-0.02em'}}>{fmtEURc(primeCompar.net)}</div>
+                          <div style={{fontFamily:"'Lora', 'Playfair Display', serif", fontSize:'15pt', fontWeight:800, color:'#a07f3f', letterSpacing:'-0.02em'}}>{fmtEURc(primeCompar.net)}</div>
                           <div style={{fontSize:'7.5pt', color:'#a07f3f', fontWeight:700}}>+{fmtEUR(primeCompar.net - sim.fisc.direct)} transmis</div>
                         </div>
                       </div>
