@@ -61,7 +61,12 @@
     }
   </script>
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
+    /* 11/09/2026 (CGP, PDF Bon/Riu) : Fraunces dessine une ligature « ff » (« chiffres »)
+       que le CGP refuse — ligatures coupées PARTOUT (Inter n'en a que d'insignifiantes).
+       Attention : cette règle « * » s'applique AUSSI aux <span> imbriqués dans un bloc en
+       Fraunces posé en style inline — un enfant qui doit rester en Fraunces le dit
+       explicitement (fontFamily: "inherit"), cf. l'en-tête de la synthèse. */
+    * { font-family: 'Inter', system-ui, sans-serif; font-variant-ligatures: none; }
     /* Charte Figara : fond clair aéré avec touches brand (rouge + accents anthracite légers) */
     body {
       background-color: #fafaf9;  /* stone-50, presque blanc cassé */
@@ -1062,7 +1067,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v208 (10/09 : SUCCESSION — LE PER EST TRAITE COMME L ASSURANCE-VIE. Regle du CGP : « je veux que le PER soit traite comme l assurance-vie, ce sont les livrets et autres placements bancaires qui ne doivent beneficier d aucun abattement ». ncCalcSuccession range desormais les avoirs de type « per » (et le PER declare a l etape Fiscalite) avec l assurance-vie HORS succession (art. 990 I, abattement 152 500 € par beneficiaire, 20 pct au-dela) ; livrets, compte courant, PEA, CTO, epargne salariale et autres restent dans l assiette sans abattement. Le PER nouveau de la projection est range en type « per ». Libelles du constat et du tableau avant / apres : « assurance-vie et PER ». Banc : controle 3 octies (PER hors assiette, livrets dedans).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v209 (11/09 : SYNTHESE, tuiles Coordonnees -- (1) en couple, la ligne du client porte sa civilite comme celle du conjoint : « Monsieur : 06… » / « Madame : 06… » sur telephone et email (demande du CGP). (2) La tuile Adresse, seule sans seconde ligne, descend un peu sa valeur (my-auto dans une tuile flex-col) pour equilibrer la rangee avec Telephone et Email. (3) POLICE (PDF Bon/Riu) : le nom du conjoint sortait en Inter a cote du client en Fraunces dans l en-tete -- la regle CSS « * » remettait Inter sur les <span> imbriques ; fontFamily inherit pose sur ces span. (4) La ligature « ff » de Fraunces (« chiffres ») est coupee : font-variant-ligatures none partout. Banc : controle 3 nonies (couple prefixe, celibataire sans prefixe). Verifie : le bloc « Details (credit, objectif de vente, note…) » des autres biens est inchange depuis v69 (rendu compare v197 / v208 : memes dimensions).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v208 (10/09 : SUCCESSION — LE PER EST TRAITE COMME L ASSURANCE-VIE. Regle du CGP : « je veux que le PER soit traite comme l assurance-vie, ce sont les livrets et autres placements bancaires qui ne doivent beneficier d aucun abattement ». ncCalcSuccession range desormais les avoirs de type « per » (et le PER declare a l etape Fiscalite) avec l assurance-vie HORS succession (art. 990 I, abattement 152 500 € par beneficiaire, 20 pct au-dela) ; livrets, compte courant, PEA, CTO, epargne salariale et autres restent dans l assiette sans abattement. Le PER nouveau de la projection est range en type « per ». Libelles du constat et du tableau avant / apres : « assurance-vie et PER ». Banc : controle 3 octies (PER hors assiette, livrets dedans).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v207 (10/09 : PROJECTION, retours du CGP. (1) « SANS RIEN CHANGER » = LIVRETS A 1,7 pct (tLiv), jamais 2,5 pct -- et cette epargne entre en totalite dans la succession ; avec les preconisations, assurance-vie ET PER assurance sont transmis hors succession (art. 990 I, abattement 152 500 € par beneficiaire). L ecart de droits est desormais reel. (2) « Ou trouver l epargne » plus compact : intro d une ligne, pieds courts, cartes resserrees ; arbitrage et redirection affichent le gain sur la periode, l equivalent PAR MOIS et le rendement avant → apres (1,7 pct → 5,2 pct).', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v206 (10/09 : (1) un nouveau placement s ouvre sur « -- Choisir -- » : il etait pre-rempli « Livrets » a la creation (addList type livrets) -- j avais repondu a tort que c etait deja le cas. (2) Telephone et email du CONJOINT saisissables (etape 1, bloc Conjoint) et repris sous les tuiles Telephone / Email de la synthese. (3) « Matelas recommande » devient « Epargne de precaution recommandee » ; objectif « Precaution -- reserve de securite ».', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
         console.log('%cANCIEN BUILD v205 (10/09 : PROJECTION -- decisions A a F du CGP. (A) TABLEAU AVANT / APRES : patrimoine, revenus, impot, succession a l horizon (moteur du constat sur le patrimoine projete, assurance-vie hors succession taxee a 20 pct au-dela de 152 500 € par beneficiaire), credits soldes par l assurance de pret ; les loyers du nouveau bien sont comptes a l horizon, nets de la mensualite restante. (B) Jeanbrun / MH / meuble : economie d impot mesuree par rapport a la meme operation en location nue, comprise dans « Impot economise par an ». (C) UN seul chiffre de manque (an 1, avec l annee la plus tendue en complement) ; l effort total compte le locatif en REEL (effAn(0)) comme la carte ; apport du locatif initialise a l apport declare. (D) Un depassement d enveloppe n ampute plus le patrimoine « avec » : seul un solde positif est capitalise. (E) « Ou trouver l epargne » juste sous l enveloppe + bandeau collant enveloppe / employe / reste. (F) Page de garde : cabinet, logo, titre, noms, date, retraite, objectifs / preconisations, saut de page force ensuite. Banc : 60 controles ; harnais : ncCalcSuccession, ncCapNom, ncProjetRP extraits.', 'color:#fff;background:#0f766e;padding:2px 6px;border-radius:3px');
@@ -5035,8 +5041,12 @@
           const cj = d.conjoint || {};
           const enCpl = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
           const civCj = d.civilite === "Mme" ? "Monsieur" : "Madame";
-          phrases.push({ info: true, t: "Téléphone", d: (d.tel || "").trim() || "non renseigné", sub: enCpl && (cj.tel || "").trim() ? `${civCj} : ${cj.tel.trim()}` : undefined });
-          phrases.push({ info: true, t: "Email", d: (d.email || "").trim() || "non renseigné", sub: enCpl && (cj.email || "").trim() ? `${civCj} : ${cj.email.trim()}` : undefined });
+          /* 11/09 (CGP) : en couple, la ligne du client porte AUSSI sa civilité
+             (« Monsieur : 06… »), au même format que la ligne du conjoint. */
+          const civCl = d.civilite === "Mme" ? "Madame" : "Monsieur";
+          const avecCiv = (v) => enCpl ? `${civCl} : ${v}` : v;
+          phrases.push({ info: true, t: "Téléphone", d: avecCiv((d.tel || "").trim() || "non renseigné"), sub: enCpl && (cj.tel || "").trim() ? `${civCj} : ${cj.tel.trim()}` : undefined });
+          phrases.push({ info: true, t: "Email", d: avecCiv((d.email || "").trim() || "non renseigné"), sub: enCpl && (cj.email || "").trim() ? `${civCj} : ${cj.email.trim()}` : undefined });
         }
         // Activité professionnelle de chacun : métier, entreprise, 12/13/14 mois.
         {
@@ -9687,8 +9697,10 @@
                           <div className="text-[10px] uppercase tracking-[0.22em] font-bold mb-1.5" style={{ color: "#8a6d34" }}>Étude patrimoniale · Synthèse</div>
                           <div className="text-[27px] font-bold leading-tight" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
                             {d.civilite === "Mme" ? "Madame" : "Monsieur"} {ncCapNom(d.prenom)} {(d.nom || "").toUpperCase()}
+                            {/* 11/09 : fontFamily inherit sur ces <span> — sinon la règle CSS « * » y remet
+                                Inter et le conjoint sort en sans-serif à côté du client en Fraunces. */}
                             {enCouple && ((d.conjoint || {}).prenom || (d.conjoint || {}).nom) ? (
-                              <span className="font-normal text-stone-400"> &amp; <span className="font-bold" style={{ color: "#1d2735" }}>{((d.conjoint || {}).civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur"} {ncCapNom((d.conjoint || {}).prenom)} {((d.conjoint || {}).nom || "").toUpperCase()}</span></span>
+                              <span className="font-normal text-stone-400" style={{ fontFamily: "inherit" }}> &amp; <span className="font-bold" style={{ color: "#1d2735", fontFamily: "inherit" }}>{((d.conjoint || {}).civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur"} {ncCapNom((d.conjoint || {}).prenom)} {((d.conjoint || {}).nom || "").toUpperCase()}</span></span>
                             ) : null}
                           </div>
                         </div>
@@ -9747,7 +9759,7 @@
                               if (best >= 0) { tete = txt.slice(0, best); reste = txt.slice(best); }
                             }
                             return (
-                              <div className="rounded-lg bg-white border border-stone-200 px-3 py-2" style={{ borderLeft: "3px solid rgba(184,146,78,0.5)" }}>
+                              <div className="rounded-lg bg-white border border-stone-200 px-3 py-2 flex flex-col" style={{ borderLeft: "3px solid rgba(184,146,78,0.5)" }}>
                                 {/* 10/09 (demande du CGP) : une PASTILLE par titre de tuile — petit
                                     disque or pâle avec un pictogramme trait (état civil, activité,
                                     foyer, adresse, téléphone, email). SVG inline : imprimé tel quel. */}
@@ -9755,8 +9767,11 @@
                                   <NcPastilleTuile t={it.t} />
                                   <div className="text-[8.5px] uppercase tracking-[0.14em] font-bold" style={{ color: "#1d2735" }}>{it.t}</div>
                                 </div>
-                                {/* même typographie que le reste du document : valeurs en serif (28/08) */}
-                                <div className="text-[12.5px] leading-snug" style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
+                                {/* même typographie que le reste du document : valeurs en serif (28/08).
+                                    11/09 (CGP) : la tuile Adresse, seule sans seconde ligne, descend
+                                    un peu sa valeur (centrée dans l'espace restant) pour équilibrer
+                                    la rangée avec Téléphone et Email. */}
+                                <div className={"text-[12.5px] leading-snug" + (it.t === "Adresse" ? " my-auto" : "")} style={{ fontFamily: "'Fraunces', 'Playfair Display', serif", color: "#1d2735" }}>
                                   {/* 29/08 (dossier Quoifeur) : dans le complément, les LIBELLÉS
                                       (« régime », « donation au dernier vivant », « banque »…)
                                       restent en gras — seules les VALEURS passent en poids normal. */}
