@@ -1067,7 +1067,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v212 (11/09 : axe « Capacite d endettement non utilisee » reecrit avec la formulation EXACTE du CGP (dossier Drouot) : « Endettement a 14 pct seulement » puis trois puces -- « Votre capacite d endettement vous permettrait de realiser un investissement locatif pour un montant de X € », « L effet de levier du credit est indispensable dans une bonne gestion de patrimoine », « Il vous permet de capitaliser dans le temps, tout en protegeant vos heritiers en cas de deces ». Les phrases « Avant tout engagement : stress-test… » (aussi dans la carte Capacite d emprunt, note union libre) et « Utilisations possibles… » sont supprimees DEFINITIVEMENT. Banc 3 decies etendu.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v213 (11/09 : PROJECTION, retours du CGP sur le dossier Drouot. (1) Page de garde : la phrase « Ce document projette votre situation a X ans… » est supprimee ; le bandeau enveloppe · employee · reste s imprime SOUS les objectifs et preconisations. (2) Ordre : garde -> LES SOLUTIONS RETENUES (bandeau EN FIXE en tete, en grand, imprime ; phrase d engagement) -> OU TROUVER L EPARGNE (compact, ECONOMIE MENSUALISEE : le €/mois est le chiffre principal, le gain sur N ans en second) -> tableau a l horizon, avec « dans N ans » sous « Sans rien changer » et « Avec les preconisations ». La rubrique « Votre participation et les preconisations » est fondue dans les solutions. Le bandeau collant (ecran) ne s affiche que lorsqu aucun bandeau imprime n est visible. (3) BUG apport : parseFloat("10 000") = 10 -> la tuile « Apport mobilise » affichait 10 € ; nb() retire espaces, € et accepte « 10k ».', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v212 (11/09 : axe « Capacite d endettement non utilisee » reecrit avec la formulation EXACTE du CGP (dossier Drouot) : « Endettement a 14 pct seulement » puis trois puces -- « Votre capacite d endettement vous permettrait de realiser un investissement locatif pour un montant de X € », « L effet de levier du credit est indispensable dans une bonne gestion de patrimoine », « Il vous permet de capitaliser dans le temps, tout en protegeant vos heritiers en cas de deces ». Les phrases « Avant tout engagement : stress-test… » (aussi dans la carte Capacite d emprunt, note union libre) et « Utilisations possibles… » sont supprimees DEFINITIVEMENT. Banc 3 decies etendu.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v211 (11/09 : CONSTAT, retours du CGP sur le dossier Mars/Avril. Points forts : « Loyers attendus ajoutes aux revenus retenus par la banque » supprime (une hypothese de calcul n est pas un point fort) ; « Duree restante : 11,5 ans » ; « Capacite d epargne declaree » = fourchette declaree (« 300 a 500 € mensuellement ») puis « Apport en numeraire de … », plus de « milieu de la fourchette » ni de commentaire ; patrimoine net en puces (total, Monsieur, Madame, dont en commun). Axes : « Epargne insuffisante au regard des revenus » (plus « tres faible ») ; « Epargne long terme » : « droits de succession en cas de deces », phrase « Places en assurance-vie ou en PER… » supprimee (etat des lieux, pas de preconisation).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v210 (11/09 : tuiles Coordonnees -- la ligne « Madame : … » (conjoint) est a la meme taille que la ligne « Monsieur : … » (12,5 px), demande du CGP.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v209 (11/09 : SYNTHESE, tuiles Coordonnees -- (1) en couple, la ligne du client porte sa civilite comme celle du conjoint : « Monsieur : 06… » / « Madame : 06… » sur telephone et email (demande du CGP). (2) La tuile Adresse, seule sans seconde ligne, descend un peu sa valeur (my-auto dans une tuile flex-col) pour equilibrer la rangee avec Telephone et Email. (3) POLICE (PDF Bon/Riu) : le nom du conjoint sortait en Inter a cote du client en Fraunces dans l en-tete -- la regle CSS « * » remettait Inter sur les <span> imbriques ; fontFamily inherit pose sur ces span. (4) La ligature « ff » de Fraunces (« chiffres ») est coupee : font-variant-ligatures none partout. Banc : controle 3 nonies (couple prefixe, celibataire sans prefixe). Verifie : le bloc « Details (credit, objectif de vente, note…) » des autres biens est inchange depuis v69 (rendu compare v197 / v208 : memes dimensions).', 'color:#7c3aed;font-weight:bold');
@@ -3756,21 +3757,23 @@
     /* 02/09 : un clic ou un cliquer-glisser dans un champ de saisie faisait
        basculer la case de la carte — le CGP n arrivait plus a modifier montants
        et rendements. On ignore desormais tout clic issu d un controle de saisie. */
-    const Carte = ({ on, toggle, titre, children, eff, effSub, pot }) => (
+    /* 11/09 : `petit` = version compacte pour « Où trouver l'épargne » (CGP : « plus
+       petit en visuel et plus lisible rapidement »). */
+    const Carte = ({ on, toggle, titre, children, eff, effSub, pot, petit }) => (
       <div onClick={(e) => { if (e.target && e.target.closest && e.target.closest("input,select,button,label,textarea")) return; toggle(); }}
-        className="rounded-xl px-4 py-3 border cursor-pointer transition relative overflow-hidden"
+        className={"rounded-xl border cursor-pointer transition relative overflow-hidden " + (petit ? "px-3 py-2.5" : "px-4 py-3")}
         style={{ borderColor: on ? NCP_C.vertBord : NCP_C.bord, background: on ? "linear-gradient(135deg,#ecfdf5,#ffffff 60%)" : "#fff" }}>
         {on ? <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg,#10b981,#047857)" }} /> : null}
-        <div className="flex items-center gap-2.5 mb-2">
+        <div className={"flex items-center gap-2.5 " + (petit ? "mb-1" : "mb-2")}>
           <input type="checkbox" checked={on} onChange={toggle} onClick={e => e.stopPropagation()} className="w-4 h-4" style={{ accentColor: NCP_C.vert }} />
-          <span className="text-[13px] font-extrabold leading-tight" style={{ color: on ? NCP_C.encre : NCP_C.gris }}>{titre}</span>
+          <span className={(petit ? "text-[12px]" : "text-[13px]") + " font-extrabold leading-tight"} style={{ color: on ? NCP_C.encre : NCP_C.gris }}>{titre}</span>
         </div>
-        <div className="text-[11px]" style={{ color: NCP_C.gris, lineHeight: 1.9 }}>{children}</div>
+        <div className="text-[11px]" style={{ color: NCP_C.gris, lineHeight: petit ? 1.75 : 1.9 }}>{children}</div>
         {/* 03/09 : un levier NON RETENU n affiche plus un chiffre d apparence
             acquise. Sa valeur passe au conditionnel — plus petite, en italique,
             en gris — et n entre dans aucun total. */}
-        <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: pot ? 16 : 20, fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: 8, letterSpacing: "-0.02em" }}>{eff}</div>
-        {effSub ? <div style={{ fontSize: 10.5, fontWeight: 600, fontStyle: pot ? "italic" : "normal", color: pot ? NCP_C.gris3 : NCP_C.gris2, marginTop: 4, lineHeight: 1.5 }}>{effSub}</div> : null}
+        <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: pot ? (petit ? 14 : 16) : (petit ? 18 : 20), fontStyle: pot ? "italic" : "normal", fontWeight: 800, color: on ? NCP_C.vert : NCP_C.gris3, marginTop: petit ? 5 : 8, letterSpacing: "-0.02em" }}>{eff}</div>
+        {effSub ? <div style={{ fontSize: petit ? 10 : 10.5, fontWeight: 600, fontStyle: pot ? "italic" : "normal", color: pot ? NCP_C.gris3 : NCP_C.gris2, marginTop: petit ? 2 : 4, lineHeight: 1.5 }}>{effSub}</div> : null}
       </div>
     );
     /* ═══ FAMILLE DE GISEMENTS (03/09) ═══
@@ -5758,7 +5761,16 @@
 
     function NcProjection({ d, synth, syn, ageClient, estTNS, inputs }) {
       const eur = (n) => ncNbsp((Math.round(n || 0)).toLocaleString('fr-FR')) + ' €';
-      const nb = (v, def) => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? def : n; };
+      /* 11/09/2026 (CGP) : « apport passé de 5 k à 10 k, la tuile indique 0k ». Cause :
+         parseFloat("10 000") = 10 — l'espace des milliers coupait la lecture, et
+         « 10k » donnait 10. On retire espaces (et insécables), « € », et « k » = ×1000. */
+      const nb = (v, def) => {
+        let s = String(v == null ? "" : v).replace(/[\s  €]/g, "").replace(',', '.');
+        let mult = 1;
+        if (/k$/i.test(s)) { mult = 1000; s = s.slice(0, -1); }
+        const n = parseFloat(s) * mult;
+        return isNaN(n) ? def : n;
+      };
 
       /* ——— SOCLE lu dans le dossier ——— */
       const socle = React.useMemo(() => {
@@ -6375,25 +6387,79 @@
       const C = NCP_C;
       const pc = (v) => R.natTot > 0 ? (v / R.natTot * 100) : 0;
 
+      /* ═══ 11/09/2026 (CGP) — LE BANDEAU « enveloppe · employée · reste » vit à TROIS
+         endroits, toujours les mêmes chiffres :
+           · sous les objectifs et préconisations de la page de garde (imprimé) ;
+           · en tête de « Les solutions retenues », en grand (imprimé — « en fixe et
+             un peu plus visible ») ;
+           · collant en haut de l'écran pendant le défilement (jamais imprimé), et
+             SEULEMENT quand aucun des deux bandeaux imprimés n'est à l'écran —
+             sinon le chiffre apparaissait deux fois l'un sous l'autre.
+         Fonction de rendu (pas un composant) : rien à remonter, aucun champ dedans. */
+      const barRefs = React.useRef([]);
+      const [barVu, setBarVu] = React.useState(true);
+      React.useEffect(() => {
+        if (typeof window === "undefined" || !window.IntersectionObserver) return;
+        const els = barRefs.current.filter(Boolean);
+        if (!els.length) return;
+        const vis = new Map();
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => vis.set(e.target, e.isIntersecting));
+          setBarVu(Array.from(vis.values()).some(Boolean));
+        });
+        els.forEach(el => io.observe(el));
+        return () => io.disconnect();
+      }, []);
+      const manque = R.ENV - R.effort < -1;
+      const barItems = [
+        { l: "Enveloppe", v: eur(R.ENV) + "/mois", c: C.encre,
+          fourchette: R.envBasEff < R.envPoche ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasEff))) + " à " + eur(R.ENV) : null,
+          sous: R.ecoAss > 0 ? "épargne mensuelle disponible · " + eur(R.envPoche) + " de votre poche + " + eur(R.ecoAss) + " libérés" : "épargne mensuelle disponible · " + (ncInt(h.env) ? "montant retenu avec votre conseiller" : R.envDeclaree ? "fourchette indiquée lors de l'audit" : "ce que vous consacrez au projet") },
+        { l: "Employée", v: eur(R.effort) + "/mois", c: C.vert,
+          sous: "par les solutions cochées · " + (R.ecoM > 0 ? "nette des " + eur(R.ecoM) + " d'économie d'impôt" : "effort mensuel net") },
+        { l: R.ENV - R.effort >= 0 ? "Reste" : "Manque", v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)) + "/mois", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c", fort: true,
+          sous: R.ENV - R.effort >= 0 ? "à allouer · épargné et capitalisé tant que non employé" : "chaque mois · à trouver dans « Où trouver l'épargne »" },
+        R.mTreso > 0 ? { l: "Libéré", v: "+ " + eur(R.mTreso) + "/mois", c: C.vert, sous: "par les gisements retenus" } : null
+      ].filter(Boolean);
+      const barre = (mode) => {
+        const fixe = mode === "fixe", garde = mode === "garde";
+        const fond = manque ? "#fef2f2" : (fixe ? "linear-gradient(135deg,#ecfdf5,#ffffff)" : garde ? "#fafaf9" : "rgba(255,255,255,0.96)");
+        const bord = manque ? "#fecaca" : (fixe ? C.vertBord : C.bord);
+        if (mode === "sticky") return (
+          <div className="rounded-xl px-4 py-2 flex flex-wrap items-center gap-x-6 gap-y-1 border" style={{ background: fond, borderColor: bord, boxShadow: "0 2px 8px rgba(29,39,53,0.10)", backdropFilter: "blur(4px)" }}>
+            {barItems.map((x, i) => (
+              <span key={i} className="inline-flex items-baseline gap-1.5">
+                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gris2, fontWeight: 700 }}>{x.l}</span>
+                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 16, fontWeight: 800, color: x.c }}>{x.v}</span>
+              </span>
+            ))}
+            <span className="text-[10px] italic ml-auto" style={{ color: C.gris2 }}>se recalcule à chaque case cochée</span>
+          </div>
+        );
+        return (
+          <div ref={el => { barRefs.current[fixe ? 1 : 0] = el; }} data-nc-barre={mode} className="rounded-xl border" style={{ background: fond, borderColor: bord, padding: fixe ? "14px 18px" : "12px 16px" }}>
+            <div className="flex flex-wrap items-start" style={{ columnGap: fixe ? 36 : 28, rowGap: 10 }}>
+              {barItems.map((x, i) => (
+                <div key={i} style={{ flex: "1 1 150px", minWidth: 140, maxWidth: 300 }}>
+                  <div className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: fixe ? (x.fort ? 30 : 24) : (x.fort ? 22 : 19), fontWeight: 800, color: x.c, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
+                    {fixe && x.fourchette ? x.fourchette : x.v.replace("/mois", "")}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: fixe ? 11 : 10, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span>
+                  </div>
+                  <Lab>{x.l}</Lab>
+                  {fixe ? <div className="italic" style={{ fontSize: 9.5, color: C.gris2, marginTop: 3, lineHeight: 1.45 }}>{x.sous}</div> : null}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      };
+
       return (
         <div className="mb-5">
-          {/* BANDEAU COLLANT (10/09, decision E) : enveloppe · employé · reste, toujours
-              visible pendant le défilement — écran seulement, jamais imprimé. */}
-          <div className="nc-syn-noprint" style={{ position: "sticky", top: 0, zIndex: 30, marginBottom: 12 }}>
-            <div className="rounded-xl px-4 py-2 flex flex-wrap items-center gap-x-6 gap-y-1 border" style={{ background: R.ENV - R.effort < -1 ? "#fef2f2" : "rgba(255,255,255,0.96)", borderColor: R.ENV - R.effort < -1 ? "#fecaca" : C.bord, boxShadow: "0 2px 8px rgba(29,39,53,0.10)", backdropFilter: "blur(4px)" }}>
-              {[
-                { l: "Enveloppe", v: eur(R.ENV) + "/mois", c: C.encre },
-                { l: "Employée", v: eur(R.effort) + "/mois", c: C.vert },
-                { l: R.ENV - R.effort >= 0 ? "Reste" : "Manque", v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)) + "/mois", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c" },
-                R.mTreso > 0 ? { l: "Libéré par les gisements", v: "+ " + eur(R.mTreso) + "/mois", c: C.vert } : null
-              ].filter(Boolean).map((x, i) => (
-                <span key={i} className="inline-flex items-baseline gap-1.5">
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gris2, fontWeight: 700 }}>{x.l}</span>
-                  <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 16, fontWeight: 800, color: x.c }}>{x.v}</span>
-                </span>
-              ))}
-              <span className="text-[10px] italic ml-auto" style={{ color: C.gris2 }}>se recalcule à chaque case cochée</span>
-            </div>
+          {/* bandeau collant (écran seulement) — masqué tant qu'un bandeau imprimé est visible */}
+          {/* hauteur nulle : le bandeau collant ne prend AUCUNE place dans le flux — sans
+              cela, son apparition faisait sauter tout le contenu de 50 px. */}
+          <div className="nc-syn-noprint" style={{ position: "sticky", top: 0, zIndex: 30, height: 0, visibility: barVu ? "hidden" : "visible" }}>
+            <div style={{ position: "absolute", left: 0, right: 0, top: 6 }}>{barre("sticky")}</div>
           </div>
           {/* ═══ PAGE DE GARDE (10/09/2026, decision F du CGP) ═══
               « 1re page très moche : tout est compressé tout en haut et les 3/4 de la page
@@ -6423,9 +6489,8 @@
               <div style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, color: C.encre, marginTop: 10, lineHeight: 1.4 }}>
                 {nomC}{nomJ ? <span> <span style={{ color: C.or }}>&amp;</span> {nomJ}</span> : null}
               </div>
-              <div className="text-[12px]" style={{ color: C.gris, marginTop: 8, lineHeight: 1.6, maxWidth: 620 }}>
-                Ce document projette votre situation à {R.ageFin} ans, dans {R.H} ans : ce que devient votre patrimoine sans rien changer, et ce qu'il devient avec les préconisations retenues ensemble — même effort d'épargne, autrement placé.
-              </div>
+              {/* 11/09 (CGP) : la phrase « Ce document projette votre situation à X ans… »
+                  est supprimée de la page de garde. */}
               <div style={{ flex: 1, minHeight: 24 }}></div>
               {intro.baisse > 0 ? (
                 <div className="rounded-xl px-5 py-5" style={{ marginTop: 10, marginBottom: 34, background: "#fafaf9", border: "1px solid " + C.bord, borderLeft: "4px solid #b91c1c" }}>
@@ -6479,6 +6544,12 @@
                   </div>
                 ) : null}
               </div>
+              {/* 11/09 (CGP) : le bandeau enveloppe · employée · reste prend place SOUS les
+                  objectifs et préconisations, et s'imprime. */}
+              <div className="text-[12.5px]" style={{ color: C.encre, fontWeight: 600, marginTop: 22, marginBottom: 10 }}>
+                Votre épargne mensuelle{!engagement.aucun && engagement.ap ? <span style={{ fontWeight: 400, color: C.gris }}> — et {engagement.ap} de capital mobilisable</span> : null} :
+              </div>
+              {barre("garde")}
               <div style={{ flex: 1, minHeight: 24 }}></div>
               <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid " + C.bord }}>
                 <div className="text-[10.5px]" style={{ color: C.gris2 }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
@@ -6487,8 +6558,13 @@
             </div>
             );
           })()}
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-force-break="1">
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Votre participation et les préconisations</div>
+          {/* ═══ 11/09/2026 (CGP) — ORDRE : page de garde → LES SOLUTIONS RETENUES (avec le
+              bandeau enveloppe · employée · reste EN FIXE, imprimé, en grand) → OÙ TROUVER
+              L'ÉPARGNE → le tableau à l'horizon. L'ancienne rubrique « Votre participation
+              et les préconisations » est fondue ici : sa phrase d'engagement ouvre le bloc,
+              ses trois colonnes SONT le bandeau. */}
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-proj-solutions="1" data-nc-force-break="1">
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Les solutions retenues</div>
             {!engagement.aucun ? (
               <div className="text-[13px]" style={{ color: C.encre, marginTop: 10, lineHeight: 1.6 }}>
                 {engagement.cap ? (
@@ -6501,132 +6577,15 @@
                 )} pour la réalisation de vos objectifs.
               </div>
             ) : null}
-            {/* ═══ VOS MOYENS ET LE COMPTEUR (02/09) ═══
-                Ce qui est disponible, ce qui est déjà employé, ce qu'il reste à
-                allouer. Le compteur décroît à chaque solution cochée : quand il
-                passe au rouge, le renvoi vers « Où trouver l'épargne » est explicite. */}
-            <div className="rounded-xl px-4 py-3.5 mt-3.5 mb-4 border" style={{ borderColor: R.ENV - R.effort < -1 ? "#fecaca" : C.vertBord, background: R.ENV - R.effort < -1 ? "#fef2f2" : "linear-gradient(135deg,#ecfdf5,#ffffff)" }}>
-              <div className="flex flex-wrap items-start gap-x-6 gap-y-4">
-                {[
-                  /* fourchette declaree affichee TELLE QUELLE : « 300 a 500 € ».
-                     Le compteur travaille sur la borne haute. */
-                  { v: (R.envBasEff < R.envPoche ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasEff))) + " à " + eur(R.ENV) : eur(R.ENV)),
-                    l: "Épargne mensuelle disponible",
-                    sous: R.ecoAss > 0 ? eur(R.envPoche) + " de votre poche + " + eur(R.ecoAss) + " libérés" : (ncInt(h.env) ? "montant retenu avec votre conseiller" : R.envDeclaree ? "fourchette indiquée lors de l'audit" : "ce que vous consacrez au projet"), c: C.encre },
-                  { v: eur(R.effort), l: "Déjà employée par les solutions cochées", sous: R.ecoM > 0 ? "nette des " + eur(R.ecoM) + " d'économie d'impôt" : "effort mensuel net", c: C.vert },
-                  { v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)), l: R.ENV - R.effort >= 0 ? "Reste à allouer" : "Manque chaque mois", sous: R.ENV - R.effort >= 0 ? "épargné et capitalisé tant que non employé" : "à trouver ci-dessous", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c", fort: true }
-                ].map((x, i) => (
-                  /* chaque colonne borne sa largeur : sans cela les libelles se
-                     chevauchaient (« ÉPARGNE DISPONIBLEDÉJÀ EMPLOYÉE ») */
-                  <div key={i} style={{ flex: "1 1 190px", minWidth: 175, maxWidth: 320 }}>
-                    <div className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: x.fort ? 30 : 22, fontWeight: 800, color: x.c, lineHeight: 1 }}>{x.v}<span className="text-[11px] font-semibold" style={{ color: C.gris2 }}>/mois</span></div>
-                    <Lab>{x.l}</Lab>
-                    <div className="italic" style={{ fontSize: 9.5, color: C.gris2, marginTop: 3, lineHeight: 1.45 }}>{x.sous}</div>
-                  </div>
-                ))}
-                {nb(L.apport, 0) > 0 && L.loc ? (
-                  <div style={{ flex: "1 1 170px", minWidth: 160, maxWidth: 300 }}>
-                    <div className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 22, fontWeight: 800, color: C.or, lineHeight: 1 }}>{eur(nb(L.apport, 0))}</div>
-                    <Lab>Apport mobilisé</Lab>
-                    <div className="italic" style={{ fontSize: 9.5, color: C.gris2, marginTop: 3 }}>{engagement.ap ? engagement.ap + " annoncés" : "capital engagé"}</div>
-                  </div>
-                ) : null}
+            <div style={{ marginTop: 12 }}>{barre("fixe")}</div>
+            {!manque && R.envBasEff < R.envPoche && R.effort > R.envBasEff + 1 ? (
+              /* la fourchette est respectee, mais on sollicite le HAUT de ce que le
+                 client a annonce : le dire, sans alarmer. */
+              <div className="mt-2 text-[11px] font-semibold" style={{ color: "#8a6d34" }}>
+                Les solutions cochées mobilisent {eur(R.effort)}/mois : au-delà des {eur(R.envBasEff)} du bas de votre fourchette, dans la limite des {eur(R.ENV)} annoncés.
               </div>
-              {R.ENV - R.effort < -1 ? (
-                <div className="mt-2.5 pt-2.5 text-[11.5px] font-semibold" style={{ borderTop: "1px solid #fecaca", color: "#7f1d1d" }}>
-                  Il manque {eur(R.effort - R.ENV)}/mois pour financer les solutions cochées — voir « Où trouver l'épargne » juste en dessous, ou ajuster les montants.
-                </div>
-              ) : R.envBasEff < R.envPoche && R.effort > R.envBasEff + 1 ? (
-                /* la fourchette est respectee, mais on sollicite le HAUT de ce que le
-                   client a annonce : le dire, sans alarmer. */
-                <div className="mt-2.5 pt-2.5 text-[11.5px] font-semibold" style={{ borderTop: "1px solid " + C.bord, color: "#8a6d34" }}>
-                  Les solutions cochées mobilisent {eur(R.effort)}/mois : au-delà des {eur(R.envBasEff)} du bas de votre fourchette, dans la limite des {eur(R.ENV)} annoncés.
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          {/* 10/09/2026 — decision E du CGP : « Où trouver l'épargne » remonte JUSTE SOUS
-              l'enveloppe, avant les solutions — « là elle est trop loin, je suis obligé de
-              scroller en bas pour faire des économies puis en haut pour vérifier ». Le
-              bandeau collant en haut de page suit le défilement (écran seulement). */}
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
-            {/* 10/09 (CGP) : « fais simple et plus court » — une ligne d'introduction, des
-                cartes compactes, et pour chaque levier l'économie PAR MOIS, SUR LA PÉRIODE,
-                et le rendement avant → après. */}
-            <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
-              L'argent qui dort déjà, avant tout effort nouveau. Deux natures : de la <b style={{ color: C.encre }}>trésorerie chaque mois</b>, et du <b style={{ color: C.encre }}>capital à l'horizon</b> — elles ne s'additionnent pas.
-            </div>
-
-            {/* ═══ FAMILLE 1 — DE L ARGENT DISPONIBLE CHAQUE MOIS ═══ */}
-            <Fam actif={G.ass && R.ecoAss > 0}
-              titre="Trésorerie libérée chaque mois"
-              total={G.ass && R.ecoAss > 0 ? eur(R.ecoAss) + "/mois" : "—"}
-              sousTotal={G.ass && R.ecoAss > 0 ? "d'argent disponible en plus" : "aucun levier retenu"}
-              pied={G.ass && R.ecoAss > 0
-                ? "Disponible chaque mois dès la mise en place : " + eur(R.ecoAss) + "/mois, soit " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + " sur " + Math.round(nb(G.dRest, 0)) + " ans."
-                : "Non retenu : votre enveloppe reste celle de votre poche."}>
-              {/* un seul levier dans cette famille : on borne sa largeur, sinon la
-                  carte s etire sur toute la page et sa valeur se perd a gauche */}
-              <div className="grid gap-3.5" style={{ gridTemplateColumns: "minmax(260px,430px)" }}>
-                <Carte on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
-                  pot={!G.ass && R.ecoAssPot > 0}
-                  eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
-                  effSub={G.ass
-                    ? "libérés chaque mois, soit " + eur(R.ecoAss * 12 * nb(G.dRest, 0)) + " sur la durée restante"
-                    : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
-                  Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
-                  Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
-                  Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
-                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Résiliable à tout moment (loi Lemoine)</span>
-                </Carte>
-              </div>
-            </Fam>
-
-            {/* ═══ FAMILLE 2 — DU CAPITAL GAGNE A L HORIZON ═══ */}
-            <Fam actif={R.gainRendCap > 0}
-              titre="Meilleur rendement sur la durée"
-              total={R.gainRendCap > 0 ? eur(R.gainRendCap) : "—"}
-              sousTotal={R.gainRendCap > 0 ? "de capital en plus dans " + R.H + " ans" : "aucun levier retenu"}
-              pied={R.gainRendCap > 0
-                ? "Le même argent, mieux placé — sans effort nouveau. Gain lu à l'horizon, soit ≈ " + eur(Math.round(R.gainRendCap / (12 * Math.max(1, R.H)))) + "/mois en moyenne."
-                : "Non retenus : ils replacent l'argent que vous détenez déjà."}>
-              <div className="grid gap-3.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
-                <Carte on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
-                  pot={!G.arb && R.gainArbPot > 0}
-                  eff={G.arb ? "+ " + eur(R.gainArbCap) : (R.gainArbPot > 0 ? "+ " + eur(R.gainArbPot) : "—")}
-                  effSub={G.arb
-                    ? "sur " + R.H + " ans, soit ≈ " + eur(Math.round(R.gainArbCap / (12 * Math.max(1, R.H)))) + "/mois · " + String(nb(G.txArbAct, 2.5)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % · " + eur(nb(G.montArb, 0)) + " → " + eur(R.arbApres) + " au lieu de " + eur(R.arbAvant)
-                    : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · " + String(nb(G.txArbAct, 2.5)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " %" : "renseignez le montant et son rendement actuel")}>
-                  Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
-                  Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
-                  <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Vers l'hypothèse cabinet</span>
-                </Carte>
-                <Carte on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
-                  pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
-                  eff={R.redActif ? "+ " + eur(R.gainRedCap) : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? "+ " + eur(R.gainRedPot) : "—"))}
-                  effSub={R.redActif
-                    ? "sur " + R.H + " ans, soit ≈ " + eur(Math.round(R.gainRedCap / (12 * Math.max(1, R.H)))) + "/mois · " + String(nb(G.txVersAct, 1.7)).replace(".", ",") + " % → " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % · les mêmes " + eur(nb(G.versMens, 0)) + "/mois donnent " + eur(R.redApres) + " au lieu de " + eur(R.redAvant)
-                    : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le versement et son rendement actuel"))}>
-                  Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
-                  Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
-                  <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
-                    <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
-                    <span style={{ fontSize: 11 }}>versé sur un livret</span>
-                  </label>
-                </Carte>
-              </div>
-            </Fam>
-            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
-            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
-            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
-          </div>
-
-
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-proj-solutions="1">
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Les solutions retenues</div>
-            <div className="text-[11.5px] mb-5" style={{ color: C.gris2, marginTop: 7 }}>Cochez, décochez, ajustez : tout se recalcule immédiatement.</div>
+            ) : null}
+            <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 12 }}>Cochez, décochez, ajustez : tout se recalcule immédiatement.</div>
             <div className="grid grid-cols-3 gap-3.5">
               <Carte on={L.per} toggle={() => sl('per', !L.per)} titre="Plan d'épargne retraite"
                 eff={eur(Math.max(0, nb(L.vPer, 0) - R.ecoM))}
@@ -6793,12 +6752,98 @@
               </div>
             ) : R.soldeMin < -1 ? (
               <Alerte>{R.effort - R.ENV > 1
-                ? <span>Il manque <b>{eur(R.effort - R.ENV)}/mois</b> dès la première année pour financer les solutions cochées{-R.soldeMin > (R.effort - R.ENV) + 1 ? <span> — et jusqu'à <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés)</span> : null}. À trouver dans « Où trouver l'épargne » ci-dessus, ou en ajustant les montants.</span>
+                ? <span>Il manque <b>{eur(R.effort - R.ENV)}/mois</b> dès la première année pour financer les solutions cochées{-R.soldeMin > (R.effort - R.ENV) + 1 ? <span> — et jusqu'à <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés)</span> : null}. À trouver dans « Où trouver l'épargne » ci-dessous, ou en ajustant les montants.</span>
                 : <span>L'enveloppe de <b>{eur(R.ENV)}/mois</b> couvre la première année, mais il manquera <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés).</span>}</Alerte>
             ) : (
               <Alerte ok>Enveloppe de <b>{eur(R.ENV)}/mois</b> : les préconisations consomment <b>{eur(R.effort)}</b> nets la première année, le solde de <b>{eur(Math.max(0, R.ENV - R.effort))}/mois</b> est épargné et capitalisé.</Alerte>
             )}
           </div>
+
+          {/* ═══ OÙ TROUVER L'ÉPARGNE ═══
+              10/09 (decision E) : vient APRÈS les solutions, le bandeau collant suit le
+              défilement. 11/09 (CGP) : « plus petit en visuel, plus lisible rapidement »,
+              et l'ÉCONOMIE EST MENSUALISÉE — on cherche de l'épargne mensuelle à
+              réinvestir dans le projet : le €/mois est le chiffre principal, le gain
+              à terme sur N ans passe en second. Trois cartes compactes sur une ligne,
+              puis une ligne de résumé par nature (trésorerie réelle / rendement en
+              moyenne) — les deux natures ne s'additionnent toujours pas. */}
+          {(() => {
+            const Hm = 12 * Math.max(1, R.H);
+            const pctTxt = (v, def) => String(nb(v, def)).replace(".", ",") + " %";
+            const tMedTxt = pctTxt(h.tMed, 5.2);
+            const dRest = Math.round(nb(G.dRest, 0));
+            const mArb = Math.round(R.gainArbCap / Hm), mArbPot = Math.round(R.gainArbPot / Hm);
+            const mRed = Math.round(R.gainRedCap / Hm), mRedPot = Math.round(R.gainRedPot / Hm);
+            const mRend = Math.round(R.gainRendCap / Hm);
+            const ass = G.ass && R.ecoAss > 0, rend = R.gainRendCap > 0;
+            return (
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
+            <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
+              L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
+            </div>
+            <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
+              <Carte petit on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
+                pot={!G.ass && R.ecoAssPot > 0}
+                eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
+                effSub={G.ass
+                  ? "libérés chaque mois · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans"
+                  : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
+                Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
+                Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
+                Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
+                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Résiliable à tout moment (loi Lemoine)</span>
+              </Carte>
+              <Carte petit on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
+                pot={!G.arb && R.gainArbPot > 0}
+                eff={G.arb ? "+ " + eur(mArb) + "/mois" : (R.gainArbPot > 0 ? "+ " + eur(mArbPot) + "/mois" : "—")}
+                effSub={G.arb
+                  ? "en moyenne · soit + " + eur(R.gainArbCap) + " dans " + R.H + " ans · " + pctTxt(G.txArbAct, 2.5) + " → " + tMedTxt
+                  : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainArbPot) + " dans " + R.H + " ans" : "renseignez le montant et son rendement actuel")}>
+                Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
+                Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
+                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Vers l'hypothèse cabinet ({tMedTxt})</span>
+              </Carte>
+              <Carte petit on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
+                pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
+                eff={R.redActif ? "+ " + eur(mRed) + "/mois" : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? "+ " + eur(mRedPot) + "/mois" : "—"))}
+                effSub={R.redActif
+                  ? "en moyenne · soit + " + eur(R.gainRedCap) + " dans " + R.H + " ans · " + pctTxt(G.txVersAct, 1.7) + " → " + tMedTxt
+                  : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainRedPot) + " dans " + R.H + " ans" : "renseignez le versement et son rendement actuel"))}>
+                Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
+                Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
+                <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
+                  <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
+                  <span style={{ fontSize: 10.5 }}>versé sur un livret</span>
+                </label>
+              </Carte>
+            </div>
+            {/* résumé par NATURE : une trésorerie réelle d'un côté, un rendement ramené
+                au mois de l'autre — jamais additionnés. Structure lue par t_gisements :
+                le titre dans un span, la valeur dans le DERNIER span du même parent. */}
+            <div className="grid gap-3 mt-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))" }}>
+              {[
+                { titre: "Trésorerie libérée chaque mois", actif: ass, val: ass ? eur(R.ecoAss) + "/mois" : "—",
+                  sous: ass ? "d'argent disponible en plus · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans" : "aucun levier retenu" },
+                { titre: "Meilleur rendement sur la durée", actif: rend, val: rend ? "≈ " + eur(mRend) + "/mois" : "—",
+                  sous: rend ? "en moyenne · soit + " + eur(R.gainRendCap) + " de capital dans " + R.H + " ans" : "aucun levier retenu" }
+              ].map((f, i) => (
+                <div key={i} className="rounded-xl px-3.5 py-2 border" style={{ borderColor: f.actif ? C.vertBord : C.bord, background: f.actif ? C.vertPale : "#fafaf9" }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: f.actif ? C.vert : C.gris, fontWeight: 800, display: "block" }}>{f.titre}</span>
+                  <span style={{ display: "block", marginTop: 2, lineHeight: 1.3 }}>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Fraunces','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, color: C.gris2, marginLeft: 7 }}>{f.sous}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
+            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
+            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
+          </div>
+            );
+          })()}
+
 
           {/* ═══ LA PHOTO : AVANT / APRÈS (02/09) ═══
               Elle vient EN DERNIER, une fois les moyens posés, les solutions
@@ -6807,7 +6852,11 @@
               Le « AVANT » n'est pas l'immobilisme : le client y épargne le MÊME
               montant, sur ses supports actuels. L'écart est donc le gain de la
               RÉALLOCATION, pas celui d'épargner. */}
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+          {/* 11/09 : data-nc-split — la pagination PDF peut répartir ce bloc entre deux
+              pages (titre + tableau ensemble, insécables ; le reste à la suite). Sans cela,
+              « Où trouver l'épargne » restait seul sur une page aux deux tiers vide. */}
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-split="1">
+            <div className="nc-print-avoid">
             <div className="nc-ctitre mb-1">À {R.ageFin} ans, votre situation<span className="sfx">dans {R.H} ans</span></div>
             <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7 }}>
               Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.envPoche)}/mois</b> : à gauche sur vos livrets ({(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %), à droite selon les préconisations retenues ({(nb(h.tMed, 5.2)).toString().replace(".", ",")} %).
@@ -6842,8 +6891,9 @@
                     <thead>
                       <tr style={{ background: "#fafaf9" }}>
                         <th className="text-left px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris, fontWeight: 700 }}></th>
-                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2, fontWeight: 700, width: "21%" }}>Sans rien changer</th>
-                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.vert, fontWeight: 800, width: "21%", background: "#ecfdf5" }}>Avec les préconisations</th>
+                        {/* 11/09 (CGP) : la durée sous chaque colonne — « dans 21 ans » */}
+                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2, fontWeight: 700, width: "21%" }}>Sans rien changer<div className="normal-case tracking-normal" style={{ fontFamily: "'Inter',sans-serif", fontSize: 10, fontWeight: 600, color: C.gris2, marginTop: 2 }}>dans {R.H} ans</div></th>
+                        <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.vert, fontWeight: 800, width: "21%", background: "#ecfdf5" }}>Avec les préconisations<div className="normal-case tracking-normal" style={{ fontFamily: "'Inter',sans-serif", fontSize: 10, fontWeight: 600, color: C.vert, marginTop: 2 }}>dans {R.H} ans</div></th>
                         <th className="text-right px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris, fontWeight: 700, width: "17%" }}>Écart</th>
                       </tr>
                     </thead>
@@ -6869,6 +6919,7 @@
                 </div>
               );
             })()}
+            </div>
 
             {R.auMoinsUn ? (
               <div className="rounded-xl px-4 py-3.5 mt-3.5 flex flex-wrap items-baseline gap-x-7 gap-y-2" style={{ background: "linear-gradient(135deg,#ecfdf5,#ffffff)", border: "1px solid " + C.vertBord, display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 28, rowGap: 8 }}>
@@ -7218,7 +7269,8 @@
                                 document.body.appendChild(holder);
                                 clone.querySelectorAll(".rounded-2xl, .rounded-xl").forEach(c => {
                                   const hh = c.offsetHeight || 0;
-                                  c.classList.add(hh > 0 && hh < 700 ? "nc-print-avoid" : "nc-print-flow");
+                                  const split = c.dataset && c.dataset.ncSplit === "1";
+                                  c.classList.add(!split && hh > 0 && hh < 700 ? "nc-print-avoid" : "nc-print-flow");
                                 });
                                 // ——— Pagination soignée (27/08) : simulation des pages, puis
                                 //  a) tout bloc qui chevaucherait une frontière descend en début de page
@@ -7236,7 +7288,7 @@
                                   const pageDispo = Math.floor(1066 / zC);
                                   const RESPIRE = 54; // espace en tête de chaque nouvelle page
                                   const blocsNiveau = (el) => Array.prototype.slice.call(el.children).reduce((acc, c) => {
-                                    if ((c.offsetHeight || 0) > pageDispo * 0.92 && c.children.length > 1 && !c.classList.contains("nc-print-avoid")) acc.push.apply(acc, blocsNiveau(c));
+                                    if ((((c.offsetHeight || 0) > pageDispo * 0.92) || (c.dataset && c.dataset.ncSplit === "1")) && c.children.length > 1 && !c.classList.contains("nc-print-avoid")) acc.push.apply(acc, blocsNiveau(c));
                                     else acc.push(c);
                                     return acc;
                                   }, []);
