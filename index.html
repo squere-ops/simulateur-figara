@@ -1070,7 +1070,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v214 (11/09 : POLICE D AFFICHAGE : Fraunces -> LORA partout (lien Google Fonts, ~120 fontFamily, textes SVG, classes .pres-*). Decision D du CGP sur image comparative : le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes ses variantes, Lora a un J sur la ligne de base. Fraunces ne doit plus revenir.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v215 (14/09 : retours du CGP, dossier Coconut. CONSTAT : « Epargne insuffisante au regard des revenus -- X € d epargne pour Y € de revenus mensuels. » (une ligne, plus de puce « Moins de six mois ») ; « Epargne long terme -- aucune epargne long terme : X € investis sur des livrets et comptes courants. / Situation critique pour une gestion de votre epargne. / Remuneres a peine plus que l inflation… » ; « Moyenne des Francais : 18 % des revenus, dont 9 % en epargne financiere » ; « Plus de X € d IMPOT sur 10 ans ». PROJECTION : page de garde = phrase d engagement sur le declare (« L engagement que vous souhaitez consacrer… : 300 a 500 €/mois et un capital de … »), plus de bandeau ni de « 305 € employes » ; bloc « X €/mois d epargne a reorienter » sous les gisements (tresorerie liberee + rendement au mois) ; le « sans rien changer » capitalise l EFFORT EMPLOYE (852 avec immobilier) et non l enveloppe ; complement de revenus « a vie », rente a 1,7 % a gauche et 5,2 % a droite ; « D ou vient la difference » distingue la part financiere de l effort immobilier ; bandeau collant = bande pleine largeur opaque au bord haut (plus de recouvrement des cartes).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v214 (11/09 : POLICE D AFFICHAGE : Fraunces -> LORA partout (lien Google Fonts, ~120 fontFamily, textes SVG, classes .pres-*). Decision D du CGP sur image comparative : le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes ses variantes, Lora a un J sur la ligne de base. Fraunces ne doit plus revenir.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v213 (11/09 : PROJECTION, retours du CGP sur le dossier Drouot. (1) Page de garde : la phrase « Ce document projette votre situation a X ans… » est supprimee ; le bandeau enveloppe · employee · reste s imprime SOUS les objectifs et preconisations. (2) Ordre : garde -> LES SOLUTIONS RETENUES (bandeau EN FIXE en tete, en grand, imprime ; phrase d engagement) -> OU TROUVER L EPARGNE (compact, ECONOMIE MENSUALISEE : le €/mois est le chiffre principal, le gain sur N ans en second) -> tableau a l horizon, avec « dans N ans » sous « Sans rien changer » et « Avec les preconisations ». La rubrique « Votre participation et les preconisations » est fondue dans les solutions. Le bandeau collant (ecran) ne s affiche que lorsqu aucun bandeau imprime n est visible. (3) BUG apport : parseFloat("10 000") = 10 -> la tuile « Apport mobilise » affichait 10 € ; nb() retire espaces, € et accepte « 10k ».', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v212 (11/09 : axe « Capacite d endettement non utilisee » reecrit avec la formulation EXACTE du CGP (dossier Drouot) : « Endettement a 14 pct seulement » puis trois puces -- « Votre capacite d endettement vous permettrait de realiser un investissement locatif pour un montant de X € », « L effet de levier du credit est indispensable dans une bonne gestion de patrimoine », « Il vous permet de capitaliser dans le temps, tout en protegeant vos heritiers en cas de deces ». Les phrases « Avant tout engagement : stress-test… » (aussi dans la carte Capacite d emprunt, note union libre) et « Utilisations possibles… » sont supprimees DEFINITIVEMENT. Banc 3 decies etendu.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v211 (11/09 : CONSTAT, retours du CGP sur le dossier Mars/Avril. Points forts : « Loyers attendus ajoutes aux revenus retenus par la banque » supprime (une hypothese de calcul n est pas un point fort) ; « Duree restante : 11,5 ans » ; « Capacite d epargne declaree » = fourchette declaree (« 300 a 500 € mensuellement ») puis « Apport en numeraire de … », plus de « milieu de la fourchette » ni de commentaire ; patrimoine net en puces (total, Monsieur, Madame, dont en commun). Axes : « Epargne insuffisante au regard des revenus » (plus « tres faible ») ; « Epargne long terme » : « droits de succession en cas de deces », phrase « Places en assurance-vie ou en PER… » supprimee (etat des lieux, pas de preconisation).', 'color:#7c3aed;font-weight:bold');
@@ -4823,8 +4824,12 @@
             puces: ["On ne pilote pas une épargne sans connaître son rendement", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander`] });
         }
       }
-      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne insuffisante au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels`,
-        puces: [`Moins de six mois de revenus : une anomalie à ce niveau de revenus${age != null && age >= 45 ? `, d'autant plus à ${age} ans` : ""}`] });
+      /* 14/09/2026 (CGP, dossier Coconut) : formulation EXACTE, une seule ligne, sans puce —
+         « Épargne insuffisante au regard des revenus — 65 500 € d'épargne pour 15 334 € de
+         revenus mensuels. » La puce « Moins de six mois de revenus : une anomalie… » est
+         supprimée définitivement. */
+      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne insuffisante au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels.`,
+        puces: [] });
       if (deuxRevenus && partHaut >= 0.6 && disparite >= 1.6) faiblesses.push({ t: "Disparité de revenus dans le couple", d: `${pc(partHaut)} des revenus du foyer reposent sur ${haut.n}`,
         puces: [`Protection de ${bas.n} à optimiser`] });
       const perFiscDecl = (Array.isArray(d.reductionsLignes) && d.reductionsLignes.some(x => x.type === "per")) || (d.reductionsTypes || []).includes("per");
@@ -4888,7 +4893,7 @@
       });
       const pensVA = d.pensionQ === "oui" ? Math.round(ncMens(d.pensionVersee, d.pensionPeriode) * 12) : 0;
       if (F.impotNet >= 2000 && F.deductions === 0 && F.reductions === 0) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
-        puces: [pensVA > 0 ? `Seule la pension alimentaire versée est déjà déduite (${eur(pensVA)}/an, art. 156, II-2°) — aucun autre levier activé` : "Aucun levier activé", `Plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} sur 10 ans à situation constante`] });
+        puces: [pensVA > 0 ? `Seule la pension alimentaire versée est déjà déduite (${eur(pensVA)}/an, art. 156, II-2°) — aucun autre levier activé` : "Aucun levier activé", `Plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} d'impôt sur 10 ans à situation constante`] });
       else if (F.impotNet >= 2000 && !gainSignificatif && (F.deductions > 0 || F.reductions > 0)) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
         puces: [`Avantages en place : ${eur(F.gainTotal)} seulement (${Math.round(F.gainTotal / Math.max(1, F.impotSansAvantage) * 100)} % de l'impôt) — un montant symbolique`, "Le levier fiscal reste à activer"] });
       if (marie && d.ddvQ !== "oui") {
@@ -4961,11 +4966,13 @@
           // des droits > 0. À 0 € de droits (abattements suffisants), l'argument de
           // l'assurance-vie est la GESTION et la disponibilité hors succession.
           const succAvecDroits = (() => { try { const scS = ncCalcSuccession(d); const tots = (scS.volets || []).flatMap(v2 => (v2.scenarios || []).map(s2 => s2.droitsTotal || 0)); return tots.length > 0 && Math.max(...tots) > 0; } catch (e2) { return false; } })();
-          faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} dorment sur livrets et comptes courants`,
-            /* 11/09 (CGP) : « en cas de décès » après « droits de succession » ; la phrase
-               « Placés en assurance-vie ou en PER… » est SUPPRIMÉE — le constat est un état
-               des lieux, pas une préconisation. */
-            puces: [`Situation anormale${locataire ? ", d'autant plus en étant locataire" : ""}`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`] });
+          /* 14/09/2026 (CGP, dossier Coconut) : formulation EXACTE — « aucune épargne long
+             terme : 65 500 € investis sur des livrets et comptes courants. » puis « Situation
+             critique pour une gestion de votre épargne. » puis « Rémunérés à peine plus que
+             l'inflation, et frappés de plein fouet par les droits de succession en cas de
+             décès ». (11/09 : « Placés en assurance-vie ou en PER… » reste supprimée.) */
+          faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} investis sur des livrets et comptes courants.`,
+            puces: [`Situation critique pour une gestion de votre épargne${locataire ? ", d'autant plus en étant locataire" : ""}.`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`] });
         } else if (surDoteM) {
           faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants`,
             puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès", "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)"] });
@@ -5001,7 +5008,9 @@
       // AXE CABINET (27/08) : versements programmés trop faibles au vu des revenus du foyer
       // (repère : 18 % du revenu, moyenne des Français — INSEE).
       if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés beaucoup trop faibles au vu des revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
-        puces: ["Moyenne des Français : 18 %"] });
+        /* 14/09/2026 (CGP) : préciser — 18 % du revenu épargnés en moyenne, DONT 9 % en
+           épargne financière (le reste est le remboursement du capital des crédits). */
+        puces: ["Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière"] });
       if (bienNonRenego > 0) faiblesses.push({ t: "Assurance de prêt", d: bienNonRenego > 1 ? `${bienNonRenego} crédits en cours` : "un crédit en cours",
         puces: ["Simulation de renégociation de l'assurance de prêt à faire : des économies sont souvent possibles"] });
       if (enfantsJeunes > 0 && budgetEtudes === 0 && epargne < 15000 * enfantsJeunes) faiblesses.push({ t: "Études des enfants non provisionnées", d: `${enfantsJeunes} enfant${enfantsJeunes > 1 ? "s" : ""} mineur${enfantsJeunes > 1 ? "s" : ""}`, puces: ["Aucune épargne dédiée"] });
@@ -6126,7 +6135,18 @@
            le client epargne sur ses LIVRETS, a 1,7 % (tLiv) — jamais 2,5 % (tAv0, qui
            est le taux des placements EXISTANTS en assurance-vie / PER). Et cette
            epargne entre dans la succession (livrets), sans abattement. */
-        const epargneAvant = (y) => auMoinsUn ? ncpCap(0, envPoche, tLiv, y) : 0;
+        /* 14/09/2026 — decision du CGP (dossier Coconut) : le « sans rien changer » capitalise
+           ce que les solutions EMPLOIENT reellement (l effort net de l annee 1, locatif
+           compris — « 852 €/mois avec de l immobilier et non 500 € »), pas l enveloppe
+           declaree. Meme argent des deux cotes : a gauche sur les livrets a tLiv, a droite
+           selon les preconisations. */
+        /* et si les solutions n emploient pas toute l enveloppe, le reste est epargne
+           aussi (treso) : la base est alors l enveloppe entiere — meme argent des deux cotes */
+        const baseAvant = auMoinsUn ? Math.max(0, effort, envPoche) : 0;
+        const epargneAvant = (y) => auMoinsUn ? ncpCap(0, baseAvant, tLiv, y) : 0;
+        /* part de cet effort placee sur des supports financiers (PER + AV) — c est elle
+           seule qui « change de rendement » ; le reste part dans l immobilier */
+        const finMens = (L.per ? vPer : 0) + (L.av ? vAv : 0);
         const sans = [], avec = [], avecB = [], avecH2 = [];
         for (let y = 0; y <= H; y++) {
           const b = socleAt(y) + epargneAvant(y);
@@ -6149,6 +6169,7 @@
         const avTot = avRP + avLoc + avPla;
 
         const tm = Math.pow(1 + tMed, 1 / 12) - 1;
+        const tlm = Math.pow(1 + tLiv, 1 / 12) - 1;
         const revPla = natPla * tm;
         /* 10/09/2026 — decision A du CGP : les loyers du NOUVEAU bien sont comptes a
            l horizon meme si le credit court encore — nets de la mensualite restante
@@ -6157,8 +6178,10 @@
            de revenus » avec les preconisations. */
         const revLoc = socle.locLoyer * (1 - ch) + (L.loc ? Math.max(0, loy * Math.pow(1 + irl, H) * (1 - ch) - chargesExpMens(H) - (H >= dC ? 0 : mTot)) : 0);
         const revTot = revPla + revLoc;
-        /* revenus du AVANT : rente des placements au meme taux + loyers existants */
-        const avRevPla = avPla * tm;
+        /* revenus du AVANT (14/09, CGP) : « il aura 343 k€ places a 1,7 % et aura donc un
+           complement de revenu a la hauteur de son rendement » — rente au taux des
+           LIVRETS (tLiv), pas au taux des preconisations. */
+        const avRevPla = avPla * tlm;
         const avRevLoc = socle.locLoyer * (1 - ch);
         const avRevTot = avRevPla + avRevLoc;
 
@@ -6221,7 +6244,7 @@
         const succSans = auMoinsUn ? succHorizon(false) : null;
         const succAvec = auMoinsUn ? succHorizon(true) : null;
         const capCree = avec[H] - sans[H], capB = avecB[H] - sans[H], capH = avecH2[H] - sans[H];
-        const verse = auMoinsUn ? ((L.loc ? ap : 0) + ENV * 12 * H) : 0;
+        const verse = auMoinsUn ? ((L.loc ? ap : 0) + baseAvant * 12 * H) : 0;
         const endet = (synth && synth.taux ? synth.taux * 100 : 0) + (L.loc && synth && synth.totalRevenus > 0 ? mTot / synth.totalRevenus * 100 : 0);
 
         /* ——— GAIN DE RENDEMENT (02/09, formule corrigee) ———
@@ -6239,7 +6262,7 @@
         /* PART EXACTE DE LA REALLOCATION : la meme enveloppe capitalisee au taux des
            supports actuels, puis au taux retenu. On n attribue pas a l ecart de
            rendement ce qui vient du locatif ou des gisements. */
-        const gainReallocation = auMoinsUn ? Math.max(0, ncpCap(0, ENV, tMed, H) - ncpCap(0, ENV, tLiv, H)) : 0;
+        const gainReallocation = auMoinsUn ? Math.max(0, ncpCap(0, finMens, tMed, H) - ncpCap(0, finMens, tLiv, H)) : 0;
         /* PEDAGOGIE (02/09) : « 79 120 € de capital gagné » ne se comprend pas seul.
            On montre les DEUX trajectoires du meme argent : ce qu il devient en
            restant ou il est, et ce qu il devient replace. L ecart parle de lui-meme. */
@@ -6282,7 +6305,7 @@
           effLocMoy: (() => { if (H <= 0) return effAn(0); let t = 0; for (let y = 0; y < H; y++) t += effAn(y); return t / H; })(),
           rdtBrut, mTot, loyNet, dC,
           ecoAss, assSousSeuil, mArb, mRed, gainArbCap, gainRedCap, gainRendCap: gainArbCap + gainRedCap,
-          arbAvant, arbApres, redAvant, redApres, gainReallocation, locNouveau: !!L.loc,
+          arbAvant, arbApres, redAvant, redApres, gainReallocation, locNouveau: !!L.loc, baseAvant, finMens,
           mTreso: ecoAss, mRend: mArb + mRed, mTotalGis: ecoAss + mArb + mRed,
           ecoAssPot, gainArbPot, gainRedPot, gainRendPot: gainArbPot + gainRedPot,
           redBloque, redActif, precaCible, tmi, tBas, tHaut, tMed, amortJbAn, tauxAmortJb, estNeuf, crdFin: L.loc ? ncpCrd(K, tC, dC, H) : 0,
@@ -6430,7 +6453,7 @@
         const fond = manque ? "#fef2f2" : (fixe ? "linear-gradient(135deg,#ecfdf5,#ffffff)" : garde ? "#fafaf9" : "rgba(255,255,255,0.96)");
         const bord = manque ? "#fecaca" : (fixe ? C.vertBord : C.bord);
         if (mode === "sticky") return (
-          <div className="rounded-xl px-4 py-2 flex flex-wrap items-center gap-x-6 gap-y-1 border" style={{ background: fond, borderColor: bord, boxShadow: "0 2px 8px rgba(29,39,53,0.10)", backdropFilter: "blur(4px)" }}>
+          <div className="px-8 py-2 flex flex-wrap items-center gap-x-6 gap-y-1" style={{ background: manque ? "#fef2f2" : "#ffffff", borderBottom: "1px solid " + bord, boxShadow: "0 3px 10px rgba(29,39,53,0.12)" }}>
             {barItems.map((x, i) => (
               <span key={i} className="inline-flex items-baseline gap-1.5">
                 <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, letterSpacing: "0.14em", textTransform: "uppercase", color: C.gris2, fontWeight: 700 }}>{x.l}</span>
@@ -6462,8 +6485,11 @@
           {/* bandeau collant (écran seulement) — masqué tant qu'un bandeau imprimé est visible */}
           {/* hauteur nulle : le bandeau collant ne prend AUCUNE place dans le flux — sans
               cela, son apparition faisait sauter tout le contenu de 50 px. */}
-          <div className="nc-syn-noprint" style={{ position: "sticky", top: 0, zIndex: 30, height: 0, visibility: barVu ? "hidden" : "visible" }}>
-            <div style={{ position: "absolute", left: 0, right: 0, top: 6 }}>{barre("sticky")}</div>
+          {/* 14/09 (CGP, « souci d'affichage ») : le bandeau flottait au milieu des cartes
+              en les coupant. Il devient une BANDE pleine largeur, opaque, collée au bord
+              haut de la zone de défilement (marges négatives = px-8 de la modale). */}
+          <div className="nc-syn-noprint" style={{ position: "sticky", top: -20, zIndex: 30, height: 0, visibility: barVu ? "hidden" : "visible" }}>
+            <div style={{ position: "absolute", left: -32, right: -32, top: 0 }}>{barre("sticky")}</div>
           </div>
           {/* ═══ PAGE DE GARDE (10/09/2026, decision F du CGP) ═══
               « 1re page très moche : tout est compressé tout en haut et les 3/4 de la page
@@ -6548,12 +6574,20 @@
                   </div>
                 ) : null}
               </div>
-              {/* 11/09 (CGP) : le bandeau enveloppe · employée · reste prend place SOUS les
-                  objectifs et préconisations, et s'imprime. */}
-              <div className="text-[12.5px]" style={{ color: C.encre, fontWeight: 600, marginTop: 22, marginBottom: 10 }}>
-                Votre épargne mensuelle{!engagement.aucun && engagement.ap ? <span style={{ fontWeight: 400, color: C.gris }}> — et {engagement.ap} de capital mobilisable</span> : null} :
-              </div>
-              {barre("garde")}
+              {/* 14/09/2026 (CGP, dossier Coconut) : PLUS de bandeau enveloppe · employée ·
+                  reste sur la page de garde — « d'où sortent les 305 € ? il faut une logique
+                  de lecture ». À la place, la phrase d'engagement sur ce que le client a
+                  DÉCLARÉ à l'audit (fourchette et apport), rien d'autre. */}
+              {!engagement.aucun ? (
+                <div className="rounded-xl px-5 py-4 border" style={{ marginTop: 22, borderColor: C.bord, background: "#fafaf9" }} data-nc-engagement="1">
+                  <div className="text-[13px]" style={{ color: C.encre, lineHeight: 1.6 }}>
+                    L'engagement que vous souhaitez consacrer au développement et à l'optimisation de votre situation patrimoniale :{" "}
+                    {engagement.cap ? <b style={{ color: C.vert, whiteSpace: "nowrap" }}>{engagement.cap}{engagement.capJ ? " (" + civMoi + ")" : ""}</b> : null}
+                    {engagement.capJ ? <span> et <b style={{ color: C.vert, whiteSpace: "nowrap" }}>{engagement.capJ} ({civLui})</b></span> : null}
+                    {engagement.ap ? <span>{engagement.cap ? " et " : ""}un capital de <b style={{ color: C.or, whiteSpace: "nowrap" }}>{engagement.ap}</b></span> : null}.
+                  </div>
+                </div>
+              ) : null}
               <div style={{ flex: 1, minHeight: 24 }}></div>
               <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid " + C.bord }}>
                 <div className="text-[10.5px]" style={{ color: C.gris2 }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
@@ -6841,6 +6875,15 @@
                 </div>
               ))}
             </div>
+            {/* 14/09/2026 (CGP) : UN bloc qui additionne — « 238 € d'épargne à réorienter »
+                = trésorerie libérée + rendement ramené au mois. */}
+            {(ass ? R.ecoAss : 0) + (rend ? mRend : 0) > 0 ? (
+              <div className="rounded-xl px-4 py-3 mt-3 flex flex-wrap items-baseline border" style={{ columnGap: 12, rowGap: 4, borderColor: C.vertBord, background: "linear-gradient(135deg,#ecfdf5,#ffffff)" }} data-nc-gisements-total="1">
+                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert, letterSpacing: "-0.02em" }}>{eur(Math.round((ass ? R.ecoAss : 0) + (rend ? mRend : 0)))}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span></span>
+                <span className="text-[12.5px] font-bold" style={{ color: C.encre }}>d'épargne à réorienter</span>
+                <span className="text-[10.5px]" style={{ color: C.gris2 }}>{[ass ? eur(Math.round(R.ecoAss)) + " libérés" : null, rend ? eur(mRend) + " de rendement en moyenne" : null].filter(Boolean).join(" + ")}</span>
+              </div>
+            ) : null}
             {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
             {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
             {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
@@ -6863,7 +6906,7 @@
             <div className="nc-print-avoid">
             <div className="nc-ctitre mb-1">À {R.ageFin} ans, votre situation<span className="sfx">dans {R.H} ans</span></div>
             <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 7 }}>
-              Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.envPoche)}/mois</b> : à gauche sur vos livrets ({(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %), à droite selon les préconisations retenues ({(nb(h.tMed, 5.2)).toString().replace(".", ",")} %).
+              Dans les deux cas vous épargnez <b style={{ color: C.encre }}>{eur(R.baseAvant)}/mois</b>{R.locNouveau ? ", immobilier compris" : ""} : à gauche sur vos livrets ({(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %), à droite selon les préconisations retenues ({(nb(h.tMed, 5.2)).toString().replace(".", ",")} %{R.locNouveau ? " et immobilier financé à crédit" : ""}).
             </div>
             {/* ═══ 10/09/2026 — decision A du CGP : UN TABLEAU avant / apres, tres lisible :
                 patrimoine, revenus, impot, succession (droits, assurance-vie hors
@@ -6880,7 +6923,7 @@
                 { l: libLoc, a: R.avLoc, b: R.natLoc, sub: true },
                 { l: "Placements financiers", a: R.avPla, b: R.natPla, sub: true },
                 { sec: "Chaque mois, chaque année" },
-                { l: "Complément de revenus mensuel", a: R.avRevTot, b: R.revTot, fort: true, unit: "/mois", note: "rente des placements + loyers nets" },
+                { l: "Complément de revenus mensuel à vie", a: R.avRevTot, b: R.revTot, fort: true, unit: "/mois", note: "rente des placements à leur rendement (" + String(nb(h.tLiv, 1.7)).replace(".", ",") + " % à gauche, " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % à droite) + loyers nets" },
                 { l: "Impôt économisé par an", a: 0, b: R.ecoImpot, unit: "/an", note: R.ecoRegimeAn > 0 ? "PER + dispositif locatif" : "" },
                 { sec: `En cas de décès à ${R.ageFin} ans` },
                 sS && sA ? { l: "Droits de succession estimés", a: sS.total, b: sA.total, fort: true, inv: true, note: sS.lib || "" } : null,
@@ -6947,12 +6990,12 @@
               <div className="rounded-xl px-4 py-3 mt-3" style={{ background: "#fafaf9", border: "1px solid " + C.bord }}>
                 <div className="text-[11px] font-bold mb-1" style={{ color: C.encre }}>D'où vient la différence ?</div>
                 <div className="text-[11.5px]" style={{ color: C.gris, lineHeight: 1.65 }}>
-                  Dans les deux cas vous épargnez <b>{eur(R.ENV)}/mois</b> pendant <b>{R.H} ans</b>, soit <b>{eur(R.ENV * 12 * R.H)}</b> versés.
+                  Dans les deux cas vous épargnez <b>{eur(R.baseAvant)}/mois</b> pendant <b>{R.H} ans</b>, soit <b>{eur(R.baseAvant * 12 * R.H)}</b> versés.
                   {" "}À gauche, cette épargne reste sur vos livrets, à <b>{(nb(h.tLiv, 1.7)).toString().replace(".", ",")} %</b> par an, et entre dans votre succession.
-                  {" "}À droite, elle est placée selon les préconisations, à l'hypothèse retenue de <b>{(nb(h.tMed, 5.2)).toString().replace(".", ",")} %</b>, en assurance-vie et PER transmis hors succession (abattement de 152 500 € par bénéficiaire, art. 990 I).
-                  {" "}Sur {R.H} ans, ce seul écart de rendement produit <b style={{ color: C.vert }}>{eur(Math.max(0, R.gainReallocation))}</b> de patrimoine en plus,
+                  {" "}À droite, <b>{eur(R.finMens)}/mois</b> sont placés à l'hypothèse retenue de <b>{(nb(h.tMed, 5.2)).toString().replace(".", ",")} %</b>, en assurance-vie et PER transmis hors succession (abattement de 152 500 € par bénéficiaire, art. 990 I)
+                  {R.locNouveau ? <span> ; le reste, <b>{eur(Math.max(0, R.baseAvant - R.finMens))}/mois</b>, est l'effort de l'immobilier financé à crédit, dont la valeur est bâtie par les loyers et par l'effet de levier</span> : null}.
+                  {" "}Sur {R.H} ans, le seul écart de rendement sur les placements financiers produit <b style={{ color: C.vert }}>{eur(Math.max(0, R.gainReallocation))}</b> de patrimoine en plus,
                   {" "}sans un euro d'effort supplémentaire.
-                  {R.locNouveau ? " S'y ajoute l'immobilier financé à crédit : sa valeur est bâtie par les loyers et par l'effet de levier, pas par votre épargne." : ""}
                   {R.gainRendCap > 0 ? ` Et ${eur(R.gainRendCap)} viennent des gisements identifiés plus haut — le même argent, mieux placé.` : ""}
                 </div>
               </div>
