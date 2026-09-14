@@ -1070,7 +1070,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v215 (14/09 : retours du CGP, dossier Coconut. CONSTAT : « Epargne insuffisante au regard des revenus -- X € d epargne pour Y € de revenus mensuels. » (une ligne, plus de puce « Moins de six mois ») ; « Epargne long terme -- aucune epargne long terme : X € investis sur des livrets et comptes courants. / Situation critique pour une gestion de votre epargne. / Remuneres a peine plus que l inflation… » ; « Moyenne des Francais : 18 % des revenus, dont 9 % en epargne financiere » ; « Plus de X € d IMPOT sur 10 ans ». PROJECTION : page de garde = phrase d engagement sur le declare (« L engagement que vous souhaitez consacrer… : 300 a 500 €/mois et un capital de … »), plus de bandeau ni de « 305 € employes » ; bloc « X €/mois d epargne a reorienter » sous les gisements (tresorerie liberee + rendement au mois) ; le « sans rien changer » capitalise l EFFORT EMPLOYE (852 avec immobilier) et non l enveloppe ; complement de revenus « a vie », rente a 1,7 % a gauche et 5,2 % a droite ; « D ou vient la difference » distingue la part financiere de l effort immobilier ; bandeau collant = bande pleine largeur opaque au bord haut (plus de recouvrement des cartes).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v216 (14/09 : CONSTAT, inspire de la presentation validee par le CGP (« sans tout bouleverser ») : dans chaque axe, le premier chiffre de la phrase de tete ressort en gras encre (ncChiffreFort) ; un axe peut porter une phrase de VERDICT (f.verdict), rendue en retrait avec un filet or -- « Le sujet n est pas l effort d epargne, c est son affectation. » (Epargne long terme) et « Le probleme n est pas fiscal, il est civil -- c est le chantier a traiter en premier, et il coute quasiment zero. » (Partenaire / concubin sans droits). Export JSON : champ verdict.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v215 (14/09 : retours du CGP, dossier Coconut. CONSTAT : « Epargne insuffisante au regard des revenus -- X € d epargne pour Y € de revenus mensuels. » (une ligne, plus de puce « Moins de six mois ») ; « Epargne long terme -- aucune epargne long terme : X € investis sur des livrets et comptes courants. / Situation critique pour une gestion de votre epargne. / Remuneres a peine plus que l inflation… » ; « Moyenne des Francais : 18 % des revenus, dont 9 % en epargne financiere » ; « Plus de X € d IMPOT sur 10 ans ». PROJECTION : page de garde = phrase d engagement sur le declare (« L engagement que vous souhaitez consacrer… : 300 a 500 €/mois et un capital de … »), plus de bandeau ni de « 305 € employes » ; bloc « X €/mois d epargne a reorienter » sous les gisements (tresorerie liberee + rendement au mois) ; le « sans rien changer » capitalise l EFFORT EMPLOYE (852 avec immobilier) et non l enveloppe ; complement de revenus « a vie », rente a 1,7 % a gauche et 5,2 % a droite ; « D ou vient la difference » distingue la part financiere de l effort immobilier ; bandeau collant = bande pleine largeur opaque au bord haut (plus de recouvrement des cartes).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v214 (11/09 : POLICE D AFFICHAGE : Fraunces -> LORA partout (lien Google Fonts, ~120 fontFamily, textes SVG, classes .pres-*). Decision D du CGP sur image comparative : le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes ses variantes, Lora a un J sur la ligne de base. Fraunces ne doit plus revenir.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v213 (11/09 : PROJECTION, retours du CGP sur le dossier Drouot. (1) Page de garde : la phrase « Ce document projette votre situation a X ans… » est supprimee ; le bandeau enveloppe · employee · reste s imprime SOUS les objectifs et preconisations. (2) Ordre : garde -> LES SOLUTIONS RETENUES (bandeau EN FIXE en tete, en grand, imprime ; phrase d engagement) -> OU TROUVER L EPARGNE (compact, ECONOMIE MENSUALISEE : le €/mois est le chiffre principal, le gain sur N ans en second) -> tableau a l horizon, avec « dans N ans » sous « Sans rien changer » et « Avec les preconisations ». La rubrique « Votre participation et les preconisations » est fondue dans les solutions. Le bandeau collant (ecran) ne s affiche que lorsqu aucun bandeau imprime n est visible. (3) BUG apport : parseFloat("10 000") = 10 -> la tuile « Apport mobilise » affichait 10 € ; nb() retire espaces, € et accepte « 10k ».', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v212 (11/09 : axe « Capacite d endettement non utilisee » reecrit avec la formulation EXACTE du CGP (dossier Drouot) : « Endettement a 14 pct seulement » puis trois puces -- « Votre capacite d endettement vous permettrait de realiser un investissement locatif pour un montant de X € », « L effet de levier du credit est indispensable dans une bonne gestion de patrimoine », « Il vous permet de capitaliser dans le temps, tout en protegeant vos heritiers en cas de deces ». Les phrases « Avant tout engagement : stress-test… » (aussi dans la carte Capacite d emprunt, note union libre) et « Utilisations possibles… » sont supprimees DEFINITIVEMENT. Banc 3 decies etendu.', 'color:#7c3aed;font-weight:bold');
@@ -2868,6 +2869,17 @@
     const ncSansDoublon = (tete, puces) => {
       const vus = new Set([ncNormPhrase(tete)]);
       return (puces || []).filter(x => { const n = ncNormPhrase(x); if (!n || vus.has(n)) return false; vus.add(n); return true; });
+    };
+    /* 14/09/2026 (CGP, « inspire-toi de cette présentation sans tout bouleverser ») :
+       dans la phrase de tête d un axe, le PREMIER chiffre (montant ou pourcentage)
+       ressort en gras encre — « 65 500 € entièrement en liquidités ». Rien d autre
+       ne change dans la phrase. */
+    const ncChiffreFort = (txt) => {
+      const t = String(txt == null ? "" : txt);
+      const m = t.match(/\d[\d\u00a0\u202f ]*(?:[.,]\d+)?[\u00a0\u202f ]?(?:€|%)(?:\/mois|\/an)?/);
+      if (!m) return t;
+      const i = m.index, j = i + m[0].length;
+      return [t.slice(0, i), <b key="c" style={{ color: "#1d2735", fontWeight: 700 }}>{t.slice(i, j)}</b>, t.slice(j)];
     };
     /* 10/09/2026 — pastilles des tuiles d identification (Le foyer / Coordonnees).
        Choix du picto par le TITRE de la tuile ; disque or pale, trait encre. */
@@ -4948,7 +4960,8 @@
         if (unionLibre) pucesProt.push("Puis testament et clauses bénéficiaires d'assurance-vie ; l'effet de levier du crédit ne vient qu'ensuite.");
         faiblesses.unshift({ t: unionLibre ? "Concubin sans droits — à traiter en priorité" : "Partenaire sans droits",
           d: detRPseul ? `Le survivant n'est protégé ni par la succession, ni par l'assurance de prêt.` : `Sans testament, le survivant n'hérite de rien.`,
-          puces: pucesProt });
+          puces: pucesProt,
+          verdict: "Le problème n'est pas fiscal, il est civil — c'est le chantier à traiter en premier, et il coûte quasiment zéro." });
       }
       if (S.actifTotal >= 100000 && age != null && age >= 50 && (d.locatifs || []).length > 0 && revFoyer > 0 && epargne < revFoyer * 3) faiblesses.push({ t: "Succession à préparer — épargne faible face au locatif", d: "patrimoine surtout immobilier, épargne faible",
         puces: ["Arbitrer quelques biens locatifs vers l'assurance-vie (abattement 152 500 € par parent et par enfant)", "Évite de très lourds droits de succession — arbitrage d'optimisation"] });
@@ -4972,7 +4985,8 @@
              l'inflation, et frappés de plein fouet par les droits de succession en cas de
              décès ». (11/09 : « Placés en assurance-vie ou en PER… » reste supprimée.) */
           faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} investis sur des livrets et comptes courants.`,
-            puces: [`Situation critique pour une gestion de votre épargne${locataire ? ", d'autant plus en étant locataire" : ""}.`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`] });
+            puces: [`Situation critique pour une gestion de votre épargne${locataire ? ", d'autant plus en étant locataire" : ""}.`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`],
+            verdict: "Le sujet n'est pas l'effort d'épargne, c'est son affectation." });
         } else if (surDoteM) {
           faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants`,
             puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès", "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)"] });
@@ -7733,7 +7747,7 @@
               return {
                   resume: n.resume,
                   forces: n.forces.map(f => ({ titre: f.t, detail: f.d, puces: f.puces || [] })),
-                  faiblesses: n.faiblesses.map(f => ({ titre: f.t, detail: f.d, puces: f.puces || [] })),
+                  faiblesses: n.faiblesses.map(f => ({ titre: f.t, detail: f.d, puces: f.puces || [], verdict: f.verdict || "" })),
                   problematiques: n.problematiques.map(q => ({
                     code: q.code, priorite: q.priorite, famille: q.famille, titre: q.titre,
                     constat: q.constat, consequence: q.consequence, enjeu: q.enjeu,
@@ -11206,7 +11220,7 @@
                                 {axesAff.map((f, i) => (
                                   <li key={i} className="text-[12px] leading-snug flex gap-2.5">
                                     <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#b91c1c" }}></span>
-                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="text-stone-500"> — {f.d}</span>
+                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="text-stone-500"> — {ncChiffreFort(f.d)}</span>
                                       {/* 02/09 : un axe qui porte plusieurs idees les met en PUCES.
                                           Six idees a la file, en petits caracteres, ne se lisent pas. */}
                                       {Array.isArray(f.puces) && f.puces.length ? (
@@ -11218,6 +11232,12 @@
                                             </span>
                                           ))}
                                         </span>
+                                      ) : null}
+                                      {/* 14/09 (CGP) : phrase de VERDICT — ce que le constat veut dire, en une ligne
+                                          (« le problème n'est pas fiscal, il est civil »). Portée par l'axe (f.verdict),
+                                          rendue en retrait avec un filet — seulement quand l'axe en a une. */}
+                                      {f.verdict ? (
+                                        <span className="block mt-2 pl-2.5 text-[11.5px] leading-snug font-semibold" style={{ color: "#1d2735", borderLeft: "2px solid #b8924e" }}>{f.verdict}</span>
                                       ) : null}
                                       <Controles f={f} axes={true} /></span>
                                   </li>
