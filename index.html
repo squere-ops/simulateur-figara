@@ -1101,7 +1101,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v224 (15/09 : TROIS RETOURS DU CGP SUR LE DOCUMENT DU PREMIER RENDEZ-VOUS. (1) EPARGNE DE PRECAUTION : « supprime les commentaires sur l epargne de precaution ». La carte Court terme n affiche plus NI la cible recommandee, NI « au bon niveau », NI « X € au-dela » — le montant se suffit, le dimensionnement de la reserve se traite de vive voix. (2) TABLEAU DES VERSEMENTS PROGRAMMES : « la partie taux de rendement n est pas claire ni mise en avant ». Les mots RENDEMENT ANNUEL sont ecrits dans l en-tete, chaque taux devient un chiffre lisible (15 px au lieu de 10), la colonne 5 pct est teintee et soulignee sur toute la hauteur, et « livrets » reste la seule mention ecrite sous un taux — qualifier 5 pct d equilibre et 7 pct de dynamique serait un profil de risque que le cabinet n a pas arbitre. La LIGNE DE LA CAPACITE DECLAREE est ENCADREE EN VERT sur toute sa largeur, comme demande. (3) LES QUESTIONS DU PROCHAIN RENDEZ-VOUS : « je n aime pas la presentation et il y a trop de questions — je prefere 5 questions tres pertinentes que 10 moins interessantes ». CINQ AU MAXIMUM, choisies par PRIORITE ARBITREE PAR LE CGP (protection du conjoint et des enfants, transmission, retraite, fiscalite, puis le reste) et non plus par l ordre du moteur ; presentation en liste editoriale — numero discret, question en serif, filet entre chacune. Les formulations sont celles dictees par le CGP, dont « De quoi votre conjoint disposerait-il reellement, le jour ou vous ne serez plus la ? Et vos enfants ? ». UNE SEULE EXCEPTION a la regle « aucun chiffre dans la question » : la question fiscale porte l impot sur DIX ANS, parce que c est lui qui fait lever les yeux. Un axe sans question ecrite ne sort pas : on n invente pas une question. CONTROLE : t_shot_pres.js compte les points d interrogation du bloc et refuse au-dela de cinq, et verifie la disparition des commentaires de precaution.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v225 (15/09 : LES QUESTIONS QUI OUVRENT LE SECOND RENDEZ-VOUS. Formulations arbitrees avec le CGP (« j aime beaucoup ces questions, elles sont bien plus pertinentes — restons au vouvoiement »). CE QUI FAIT QU UNE QUESTION PORTE : elle contient LE CHIFFRE DU CLIENT, elle revele UN COUT QU IL N A JAMAIS CALCULE, et sa reponse DEMANDE UN SAVOIR-FAIRE. Une question a laquelle il peut repondre « je ne sais pas » et passer a autre chose est ratee. UNE SEULE QUESTION PAR FAMILLE — protection, fiscalite, retraite, levier immobilier, epargne qui dort — pour ne jamais poser deux fois le meme registre ; les cinq familles ouvrent l assurance vie, le PER et l investissement locatif sans qu aucun nom de produit soit prononce. Les questions portent desormais les VRAIS CHIFFRES du dossier : l impot sur dix ans, le passage de X a Y €/mois a la retraite (ncPensionFoyer), la capacite d emprunt restante, le montant qui dort sur les livrets. Deux formulations remplacent les precedentes : « pas en patrimoine, en argent disponible » (un bien ne paie pas les factures) et « a quelle date en avez-vous besoin ? si ce n est pas avant cinq ans, pourquoi sont-ils la ? » (c est le client qui conclut). L ACCORD DU VERBE suit la civilite du conjoint — « votre conjointe disposerait-ELLE », jamais « -il ». CONTROLE : le banc compte les NUMEROS et non les points d interrogation (une question validee peut en contenir deux : « … ? Et vos enfants ? ») et refuse un accord faux.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v224 (15/09 : TROIS RETOURS DU CGP SUR LE DOCUMENT DU PREMIER RENDEZ-VOUS. (1) EPARGNE DE PRECAUTION : « supprime les commentaires sur l epargne de precaution ». La carte Court terme n affiche plus NI la cible recommandee, NI « au bon niveau », NI « X € au-dela » — le montant se suffit, le dimensionnement de la reserve se traite de vive voix. (2) TABLEAU DES VERSEMENTS PROGRAMMES : « la partie taux de rendement n est pas claire ni mise en avant ». Les mots RENDEMENT ANNUEL sont ecrits dans l en-tete, chaque taux devient un chiffre lisible (15 px au lieu de 10), la colonne 5 pct est teintee et soulignee sur toute la hauteur, et « livrets » reste la seule mention ecrite sous un taux — qualifier 5 pct d equilibre et 7 pct de dynamique serait un profil de risque que le cabinet n a pas arbitre. La LIGNE DE LA CAPACITE DECLAREE est ENCADREE EN VERT sur toute sa largeur, comme demande. (3) LES QUESTIONS DU PROCHAIN RENDEZ-VOUS : « je n aime pas la presentation et il y a trop de questions — je prefere 5 questions tres pertinentes que 10 moins interessantes ». CINQ AU MAXIMUM, choisies par PRIORITE ARBITREE PAR LE CGP (protection du conjoint et des enfants, transmission, retraite, fiscalite, puis le reste) et non plus par l ordre du moteur ; presentation en liste editoriale — numero discret, question en serif, filet entre chacune. Les formulations sont celles dictees par le CGP, dont « De quoi votre conjoint disposerait-il reellement, le jour ou vous ne serez plus la ? Et vos enfants ? ». UNE SEULE EXCEPTION a la regle « aucun chiffre dans la question » : la question fiscale porte l impot sur DIX ANS, parce que c est lui qui fait lever les yeux. Un axe sans question ecrite ne sort pas : on n invente pas une question. CONTROLE : t_shot_pres.js compte les points d interrogation du bloc et refuse au-dela de cinq, et verifie la disparition des commentaires de precaution.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v223 (15/09 : LES DEVOIRS SUIVENT CE QUE LE DOSSIER NE SAIT PAS, ET LE TEASER DEVIENT DES QUESTIONS. (1) « IL FAUT POUVOIR METTRE JE NE SAIS PAS » : la quotite d assurance emprunteur s intitule desormais « Je ne sais pas » (et non « A verifier »), et « Assurance de pret renegociee ? » passe de Oui/Non a Oui / Non / Je ne sais pas — le DOUTE est traite comme le MANQUE, il appelle les memes pieces. (2) LE BLOC DES DEVOIRS N EST PLUS FIGE : aux deux documents info-retraite s ajoutent, quand le dossier l exige, les conditions particulieres de l assurance de pret (quotite inconnue, sur un couple), le TABLEAU D AMORTISSEMENT ET L OFFRE DE PRET des credits dont l assurance n a jamais ete renegociee ou dont on l ignore — pour preparer une simulation chiffree au prochain rendez-vous —, le RELEVE DE SITUATION des placements dont le rendement est inconnu, et le CONTRAT DE PREVOYANCE d un TNS dont la couverture n est pas connue, pour comparatif. Un devoir ne se deduit jamais d un chiffre calcule : il vient d un champ laisse vide ou marque « je ne sais pas ». (3) « LES SUJETS DU PROCHAIN RENDEZ-VOUS » DEVIENT « LES QUESTIONS DU PROCHAIN RENDEZ-VOUS » (CGP : « je veux que tu poses des questions qui donnent envie au client que je lui donne les reponses »). Chaque axe du moteur est traduit en UNE question : on pose, on ne repond pas, aucun chiffre du dossier, aucun nom de produit. (4) TABLEAU DES VERSEMENTS PROGRAMMES (« il est moche et pas pro ni clair ») : la colonne 5 pct, hypothese centrale, est teintee et en gras sur toute la hauteur ; 1,7 pct reste gris, 7 pct en encre normale ; les deux horizons sont separes par un filet et portent chacun leur teinte ; la ligne de la capacite declaree porte un filet dore. (5) « IL MANQUE X € » SUPPRIME de l epargne constituee (demande du CGP) : sous la cible on n ecrit rien, le montant recommande est deja affiche au-dessus. CONTROLE : t_devoirs.js pose un dossier avec trois inconnues, verifie que chaque piece est reclamee et nommee, puis renseigne la quotite et exige que CE devoir disparaisse ; verif.sh passe a 14 etapes.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v222 (15/09 : QUI VERSE QUOI. Le CGP, sur « Votre epargne mensuelle actuelle » : « peux-tu renseigner que c est Monsieur qui verse 200 € et Madame 100 € ? sois precis sinon on va perdre beaucoup de temps ». Le bloc listait deux fois « LIVRET A » sans dire a qui : sur un couple, deux versements identiques deviennent illisibles. Chaque carte porte desormais LE DETENTEUR en tete (Monsieur / Madame / Commun), repris de a.titulaire — le meme libelle que le tableau « Vos placements », pour qu un contrat ne change pas de nom d un bloc a l autre — puis le montant, puis le support et l etablissement. Sous le total s ajoute un recapitulatif PAR PERSONNE : « dont Monsieur 200 €/mois · Madame 100 €/mois ». Le PER declare a l etape Fiscalite prend le detenteur de d.reductionsPer. Un detenteur non renseigne sur un couple s affiche « detenteur a preciser » — le manque est une information. (2) Sous-titre du bloc supprime (« ce qui part chaque mois vers vos placements… ») : le CGP — « supprime ce genre de phrase qui ne sert strictement a rien » ; le bloc montre des chiffres, il n a pas a s expliquer. CONTROLE : t_shot_pres.js passe sur un COUPLE marie en separation de biens, pose le livret sur Monsieur et l assurance vie sur Madame, et exige les deux noms a cote des deux montants ainsi que la ligne de recapitulatif.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v221 (15/09 : CE QUE LE CLIENT MET EN FACE DE SES OBJECTIFS, AU PREMIER RENDEZ-VOUS. Quatre demandes du CGP sur le volet « Audit et synthese ». (1) AU-DESSUS des versements programmes, un bloc VOTRE EPARGNE MENSUELLE ACTUELLE : ce qui part chaque mois, PLACEMENT PAR PLACEMENT, lu dans la saisie (le versement programme declare sur chaque placement) — « 200 €/mois sur un livret, 100 € sur une assurance vie », total et part des revenus, avec le repere des 18 pct dont 9 pct en financier. Le reliquat eventuel entre ce detail et le total du moteur (PER declare a l etape Fiscalite) sort sur sa propre ligne, sinon les deux chiffres se contrediraient. (2) JUSTE EN DESSOUS, le rappel des OBJECTIFS du client et des MOYENS qu il y consacre (apport et mensualite) : ce bloc etait parti au RDV 2 le matin meme, le CGP le veut AUSSI au RDV 1 — il figure desormais dans LES DEUX volets, mais les cartes du cabinet (objectifs recommandes, preconisations) restent reservees au RDV 2. (3) ENSUITE un bloc LES SUJETS DU PROCHAIN RENDEZ-VOUS : le NOMBRE de sujets puis LEURS TITRES SEULS, sans un chiffre ni une preconisation — on nomme, on ne traite pas ; le detail est ce qui cree le second rendez-vous. (4) Puis « Pour preparer notre prochain rendez-vous », qui ferme le document. ENVOI AU CLIENT : un navigateur ne sait pas joindre un fichier a un mail ; le bouton « Envoyer au client » ouvre donc la fenetre d enregistrement du PDF, puis la messagerie du poste avec destinataire, objet et texte deja ecrits — il ne reste qu a y glisser le PDF. Le bouton est aussi DANS la barre du mode presentation. CONTROLE : t_shot_pres.js saisit un dossier avec 200 €/mois sur un livret et 100 €/mois sur une assurance vie, verifie les trois montants affichés, le total, et l ORDRE des cinq blocs ; verif.sh passe de 11 a 13 etapes.)','font-weight:bold;color:#047857');
@@ -11425,52 +11426,105 @@
                       })()}
 
                       {/* ═══ LES QUESTIONS DU PROCHAIN RENDEZ-VOUS ═══
-                          15/09/2026 (CGP) : « je n'aime pas la présentation et il y a trop de
-                          questions — je préfère 5 questions très pertinentes que 10 moins
-                          intéressantes ». CINQ AU MAXIMUM, choisies par PRIORITÉ (le rang est
-                          écrit dans la table ci-dessous, il ne dépend pas de l'ordre du moteur),
-                          présentées en liste éditoriale : un numéro discret, la question en
-                          serif, un filet entre chacune. Rien d'autre.
-                          Règle maintenue : on POSE, on ne répond pas. Seule exception validée par
-                          le CGP — la question fiscale porte le montant d'impôt sur dix ans, parce
-                          que c'est LUI qui fait lever les yeux. ═══ */}
+                          Formulations arbitrées avec le CGP le 15/09/2026 (« j'aime beaucoup ces
+                          questions, elles sont bien plus pertinentes — restons au vouvoiement,
+                          plus professionnel »).
+                          CE QUI FAIT QU'UNE QUESTION PORTE : elle contient LE CHIFFRE DU CLIENT
+                          (donc son dossier a été travaillé), elle révèle UN COÛT QU'IL N'A JAMAIS
+                          CALCULÉ (donc il y a urgence), et sa réponse DEMANDE UN SAVOIR-FAIRE
+                          (donc il ne la trouvera pas seul). Une question à laquelle il peut
+                          répondre « je ne sais pas » et passer à autre chose est une question
+                          ratée.
+                          COMPOSITION : cinq au maximum, UNE SEULE PAR FAMILLE — protection,
+                          fiscalité, retraite, levier immobilier, épargne qui dort — pour ne
+                          jamais poser deux fois le même registre. On POSE, on ne répond pas ;
+                          aucun nom de produit n'est prononcé, alors que les cinq familles
+                          ouvrent l'assurance vie, le PER et l'investissement locatif.
+                          Vouvoiement et conditionnel : le ton du cabinet. ═══ */}
                       {synMode === "constat" && (() => {
                         const nfQ = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
+                        /* ——— les chiffres du dossier qui entrent DANS les questions ——— */
                         const impot10 = (() => {
-                          try { const f = ncCalcFisc(d, 2026); return Math.max(0, Math.round((f.impotNet || 0) * 10)); }
+                          try { return Math.max(0, Math.round((ncCalcFisc(d, 2026).impotNet || 0) * 10)); }
                           catch (e) { return 0; }
                         })();
+                        const revAuj = Math.round((synth && synth.totalRevenus) || 0);
+                        const pension = (() => {
+                          try {
+                            const P = ncPensionFoyer(d, syn.chiffresCles || {});
+                            const m = Math.round(((P.bas || 0) + (P.haut || 0)) / 2);
+                            return m > 0 && m < revAuj ? m : 0;
+                          } catch (e) { return 0; }
+                        })();
+                        const ageRet = ncInt(((d.objectifsDetail || {}).retraite || {}).age) || 64;
+                        const capEmp = Math.round((synth && (synth.cap25 || synth.cap20)) || 0);
+                        const courtTQ = (d.avoirsQ === "oui" ? (d.avoirs || []) : [])
+                          .filter(x => x.type === "livrets" || x.type === "compte_courant")
+                          .reduce((s2, y) => s2 + ncInt(y.valeur), 0);
                         const aEnfants = (d.enfants || []).length > 0;
-                        /* p = priorité de la question, 1 = la plus forte. Ordre arbitré par le CGP
-                           le 15/09/2026 : protection, transmission, retraite, fiscalité, puis le
-                           patrimoine et les revenus. */
+                        /* accord du verbe : « votre conjointe disposerait-ELLE », jamais « -il ». */
+                        const conjFem = ((d.conjoint || {}).civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme";
+                        const sujetProt = enCouple ? (conjFem ? "votre conjointe" : "votre conjoint") : "vos proches";
+                        const verbeProt = enCouple ? (conjFem ? "disposerait-elle" : "disposerait-il") : "disposeraient-ils";
+
+                        /* p = priorité (1 = la plus forte), fam = famille : une seule question par
+                           famille, pour ne pas poser deux fois le même registre. */
                         const QUESTIONS = [
-                          { p: 1, re: /conjoint insuffisamment protégé|succession|décès/i, q: `De quoi votre conjoint disposerait-il réellement, le jour où vous ne serez plus là ?${aEnfants ? " Et vos enfants ?" : ""}` },
-                          { p: 1, re: /partenaire|concubin|pacs/i, q: "Que percevrait votre partenaire aujourd'hui, en l'absence de testament ?" },
-                          { p: 2, re: /assurance-vie/i, q: "Comment transmettre à vos proches sans droits de succession, tout en gardant la main sur votre argent ?" },
-                          { p: 3, re: /dispositif retraite|retraite de .* non préparée|retraite non préparée/i, q: "Quel sera le montant réel de votre retraite — combien manquera-t-il, et comment y remédier ?" },
-                          { p: 4, re: /fiscalité subie|impôt/i, q: impot10 > 0 ? `Comment utiliser autrement les ${nfQ(impot10)} € d'impôt que vous verserez dans les dix ans ?` : "Quelle part de votre impôt peut être réorientée vers votre propre patrimoine ?" },
-                          { p: 5, re: /prévoyance/i, q: "De quels revenus disposeriez-vous en cas d'arrêt de travail prolongé ?" },
-                          { p: 6, re: /épargne long terme|épargne insuffisante|performance de l'épargne inconnue/i, q: "Où placer votre épargne pour qu'elle travaille enfin, sans la bloquer ?" },
-                          { p: 7, re: /capacité d'endettement/i, q: "Quel bien pourriez-vous acquérir sans toucher à votre budget mensuel ?" },
-                          { p: 8, re: /versements programmés|absence totale d'épargne mensuelle/i, q: "Que deviendrait la même somme, chaque mois, si elle était placée autrement ?" },
-                          { p: 9, re: /assurance de prêt/i, q: "Combien pouvez-vous récupérer sur l'assurance de vos crédits, à garanties égales ?" },
-                          { p: 10, re: /endettement supérieur|taux d'effort supérieur/i, q: "Comment alléger vos mensualités sans allonger la durée de vos crédits ?" },
-                          { p: 11, re: /études des enfants/i, q: "Combien coûteront les études de vos enfants, et comment les financer sans vous démunir ?" },
-                          { p: 12, re: /disparité de revenus/i, q: "Comment rééquilibrer vos deux patrimoines sans déclencher de fiscalité ?" },
-                          { p: 13, re: /rattachement|pension alimentaire/i, q: "Rattachement ou pension : laquelle des deux options vous coûte le moins ?" },
-                          { p: 14, re: /épargne de précaution|court terme/i, q: "De quelle réserve disponible avez-vous réellement besoin ?" },
+                          { p: 1, fam: "protection", re: /conjoint insuffisamment protégé|décès/i,
+                            q: `De quoi ${sujetProt} ${verbeProt} le mois suivant votre décès — pas en patrimoine, en argent disponible ?${aEnfants ? " Et vos enfants ?" : ""}` },
+                          { p: 1, fam: "protection", re: /partenaire|concubin|pacs/i,
+                            q: "Que percevrait votre partenaire aujourd'hui, en l'absence de testament ?" },
+                          { p: 2, fam: "protection", re: /succession/i,
+                            q: aEnfants
+                              ? "Vos enfants disposeraient de six mois pour régler les droits de succession, avant intérêts de retard : avec quel argent ?"
+                              : "Vos héritiers disposeraient de six mois pour régler les droits de succession, avant intérêts de retard : avec quel argent ?" },
+                          { p: 3, fam: "fiscalite", re: /fiscalité subie|impôt/i,
+                            q: impot10 > 0
+                              ? `Sur les dix prochaines années, vous verserez environ ${nfQ(impot10)} € d'impôt. Combien seriez-vous prêt à en transformer en épargne pour vous ?`
+                              : "Chaque euro que vous placez aujourd'hui vous coûte-t-il de l'impôt, ou vous en fait-il économiser ?" },
+                          { p: 4, fam: "retraite", re: /dispositif retraite|retraite de .* non préparée|retraite non préparée/i,
+                            q: (pension > 0 && revAuj > 0)
+                              ? `À ${ageRet} ans, vos revenus passeraient d'environ ${nfQ(revAuj)} à ${nfQ(pension)} € par mois. Sur quoi allez-vous prendre la différence ?`
+                              : "Quel sera le montant réel de votre retraite — combien manquera-t-il, et comment y remédier ?" },
+                          { p: 5, fam: "levier", re: /capacité d'endettement/i,
+                            q: capEmp > 0
+                              ? `La banque vous prêterait encore ${nfQ(capEmp)} € aujourd'hui. Quel bien cela représente-t-il — et qui le rembourserait, vous ou un locataire ?`
+                              : "Votre capacité d'emprunt est-elle un droit acquis, ou une fenêtre qui se referme ?" },
+                          { p: 6, fam: "epargne", re: /épargne long terme|épargne insuffisante/i,
+                            q: courtTQ > 0
+                              ? `Vos ${nfQ(courtTQ)} € placés sur des livrets : à quelle date en avez-vous besoin ? Si ce n'est pas avant cinq ans, pourquoi sont-ils là ?`
+                              : "Où placer votre épargne pour qu'elle travaille enfin, sans la bloquer ?" },
+                          { p: 7, fam: "prevoyance", re: /prévoyance/i,
+                            q: "Si demain vous ne pouviez plus travailler pendant deux ans, de combien vivriez-vous ?" },
+                          { p: 8, fam: "epargne", re: /performance de l'épargne inconnue/i,
+                            q: "Que rapportent vos contrats actuels, frais déduits — et quand l'avez-vous vérifié pour la dernière fois ?" },
+                          { p: 9, fam: "versements", re: /versements programmés|absence totale d'épargne mensuelle/i,
+                            q: "Que deviendrait la même somme, chaque mois, si elle était placée autrement ?" },
+                          { p: 10, fam: "credits", re: /assurance de prêt/i,
+                            q: "Combien pouvez-vous récupérer sur l'assurance de vos crédits, à garanties égales ?" },
+                          { p: 11, fam: "credits", re: /endettement supérieur|taux d'effort supérieur/i,
+                            q: "Comment alléger vos mensualités sans allonger la durée de vos crédits ?" },
+                          { p: 12, fam: "famille", re: /études des enfants/i,
+                            q: "Combien coûteront les études de vos enfants, et comment les financer sans vous démunir ?" },
+                          { p: 13, fam: "famille", re: /disparité de revenus/i,
+                            q: "Comment rééquilibrer vos deux patrimoines sans déclencher de fiscalité ?" },
+                          { p: 14, fam: "fiscalite", re: /rattachement|pension alimentaire/i,
+                            q: "Rattachement ou pension : laquelle des deux options vous coûte le moins ?" },
                         ];
-                        const retenues = [];
+                        const trouvees = [];
                         (syn.faiblesses || []).forEach(f => {
                           const t = f && f.t ? String(f.t) : "";
                           if (!t) return;
                           const m = QUESTIONS.find(x => x.re.test(t));
-                          if (!m) return;                       // aucune question écrite : on n'en invente pas
-                          if (retenues.some(v => v.q === m.q)) return;
-                          retenues.push(m);
+                          if (!m) return;                        // aucune question écrite : on n'en invente pas
+                          if (trouvees.indexOf(m) === -1) trouvees.push(m);
                         });
-                        const vues = retenues.sort((a, b) => a.p - b.p).slice(0, 5);
+                        const vues = [];
+                        trouvees.sort((a, b) => a.p - b.p).forEach(x => {
+                          if (vues.length >= 5) return;
+                          if (vues.some(v => v.fam === x.fam)) return;   // une seule par famille
+                          vues.push(x);
+                        });
                         if (!vues.length) return null;
                         return (
                           <div className="rounded-2xl bg-white border p-5 mb-4" data-nc-chap="Les questions du prochain rendez-vous" style={{ borderColor: "rgba(184,146,78,0.45)", borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
