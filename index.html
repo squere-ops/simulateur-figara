@@ -1070,7 +1070,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v217 (14/09 : etape Produit, carte « Reduction sur versement » : l economie en euros devient le chiffre principal (3xl, « economises »), le pourcentage passe en second (« soit -51 % de frais sur versement ») -- demande du CGP.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v218 (15/09 : TEMPS COMMERCIAL (decision du CGP). Onglets renommes : « Audit et synthese » · « Projection » · « Simulation et plan d action ». Le PREMIER rendez-vous ne porte plus que le constat factuel : le foyer, l immobilier et les placements, les chiffres du dossier, la situation fiscale, puis DEUX nouveaux chapitres -- « Importance des versements programmes » (tableau 1,7 / 5 / 7 pct sur 15 et 20 ans, lignes : epargne actuelle, capacite declaree, un cran au-dessus ; capitalisation par ncpCap) et « Pour preparer notre prochain rendez-vous » (estimation de retraite et contrats d epargne retraite sur info-retraite.fr). Transmission, objectifs exprimes, participation declaree, points forts et axes de travail passent au RDV 2. Barème IR : l axe va desormais jusqu a la tranche a 45 pct.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v217 (14/09 : etape Produit, carte « Reduction sur versement » : l economie en euros devient le chiffre principal (3xl, « economises »), le pourcentage passe en second (« soit -51 % de frais sur versement ») -- demande du CGP.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v216 (14/09 : CONSTAT, inspire de la presentation validee par le CGP (« sans tout bouleverser ») : dans chaque axe, le premier chiffre de la phrase de tete ressort en gras encre (ncChiffreFort) ; un axe peut porter une phrase de VERDICT (f.verdict), rendue en retrait avec un filet or -- « Le sujet n est pas l effort d epargne, c est son affectation. » (Epargne long terme) et « Le probleme n est pas fiscal, il est civil -- c est le chantier a traiter en premier, et il coute quasiment zero. » (Partenaire / concubin sans droits). Export JSON : champ verdict.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v215 (14/09 : retours du CGP, dossier Coconut. CONSTAT : « Epargne insuffisante au regard des revenus -- X € d epargne pour Y € de revenus mensuels. » (une ligne, plus de puce « Moins de six mois ») ; « Epargne long terme -- aucune epargne long terme : X € investis sur des livrets et comptes courants. / Situation critique pour une gestion de votre epargne. / Remuneres a peine plus que l inflation… » ; « Moyenne des Francais : 18 % des revenus, dont 9 % en epargne financiere » ; « Plus de X € d IMPOT sur 10 ans ». PROJECTION : page de garde = phrase d engagement sur le declare (« L engagement que vous souhaitez consacrer… : 300 a 500 €/mois et un capital de … »), plus de bandeau ni de « 305 € employes » ; bloc « X €/mois d epargne a reorienter » sous les gisements (tresorerie liberee + rendement au mois) ; le « sans rien changer » capitalise l EFFORT EMPLOYE (852 avec immobilier) et non l enveloppe ; complement de revenus « a vie », rente a 1,7 % a gauche et 5,2 % a droite ; « D ou vient la difference » distingue la part financiere de l effort immobilier ; bandeau collant = bande pleine largeur opaque au bord haut (plus de recouvrement des cartes).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v214 (11/09 : POLICE D AFFICHAGE : Fraunces -> LORA partout (lien Google Fonts, ~120 fontFamily, textes SVG, classes .pres-*). Decision D du CGP sur image comparative : le J / j de Fraunces descend sous la ligne (« Jacques », « projection ») dans toutes ses variantes, Lora a un J sur la ligne de base. Fraunces ne doit plus revenir.', 'color:#7c3aed;font-weight:bold');
@@ -5237,7 +5238,9 @@
     }
     // Graphique : positionnement du quotient familial sur les tranches du barème
     function NcGraphBareme({ qf }) {
-      const axisMax = Math.max(100000, Math.min(250000, (qf || 0) * 1.35));
+      /* 15/09/2026 (CGP) : « va jusque 45 % au niveau de la TMI » — l'axe montre TOUTES
+         les tranches, la dernière (45 %) commençant à 181 917 €. Plancher 200 000 €. */
+      const axisMax = Math.max(200000, Math.min(260000, (qf || 0) * 1.35));
       const W = 600, H = 84, barY = 30, barH = 26;
       const x = (v) => Math.min(W, (v / axisMax) * W);
       let prev = 0;
@@ -7288,7 +7291,7 @@
                                 clone.querySelectorAll(".nc-syn-noprint").forEach(n => n.remove());
                                 // Chapitres : un titre ne reste jamais orphelin en bas de page —
                                 // s'il ne tient pas avec son contenu, il descend en début de page suivante.
-                                const TITRES = ["Les chiffres du dossier", "Problématiques à traiter", "Situation fiscale du foyer", "Vos placements — état des lieux", "Logement, immobilier & crédits", "Transmission — et si un décès survenait ?", "Les points forts du dossier", "Les axes de travail et d'amélioration", "Objectifs exprimés", "Objectif exprimé", "Participation mensuelle & apport envisagés"];
+                                const TITRES = ["Les chiffres du dossier", "Problématiques à traiter", "Situation fiscale du foyer", "Vos placements — état des lieux", "Logement, immobilier & crédits", "Transmission — et si un décès survenait ?", "Les points forts du dossier", "Les axes de travail et d'amélioration", "Objectifs exprimés", "Objectif exprimé", "Participation mensuelle & apport envisagés", "Importance des versements programmés", "Pour préparer notre prochain rendez-vous"];
                                 clone.querySelectorAll("div").forEach(n => {
                                   const t = (n.textContent || "").trim();
                                   if (TITRES.some(x => t === x || t.startsWith(x))) {
@@ -7462,7 +7465,7 @@
                                 const pad = (n) => String(n).padStart(2, "0");
                                 /* un nom par volet : les trois exports d un meme client ne
                                    portaient qu un seul et meme nom de fichier */
-                                const VOLET = { constat: "Constat", preco: "Preconisations", proj: "Projection" };
+                                const VOLET = { constat: "Audit-et-synthese", preco: "Simulation-et-plan-d-action", proj: "Projection" };
                                 document.title = `Synthese-patrimoniale-${VOLET[synMode] || "Synthese"}-${(d.nom || "dossier").replace(/\s+/g, "-")}-${(d.prenom || "").replace(/\s+/g, "-")}-${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
                                 document.body.classList.add("nc-print-syn");
                                 document.documentElement.classList.add("nc-print-syn-root");
@@ -9856,7 +9859,11 @@
                             {/* 02/09 : ordre demandé par le CGP — le CONSTAT pose la situation, la
                                 PROJECTION montre où elle mène, et le RDV 2 apporte le détail
                                 et les simulations de chaque solution. */}
-                            {[{ v: "constat", l: "RDV 1 · Constat" }, { v: "proj", l: "Projection" }, { v: "preco", l: "RDV 2 · Préconisations" }].map(o => (
+                            {/* 15/09/2026 (CGP) — TEMPS COMMERCIAL : le premier rendez-vous ne donne
+                                que le constat factuel (« si on en dit trop au premier RDV, le client se
+                                dira qu'il peut faire le job tout seul sur internet »). Noms validés :
+                                Audit et synthèse · Projection · Simulation et plan d'action. */}
+                            {[{ v: "constat", l: "Audit et synthèse" }, { v: "proj", l: "Projection" }, { v: "preco", l: "Simulation et plan d'action" }].map(o => (
                               <button key={o.v} type="button" onClick={() => setSynMode(o.v)}
                                 className={`px-3 py-1.5 text-[10.5px] font-bold transition ${synMode === o.v ? "text-white" : "text-stone-500 hover:text-stone-800"}`}
                                 style={synMode === o.v ? { background: "#1d2735" } : undefined}>{o.l}</button>
@@ -10888,10 +10895,114 @@
                           <div className="text-[12px] text-stone-700 leading-relaxed" style={{ whiteSpace: "pre-wrap" }}>{(d.notesConseiller || "").trim()}</div>
                         </div>
                       )}
+                      {/* ═══ IMPORTANCE DES VERSEMENTS PROGRAMMÉS (15/09/2026, décision du CGP) ═══
+                          Dernier chapitre du premier rendez-vous : ce que produit une épargne
+                          régulière selon le rendement obtenu. Lignes demandées par le CGP —
+                          ce que le client épargne DÉJÀ, sa capacité DÉCLARÉE, et un cran
+                          au-dessus. Capitalisation mensuelle par ncpCap (versements en début
+                          de mois), le même moteur que la projection. */}
+                      {synMode === "constat" && (() => {
+                        const eurV = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0))) + " €";
+                        const PALIERS = [100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000];
+                        const CAP_H = { "<100": 100, "100-300": 300, "300-500": 500, "500-1000": 1000, ">1000": 1500 };
+                        const capUn = (br, libre) => br === "libre" ? Math.max(0, ncInt(libre)) : (CAP_H[br] || 0);
+                        let capDecl = capUn(d.capaciteEpargne, d.capaciteEpargneLibre);
+                        if (d.reflexionPatrimoine === "separee") capDecl += capUn(d.capaciteEpargneConjoint, d.capaciteEpargneConjointLibre);
+                        const actuel = Math.round((synth && synth.ppMensuels) || 0);
+                        const base = Math.max(capDecl, actuel);
+                        const cran = PALIERS.find(x => x > base) || Math.round(base * 1.5 / 50) * 50;
+                        const L = [];
+                        if (actuel > 0) L.push({ m: actuel, l: "Votre épargne mensuelle actuelle" });
+                        if (capDecl > 0 && capDecl !== actuel) L.push({ m: capDecl, l: "Votre capacité déclarée", fort: true });
+                        if (cran > 0 && !L.some(x => x.m === cran)) L.push({ m: cran, l: "Un cran au-dessus" });
+                        /* aucun montant déclaré : repli pédagogique, trois paliers usuels */
+                        const lignes = L.length ? L : [{ m: 100, l: "" }, { m: 300, l: "" }, { m: 500, l: "" }];
+                        /* libellés ÉCRITS, jamais 0.017 * 100 (= 1,7000000000000002 %) */
+                        const TAUX = [{ t: 0.017, l: "1,7 %" }, { t: 0.05, l: "5 %" }, { t: 0.07, l: "7 %" }];
+                        const DUREES = [15, 20];
+                        const ref = lignes.find(x => x.fort) || lignes[lignes.length - 1];
+                        const ecart = ncpCap(0, ref.m, 0.05, 20) - ncpCap(0, ref.m, 0.017, 20);
+                        return (
+                          <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" style={{ borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#8a6d34" }}>Importance des versements programmés</div>
+                            <div className="text-[11.5px] text-stone-600 mb-3 leading-snug">
+                              Une épargne régulière, selon le rendement obtenu — <b style={{ color: "#1d2735" }}>la même somme, placée autrement</b>.
+                            </div>
+                            <div className="rounded-xl border overflow-hidden" style={{ borderColor: "rgba(10,9,8,0.10)" }}>
+                              <table className="w-full text-[11.5px]" style={{ borderCollapse: "collapse" }}>
+                                <thead>
+                                  <tr style={{ background: "#fafaf9" }}>
+                                    <th rowSpan={2} className="text-left px-3 py-2" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.14em", textTransform: "uppercase", color: "#57534e", fontWeight: 700, borderBottom: "1px solid rgba(10,9,8,0.10)" }}>Épargne mensuelle</th>
+                                    {DUREES.map((an, i) => (
+                                      <th key={i} colSpan={3} className="text-center px-2 pt-2 pb-1" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.14em", textTransform: "uppercase", color: i === 1 ? "#0f766e" : "#78716c", fontWeight: 700, borderLeft: "1px solid rgba(10,9,8,0.10)" }}>Dans {an} ans</th>
+                                    ))}
+                                  </tr>
+                                  <tr style={{ background: "#fafaf9" }}>
+                                    {DUREES.map((an, i) => TAUX.map((x, j) => (
+                                      <th key={i + "-" + j} className="text-right px-2 pb-2" style={{ fontSize: 10, color: x.t === 0.017 ? "#a8a29e" : "#57534e", fontWeight: 700, borderLeft: j === 0 ? "1px solid rgba(10,9,8,0.10)" : "none", borderBottom: "1px solid rgba(10,9,8,0.10)" }}>{x.l}</th>
+                                    )))}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {lignes.map((x, i) => (
+                                    <tr key={i} style={{ borderTop: i > 0 ? "1px solid rgba(10,9,8,0.05)" : "none", background: x.fort ? "#f4fbf7" : "transparent" }}>
+                                      <td className="px-3 py-2">
+                                        <span className="tabular-nums whitespace-nowrap font-bold" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 14, color: "#1d2735" }}>{eurV(x.m)}</span>
+                                        <span className="text-[10px] font-semibold" style={{ color: "#78716c" }}>/mois</span>
+                                        {x.l ? <div className="text-[10px] mt-0.5" style={{ color: x.fort ? "#0f766e" : "#a8a29e" }}>{x.l}</div> : null}
+                                      </td>
+                                      {DUREES.map((an, k) => TAUX.map((y, j) => (
+                                        <td key={k + "-" + j} className="text-right px-2 py-2 tabular-nums whitespace-nowrap"
+                                          style={{ color: y.t === 0.017 ? "#a8a29e" : "#1d2735", fontWeight: y.t === 0.07 && k === 1 ? 800 : 600, borderLeft: j === 0 ? "1px solid rgba(10,9,8,0.10)" : "none" }}>{eurV(ncpCap(0, x.m, y.t, an))}</td>
+                                      )))}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                            <div className="text-[11.5px] mt-2.5 leading-snug" style={{ color: "#44403c" }}>
+                              À <b style={{ color: "#1d2735" }}>{eurV(ref.m)}/mois pendant 20 ans</b>, vous versez {eurV(ref.m * 240)} dans tous les cas :
+                              obtenir 5 % au lieu de 1,7 % représente <b style={{ color: "#0f766e" }}>{eurV(ecart)} de plus</b>, sans un euro de plus chaque mois.
+                            </div>
+                            <div className="text-[10px] italic mt-1.5" style={{ color: "#a8a29e" }}>
+                              Hypothèses de rendement annuel, versements en début de mois, hors fiscalité et frais. 1,7 % correspond au rendement des livrets. Les performances passées ne préjugent pas des performances futures.
+                            </div>
+                          </div>
+                        );
+                      })()}
+                      {/* ═══ DEVOIRS DU CLIENT AVANT LE PROCHAIN RENDEZ-VOUS (15/09/2026, CGP) ═══
+                          Le premier rendez-vous se termine par ce que le client a à faire : c'est
+                          ce qui crée le second rendez-vous. */}
+                      {synMode === "constat" && (
+                        <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                          <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#0f766e" }}>Pour préparer notre prochain rendez-vous</div>
+                          <div className="text-[11.5px] text-stone-600 mb-3 leading-snug">
+                            Deux documents à récupérer sur <b style={{ color: "#1d2735" }}>info-retraite.fr</b>, le service public de votre retraite.
+                          </div>
+                          {[
+                            { t: "Votre estimation de retraite", d: "Connectez-vous à votre compte, puis téléchargez votre estimation de retraite (montant estimé de vos pensions)." },
+                            { t: "Vos contrats d'épargne retraite", d: "Sur le même site, onglet « Mon épargne retraite », puis « Voir mes contrats » : envoyez-nous une copie d'écran ou le document." }
+                          ].map((x, i) => (
+                            <div key={i} className="flex gap-2.5 items-start mb-2.5 last:mb-0">
+                              <span className="flex-shrink-0 rounded" style={{ width: 15, height: 15, marginTop: 2, border: "1.5px solid #0f766e", background: "#fff" }}></span>
+                              <span className="flex-1 text-[12px] leading-snug">
+                                <span className="font-bold text-stone-800">{x.t}</span>
+                                <span className="block text-[11.5px] text-stone-600 mt-0.5">{x.d}</span>
+                              </span>
+                            </div>
+                          ))}
+                          <div className="text-[11px] mt-3 pt-2.5 leading-snug" style={{ borderTop: "1px solid rgba(10,9,8,0.08)", color: "#44403c" }}>
+                            Ces deux documents nous permettent de chiffrer précisément vos revenus à la retraite et de recenser vos contrats existants.
+                          </div>
+                        </div>
+                      )}
                       {/* Objectifs exprimés (gauche) + Participation mensuelle & apport (droite) dans
                           UN MÊME bloc (27/08) — le mot « effort d'épargne » est banni. Les autres
                           cartes larges (recommandés, préconisations — RDV 2) restent en pleine largeur. */}
                       {(() => {
+                        /* 15/09/2026 (CGP) : objectifs exprimés et participation déclarée passent
+                           au RDV 2 avec les préconisations. */
+                        if (synMode !== "preco") return null;
                         const largeVisibles = syn.resume.filter(it => it.large && (synMode === "preco" || (it.t !== "Préconisations" && it.t !== "Objectifs recommandés par le cabinet")));
                         const objExp = largeVisibles.find(it => it.t === "Objectifs exprimés" || it.t === "Objectif exprimé");
                         const autresLarges = largeVisibles.filter(it => it !== objExp);
@@ -10992,6 +11103,9 @@
                            un couple marié (1/4 PP et 100 % usufruit), rappel fiscal des
                            donations < 15 ans. Simulation indicative — notaire pour le réel. — */}
                       {(() => {
+                        /* 15/09/2026 (CGP) : la transmission sort ENTIÈREMENT du premier rendez-vous
+                           — elle est présentée au RDV 2 (onglet « Simulation et plan d'action »). */
+                        if (synMode !== "preco") return null;
                         const succ = (() => { try { return ncCalcSuccession(d); } catch (e) { return null; } })();
                         if (!succ || !succ.volets.length) return null;
                         if (!succ.volets.some(v => v.assiette > 0 || v.avHors > 0)) return null;
@@ -11123,8 +11237,11 @@
                           </div>
                         );
                       })()}
-                      {/* Forces / Faiblesses — empilés, avec un vrai espace entre les deux (27/08) */}
+                      {/* Forces / Faiblesses — empilés, avec un vrai espace entre les deux (27/08).
+                          15/09/2026 (CGP) : réservés au RDV 2 — le premier rendez-vous lève les
+                          problématiques sans les commenter (« c'est une info qui sera sur le RDV 2 »). */}
                       {(() => {
+                        if (synMode !== "preco") return null;
                         // ——— CORRECTIONS EN PRODUCTION (28/08) : le conseiller peut, à l'écran,
                         // CORRIGER le texte d'un point (✎), le MASQUER (✕) et RÉORDONNER les axes
                         // par priorité avec le client (↑ ↓). Tout est stocké dans le dossier
