@@ -1101,7 +1101,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v221 (15/09 : CE QUE LE CLIENT MET EN FACE DE SES OBJECTIFS, AU PREMIER RENDEZ-VOUS. Quatre demandes du CGP sur le volet « Audit et synthese ». (1) AU-DESSUS des versements programmes, un bloc VOTRE EPARGNE MENSUELLE ACTUELLE : ce qui part chaque mois, PLACEMENT PAR PLACEMENT, lu dans la saisie (le versement programme declare sur chaque placement) — « 200 €/mois sur un livret, 100 € sur une assurance vie », total et part des revenus, avec le repere des 18 pct dont 9 pct en financier. Le reliquat eventuel entre ce detail et le total du moteur (PER declare a l etape Fiscalite) sort sur sa propre ligne, sinon les deux chiffres se contrediraient. (2) JUSTE EN DESSOUS, le rappel des OBJECTIFS du client et des MOYENS qu il y consacre (apport et mensualite) : ce bloc etait parti au RDV 2 le matin meme, le CGP le veut AUSSI au RDV 1 — il figure desormais dans LES DEUX volets, mais les cartes du cabinet (objectifs recommandes, preconisations) restent reservees au RDV 2. (3) ENSUITE un bloc LES SUJETS DU PROCHAIN RENDEZ-VOUS : le NOMBRE de sujets puis LEURS TITRES SEULS, sans un chiffre ni une preconisation — on nomme, on ne traite pas ; le detail est ce qui cree le second rendez-vous. (4) Puis « Pour preparer notre prochain rendez-vous », qui ferme le document. ENVOI AU CLIENT : un navigateur ne sait pas joindre un fichier a un mail ; le bouton « Envoyer au client » ouvre donc la fenetre d enregistrement du PDF, puis la messagerie du poste avec destinataire, objet et texte deja ecrits — il ne reste qu a y glisser le PDF. Le bouton est aussi DANS la barre du mode presentation. CONTROLE : t_shot_pres.js saisit un dossier avec 200 €/mois sur un livret et 100 €/mois sur une assurance vie, verifie les trois montants affichés, le total, et l ORDRE des cinq blocs ; verif.sh passe de 11 a 13 etapes.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v222 (15/09 : QUI VERSE QUOI. Le CGP, sur « Votre epargne mensuelle actuelle » : « peux-tu renseigner que c est Monsieur qui verse 200 € et Madame 100 € ? sois precis sinon on va perdre beaucoup de temps ». Le bloc listait deux fois « LIVRET A » sans dire a qui : sur un couple, deux versements identiques deviennent illisibles. Chaque carte porte desormais LE DETENTEUR en tete (Monsieur / Madame / Commun), repris de a.titulaire — le meme libelle que le tableau « Vos placements », pour qu un contrat ne change pas de nom d un bloc a l autre — puis le montant, puis le support et l etablissement. Sous le total s ajoute un recapitulatif PAR PERSONNE : « dont Monsieur 200 €/mois · Madame 100 €/mois ». Le PER declare a l etape Fiscalite prend le detenteur de d.reductionsPer. Un detenteur non renseigne sur un couple s affiche « detenteur a preciser » — le manque est une information. (2) Sous-titre du bloc supprime (« ce qui part chaque mois vers vos placements… ») : le CGP — « supprime ce genre de phrase qui ne sert strictement a rien » ; le bloc montre des chiffres, il n a pas a s expliquer. CONTROLE : t_shot_pres.js passe sur un COUPLE marie en separation de biens, pose le livret sur Monsieur et l assurance vie sur Madame, et exige les deux noms a cote des deux montants ainsi que la ligne de recapitulatif.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v221 (15/09 : CE QUE LE CLIENT MET EN FACE DE SES OBJECTIFS, AU PREMIER RENDEZ-VOUS. Quatre demandes du CGP sur le volet « Audit et synthese ». (1) AU-DESSUS des versements programmes, un bloc VOTRE EPARGNE MENSUELLE ACTUELLE : ce qui part chaque mois, PLACEMENT PAR PLACEMENT, lu dans la saisie (le versement programme declare sur chaque placement) — « 200 €/mois sur un livret, 100 € sur une assurance vie », total et part des revenus, avec le repere des 18 pct dont 9 pct en financier. Le reliquat eventuel entre ce detail et le total du moteur (PER declare a l etape Fiscalite) sort sur sa propre ligne, sinon les deux chiffres se contrediraient. (2) JUSTE EN DESSOUS, le rappel des OBJECTIFS du client et des MOYENS qu il y consacre (apport et mensualite) : ce bloc etait parti au RDV 2 le matin meme, le CGP le veut AUSSI au RDV 1 — il figure desormais dans LES DEUX volets, mais les cartes du cabinet (objectifs recommandes, preconisations) restent reservees au RDV 2. (3) ENSUITE un bloc LES SUJETS DU PROCHAIN RENDEZ-VOUS : le NOMBRE de sujets puis LEURS TITRES SEULS, sans un chiffre ni une preconisation — on nomme, on ne traite pas ; le detail est ce qui cree le second rendez-vous. (4) Puis « Pour preparer notre prochain rendez-vous », qui ferme le document. ENVOI AU CLIENT : un navigateur ne sait pas joindre un fichier a un mail ; le bouton « Envoyer au client » ouvre donc la fenetre d enregistrement du PDF, puis la messagerie du poste avec destinataire, objet et texte deja ecrits — il ne reste qu a y glisser le PDF. Le bouton est aussi DANS la barre du mode presentation. CONTROLE : t_shot_pres.js saisit un dossier avec 200 €/mois sur un livret et 100 €/mois sur une assurance vie, verifie les trois montants affichés, le total, et l ORDRE des cinq blocs ; verif.sh passe de 11 a 13 etapes.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v220 (15/09 : MODE PRESENTATION DE L ETUDE. Le CGP : « je ne vois pas de mode presentation pour presenter l audit et la synthese ? ». v219 n avait livre que le cote IMPRESSION ; l ecran de rendez-vous manquait. Choix valides par le CGP : navigation CHAPITRE PAR CHAPITRE en plein ecran, sur les TROIS volets, page de garde en ecran d ouverture, et TOUT RESTE MANIPULABLE (cases a cocher, classement des priorites, corrections en ligne). REGLE DE CONSTRUCTION : aucun bloc n est deplace ni duplique — la meme synthese est simplement montree un chapitre a la fois. Les chapitres sont LUS DANS LE DOM (un bloc porteur de data-nc-chap ouvre un chapitre, les blocs suivants sans marque le completent), ce qui reste juste quand un bloc est conditionnel (transmission, profil de risque, protection du conjoint). Le masquage passe par une regle :not(:nth-child()) ecrite a la volee : on ne REDEFINIT jamais « display », sinon les blocs en grid/flex retomberaient en block. Clavier : gauche/droite et page precedente/suivante ; HAUT et BAS restent au defilement (un chapitre peut depasser l ecran) ; Echap sort ; un champ en cours de saisie garde la main sur la touche. CONTROLE : t_presentation.js entre en presentation sur les trois volets, verifie qu UN SEUL chapitre est visible a la fois, que le compte de chapitres est celui des marques posees, que la navigation avance et recule, que la saisie reste possible, et que sortir remet l ecran exactement dans son etat d origine.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v219 (15/09 : DOCUMENT IMPRIME (« le mode impression est vraiment tres tres laid »). (1) PAGE DE PRESENTATION en tete du constat ET du volet RDV 2, sur le modele de la Projection (logo et nom du cabinet, filet dore, titre, noms, date, pied de page) ; le bandeau d ecran ne s imprime plus (doublon). (2) BLOC DE SIGNATURES en fin de document : « Fait a … le … » puis un cadre par personne -- Monsieur, Madame et le conseiller (nom repris des reglages). (3) TYPO : JetBrains Mono etait charge en 400/500 alors que TOUS les titres de carte l emploient en 700-800 -- le navigateur fabriquait un faux gras, tres laid sur papier ; les graisses 600/700/800 sont desormais chargees. (4) Le pied de page reprend cabinet, conseiller, telephone, email et adresse (reglages « Vos informations »).', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v218 (15/09 : TEMPS COMMERCIAL (decision du CGP). Onglets renommes : « Audit et synthese » · « Projection » · « Simulation et plan d action ». Le PREMIER rendez-vous ne porte plus que le constat factuel : le foyer, l immobilier et les placements, les chiffres du dossier, la situation fiscale, puis DEUX nouveaux chapitres -- « Importance des versements programmes » (tableau 1,7 / 5 / 7 pct sur 15 et 20 ans, lignes : epargne actuelle, capacite declaree, un cran au-dessus ; capitalisation par ncpCap) et « Pour preparer notre prochain rendez-vous » (estimation de retraite et contrats d epargne retraite sur info-retraite.fr). Transmission, objectifs exprimes, participation declaree, points forts et axes de travail passent au RDV 2. Barème IR : l axe va desormais jusqu a la tranche a 45 pct.', 'color:#7c3aed;font-weight:bold');
@@ -11121,6 +11122,14 @@
                           deux chiffres se contrediraient. ═══ */}
                       {synMode === "constat" && (() => {
                         const nfA = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
+                        /* 15/09/2026 (CGP) : « peux-tu renseigner que c'est Monsieur qui verse
+                           200 € et Madame 100 € ? sois précis ». Le détenteur est déjà saisi sur
+                           chaque placement (a.titulaire) — mêmes libellés que le tableau
+                           « Vos placements », pour qu'un même contrat ne change pas de nom d'un
+                           bloc à l'autre. */
+                        const moiP = d.civilite === "Mme" ? "Madame" : "Monsieur";
+                        const luiP = d.civilite === "Mme" ? "Monsieur" : "Madame";
+                        const quiLib = (t) => t === "client" ? moiP : t === "conjoint" ? luiP : t === "commun" ? "Commun" : (enCouple ? "détenteur à préciser" : moiP);
                         const lignes = (d.avoirs || [])
                           .filter(a => a.ppQ === "oui" && ncInt(a.pp) > 0)
                           .map(a => {
@@ -11128,6 +11137,8 @@
                             const libLiv = a.type === "livrets" && a.livretType
                               ? ((NC_LIVRET_TYPES.find(x => x.v === a.livretType) || {}).l || null) : null;
                             return {
+                              qui: quiLib(a.titulaire),
+                              tit: a.titulaire || "",
                               l: libLiv || (T ? T.l : "Placement"),
                               sous: (a.etablissement || "").trim(),
                               m: ncInt(a.pp),
@@ -11137,20 +11148,34 @@
                         const detail = lignes.reduce((s, x) => s + x.m, 0);
                         const moteur = Math.round((synth && synth.ppMensuels) || 0);
                         const reste = Math.max(0, moteur - detail);
-                        if (reste > 0) lignes.push({ l: "Plan d'épargne retraite", sous: "déclaré à l'étape Fiscalité", m: reste, c: "#6d28d9" });
+                        if (reste > 0) lignes.push({
+                          qui: quiLib(((d.reductionsPer || {}).titulaire) || ""),
+                          tit: ((d.reductionsPer || {}).titulaire) || "",
+                          l: "Plan d'épargne retraite", sous: "déclaré à l'étape Fiscalité", m: reste, c: "#6d28d9",
+                        });
                         const total = detail + reste;
                         if (!lignes.length || total <= 0) return null;
                         const revF = Math.max(0, (synth && synth.totalRevenus) || 0);
+                        /* récapitulatif PAR PERSONNE : c'est la question du CGP — qui verse quoi. */
+                        const parQui = [
+                          { l: moiP, m: lignes.filter(x => x.tit === "client" || (!x.tit && !enCouple)).reduce((s, x) => s + x.m, 0) },
+                          { l: luiP, m: lignes.filter(x => x.tit === "conjoint").reduce((s, x) => s + x.m, 0) },
+                          { l: "Commun", m: lignes.filter(x => x.tit === "commun").reduce((s, x) => s + x.m, 0) },
+                          { l: "Détenteur à préciser", m: lignes.filter(x => !x.tit && enCouple).reduce((s, x) => s + x.m, 0) },
+                        ].filter(x => x.m > 0);
                         return (
                           <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" data-nc-chap="Votre épargne mensuelle actuelle" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#0f766e" }}>Votre épargne mensuelle actuelle</div>
-                            <div className="text-[11.5px] text-stone-600 mb-3 leading-snug">Ce qui part chaque mois vers vos placements, tel que vous nous l'avez déclaré.</div>
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>Votre épargne mensuelle actuelle</div>
+                            {/* 15/09/2026 (CGP) : « supprime ce genre de phrase qui ne sert
+                                strictement à rien » — le sous-titre répétait le titre. Le bloc
+                                montre des chiffres, il n'a pas à s'expliquer. */}
                             <div className="grid gap-2" style={{ gridTemplateColumns: lignes.length > 2 ? "repeat(3, minmax(0,1fr))" : `repeat(${lignes.length}, minmax(0,1fr))` }}>
                               {lignes.map((x, i) => (
                                 <div key={i} className="rounded-lg px-3 py-2.5 bg-white border border-stone-200" style={{ borderLeft: "3px solid " + x.c }}>
-                                  <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{x.l}</div>
-                                  <div className="num text-[16px] font-extrabold leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: x.c }}>{nfA(x.m)} €<span className="text-[10px] font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: "#a8a29e" }}>/mois</span></div>
-                                  {x.sous ? <div className="text-[10px] text-stone-400 mt-0.5 leading-snug">{x.sous}</div> : null}
+                                  <div className="text-[9px] uppercase tracking-wider font-bold mb-1" style={{ color: x.c }}>{x.qui}</div>
+                                  <div className="num text-[16px] font-extrabold leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{nfA(x.m)} €<span className="text-[10px] font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: "#a8a29e" }}>/mois</span></div>
+                                  <div className="text-[11px] font-bold text-stone-700 mt-0.5 leading-snug">{x.l}</div>
+                                  {x.sous ? <div className="text-[10px] text-stone-400 leading-snug">{x.sous}</div> : null}
                                 </div>
                               ))}
                             </div>
@@ -11158,6 +11183,13 @@
                               <span className="text-[11.5px] font-bold text-stone-700">Total versé chaque mois</span>
                               <span className="num text-[19px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfA(total)} €/mois</span>
                             </div>
+                            {parQui.length > 1 ? (
+                              <div className="text-[11px] text-stone-600 mt-1 leading-snug">
+                                dont {parQui.map((x, i) => (
+                                  <span key={i}>{i > 0 ? " · " : ""}<b style={{ color: "#1d2735" }}>{x.l} {nfA(x.m)} €/mois</b></span>
+                                ))}
+                              </div>
+                            ) : null}
                             {revF > 0 ? (
                               <div className="text-[10.5px] text-stone-500 mt-1 leading-snug">Soit {String(Math.round((total / revF) * 1000) / 10).replace(".", ",")} % de {nfA(revF)} € de revenus mensuels. Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière.</div>
                             ) : null}
