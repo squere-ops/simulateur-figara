@@ -43,7 +43,7 @@
   <title>Simulateur Assurance-Vie — Figara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
@@ -1070,7 +1070,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v218 (15/09 : TEMPS COMMERCIAL (decision du CGP). Onglets renommes : « Audit et synthese » · « Projection » · « Simulation et plan d action ». Le PREMIER rendez-vous ne porte plus que le constat factuel : le foyer, l immobilier et les placements, les chiffres du dossier, la situation fiscale, puis DEUX nouveaux chapitres -- « Importance des versements programmes » (tableau 1,7 / 5 / 7 pct sur 15 et 20 ans, lignes : epargne actuelle, capacite declaree, un cran au-dessus ; capitalisation par ncpCap) et « Pour preparer notre prochain rendez-vous » (estimation de retraite et contrats d epargne retraite sur info-retraite.fr). Transmission, objectifs exprimes, participation declaree, points forts et axes de travail passent au RDV 2. Barème IR : l axe va desormais jusqu a la tranche a 45 pct.', 'color:#7c3aed;font-weight:bold');
+        console.log('%cBUILD v219 (15/09 : DOCUMENT IMPRIME (« le mode impression est vraiment tres tres laid »). (1) PAGE DE PRESENTATION en tete du constat ET du volet RDV 2, sur le modele de la Projection (logo et nom du cabinet, filet dore, titre, noms, date, pied de page) ; le bandeau d ecran ne s imprime plus (doublon). (2) BLOC DE SIGNATURES en fin de document : « Fait a … le … » puis un cadre par personne -- Monsieur, Madame et le conseiller (nom repris des reglages). (3) TYPO : JetBrains Mono etait charge en 400/500 alors que TOUS les titres de carte l emploient en 700-800 -- le navigateur fabriquait un faux gras, tres laid sur papier ; les graisses 600/700/800 sont desormais chargees. (4) Le pied de page reprend cabinet, conseiller, telephone, email et adresse (reglages « Vos informations »).', 'color:#7c3aed;font-weight:bold');
+        console.log('%cANCIEN BUILD v218 (15/09 : TEMPS COMMERCIAL (decision du CGP). Onglets renommes : « Audit et synthese » · « Projection » · « Simulation et plan d action ». Le PREMIER rendez-vous ne porte plus que le constat factuel : le foyer, l immobilier et les placements, les chiffres du dossier, la situation fiscale, puis DEUX nouveaux chapitres -- « Importance des versements programmes » (tableau 1,7 / 5 / 7 pct sur 15 et 20 ans, lignes : epargne actuelle, capacite declaree, un cran au-dessus ; capitalisation par ncpCap) et « Pour preparer notre prochain rendez-vous » (estimation de retraite et contrats d epargne retraite sur info-retraite.fr). Transmission, objectifs exprimes, participation declaree, points forts et axes de travail passent au RDV 2. Barème IR : l axe va desormais jusqu a la tranche a 45 pct.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v217 (14/09 : etape Produit, carte « Reduction sur versement » : l economie en euros devient le chiffre principal (3xl, « economises »), le pourcentage passe en second (« soit -51 % de frais sur versement ») -- demande du CGP.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v216 (14/09 : CONSTAT, inspire de la presentation validee par le CGP (« sans tout bouleverser ») : dans chaque axe, le premier chiffre de la phrase de tete ressort en gras encre (ncChiffreFort) ; un axe peut porter une phrase de VERDICT (f.verdict), rendue en retrait avec un filet or -- « Le sujet n est pas l effort d epargne, c est son affectation. » (Epargne long terme) et « Le probleme n est pas fiscal, il est civil -- c est le chantier a traiter en premier, et il coute quasiment zero. » (Partenaire / concubin sans droits). Export JSON : champ verdict.', 'color:#7c3aed;font-weight:bold');
         console.log('%cANCIEN BUILD v215 (14/09 : retours du CGP, dossier Coconut. CONSTAT : « Epargne insuffisante au regard des revenus -- X € d epargne pour Y € de revenus mensuels. » (une ligne, plus de puce « Moins de six mois ») ; « Epargne long terme -- aucune epargne long terme : X € investis sur des livrets et comptes courants. / Situation critique pour une gestion de votre epargne. / Remuneres a peine plus que l inflation… » ; « Moyenne des Francais : 18 % des revenus, dont 9 % en epargne financiere » ; « Plus de X € d IMPOT sur 10 ans ». PROJECTION : page de garde = phrase d engagement sur le declare (« L engagement que vous souhaitez consacrer… : 300 a 500 €/mois et un capital de … »), plus de bandeau ni de « 305 € employes » ; bloc « X €/mois d epargne a reorienter » sous les gisements (tresorerie liberee + rendement au mois) ; le « sans rien changer » capitalise l EFFORT EMPLOYE (852 avec immobilier) et non l enveloppe ; complement de revenus « a vie », rente a 1,7 % a gauche et 5,2 % a droite ; « D ou vient la difference » distingue la part financiere de l effort immobilier ; bandeau collant = bande pleine largeur opaque au bord haut (plus de recouvrement des cartes).', 'color:#7c3aed;font-weight:bold');
@@ -9832,7 +9833,9 @@
                        où il en est, ce qui le protège, ce qui le fragilise, et les questions
                        auxquelles il va vouloir une réponse. */}
                   {/* ——— En-tête « couverture » : la synthèse s'ouvre comme un document de banque privée ——— */}
-                  <div className="rounded-2xl overflow-hidden mb-5 border" style={{ borderColor: "rgba(29,39,53,0.14)", background: "radial-gradient(900px 400px at 85% -20%, #fdfbf6 0%, #f5efe3 60%, #efe7d6 100%)" }}>
+                  {/* 15/09/2026 : à l'IMPRESSION ce bandeau ferait doublon avec la page de
+                      présentation (mêmes noms, même date) — il reste à l'écran seulement. */}
+                  <div className="nc-syn-noprint rounded-2xl overflow-hidden mb-5 border" style={{ borderColor: "rgba(29,39,53,0.14)", background: "radial-gradient(900px 400px at 85% -20%, #fdfbf6 0%, #f5efe3 60%, #efe7d6 100%)" }}>
                     <div className="px-6 pt-5 pb-4">
                       <div className="flex items-end justify-between gap-4 flex-wrap">
                         <div>
@@ -9848,7 +9851,7 @@
                         </div>
                         <div className="text-right pb-0.5">
                           <div className="text-[11px] text-stone-500">Établie le {new Date().toLocaleDateString('fr-FR')}</div>
-                          <div className="text-[10px] uppercase tracking-widest font-bold mt-0.5" style={{ color: "#b8924e" }}>Universel Patrimoine</div>
+                          <div className="text-[10px] uppercase tracking-widest font-bold mt-0.5" style={{ color: "#b8924e" }}>{(inputs && inputs.cabinetNom) || "Universel Patrimoine"}</div>
                           <button type="button" className="nc-syn-noprint mt-2 px-3.5 py-1.5 rounded-lg text-[11px] font-bold text-white transition hover:brightness-110"
                             style={{ background: "#1d2735", boxShadow: "0 1px 4px rgba(29,39,53,0.3)" }}
                             onClick={() => lancerExportPdf("bandeau")}>
@@ -9878,8 +9881,52 @@
                   {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} />}
                   {syn && synMode !== "proj" && (
                     <div className="mb-5">
+                      {/* ═══ PAGE DE PRÉSENTATION (15/09/2026, CGP : « il faut une page de
+                          présentation ») — même modèle que celle de la Projection : identité du
+                          cabinet, filet doré, titre du volet, noms, date, puis le pied de page.
+                          La rubrique suivante démarre TOUJOURS sur une nouvelle feuille
+                          (data-nc-force-break). ═══ */}
+                      {(() => {
+                        const cab = (inputs && inputs.cabinetNom) || "Universel Patrimoine";
+                        const logo = inputs && inputs.cabinetLogo;
+                        const cons = inputs && inputs.conseillerNom;
+                        const cj0 = d.conjoint || {};
+                        const nomC = `${d.civilite === "Mme" ? "Madame" : "Monsieur"} ${ncCapNom(d.prenom || "")} ${(d.nom || "").toUpperCase()}`.replace(/\s+/g, " ").trim();
+                        const nomJ = enCouple && (cj0.prenom || cj0.nom)
+                          ? `${(cj0.civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur"} ${ncCapNom(cj0.prenom || "")} ${((cj0.nom || d.nom) || "").toUpperCase()}`.replace(/\s+/g, " ").trim()
+                          : "";
+                        const titre = synMode === "preco" ? "Votre simulation et votre plan d'action" : "Votre étude patrimoniale";
+                        const idPhrase = (syn.resume.find(it => it.t == null && typeof it.d === "string") || {}).d || "";
+                        return (
+                          <div className="rounded-2xl bg-white mb-4 border nc-print-avoid flex flex-col" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040 }}>
+                            <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
+                              <div className="flex items-center gap-3">
+                                {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
+                                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: "#b8924e", fontWeight: 800 }}>{cab}</div>
+                              </div>
+                              <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c" }}>Étude patrimoniale · {new Date().toLocaleDateString('fr-FR')}</div>
+                            </div>
+                            <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
+                            <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", lineHeight: 1.15, letterSpacing: "-0.01em" }}>{titre}</div>
+                            <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, color: "#1d2735", marginTop: 10, lineHeight: 1.4 }}>
+                              {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
+                            </div>
+                            <div style={{ flex: 1, minHeight: 24 }}></div>
+                            {idPhrase ? (
+                              <div className="rounded-xl px-5 py-4 border" style={{ borderColor: "rgba(10,9,8,0.10)", background: "#fafaf9", borderLeft: "4px solid #b8924e" }}>
+                                <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 16, color: "#1d2735", lineHeight: 1.5 }}>{idPhrase}</div>
+                              </div>
+                            ) : null}
+                            <div style={{ flex: 1, minHeight: 24 }}></div>
+                            <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
+                              <div className="text-[10.5px]" style={{ color: "#78716c" }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
+                              <div className="text-[10px] italic" style={{ color: "#a8a29e" }}>Document non contractuel — mentions détaillées en fin de document</div>
+                            </div>
+                          </div>
+                        );
+                      })()}
                       {/* Identification du foyer : état civil, adresse, composition — constat pur, sans chiffre. */}
-                      <div className="rounded-2xl bg-white p-5 mb-4 border" style={{ borderColor: "rgba(184,146,78,0.4)", boxShadow: "0 1px 3px rgba(29,39,53,0.06)" }}>
+                      <div className="rounded-2xl bg-white p-5 mb-4 border" data-nc-force-break="1" style={{ borderColor: "rgba(184,146,78,0.4)", boxShadow: "0 1px 3px rgba(29,39,53,0.06)" }}>
                         {syn.resume.filter(it => it.t == null).map((it, i) => (
                           <p key={i} className="text-[16px] leading-relaxed text-stone-800 mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}>{it.d}</p>
                         ))}
@@ -11590,6 +11637,37 @@
                     </div>
                   )}
 
+                  {/* ═══ SIGNATURE DU CLIENT (15/09/2026, CGP : « il faut que le client puisse
+                      signer ») — dernier bloc du document, avant les mentions réglementaires.
+                      Trois cadres : Monsieur, Madame (si couple) et le conseiller, dont le nom
+                      est repris des réglages du cabinet. ═══ */}
+                  {syn && synMode !== "proj" && (() => {
+                    const cj1 = d.conjoint || {};
+                    const civC = d.civilite === "Mme" ? "Madame" : "Monsieur";
+                    const civJ = (cj1.civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur";
+                    const nomLigne = (civ, pr, no) => `${civ} ${ncCapNom(pr || "")} ${(no || "").toUpperCase()}`.replace(/\s+/g, " ").trim();
+                    const cases = [{ l: nomLigne(civC, d.prenom, d.nom) }];
+                    if (enCouple && (cj1.prenom || cj1.nom)) cases.push({ l: nomLigne(civJ, cj1.prenom, cj1.nom || d.nom) });
+                    cases.push({ l: (inputs && inputs.conseillerNom) ? inputs.conseillerNom : "Votre conseiller", sous: "Conseiller en gestion de patrimoine" });
+                    return (
+                      <div className="rounded-2xl bg-white border p-4 mb-4 nc-print-avoid" data-nc-signature="1" style={{ borderColor: "rgba(184,146,78,0.45)", borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#8a6d34" }}>Signatures</div>
+                        <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 text-[12px] mb-3.5" style={{ color: "#44403c" }}>
+                          <span>Fait à <span style={{ display: "inline-block", minWidth: 150, borderBottom: "1px dotted #a8a29e" }}>&nbsp;</span></span>
+                          <span>le <span style={{ display: "inline-block", minWidth: 110, borderBottom: "1px dotted #a8a29e" }}>&nbsp;</span></span>
+                        </div>
+                        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${cases.length}, minmax(0,1fr))` }}>
+                          {cases.map((x, i) => (
+                            <div key={i} className="rounded-xl border px-3 pt-2.5 pb-2" style={{ borderColor: "rgba(10,9,8,0.14)", background: "#fff" }}>
+                              <div className="text-[11.5px] font-bold" style={{ color: "#1d2735" }}>{x.l}</div>
+                              <div className="text-[9.5px] mb-1" style={{ color: "#a8a29e" }}>{x.sous || "Lu et approuvé"}</div>
+                              <div style={{ height: 62 }}></div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
                   {/* Avertissement réglementaire — l'étude patrimoniale a vocation à être remise au client. */}
                   <div className="text-[10px] text-stone-400 leading-relaxed mb-4 pt-3 border-t border-stone-200">
                     Les performances passées ne préjugent pas des performances futures. Cette étude repose sur les informations déclarées par le client
