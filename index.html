@@ -238,7 +238,7 @@
        du papier — aucun trait de coupe visible. Le texte passe au-dessus (z-index). */
     .nc-cover-photo {
       position: absolute; left: 0; right: 0; bottom: 0;
-      height: 46%; overflow: hidden; z-index: 0; pointer-events: none; background: #ffffff;
+      height: 38%; overflow: hidden; z-index: 0; pointer-events: none; background: #ffffff;
     }
     .nc-cover-photo img {
       width: 100%; height: 100%; object-fit: cover; object-position: center 62%;
@@ -703,10 +703,33 @@
        carrés / blocs sont beaucoup trop gros et imposants ». La zone de jauge et le
        diamètre de l'arc perdent un quart de leur hauteur — les quatre cartes de
        « Les chiffres du dossier » restent alignées entre elles. */
-    .nc-zone-jauge { min-height: 122px; width: 100%; }
+    /* 16/09/2026 : les deux compteurs jumeaux vivent dans un conteneur FLEX et non
+       dans une grille CSS — la pagination insère un intercalaire pleine largeur
+       pour couper la page entre eux, ce qu'une grille transformerait en cellule. */
+    .nc-duo { align-items: stretch; }
+    .nc-duo > * { flex: 1 1 calc(50% - 6px); min-width: calc(50% - 6px); }
+    .nc-duo > .nc-print-break { flex-basis: 100%; min-width: 100%; }
+    /* 16/09/2026 (CGP, screen 3, troisième demande) : « fais plus petits les blocs
+       avec les compteurs, tous les compteurs / blocs doivent faire la MÊME TAILLE, et
+       trouve une solution pour qu'ils prennent moins de place ». Trois leviers :
+       (1) l'arc perd encore un quart de diamètre (138 → 104 px, voir NcCompteur) et la
+           zone de jauge suit (104 → 78 px) ;
+       (2) l'intérieur des cartes est resserré (.nc-cpt-notes) : interlignes et filets ;
+       (3) les QUATRE cartes reçoivent la MÊME hauteur, mesurée après rendu (effet
+           « égaliseur » plus bas) — deux rangées flex indépendantes ne peuvent pas
+           s'aligner seules, et la redistribution du blanc d'impression ne touche plus
+           les enfants de .nc-duo (elle décalait une carte sur deux). */
+    .nc-zone-jauge { min-height: 78px; width: 100%; }
+    .nc-cpt-notes { margin-top: 6px; padding-top: 6px; }
+    .nc-cpt-notes > * + * { margin-top: 2px; }
+    .nc-cpt .nc-ctitre { margin-bottom: 8px; }
+    /* 16/09/2026 (CGP : « la typo est différente selon les pages, tu penses que je
+       peux présenter un torchon avec des typos différentes ? »). Le document avait
+       DEUX systèmes de titres — JetBrains Mono ici, Inter ailleurs. Il n'en reste
+       qu'un : Inter en majuscules espacées, partout. */
     .nc-ctitre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5pt; letter-spacing: 0.20em; text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
       color: #0a0908; font-weight: 800;
       display: flex; align-items: center; gap: 9px;
     }
@@ -1051,7 +1074,14 @@
     }
 
     @media print {
-      @page { size: A4 portrait; margin: 0; }
+      /* 16/09/2026 (CGP : « le début de la page est calé tout en haut de la page, je
+         t'ai demandé d'aérer ta présentation »). Une MARGE HAUTE DE PAPIER, appliquée
+         par le moteur d'impression à CHAQUE page — y compris celles où c'est Chrome
+         qui décide de la coupure, là où l'intercalaire de respiration ne passe pas.
+         Les marges latérales restent à 0 : la largeur blanche est déjà réglée par les
+         758 px utiles du porteur sur 794. La hauteur utile d'une page baisse d'autant
+         (voir pageDispo dans exporterPdfSynthese — les deux DOIVENT rester d'accord). */
+      @page { size: A4 portrait; margin: 34px 0 0 0; }
       /* FORCE la préservation EXACTE des couleurs, dégradés et arrière-plans au PDF — partout */
       *, *::before, *::after {
         -webkit-print-color-adjust: exact !important;
@@ -1124,7 +1154,9 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v227 (16/09 : LE DOCUMENT REPRIS SUR LES MAQUETTES DU CGP. (1) HORS SUJET SUPPRIME : les blocs « Protection du partenaire de PACS », « Protection du concubin » et « Donation au dernier vivant anterieure » portaient un cout et une demarche — donc une preconisation — et sortaient pourtant dans l AUDIT. Ils rejoignent celui du conjoint marie : RDV 2 uniquement. (2) PAGE DE GARDE : une PHOTO en transparence occupe le bas de page, meme traitement que la couverture du simulateur (desaturee, brumeuse, fondu blanc progressif, aucun trait de coupe). La phrase d identite, qui restait isolee au milieu du papier, en est retiree — elle ouvre desormais le chapitre « Le foyer ». (3) VOTRE FOYER refait sur le screen 1 : une COLONNE PAR PERSONNE, nom en tete, puis les memes lignes en regard — age, profession, employeur, banque, telephone, courriel — et une bande de trois colonnes en pied : regime matrimonial, enfants et parts fiscales, domicile. L employeur n apparait que s il est connu, le nombre de mois de salaire rejoint la profession, et la banque se lit sur les placements quand elle n est pas saisie. (4) VOS REVENUS MENSUELS refait sur le screen 2 et REMONTE juste apres le foyer : deux colonnes en regard, ce qui entre et ce qui sort, puis les deux totaux en grands chiffres — le reste retranche les charges ET l epargne deja versee. (5) COMPTEURS : la zone de jauge passe de 196 a 122 px et l arc de 210 a 156 px de large — « les blocs sont beaucoup trop gros et imposants ». (6) TAUX DE RENDEMENT du tableau des versements CENTRES sur leur colonne, le 5 pct en pastille pleine. (7) « dont Monsieur … · Madame … » supprime : l information est deja dans les cartes au-dessus. CONTROLE : t_rdv1, t_exp167 et t_rp suivent les nouveaux reperes (nom present 4 fois — bandeau, garde, colonne du foyer, signature —, « Domicile », « Courriel », banque en colonne).)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v229 (16/09 : LES TROIS GRIEFS DU DOCUMENT IMPRIME. (1) L EPARGNE SORT DU BLOC DES REVENUS. Le CGP : « supprime la partie verte, je ne veux pas voir d epargne a cet endroit ». La ligne verte « Epargne versee chaque mois », ajoutee en v228 pour la sortir des charges, est retiree : « Vos revenus mensuels » ne dit plus que ce qui ENTRE et ce qui SORT. Le total de droite redevient « Reste apres charges » = revenus moins charges, sans retrancher l epargne. L epargne mensuelle garde son propre chapitre, « Votre epargne mensuelle actuelle ». (2) DE L AIR EN TETE DE CHAQUE PAGE. Le CGP : « le debut de la page est cale tout en haut de la page ». La v228 inserait bien un intercalaire de respiration, mais SEULEMENT aux coupures que la pagination decide elle-meme : une page coupee par Chrome demarrait a ras du papier. La respiration passe donc dans @page (margin-top 34 px) : le moteur d impression l applique a TOUTES les pages. La hauteur utile d une page suit — Letter 1056 moins 34 de marge moins 57 de pied = 965 px (et non 999) ; les deux valeurs doivent rester d accord. (3) LES COMPTEURS : PLUS PETITS ET TOUS DE LA MEME TAILLE. Trois causes se cumulaient. a. La redistribution du blanc de bas de page posait une marge haute sur UNE carte de compteur : un element flex ainsi decale descend ET perd de la hauteur (align-items:stretch) — deux cartes voisines n avaient plus ni le meme haut ni la meme taille. Les enfants de .nc-duo sont desormais EXCLUS de la redistribution, et le reliquat porte sur la rangee entiere. b. Les deux rangees de cartes s alignaient chacune de son cote. Un EGALISEUR mesure apres rendu la plus haute des quatre cartes et impose sa hauteur aux autres, en style inline — le clone d impression la reprend telle quelle. c. Les cartes sont resserrees : arc de 138 a 104 px, zone de jauge de 104 a 78 px, interieur des cartes (.nc-cpt-notes) et titres rapproches. RESULTAT MESURE : le document passe de 6 a 5 pages ; remplissage 99/98/87/98/98 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v228 (16/09 : LE DOCUMENT IMPRIME, ENFIN VERIFIE. Le CGP : « une fois de plus tu ne verifies absolument pas ce que tu delivres ». Il avait raison : toutes mes verifications portaient sur l ECRAN. verif.sh fabrique desormais le PDF, le rend en images et MESURE le remplissage de chaque page, sur A4 ET SUR LETTER ; une page remplie a moins de 60 pct fait echouer la livraison. (1) CAUSE RACINE DES PAGES VIDES : la pagination etait calculee pour de l A4 (1066 px utiles) alors que le CGP imprime sur du papier LETTER (reglage macOS) : chaque bloc depassait de 67 px, Chrome le renvoyait a la page suivante et la cale, calculee sur la mauvaise hauteur, laissait une page a 30 pct. On calcule desormais sur la PLUS PETITE des deux pages (999 px) : juste sur Letter, et sur A4 le reliquat est absorbe. (2) Le blanc de bas de page se redistribue jusqu a 110 px par interstice (58 avant) et le reliquat descend sous le dernier bloc. (3) Les deux compteurs jumeaux passent d une GRILLE CSS a un conteneur FLEX : la pagination peut couper entre eux avec un intercalaire pleine largeur, ce qu une grille transformait en cellule fantome. (4) Un BANDEAU DE CHAPITRE n est jamais seul en bas de page : le saut est reporte avant lui. (5) TYPOGRAPHIE : le document avait DEUX systemes de titres — JetBrains Mono et Inter. Il n en reste qu UN, Inter en majuscules espacees, partout (.nc-ctitre comprise). (6) PAGE DE GARDE : etiree a la hauteur REELLE d une page (le placard blanc venait d une hauteur en dur, incompatible avec la mise a l echelle de l impression), titre dans un CADRE dore, photo descendue au tiers bas, pied de page sur le papier blanc et non sur l image. (7) L EPARGNE N EST PLUS UNE CHARGE : elle sort de la colonne des charges et prend sa propre ligne verte. (8) « Les chiffres du dossier » devient un BANDEAU DE CHAPITRE encre. (9) « Votre epargne mensuelle actuelle » passe sous « Vos placements ». (10) Compteurs encore reduits : zone de jauge 104 px, arc 138 px.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v227 (16/09 : LE DOCUMENT REPRIS SUR LES MAQUETTES DU CGP. (1) HORS SUJET SUPPRIME : les blocs « Protection du partenaire de PACS », « Protection du concubin » et « Donation au dernier vivant anterieure » portaient un cout et une demarche — donc une preconisation — et sortaient pourtant dans l AUDIT. Ils rejoignent celui du conjoint marie : RDV 2 uniquement. (2) PAGE DE GARDE : une PHOTO en transparence occupe le bas de page, meme traitement que la couverture du simulateur (desaturee, brumeuse, fondu blanc progressif, aucun trait de coupe). La phrase d identite, qui restait isolee au milieu du papier, en est retiree — elle ouvre desormais le chapitre « Le foyer ». (3) VOTRE FOYER refait sur le screen 1 : une COLONNE PAR PERSONNE, nom en tete, puis les memes lignes en regard — age, profession, employeur, banque, telephone, courriel — et une bande de trois colonnes en pied : regime matrimonial, enfants et parts fiscales, domicile. L employeur n apparait que s il est connu, le nombre de mois de salaire rejoint la profession, et la banque se lit sur les placements quand elle n est pas saisie. (4) VOS REVENUS MENSUELS refait sur le screen 2 et REMONTE juste apres le foyer : deux colonnes en regard, ce qui entre et ce qui sort, puis les deux totaux en grands chiffres — le reste retranche les charges ET l epargne deja versee. (5) COMPTEURS : la zone de jauge passe de 196 a 122 px et l arc de 210 a 156 px de large — « les blocs sont beaucoup trop gros et imposants ». (6) TAUX DE RENDEMENT du tableau des versements CENTRES sur leur colonne, le 5 pct en pastille pleine. (7) « dont Monsieur … · Madame … » supprime : l information est deja dans les cartes au-dessus. CONTROLE : t_rdv1, t_exp167 et t_rp suivent les nouveaux reperes (nom present 4 fois — bandeau, garde, colonne du foyer, signature —, « Domicile », « Courriel », banque en colonne).)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v226 (16/09 : LE REGISTRE DES QUESTIONS. Le CGP : « les questions sont pertinentes mais pas la facon de les poser… nous sommes dans un monde professionnel du conseil financier ». Quatre regles d ecriture, dictees par lui et desormais gravees dans le skill metier : (1) LE CONSTAT CHIFFRE D ABORD, en phrase affirmative, PUIS la question — « A 64 ans, soit dans 19 ans, vos revenus passeraient de 12 500 € a 5 000 € par mois. Comment comptez-vous compenser cette baisse ? » ; (2) DES TOURNURES DE CONSEIL — « Comment comptez-vous… », « Quelle serait la solution la plus pertinente pour… », « Que percevrait… » ; (3) AUCUNE INCISE, aucune rhetorique, jamais deux questions imbriquees : plus de tiret cadratin au milieu de la phrase, plus de « pourquoi sont-ils la ? », plus de « — pas en patrimoine, en argent disponible » ; (4) LE VOCABULAIRE DU METIER — Tresor public, capacite d emprunt, donation au dernier vivant, garanties equivalentes, affectation de l epargne. La question retraite porte en plus le NOMBRE D ANNEES qui restent (« soit dans 19 ans »), calcule sur l age du client. CONTROLE : le banc relit chaque question rendue et ECHOUE sur un tiret cadratin, sur deux points d interrogation dans la meme question, ou sur une tournure rhetorique ; il exige aussi que chaque question commence par un constat ou une tournure de conseil.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v225 (15/09 : LES QUESTIONS QUI OUVRENT LE SECOND RENDEZ-VOUS. Formulations arbitrees avec le CGP (« j aime beaucoup ces questions, elles sont bien plus pertinentes — restons au vouvoiement »). CE QUI FAIT QU UNE QUESTION PORTE : elle contient LE CHIFFRE DU CLIENT, elle revele UN COUT QU IL N A JAMAIS CALCULE, et sa reponse DEMANDE UN SAVOIR-FAIRE. Une question a laquelle il peut repondre « je ne sais pas » et passer a autre chose est ratee. UNE SEULE QUESTION PAR FAMILLE — protection, fiscalite, retraite, levier immobilier, epargne qui dort — pour ne jamais poser deux fois le meme registre ; les cinq familles ouvrent l assurance vie, le PER et l investissement locatif sans qu aucun nom de produit soit prononce. Les questions portent desormais les VRAIS CHIFFRES du dossier : l impot sur dix ans, le passage de X a Y €/mois a la retraite (ncPensionFoyer), la capacite d emprunt restante, le montant qui dort sur les livrets. Deux formulations remplacent les precedentes : « pas en patrimoine, en argent disponible » (un bien ne paie pas les factures) et « a quelle date en avez-vous besoin ? si ce n est pas avant cinq ans, pourquoi sont-ils la ? » (c est le client qui conclut). L ACCORD DU VERBE suit la civilite du conjoint — « votre conjointe disposerait-ELLE », jamais « -il ». CONTROLE : le banc compte les NUMEROS et non les points d interrogation (une question validee peut en contenir deux : « … ? Et vos enfants ? ») et refuse un accord faux.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v224 (15/09 : TROIS RETOURS DU CGP SUR LE DOCUMENT DU PREMIER RENDEZ-VOUS. (1) EPARGNE DE PRECAUTION : « supprime les commentaires sur l epargne de precaution ». La carte Court terme n affiche plus NI la cible recommandee, NI « au bon niveau », NI « X € au-dela » — le montant se suffit, le dimensionnement de la reserve se traite de vive voix. (2) TABLEAU DES VERSEMENTS PROGRAMMES : « la partie taux de rendement n est pas claire ni mise en avant ». Les mots RENDEMENT ANNUEL sont ecrits dans l en-tete, chaque taux devient un chiffre lisible (15 px au lieu de 10), la colonne 5 pct est teintee et soulignee sur toute la hauteur, et « livrets » reste la seule mention ecrite sous un taux — qualifier 5 pct d equilibre et 7 pct de dynamique serait un profil de risque que le cabinet n a pas arbitre. La LIGNE DE LA CAPACITE DECLAREE est ENCADREE EN VERT sur toute sa largeur, comme demande. (3) LES QUESTIONS DU PROCHAIN RENDEZ-VOUS : « je n aime pas la presentation et il y a trop de questions — je prefere 5 questions tres pertinentes que 10 moins interessantes ». CINQ AU MAXIMUM, choisies par PRIORITE ARBITREE PAR LE CGP (protection du conjoint et des enfants, transmission, retraite, fiscalite, puis le reste) et non plus par l ordre du moteur ; presentation en liste editoriale — numero discret, question en serif, filet entre chacune. Les formulations sont celles dictees par le CGP, dont « De quoi votre conjoint disposerait-il reellement, le jour ou vous ne serez plus la ? Et vos enfants ? ». UNE SEULE EXCEPTION a la regle « aucun chiffre dans la question » : la question fiscale porte l impot sur DIX ANS, parce que c est lui qui fait lever les yeux. Un axe sans question ecrite ne sort pas : on n invente pas une question. CONTROLE : t_shot_pres.js compte les points d interrogation du bloc et refuse au-dela de cinq, et verifie la disparition des commentaires de precaution.)','font-weight:bold;color:#047857');
@@ -2511,7 +2543,7 @@
          que tous les arcs partent de la même ligne, quelle que soit la carte. */
       return (
         <div className="flex flex-col items-center w-full" style={solo ? { paddingTop: NC_JAUGE_TITRE } : undefined}>
-          <svg viewBox="0 0 160 92" className="w-full" style={{ maxWidth: 156 }} aria-hidden="true">
+          <svg viewBox="0 0 160 92" className="w-full" style={{ maxWidth: 104 }} aria-hidden="true">
             <path d={arc(0, 1, 58)} stroke={piste || "#eae8e3"} strokeWidth="7" fill="none" strokeLinecap="round" />
             {c > 0.012 && <path d={arc(0, 1, 58)} pathLength="100" strokeDasharray={`${(c * 100).toFixed(2)} 200`} stroke={couleur} strokeWidth="7" fill="none" strokeLinecap="round" />}
             {m1 && <line x1={m1[0]} y1={m1[1]} x2={m2[0]} y2={m2[1]} stroke="#1d2735" strokeWidth="2" strokeLinecap="round" />}
@@ -7432,6 +7464,35 @@
         const t2 = setTimeout(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, 500);
         return () => { clearTimeout(t1); clearTimeout(t2); };
       }, [etape, niveau]);
+      /* ═══ ÉGALISEUR DES CARTES DE COMPTEUR (16/09/2026) ═══
+         Le CGP : « tous les compteurs / blocs doivent faire la même taille ». Les
+         quatre cartes de « Les chiffres du dossier » portent des contenus de longueurs
+         différentes sous la jauge (règles cabinet, enveloppe, hypothèses) : deux
+         rangées flex indépendantes s'alignent chacune de leur côté, jamais entre elles.
+         On mesure donc la plus haute des quatre et on impose sa hauteur à toutes.
+         La hauteur est écrite en style INLINE : le clone d'impression la reprend telle
+         quelle, le document imprimé montre donc quatre cartes strictement identiques.
+         Remise à zéro avant chaque mesure — sinon la hauteur ne ferait que croître. */
+      useEffect(() => {
+        const egaliser = () => {
+          try {
+            document.querySelectorAll(".nc-duo").forEach(duo => {
+              const cartes = Array.prototype.slice.call(duo.children)
+                .filter(c => c.nodeType === 1 && !(c.classList && c.classList.contains("nc-print-break")));
+              if (cartes.length < 2) return;
+              cartes.forEach(c => { c.style.minHeight = ""; });
+              let hMax = 0;
+              cartes.forEach(c => { hMax = Math.max(hMax, c.getBoundingClientRect().height || 0); });
+              if (hMax > 0) cartes.forEach(c => { c.style.minHeight = Math.ceil(hMax) + "px"; });
+            });
+          } catch (e) {}
+        };
+        const raf = requestAnimationFrame(egaliser);
+        const t1 = setTimeout(egaliser, 300);
+        const t2 = setTimeout(egaliser, 1000);
+        window.addEventListener("resize", egaliser);
+        return () => { cancelAnimationFrame(raf); clearTimeout(t1); clearTimeout(t2); window.removeEventListener("resize", egaliser); };
+      });
       const goEtapeRaw = (n) => { try { window.__ncStepTs = Date.now(); } catch (e) {} setEtape(n); setVisited(p => new Set([...p, n])); };
       // RÈGLE CABINET (29/08) : une question sans réponse sur la page = PAS de page
       // suivante — sinon la synthèse est faussée. Toute avancée (bouton Suivant ou
@@ -7540,11 +7601,30 @@
                                 //     grand vide en bas.
                                 try {
                                   const zC = 758 / (wEcran + PAD * 2);
-                                  // Hauteur utile réelle d'une page : A4 = 1123 px d'impression avec
-                                  // @page margin 0, moins ≈ 57 px pour le pied de page cabinet (fixed).
-                                  // L'ancienne constante 958 sous-estimait la page de ~200 px : chaque
-                                  // page laissait un vide systématique en bas (corrigé 28/08).
-                                  const pageDispo = Math.floor(1066 / zC);
+                                  /* Hauteur utile d'une page, en pixels d'impression (96 dpi, @page
+                                     margin-top 34 px), moins ≈ 57 px pour le pied de page cabinet (fixed).
+                                       A4     : 1123 − 34 − 57 = 1032
+                                       Letter : 1056 − 34 − 57 =  965
+                                     16/09/2026 : les 34 px retirés en tête sont la RESPIRATION DE
+                                     PAPIER demandée par le CGP (@page margin-top) — elle s'applique
+                                     à toutes les pages, y compris celles coupées par Chrome.
+                                     16/09/2026 — POURQUOI 999 ET PAS 1066. Le CGP a imprimé sur du
+                                     PAPIER LETTER (réglage par défaut de macOS) alors que la mise en
+                                     page était calculée pour de l'A4 : chaque bloc dépassait la page
+                                     de 67 px, Chrome le renvoyait à la page suivante, et la cale
+                                     calculée sur la mauvaise hauteur laissait un vide énorme — une
+                                     page remplie à 30 %. On calcule désormais sur la PLUS PETITE des
+                                     deux pages : le document tombe juste sur Letter, et sur A4 le
+                                     reliquat est absorbé par la redistribution du blanc. */
+                                  const pageDispo = Math.floor(965 / zC);
+                                  /* 16/09/2026 (CGP : « tu me laisses un placard blanc en bas de page ») :
+                                     la page de garde est étirée à la hauteur RÉELLE d'une page —
+                                     une hauteur en dur ne pouvait pas marcher, le document est mis à
+                                     l'échelle à l'impression. */
+                                  try {
+                                    const cov = clone.querySelector(".nc-cover");
+                                    if (cov) cov.style.minHeight = Math.max(600, pageDispo - 8) + "px";
+                                  } catch (e) {}
                                   const RESPIRE = 54; // espace en tête de chaque nouvelle page
                                   const blocsNiveau = (el) => Array.prototype.slice.call(el.children).reduce((acc, c) => {
                                     if ((((c.offsetHeight || 0) > pageDispo * 0.92) || (c.dataset && c.dataset.ncSplit === "1")) && c.children.length > 1 && !c.classList.contains("nc-print-avoid")) acc.push.apply(acc, blocsNiveau(c));
@@ -7564,14 +7644,40 @@
                                     // Renvoie la hauteur totale ajoutée (pour corriger la simulation).
                                     const n = pageBlocs.length;
                                     let ajoute = 0;
-                                    if (n >= 2 && gap > 50) {
-                                      const extra = Math.min(Math.floor((gap - 12) / (n - 1)), 58);
-                                      if (extra > 4) for (let k = 1; k < n; k++) {
-                                        const el = pageBlocs[k];
+                                    /* 16/09/2026 (CGP : « impossible de trouver une page quasi vide,
+                                       70 % de la page est vide ») : le plafond de 58 px par interstice
+                                       ne pouvait pas absorber le vide laissé par un gros bloc insécable
+                                       renvoyé à la page suivante. Il passe à 150 px, et le blanc est
+                                       aussi poussé SOUS le dernier bloc de la page quand il en reste. */
+                                    /* 16/09/2026 (CGP, screen 3 : « tous les compteurs / blocs doivent
+                                       faire la même taille ») : une carte de compteur est un ÉLÉMENT
+                                       FLEX posé à côté de sa jumelle. Lui ajouter une marge haute la
+                                       décalait vers le bas ET raccourcissait sa hauteur étirée — deux
+                                       cartes de la même rangée n'avaient plus ni le même haut ni la
+                                       même taille. Les enfants de .nc-duo sont donc EXCLUS de la
+                                       redistribution du blanc ; le reliquat part sous le dernier bloc. */
+                                    const redistribuable = (el) => !(el && el.parentNode && el.parentNode.classList
+                                      && el.parentNode.classList.contains("nc-duo"));
+                                    const cibles = pageBlocs.slice(1).filter(redistribuable);
+                                    if (cibles.length >= 1 && gap > 50) {
+                                      const extra = Math.min(Math.floor((gap - 12) / cibles.length), 110);
+                                      if (extra > 4) cibles.forEach(el => {
                                         const mt = parseFloat((el.style && el.style.marginTop) || 0) || 0;
                                         el.style.marginTop = (mt + extra) + "px";
                                         ajoute += extra;
-                                      }
+                                      });
+                                    }
+                                    /* reliquat : il descend sous le dernier bloc de la page — jamais
+                                       plus de 40 % de page en bas, sinon le document a l'air inachevé. */
+                                    const reste = Math.min(gap - ajoute - 12, 90);
+                                    if (n >= 1 && reste > 40) {
+                                      // même raison : sur une carte de compteur, la marge basse
+                                      // raccourcirait la carte — on la porte sur la rangée entière.
+                                      let el = pageBlocs[n - 1];
+                                      if (!redistribuable(el)) el = el.parentNode;
+                                      const mb = parseFloat((el.style && el.style.marginBottom) || 0) || 0;
+                                      el.style.marginBottom = (mb + reste) + "px";
+                                      ajoute += reste;
                                     }
                                     pageBlocs = [];
                                     return ajoute;
@@ -7584,12 +7690,23 @@
                                     const forceB = b.dataset && b.dataset.ncForceBreak === "1" && posPage > 40;
                                     const jamais = b.dataset && b.dataset.ncNoBreak === "1";
                                     if (!jamais && (forceB || (posPage + h > pageDispo && h <= pageDispo * 0.92))) {
+                                      /* 16/09/2026 : un BANDEAU DE CHAPITRE ne reste jamais seul en bas
+                                         de page pendant que son contenu part à la page suivante — le
+                                         saut est reporté AVANT le bandeau, qui descend avec sa partie. */
+                                      let cible = b;
+                                      const prec = pageBlocs.length ? pageBlocs[pageBlocs.length - 1] : null;
+                                      if (prec && prec.classList && prec.classList.contains("nc-print-chap")) {
+                                        cible = prec;
+                                        pageBlocs.pop();
+                                      }
                                       // Intercalaire porteur du saut : la nouvelle page démarre avec de l'air.
-                                      const gapBas = pageDispo - posPage;
+                                      const gapBas = pageDispo - (cible === b ? posPage
+                                        : ((cible.getBoundingClientRect().top - baseTop) + decalage) % pageDispo);
                                       const sp = document.createElement("div");
                                       sp.className = "nc-print-break";
                                       sp.style.height = RESPIRE + "px";
-                                      b.parentNode.insertBefore(sp, b);
+                                      cible.parentNode.insertBefore(sp, cible);
+                                      if (cible !== b) pageBlocs.push(cible);
                                       // Décalage = uniquement le blanc VIRTUEL qu'introduira l'impression
                                       // (gapBas). L'intercalaire et les marges redistribuées sont PHYSIQUES :
                                       // ils sont déjà dans les mesures suivantes (correction 28/08 — l'ancien
@@ -10114,7 +10231,7 @@
                              La phrase d'identité (« Monsieur, 44 ans, 1 enfant à charge — 1,5 part »)
                              a été RETIRÉE d'ici : elle ne peut pas rester isolée au milieu d'une
                              page de garde. Elle ouvre déjà le chapitre « Le foyer ». */
-                          <div className="rounded-2xl bg-white mb-4 border nc-print-avoid nc-cover flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040, position: "relative", overflow: "hidden" }}>
+                          <div className="rounded-2xl bg-white mb-4 border nc-print-avoid nc-cover flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "44px 46px 0", minHeight: 966, position: "relative", overflow: "hidden" }}>
                             {/* bandeau photo, derrière le texte */}
                             <div className="nc-cover-photo" aria-hidden="true">
                               <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85" alt="" />
@@ -10123,22 +10240,30 @@
                               <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
                                 <div className="flex items-center gap-3">
                                   {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
-                                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: "#b8924e", fontWeight: 700 }}>{cab}</div>
+                                  <div className="text-[10px] uppercase tracking-[0.24em] font-bold" style={{ color: "#b8924e" }}>{cab}</div>
                                 </div>
-                                <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700 }}>
+                                <div className="text-right text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#a8a29e" }}>
                                   {synMode === "preco" ? "Simulation et plan d'action" : "Étude patrimoniale"} · {new Date().toLocaleDateString('fr-FR')}
                                 </div>
                               </div>
-                              <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
-                              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 34, fontWeight: 700, color: "#1d2735", lineHeight: 1.12, letterSpacing: "-0.01em" }}>{titre}</div>
-                              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 18, color: "#1d2735", marginTop: 12, lineHeight: 1.45 }}>
-                                {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
+                              {/* 16/09/2026 (CGP) : « dans l'absolu l'idée est bonne, mais tu me laisses
+                                  un placard blanc en bas de page — baisse l'image et prends plus de
+                                  place avec un beau cadre pour annoncer l'étude ». Le titre vit
+                                  désormais dans un CADRE qui occupe la moitié haute ; la photo
+                                  descend derrière ; le pied de page reste sur le papier blanc, entre
+                                  les deux, jamais sur l'image. */}
+                              <div style={{ border: "1px solid rgba(184,146,78,0.55)", borderTop: "4px solid #b8924e", borderRadius: 14, background: "rgba(255,255,255,0.86)", padding: "38px 40px 34px", marginTop: 26 }}>
+                                <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 20 }}></div>
+                                <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 38, fontWeight: 700, color: "#1d2735", lineHeight: 1.1, letterSpacing: "-0.01em" }}>{titre}</div>
+                                <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 19, color: "#1d2735", marginTop: 16, lineHeight: 1.45 }}>
+                                  {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
+                                </div>
+                                <div className="text-[11px]" style={{ color: "#57534e", marginTop: 20, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
+                                  {cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}
+                                </div>
+                                <div className="text-[10px] italic" style={{ color: "#a8a29e", marginTop: 3 }}>Document non contractuel — mentions détaillées en fin de document</div>
                               </div>
-                              <div style={{ flex: 1, minHeight: 24 }}></div>
-                              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
-                                <div className="text-[10.5px]" style={{ color: "#57534e" }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
-                                <div className="text-[10px] italic" style={{ color: "#78716c" }}>Document non contractuel — mentions détaillées en fin de document</div>
-                              </div>
+                              <div style={{ flex: 1, minHeight: 12 }}></div>
                             </div>
                           </div>
                         );
@@ -10151,7 +10276,10 @@
                           Le manque reste une information : « non renseigné » s'écrit, il ne
                           disparaît pas. */}
                       <div className="rounded-2xl bg-white p-6 mb-4 border" data-nc-force-break="1" data-nc-chap="Le foyer" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", fontWeight: 700, marginBottom: 14 }}>Votre foyer</div>
+                        {/* 16/09/2026 (CGP : « la typo est différente selon les pages ») : TOUS les
+                            titres de bloc portent le style maison — Inter, majuscules espacées — et
+                            non plus trois polices selon le bloc. */}
+                        <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#8a6d34" }}>Votre foyer</div>
                         {/* La phrase d'identité (« Monsieur, 45 ans, 1 enfant à charge — 1,5 part
                             fiscale ») OUVRE le chapitre. Elle a été retirée de la page de garde,
                             où elle restait isolée au milieu du papier (CGP, 16/09/2026) — mais
@@ -10239,7 +10367,7 @@
                             ? [d.adresse, [d.codePostal, d.ville].filter(Boolean).join(" ")].filter(Boolean)
                             : ["non renseigné"];
                           const Lab = ({ children }) => (
-                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.18em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700, marginBottom: 6 }}>{children}</div>
+                            <div className="text-[9px] uppercase tracking-[0.18em] font-bold" style={{ color: "#a8a29e", marginBottom: 6 }}>{children}</div>
                           );
                           return (
                             <>
@@ -10282,12 +10410,15 @@
                       {/* ═══ VOS REVENUS MENSUELS (16/09/2026, CGP : « puis ensuite screen 2 ») ═══
                           Deux colonnes en regard — ce qui entre, ce qui sort — puis les deux totaux
                           en grands chiffres. Plus de cartes encadrées : des filets, de l'air, et le
-                          chiffre qui porte. Le « reste » retranche les charges ET l'épargne déjà
-                          versée : c'est ce dont le foyer dispose réellement chaque mois. */}
+                          chiffre qui porte.
+                          16/09/2026 (CGP, second retour) : « supprime la partie verte, je ne veux
+                          pas voir d'épargne à cet endroit ». AUCUNE épargne ici — ni en charge, ni
+                          en ligne à part. Ce bloc ne dit que ce qui ENTRE et ce qui SORT ; le « reste »
+                          est donc revenus − charges, et l'épargne mensuelle est traitée dans son
+                          propre chapitre, « Votre épargne mensuelle actuelle ». */}
                       {(() => {
                         const nfR = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
-                        const epM = Math.round((synth && synth.ppMensuels) || 0);
-                        const reste = Math.max(0, Math.round((synth.totalRevenus || 0) - (synth.totalCharges || 0) - epM));
+                        const reste = Math.max(0, Math.round((synth.totalRevenus || 0) - (synth.totalCharges || 0)));
                         const Ligne = ({ l, r, v, neg }) => (
                           <div className="flex items-baseline justify-between gap-3" style={{ paddingTop: 9, paddingBottom: 9, borderBottom: "1px solid rgba(10,9,8,0.07)" }}>
                             <span style={{ fontSize: 13.5, color: "#1d2735" }}>{l}{r ? <span style={{ fontSize: 11.5, color: "#a8a29e" }}> · {r}</span> : null}</span>
@@ -10296,7 +10427,7 @@
                         );
                         return (
                           <div className="rounded-2xl bg-white p-6 mb-4 border" data-nc-chap="Vos revenus mensuels" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", fontWeight: 700, marginBottom: 16 }}>Vos revenus mensuels</div>
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-4" style={{ color: "#8a6d34" }}>Vos revenus mensuels</div>
                             <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))" }}>
                               <div>
                                 <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
@@ -10306,20 +10437,19 @@
                               </div>
                               <div>
                                 <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
-                                {synth.charges.length === 0 && epM <= 0
+                                {synth.charges.length === 0
                                   ? <div style={{ fontSize: 13, color: "#a8a29e", paddingTop: 9 }}>Aucune charge renseignée.</div>
                                   : null}
                                 {synth.charges.map((c, i) => <Ligne key={i} l={c.label} r={c.regle} v={c.mensuel} />)}
-                                {epM > 0 ? <Ligne l="Épargne versée chaque mois" v={epM} /> : null}
                               </div>
                             </div>
                             <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))", marginTop: 18 }}>
                               <div className="flex items-baseline justify-between gap-3">
-                                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c", fontWeight: 700 }}>Total des revenus du foyer</span>
+                                <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total des revenus du foyer</span>
                                 <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(synth.totalRevenus)} €</span>
                               </div>
                               <div className="flex items-baseline justify-between gap-3">
-                                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c", fontWeight: 700 }}>{epM > 0 ? "Reste après charges et épargne" : "Reste après charges"}</span>
+                                <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Reste après charges</span>
                                 <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(reste)} €</span>
                               </div>
                             </div>
@@ -10704,15 +10834,100 @@
                         );
                       })()}
 
+                      {/* ═══ VOTRE ÉPARGNE MENSUELLE ACTUELLE (15/09/2026, CGP : « au-dessus de
+                          versements programmés je veux que tu rappelles son épargne mensuelle
+                          actuelle, par exemple 200 €/mois sur un livret et 100 € sur un contrat
+                          d'assurance vie ») — lu DANS LA SAISIE : le versement programmé déclaré
+                          placement par placement (champ « pp »). Le reliquat éventuel entre ce
+                          détail et le total du moteur (synth.ppMensuels, qui intègre le PER
+                          déclaré à l'étape Fiscalité) est affiché sur sa propre ligne, sinon les
+                          deux chiffres se contrediraient. ═══ */}
+                      {synMode === "constat" && (() => {
+                        const nfA = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
+                        /* 15/09/2026 (CGP) : « peux-tu renseigner que c'est Monsieur qui verse
+                           200 € et Madame 100 € ? sois précis ». Le détenteur est déjà saisi sur
+                           chaque placement (a.titulaire) — mêmes libellés que le tableau
+                           « Vos placements », pour qu'un même contrat ne change pas de nom d'un
+                           bloc à l'autre. */
+                        const moiP = d.civilite === "Mme" ? "Madame" : "Monsieur";
+                        const luiP = d.civilite === "Mme" ? "Monsieur" : "Madame";
+                        const quiLib = (t) => t === "client" ? moiP : t === "conjoint" ? luiP : t === "commun" ? "Commun" : (enCouple ? "détenteur à préciser" : moiP);
+                        const lignes = (d.avoirs || [])
+                          .filter(a => a.ppQ === "oui" && ncInt(a.pp) > 0)
+                          .map(a => {
+                            const T = NC_TYPES_AVOIR.find(x => x.v === a.type);
+                            const libLiv = a.type === "livrets" && a.livretType
+                              ? ((NC_LIVRET_TYPES.find(x => x.v === a.livretType) || {}).l || null) : null;
+                            return {
+                              qui: quiLib(a.titulaire),
+                              tit: a.titulaire || "",
+                              l: libLiv || (T ? T.l : "Placement"),
+                              sous: (a.etablissement || "").trim(),
+                              m: ncInt(a.pp),
+                              c: (T && T.c) || "#0f766e",
+                            };
+                          });
+                        const detail = lignes.reduce((s, x) => s + x.m, 0);
+                        const moteur = Math.round((synth && synth.ppMensuels) || 0);
+                        const reste = Math.max(0, moteur - detail);
+                        if (reste > 0) lignes.push({
+                          qui: quiLib(((d.reductionsPer || {}).titulaire) || ""),
+                          tit: ((d.reductionsPer || {}).titulaire) || "",
+                          l: "Plan d'épargne retraite", sous: "déclaré à l'étape Fiscalité", m: reste, c: "#6d28d9",
+                        });
+                        const total = detail + reste;
+                        if (!lignes.length || total <= 0) return null;
+                        const revF = Math.max(0, (synth && synth.totalRevenus) || 0);
+                        /* récapitulatif PAR PERSONNE : c'est la question du CGP — qui verse quoi. */
+                        const parQui = [
+                          { l: moiP, m: lignes.filter(x => x.tit === "client" || (!x.tit && !enCouple)).reduce((s, x) => s + x.m, 0) },
+                          { l: luiP, m: lignes.filter(x => x.tit === "conjoint").reduce((s, x) => s + x.m, 0) },
+                          { l: "Commun", m: lignes.filter(x => x.tit === "commun").reduce((s, x) => s + x.m, 0) },
+                          { l: "Détenteur à préciser", m: lignes.filter(x => !x.tit && enCouple).reduce((s, x) => s + x.m, 0) },
+                        ].filter(x => x.m > 0);
+                        return (
+                          <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" data-nc-chap="Votre épargne mensuelle actuelle" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>Votre épargne mensuelle actuelle</div>
+                            {/* 15/09/2026 (CGP) : « supprime ce genre de phrase qui ne sert
+                                strictement à rien » — le sous-titre répétait le titre. Le bloc
+                                montre des chiffres, il n'a pas à s'expliquer. */}
+                            <div className="grid gap-2" style={{ gridTemplateColumns: lignes.length > 2 ? "repeat(3, minmax(0,1fr))" : `repeat(${lignes.length}, minmax(0,1fr))` }}>
+                              {lignes.map((x, i) => (
+                                <div key={i} className="rounded-lg px-3 py-2.5 bg-white border border-stone-200" style={{ borderLeft: "3px solid " + x.c }}>
+                                  <div className="text-[9px] uppercase tracking-wider font-bold mb-1" style={{ color: x.c }}>{x.qui}</div>
+                                  <div className="num text-[16px] font-extrabold leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{nfA(x.m)} €<span className="text-[10px] font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: "#a8a29e" }}>/mois</span></div>
+                                  <div className="text-[11px] font-bold text-stone-700 mt-0.5 leading-snug">{x.l}</div>
+                                  {x.sous ? <div className="text-[10px] text-stone-400 leading-snug">{x.sous}</div> : null}
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex items-baseline justify-between gap-3 mt-3 pt-2.5" style={{ borderTop: "1px solid rgba(10,9,8,0.08)" }}>
+                              <span className="text-[11.5px] font-bold text-stone-700">Total versé chaque mois</span>
+                              <span className="num text-[19px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfA(total)} €/mois</span>
+                            </div>
+                            {/* 16/09/2026 (CGP) : « supprime cette phrase, totalement inutile
+                                puisque tu donnes l'information juste au-dessus » — le détail par
+                                personne est déjà dans les cartes. */}
+                            {revF > 0 ? (
+                              <div className="text-[10.5px] text-stone-500 mt-1 leading-snug">Soit {String(Math.round((total / revF) * 1000) / 10).replace(".", ",")} % de {nfA(revF)} € de revenus mensuels. Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière.</div>
+                            ) : null}
+                          </div>
+                        );
+                      })()}
+
 
 
                       {/* 16/09/2026 : les compteurs ouvrent désormais « Les chiffres du dossier » —
                           les revenus, eux, sont passés juste après le foyer (ordre demandé par le CGP). */}
-                      <div className="flex items-center gap-3 mt-5 mb-3" data-nc-chap="Les chiffres du dossier">
-                        <div className="text-[17px] font-bold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Les chiffres du dossier</div>
-                        <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, rgba(184,146,78,0.5), rgba(184,146,78,0))" }}></div>
+                      {/* 16/09/2026 (CGP) : « le titre doit être plus joli, plus visible, encadré
+                          comme un chapitre de son dossier ». Bandeau pleine largeur, encre du
+                          cabinet, filet doré en pied — il ouvre vraiment une partie. */}
+                      <div className="rounded-xl mb-4 nc-print-chap" data-nc-chap="Les chiffres du dossier" style={{ background: "#1d2735", padding: "16px 22px 14px", marginTop: 22 }}>
+                        <div className="text-[9.5px] uppercase tracking-[0.22em] font-bold" style={{ color: "#d8bc86", marginBottom: 4 }}>Chapitre</div>
+                        <div style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "#ffffff", lineHeight: 1.15 }}>Les chiffres du dossier</div>
+                        <div style={{ height: 3, width: 64, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginTop: 10 }}></div>
                       </div>
-                  <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="flex flex-wrap gap-3 mb-4 nc-duo" data-nc-split="1">
                     {/* ——— 1. Taux d'endettement — quand un prêt (RP compris) se termine sous
                          24 mois : DEUX petits compteurs AVANT / APRÈS la fin du prêt (28/08). ——— */}
                     {(() => {
@@ -10750,7 +10965,7 @@
                           sous={sous} />
                       );
                       return (
-                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Taux d'endettement</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                           {(() => {
@@ -10798,7 +11013,7 @@
                       const aCreditMd = (synth.charges || []).some(c => /crédit/i.test(c.label || ""));
                       const libEngage = aLoyerMd && aCreditMd ? (d.logement === "gratuit" ? "forfait logement + crédits" : "loyer + crédits en cours") : aLoyerMd ? (d.logement === "gratuit" ? "forfait logé à titre gratuit" : "loyer actuel") : aCreditMd ? "crédits en cours" : "charges retenues";
                       return (
-                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Mensualité disponible</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                           {(() => {
@@ -10857,7 +11072,7 @@
                             );
                           })()}
                           </div>
-                          <div className="w-full mt-2 pt-2 border-t border-stone-100 space-y-1">
+                          <div className="w-full border-t border-stone-100 nc-cpt-notes">
                             <div className="text-[9px] text-stone-400 leading-snug">capacité d'endettement bancaire ≠ reste à vivre : cette enveloppe mesure ce que la banque peut prêter, pas ce que le budget peut épargner (voir capacité d'épargne réelle)</div>
                             <div className="flex items-baseline justify-between gap-2">
                               <span className="text-[10px] font-semibold text-stone-500">Enveloppe d'endettement — 35 % des revenus</span>
@@ -10869,7 +11084,7 @@
                             </div>
                           </div>
                           {loyerMd > 0 && (
-                            <div className="mt-2 pt-2 border-t border-stone-100 text-center">
+                            <div className="border-t border-stone-100 text-center nc-cpt-notes">
                               <div className="num text-[13px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfMd(synth.dispo35 + loyerMd)} €<span className="text-[9.5px] font-medium text-stone-500"> · achat RP ({d.logement === "gratuit" ? "forfait logement supprimé" : "loyer supprimé"})</span></div>
                               <div className="text-[9.5px] text-stone-400">{nfMd(synth.dispo35)} € en investissement locatif ({d.logement === "gratuit" ? "forfait conservé" : "loyer conservé"})</div>
                             </div>
@@ -10901,7 +11116,7 @@
                       const txP = (x) => String(Math.round(x * 10000) / 100).replace(".", ",");
                       const nfC = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
                       return (
-                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Capacité d'emprunt <span className="sfx">· {duree} ans</span></div>
                           {/* RÈGLE CABINET (28/08) : client déjà PROPRIÉTAIRE de sa RP → la capacité
                               se projette UNIQUEMENT sur l'investissement locatif — plus aucune
@@ -10914,7 +11129,7 @@
                                 couleur="#0f766e" piste="#d9ebe7" valeur={`≈ ${nfC(capLoc)} €`}
                                 sous="investissement locatif" />
                               </div>
-                              <div className="w-full mt-2 pt-2 border-t border-stone-100 space-y-1">
+                              <div className="w-full border-t border-stone-100 nc-cpt-notes">
                                 <div className="text-[9px] text-stone-400">retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus · déjà propriétaire : projection locative uniquement (règle cabinet)</div>
                               </div>
                             </>
@@ -10926,7 +11141,7 @@
                                 couleur="#0f766e" piste="#d9ebe7" valeur={`≈ ${nfC(capLoc)} €`}
                                 sous={pRP.chiffre ? "place pour un INVESTISSEMENT LOCATIF, une fois le projet de résidence principale financé — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance" : `INVESTISSEMENT LOCATIF, ${d.logement === "gratuit" ? "logement actuel conservé" : "location actuelle conservée"} — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance`} />
                               </div>
-                              <div className="w-full mt-2 pt-2 border-t border-stone-100 space-y-1">
+                              <div className="w-full border-t border-stone-100 nc-cpt-notes">
                                 {/* 02/09 : options EXCLUSIVES, jamais cumulables — c est la MEME
                                     enveloppe d endettement. 10/09 : la residence secondaire est
                                     retiree (decision CGP) — locatif et RP seulement. */}
@@ -11005,7 +11220,7 @@
                       const coul = partFin < 0.25 ? "#b91c1c" : "#b45309";
                       const piste = partFin < 0.25 ? "#f3dcdc" : "#f6e8d8";
                       return (
-                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Le financier</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                             <NcCompteur solo pct={partFin} marker={null}
@@ -11014,7 +11229,7 @@
                               valeur={`${Math.round(partFin * 100)} %`}
                               sous={sousTxt} />
                           </div>
-                          <div className="w-full mt-2 pt-2 border-t border-stone-100 space-y-1">
+                          <div className="w-full border-t border-stone-100 nc-cpt-notes">
                             <div className="flex items-baseline justify-between gap-2">
                               <span className="text-[10px] font-semibold text-stone-500">Financier</span>
                               <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: coul }}>{nfI(Math.max(0, actifT - synth.actifImmo))} €</span>
@@ -11230,86 +11445,6 @@
                           <div className="text-[12px] text-stone-700 leading-relaxed" style={{ whiteSpace: "pre-wrap" }}>{(d.notesConseiller || "").trim()}</div>
                         </div>
                       )}
-                      {/* ═══ VOTRE ÉPARGNE MENSUELLE ACTUELLE (15/09/2026, CGP : « au-dessus de
-                          versements programmés je veux que tu rappelles son épargne mensuelle
-                          actuelle, par exemple 200 €/mois sur un livret et 100 € sur un contrat
-                          d'assurance vie ») — lu DANS LA SAISIE : le versement programmé déclaré
-                          placement par placement (champ « pp »). Le reliquat éventuel entre ce
-                          détail et le total du moteur (synth.ppMensuels, qui intègre le PER
-                          déclaré à l'étape Fiscalité) est affiché sur sa propre ligne, sinon les
-                          deux chiffres se contrediraient. ═══ */}
-                      {synMode === "constat" && (() => {
-                        const nfA = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
-                        /* 15/09/2026 (CGP) : « peux-tu renseigner que c'est Monsieur qui verse
-                           200 € et Madame 100 € ? sois précis ». Le détenteur est déjà saisi sur
-                           chaque placement (a.titulaire) — mêmes libellés que le tableau
-                           « Vos placements », pour qu'un même contrat ne change pas de nom d'un
-                           bloc à l'autre. */
-                        const moiP = d.civilite === "Mme" ? "Madame" : "Monsieur";
-                        const luiP = d.civilite === "Mme" ? "Monsieur" : "Madame";
-                        const quiLib = (t) => t === "client" ? moiP : t === "conjoint" ? luiP : t === "commun" ? "Commun" : (enCouple ? "détenteur à préciser" : moiP);
-                        const lignes = (d.avoirs || [])
-                          .filter(a => a.ppQ === "oui" && ncInt(a.pp) > 0)
-                          .map(a => {
-                            const T = NC_TYPES_AVOIR.find(x => x.v === a.type);
-                            const libLiv = a.type === "livrets" && a.livretType
-                              ? ((NC_LIVRET_TYPES.find(x => x.v === a.livretType) || {}).l || null) : null;
-                            return {
-                              qui: quiLib(a.titulaire),
-                              tit: a.titulaire || "",
-                              l: libLiv || (T ? T.l : "Placement"),
-                              sous: (a.etablissement || "").trim(),
-                              m: ncInt(a.pp),
-                              c: (T && T.c) || "#0f766e",
-                            };
-                          });
-                        const detail = lignes.reduce((s, x) => s + x.m, 0);
-                        const moteur = Math.round((synth && synth.ppMensuels) || 0);
-                        const reste = Math.max(0, moteur - detail);
-                        if (reste > 0) lignes.push({
-                          qui: quiLib(((d.reductionsPer || {}).titulaire) || ""),
-                          tit: ((d.reductionsPer || {}).titulaire) || "",
-                          l: "Plan d'épargne retraite", sous: "déclaré à l'étape Fiscalité", m: reste, c: "#6d28d9",
-                        });
-                        const total = detail + reste;
-                        if (!lignes.length || total <= 0) return null;
-                        const revF = Math.max(0, (synth && synth.totalRevenus) || 0);
-                        /* récapitulatif PAR PERSONNE : c'est la question du CGP — qui verse quoi. */
-                        const parQui = [
-                          { l: moiP, m: lignes.filter(x => x.tit === "client" || (!x.tit && !enCouple)).reduce((s, x) => s + x.m, 0) },
-                          { l: luiP, m: lignes.filter(x => x.tit === "conjoint").reduce((s, x) => s + x.m, 0) },
-                          { l: "Commun", m: lignes.filter(x => x.tit === "commun").reduce((s, x) => s + x.m, 0) },
-                          { l: "Détenteur à préciser", m: lignes.filter(x => !x.tit && enCouple).reduce((s, x) => s + x.m, 0) },
-                        ].filter(x => x.m > 0);
-                        return (
-                          <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" data-nc-chap="Votre épargne mensuelle actuelle" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>Votre épargne mensuelle actuelle</div>
-                            {/* 15/09/2026 (CGP) : « supprime ce genre de phrase qui ne sert
-                                strictement à rien » — le sous-titre répétait le titre. Le bloc
-                                montre des chiffres, il n'a pas à s'expliquer. */}
-                            <div className="grid gap-2" style={{ gridTemplateColumns: lignes.length > 2 ? "repeat(3, minmax(0,1fr))" : `repeat(${lignes.length}, minmax(0,1fr))` }}>
-                              {lignes.map((x, i) => (
-                                <div key={i} className="rounded-lg px-3 py-2.5 bg-white border border-stone-200" style={{ borderLeft: "3px solid " + x.c }}>
-                                  <div className="text-[9px] uppercase tracking-wider font-bold mb-1" style={{ color: x.c }}>{x.qui}</div>
-                                  <div className="num text-[16px] font-extrabold leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{nfA(x.m)} €<span className="text-[10px] font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: "#a8a29e" }}>/mois</span></div>
-                                  <div className="text-[11px] font-bold text-stone-700 mt-0.5 leading-snug">{x.l}</div>
-                                  {x.sous ? <div className="text-[10px] text-stone-400 leading-snug">{x.sous}</div> : null}
-                                </div>
-                              ))}
-                            </div>
-                            <div className="flex items-baseline justify-between gap-3 mt-3 pt-2.5" style={{ borderTop: "1px solid rgba(10,9,8,0.08)" }}>
-                              <span className="text-[11.5px] font-bold text-stone-700">Total versé chaque mois</span>
-                              <span className="num text-[19px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfA(total)} €/mois</span>
-                            </div>
-                            {/* 16/09/2026 (CGP) : « supprime cette phrase, totalement inutile
-                                puisque tu donnes l'information juste au-dessus » — le détail par
-                                personne est déjà dans les cartes. */}
-                            {revF > 0 ? (
-                              <div className="text-[10.5px] text-stone-500 mt-1 leading-snug">Soit {String(Math.round((total / revF) * 1000) / 10).replace(".", ",")} % de {nfA(revF)} € de revenus mensuels. Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière.</div>
-                            ) : null}
-                          </div>
-                        );
-                      })()}
                       {/* ═══ IMPORTANCE DES VERSEMENTS PROGRAMMÉS (15/09/2026, décision du CGP) ═══
                           Dernier chapitre du premier rendez-vous : ce que produit une épargne
                           régulière selon le rendement obtenu. Lignes demandées par le CGP —
@@ -11355,7 +11490,7 @@
                               <table className="w-full" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
                                 <thead>
                                   <tr>
-                                    <th className="text-left px-3.5 pt-2.5 pb-1 align-bottom" style={{ width: "28%", background: "#fbfaf8", fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#57534e", fontWeight: 700 }}>
+                                    <th className="text-left px-3.5 pt-2.5 pb-1 align-bottom" style={{ width: "28%", background: "#fbfaf8", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "#57534e", fontWeight: 800 }}>
                                       Épargne mensuelle
                                     </th>
                                     {DUREES.map((an, i) => (
@@ -11366,7 +11501,7 @@
                                     ))}
                                   </tr>
                                   <tr>
-                                    <th className="text-right px-3.5 pb-2 align-bottom" style={{ background: "#fbfaf8", fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.12em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700, borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
+                                    <th className="text-right px-3.5 pb-2 align-bottom" style={{ background: "#fbfaf8", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 800, borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
                                       Rendement annuel →
                                     </th>
                                     {/* 16/09/2026 (CGP) : « au niveau des taux de rendement, ce n'est pas
