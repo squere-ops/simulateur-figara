@@ -232,6 +232,25 @@
       }
     }
 
+    /* ═══ PAGE DE GARDE DE L'ÉTUDE — bandeau photo (16/09/2026, CGP) ═══
+       Même traitement que la couverture du simulateur : la photo occupe le bas de
+       la page, désaturée et brumeuse, et un fondu blanc progressif la fait naître
+       du papier — aucun trait de coupe visible. Le texte passe au-dessus (z-index). */
+    .nc-cover-photo {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 46%; overflow: hidden; z-index: 0; pointer-events: none; background: #ffffff;
+    }
+    .nc-cover-photo img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center 62%;
+      filter: grayscale(0.35) contrast(0.92) brightness(1.06) saturate(0.95);
+      display: block;
+    }
+    .nc-cover-photo::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 62%;
+      background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.93) 28%, rgba(255,255,255,0.58) 62%, rgba(255,255,255,0.16) 86%, rgba(255,255,255,0) 100%);
+      z-index: 1; pointer-events: none;
+    }
+
     /* ═══════════════════════════════════════════════════════════════════════
        MODE PRÉSENTATION DE L'ÉTUDE (15/09/2026, CGP : « il va falloir un mode
        présentation et un mode impression »). L'ÉCRAN sert à PRÉSENTER pendant
@@ -259,7 +278,7 @@
     body.nc-pres .nc-pres-scroll > .max-w-4xl { max-width: 1150px !important; width: 100%; margin-top: auto !important; margin-bottom: auto !important; }
     /* la page de garde est dimensionnée pour une FEUILLE A4 (minHeight 1040) :
        à l'écran, elle laisserait un grand vide sous le titre. */
-    body.nc-pres [data-nc-chap="Ouverture"] { min-height: 0 !important; }
+    body.nc-pres [data-nc-chap="Ouverture"] { min-height: 620px !important; }
     /* un cran de lisibilité : l'écran se lit à deux, à distance d'un bureau */
     body.nc-pres .nc-syn-zone > *:not([data-nc-pres-ui]) { zoom: 1.1; }
 
@@ -680,7 +699,11 @@
     /* TITRES DE CARTES DE LA SYNTHESE (v179) — encre pleine + filet dore.
        L ancien style text-stone-400 etait presque transparent en rendez-vous. */
     /* 10/09/2026 — zone de jauge de hauteur fixe : les arcs des 4 compteurs partent de la même ligne */
-    .nc-zone-jauge { min-height: 196px; width: 100%; }
+    /* 16/09/2026 (CGP) : « je veux que les compteurs prennent moins de place, les
+       carrés / blocs sont beaucoup trop gros et imposants ». La zone de jauge et le
+       diamètre de l'arc perdent un quart de leur hauteur — les quatre cartes de
+       « Les chiffres du dossier » restent alignées entre elles. */
+    .nc-zone-jauge { min-height: 122px; width: 100%; }
     .nc-ctitre {
       font-family: 'JetBrains Mono', monospace;
       font-size: 9.5pt; letter-spacing: 0.20em; text-transform: uppercase;
@@ -1101,7 +1124,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v226 (16/09 : LE REGISTRE DES QUESTIONS. Le CGP : « les questions sont pertinentes mais pas la facon de les poser… nous sommes dans un monde professionnel du conseil financier ». Quatre regles d ecriture, dictees par lui et desormais gravees dans le skill metier : (1) LE CONSTAT CHIFFRE D ABORD, en phrase affirmative, PUIS la question — « A 64 ans, soit dans 19 ans, vos revenus passeraient de 12 500 € a 5 000 € par mois. Comment comptez-vous compenser cette baisse ? » ; (2) DES TOURNURES DE CONSEIL — « Comment comptez-vous… », « Quelle serait la solution la plus pertinente pour… », « Que percevrait… » ; (3) AUCUNE INCISE, aucune rhetorique, jamais deux questions imbriquees : plus de tiret cadratin au milieu de la phrase, plus de « pourquoi sont-ils la ? », plus de « — pas en patrimoine, en argent disponible » ; (4) LE VOCABULAIRE DU METIER — Tresor public, capacite d emprunt, donation au dernier vivant, garanties equivalentes, affectation de l epargne. La question retraite porte en plus le NOMBRE D ANNEES qui restent (« soit dans 19 ans »), calcule sur l age du client. CONTROLE : le banc relit chaque question rendue et ECHOUE sur un tiret cadratin, sur deux points d interrogation dans la meme question, ou sur une tournure rhetorique ; il exige aussi que chaque question commence par un constat ou une tournure de conseil.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v227 (16/09 : LE DOCUMENT REPRIS SUR LES MAQUETTES DU CGP. (1) HORS SUJET SUPPRIME : les blocs « Protection du partenaire de PACS », « Protection du concubin » et « Donation au dernier vivant anterieure » portaient un cout et une demarche — donc une preconisation — et sortaient pourtant dans l AUDIT. Ils rejoignent celui du conjoint marie : RDV 2 uniquement. (2) PAGE DE GARDE : une PHOTO en transparence occupe le bas de page, meme traitement que la couverture du simulateur (desaturee, brumeuse, fondu blanc progressif, aucun trait de coupe). La phrase d identite, qui restait isolee au milieu du papier, en est retiree — elle ouvre desormais le chapitre « Le foyer ». (3) VOTRE FOYER refait sur le screen 1 : une COLONNE PAR PERSONNE, nom en tete, puis les memes lignes en regard — age, profession, employeur, banque, telephone, courriel — et une bande de trois colonnes en pied : regime matrimonial, enfants et parts fiscales, domicile. L employeur n apparait que s il est connu, le nombre de mois de salaire rejoint la profession, et la banque se lit sur les placements quand elle n est pas saisie. (4) VOS REVENUS MENSUELS refait sur le screen 2 et REMONTE juste apres le foyer : deux colonnes en regard, ce qui entre et ce qui sort, puis les deux totaux en grands chiffres — le reste retranche les charges ET l epargne deja versee. (5) COMPTEURS : la zone de jauge passe de 196 a 122 px et l arc de 210 a 156 px de large — « les blocs sont beaucoup trop gros et imposants ». (6) TAUX DE RENDEMENT du tableau des versements CENTRES sur leur colonne, le 5 pct en pastille pleine. (7) « dont Monsieur … · Madame … » supprime : l information est deja dans les cartes au-dessus. CONTROLE : t_rdv1, t_exp167 et t_rp suivent les nouveaux reperes (nom present 4 fois — bandeau, garde, colonne du foyer, signature —, « Domicile », « Courriel », banque en colonne).)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v226 (16/09 : LE REGISTRE DES QUESTIONS. Le CGP : « les questions sont pertinentes mais pas la facon de les poser… nous sommes dans un monde professionnel du conseil financier ». Quatre regles d ecriture, dictees par lui et desormais gravees dans le skill metier : (1) LE CONSTAT CHIFFRE D ABORD, en phrase affirmative, PUIS la question — « A 64 ans, soit dans 19 ans, vos revenus passeraient de 12 500 € a 5 000 € par mois. Comment comptez-vous compenser cette baisse ? » ; (2) DES TOURNURES DE CONSEIL — « Comment comptez-vous… », « Quelle serait la solution la plus pertinente pour… », « Que percevrait… » ; (3) AUCUNE INCISE, aucune rhetorique, jamais deux questions imbriquees : plus de tiret cadratin au milieu de la phrase, plus de « pourquoi sont-ils la ? », plus de « — pas en patrimoine, en argent disponible » ; (4) LE VOCABULAIRE DU METIER — Tresor public, capacite d emprunt, donation au dernier vivant, garanties equivalentes, affectation de l epargne. La question retraite porte en plus le NOMBRE D ANNEES qui restent (« soit dans 19 ans »), calcule sur l age du client. CONTROLE : le banc relit chaque question rendue et ECHOUE sur un tiret cadratin, sur deux points d interrogation dans la meme question, ou sur une tournure rhetorique ; il exige aussi que chaque question commence par un constat ou une tournure de conseil.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v225 (15/09 : LES QUESTIONS QUI OUVRENT LE SECOND RENDEZ-VOUS. Formulations arbitrees avec le CGP (« j aime beaucoup ces questions, elles sont bien plus pertinentes — restons au vouvoiement »). CE QUI FAIT QU UNE QUESTION PORTE : elle contient LE CHIFFRE DU CLIENT, elle revele UN COUT QU IL N A JAMAIS CALCULE, et sa reponse DEMANDE UN SAVOIR-FAIRE. Une question a laquelle il peut repondre « je ne sais pas » et passer a autre chose est ratee. UNE SEULE QUESTION PAR FAMILLE — protection, fiscalite, retraite, levier immobilier, epargne qui dort — pour ne jamais poser deux fois le meme registre ; les cinq familles ouvrent l assurance vie, le PER et l investissement locatif sans qu aucun nom de produit soit prononce. Les questions portent desormais les VRAIS CHIFFRES du dossier : l impot sur dix ans, le passage de X a Y €/mois a la retraite (ncPensionFoyer), la capacite d emprunt restante, le montant qui dort sur les livrets. Deux formulations remplacent les precedentes : « pas en patrimoine, en argent disponible » (un bien ne paie pas les factures) et « a quelle date en avez-vous besoin ? si ce n est pas avant cinq ans, pourquoi sont-ils la ? » (c est le client qui conclut). L ACCORD DU VERBE suit la civilite du conjoint — « votre conjointe disposerait-ELLE », jamais « -il ». CONTROLE : le banc compte les NUMEROS et non les points d interrogation (une question validee peut en contenir deux : « … ? Et vos enfants ? ») et refuse un accord faux.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v224 (15/09 : TROIS RETOURS DU CGP SUR LE DOCUMENT DU PREMIER RENDEZ-VOUS. (1) EPARGNE DE PRECAUTION : « supprime les commentaires sur l epargne de precaution ». La carte Court terme n affiche plus NI la cible recommandee, NI « au bon niveau », NI « X € au-dela » — le montant se suffit, le dimensionnement de la reserve se traite de vive voix. (2) TABLEAU DES VERSEMENTS PROGRAMMES : « la partie taux de rendement n est pas claire ni mise en avant ». Les mots RENDEMENT ANNUEL sont ecrits dans l en-tete, chaque taux devient un chiffre lisible (15 px au lieu de 10), la colonne 5 pct est teintee et soulignee sur toute la hauteur, et « livrets » reste la seule mention ecrite sous un taux — qualifier 5 pct d equilibre et 7 pct de dynamique serait un profil de risque que le cabinet n a pas arbitre. La LIGNE DE LA CAPACITE DECLAREE est ENCADREE EN VERT sur toute sa largeur, comme demande. (3) LES QUESTIONS DU PROCHAIN RENDEZ-VOUS : « je n aime pas la presentation et il y a trop de questions — je prefere 5 questions tres pertinentes que 10 moins interessantes ». CINQ AU MAXIMUM, choisies par PRIORITE ARBITREE PAR LE CGP (protection du conjoint et des enfants, transmission, retraite, fiscalite, puis le reste) et non plus par l ordre du moteur ; presentation en liste editoriale — numero discret, question en serif, filet entre chacune. Les formulations sont celles dictees par le CGP, dont « De quoi votre conjoint disposerait-il reellement, le jour ou vous ne serez plus la ? Et vos enfants ? ». UNE SEULE EXCEPTION a la regle « aucun chiffre dans la question » : la question fiscale porte l impot sur DIX ANS, parce que c est lui qui fait lever les yeux. Un axe sans question ecrite ne sort pas : on n invente pas une question. CONTROLE : t_shot_pres.js compte les points d interrogation du bloc et refuse au-dela de cinq, et verifie la disparition des commentaires de precaution.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v223 (15/09 : LES DEVOIRS SUIVENT CE QUE LE DOSSIER NE SAIT PAS, ET LE TEASER DEVIENT DES QUESTIONS. (1) « IL FAUT POUVOIR METTRE JE NE SAIS PAS » : la quotite d assurance emprunteur s intitule desormais « Je ne sais pas » (et non « A verifier »), et « Assurance de pret renegociee ? » passe de Oui/Non a Oui / Non / Je ne sais pas — le DOUTE est traite comme le MANQUE, il appelle les memes pieces. (2) LE BLOC DES DEVOIRS N EST PLUS FIGE : aux deux documents info-retraite s ajoutent, quand le dossier l exige, les conditions particulieres de l assurance de pret (quotite inconnue, sur un couple), le TABLEAU D AMORTISSEMENT ET L OFFRE DE PRET des credits dont l assurance n a jamais ete renegociee ou dont on l ignore — pour preparer une simulation chiffree au prochain rendez-vous —, le RELEVE DE SITUATION des placements dont le rendement est inconnu, et le CONTRAT DE PREVOYANCE d un TNS dont la couverture n est pas connue, pour comparatif. Un devoir ne se deduit jamais d un chiffre calcule : il vient d un champ laisse vide ou marque « je ne sais pas ». (3) « LES SUJETS DU PROCHAIN RENDEZ-VOUS » DEVIENT « LES QUESTIONS DU PROCHAIN RENDEZ-VOUS » (CGP : « je veux que tu poses des questions qui donnent envie au client que je lui donne les reponses »). Chaque axe du moteur est traduit en UNE question : on pose, on ne repond pas, aucun chiffre du dossier, aucun nom de produit. (4) TABLEAU DES VERSEMENTS PROGRAMMES (« il est moche et pas pro ni clair ») : la colonne 5 pct, hypothese centrale, est teintee et en gras sur toute la hauteur ; 1,7 pct reste gris, 7 pct en encre normale ; les deux horizons sont separes par un filet et portent chacun leur teinte ; la ligne de la capacite declaree porte un filet dore. (5) « IL MANQUE X € » SUPPRIME de l epargne constituee (demande du CGP) : sous la cible on n ecrit rien, le montant recommande est deja affiche au-dessus. CONTROLE : t_devoirs.js pose un dossier avec trois inconnues, verifie que chaque piece est reclamee et nommee, puis renseigne la quotite et exige que CE devoir disparaisse ; verif.sh passe a 14 etapes.)','font-weight:bold;color:#047857');
@@ -2487,7 +2511,7 @@
          que tous les arcs partent de la même ligne, quelle que soit la carte. */
       return (
         <div className="flex flex-col items-center w-full" style={solo ? { paddingTop: NC_JAUGE_TITRE } : undefined}>
-          <svg viewBox="0 0 160 92" className="w-full" style={{ maxWidth: 210 }} aria-hidden="true">
+          <svg viewBox="0 0 160 92" className="w-full" style={{ maxWidth: 156 }} aria-hidden="true">
             <path d={arc(0, 1, 58)} stroke={piste || "#eae8e3"} strokeWidth="7" fill="none" strokeLinecap="round" />
             {c > 0.012 && <path d={arc(0, 1, 58)} pathLength="100" strokeDasharray={`${(c * 100).toFixed(2)} 200`} stroke={couleur} strokeWidth="7" fill="none" strokeLinecap="round" />}
             {m1 && <line x1={m1[0]} y1={m1[1]} x2={m2[0]} y2={m2[1]} stroke="#1d2735" strokeWidth="2" strokeLinecap="round" />}
@@ -10081,108 +10105,227 @@
                         const titre = synMode === "preco" ? "Votre simulation et votre plan d'action" : "Votre étude patrimoniale";
                         const idPhrase = (syn.resume.find(it => it.t == null && typeof it.d === "string") || {}).d || "";
                         return (
-                          <div className="rounded-2xl bg-white mb-4 border nc-print-avoid flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040 }}>
-                            <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
-                              <div className="flex items-center gap-3">
-                                {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
-                                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: "#b8924e", fontWeight: 800 }}>{cab}</div>
-                              </div>
-                              <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c" }}>Étude patrimoniale · {new Date().toLocaleDateString('fr-FR')}</div>
+                          /* ═══ PAGE DE GARDE (16/09/2026, CGP : « la page de garde est vraiment
+                             d'une tristesse absolue, mets une image en transparence telle que le
+                             pont Alexandre III, comme sur la simulation ») ═══
+                             La photo est la MÊME que celle de la présentation du simulateur, avec
+                             le même traitement : bandeau bas, désaturé et brumeux, fondu blanc
+                             progressif vers le haut pour qu'aucun trait ne soit visible.
+                             La phrase d'identité (« Monsieur, 44 ans, 1 enfant à charge — 1,5 part »)
+                             a été RETIRÉE d'ici : elle ne peut pas rester isolée au milieu d'une
+                             page de garde. Elle ouvre déjà le chapitre « Le foyer ». */
+                          <div className="rounded-2xl bg-white mb-4 border nc-print-avoid nc-cover flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040, position: "relative", overflow: "hidden" }}>
+                            {/* bandeau photo, derrière le texte */}
+                            <div className="nc-cover-photo" aria-hidden="true">
+                              <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85" alt="" />
                             </div>
-                            <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
-                            <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", lineHeight: 1.15, letterSpacing: "-0.01em" }}>{titre}</div>
-                            <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, color: "#1d2735", marginTop: 10, lineHeight: 1.4 }}>
-                              {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
-                            </div>
-                            <div style={{ flex: 1, minHeight: 24 }}></div>
-                            {idPhrase ? (
-                              <div className="rounded-xl px-5 py-4 border" style={{ borderColor: "rgba(10,9,8,0.10)", background: "#fafaf9", borderLeft: "4px solid #b8924e" }}>
-                                <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 16, color: "#1d2735", lineHeight: 1.5 }}>{idPhrase}</div>
+                            <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", flex: 1 }}>
+                              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
+                                <div className="flex items-center gap-3">
+                                  {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
+                                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: "#b8924e", fontWeight: 700 }}>{cab}</div>
+                                </div>
+                                <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700 }}>
+                                  {synMode === "preco" ? "Simulation et plan d'action" : "Étude patrimoniale"} · {new Date().toLocaleDateString('fr-FR')}
+                                </div>
                               </div>
-                            ) : null}
-                            <div style={{ flex: 1, minHeight: 24 }}></div>
-                            <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
-                              <div className="text-[10.5px]" style={{ color: "#78716c" }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
-                              <div className="text-[10px] italic" style={{ color: "#a8a29e" }}>Document non contractuel — mentions détaillées en fin de document</div>
+                              <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
+                              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 34, fontWeight: 700, color: "#1d2735", lineHeight: 1.12, letterSpacing: "-0.01em" }}>{titre}</div>
+                              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 18, color: "#1d2735", marginTop: 12, lineHeight: 1.45 }}>
+                                {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
+                              </div>
+                              <div style={{ flex: 1, minHeight: 24 }}></div>
+                              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
+                                <div className="text-[10.5px]" style={{ color: "#57534e" }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
+                                <div className="text-[10px] italic" style={{ color: "#78716c" }}>Document non contractuel — mentions détaillées en fin de document</div>
+                              </div>
                             </div>
                           </div>
                         );
                       })()}
-                      {/* Identification du foyer : état civil, adresse, composition — constat pur, sans chiffre. */}
-                      <div className="rounded-2xl bg-white p-5 mb-4 border" data-nc-force-break="1" data-nc-chap="Le foyer" style={{ borderColor: "rgba(184,146,78,0.4)", boxShadow: "0 1px 3px rgba(29,39,53,0.06)" }}>
+                      {/* ═══ VOTRE FOYER (16/09/2026, CGP : « préfère une inspiration telle
+                          présentation des clients, cf. screen 1 ») ═══
+                          Une COLONNE PAR PERSONNE — nom en tête, puis les mêmes lignes en regard :
+                          âge, profession, employeur, banque, téléphone, courriel. Puis une bande de
+                          trois colonnes : régime matrimonial, enfants et parts fiscales, domicile.
+                          Le manque reste une information : « non renseigné » s'écrit, il ne
+                          disparaît pas. */}
+                      <div className="rounded-2xl bg-white p-6 mb-4 border" data-nc-force-break="1" data-nc-chap="Le foyer" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", fontWeight: 700, marginBottom: 14 }}>Votre foyer</div>
+                        {/* La phrase d'identité (« Monsieur, 45 ans, 1 enfant à charge — 1,5 part
+                            fiscale ») OUVRE le chapitre. Elle a été retirée de la page de garde,
+                            où elle restait isolée au milieu du papier (CGP, 16/09/2026) — mais
+                            elle reste ici : c'est elle qui pose le foyer en une ligne. */}
                         {syn.resume.filter(it => it.t == null).map((it, i) => (
-                          <p key={i} className="text-[16px] leading-relaxed text-stone-800 mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif" }}>{it.d}</p>
+                          <p key={i} style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 15.5, lineHeight: 1.55, color: "#1d2735", marginBottom: 16 }}>{it.d}</p>
                         ))}
                         {(() => {
-                          // Identification en TUILES (28/08) : fini les deux colonnes libellé/valeur
-                          // peu lisibles — chaque information vit dans sa propre tuile scannable
-                          // (label discret + valeur en gras), groupées Foyer puis Coordonnées.
-                          const COORD = ["Adresse", "Téléphone", "Email"];
-                          const infos = syn.resume.filter(it => it.info);
-                          const gFoyer = infos.filter(it => !COORD.includes(it.t));
-                          const gCoord = infos.filter(it => COORD.includes(it.t));
-                          // RÈGLE CABINET (29/08) : ne PAS tout mettre en gras dans les tuiles —
-                          // sinon rien n'est mis en valeur. La TÊTE de l'information reste en gras
-                          // (« Marié(e) », « salarié cadre », « 1 enfant »), le complément après le
-                          // premier séparateur (— · :) passe en poids normal (banque, société,
-                          // régime…). Une valeur sans séparateur reste en gras.
-                          const Tuile = ({ it }) => {
-                            const txt = typeof it.d === "string" ? it.d : null;
-                            let tete = null, reste = null;
-                            if (txt) {
-                              let best = -1, sep = "";
-                              [" — ", " · ", " : "].forEach(sp => { const i2 = txt.indexOf(sp); if (i2 >= 0 && (best < 0 || i2 < best)) { best = i2; sep = sp; } });
-                              if (best >= 0) { tete = txt.slice(0, best); reste = txt.slice(best); }
-                            }
-                            return (
-                              <div className="rounded-lg bg-white border border-stone-200 px-3 py-2 flex flex-col" style={{ borderLeft: "3px solid rgba(184,146,78,0.5)" }}>
-                                {/* 10/09 (demande du CGP) : une PASTILLE par titre de tuile — petit
-                                    disque or pâle avec un pictogramme trait (état civil, activité,
-                                    foyer, adresse, téléphone, email). SVG inline : imprimé tel quel. */}
-                                <div className="flex items-center gap-1.5 mb-1">
-                                  <NcPastilleTuile t={it.t} />
-                                  <div className="text-[8.5px] uppercase tracking-[0.14em] font-bold" style={{ color: "#1d2735" }}>{it.t}</div>
-                                </div>
-                                {/* même typographie que le reste du document : valeurs en serif (28/08).
-                                    11/09 (CGP) : la tuile Adresse, seule sans seconde ligne, descend
-                                    un peu sa valeur (centrée dans l'espace restant) pour équilibrer
-                                    la rangée avec Téléphone et Email. */}
-                                <div className={"text-[12.5px] leading-snug" + (it.t === "Adresse" ? " my-auto" : "")} style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
-                                  {/* 29/08 (dossier Quoifeur) : dans le complément, les LIBELLÉS
-                                      (« régime », « donation au dernier vivant », « banque »…)
-                                      restent en gras — seules les VALEURS passent en poids normal. */}
-                                  {tete != null ? (<><span className="font-bold">{tete}</span>{reste.split(/( — | · )/).map((seg, iS) => {
-                                    if (seg === " — " || seg === " · ") return <span key={iS} className="font-normal text-stone-400">{seg}</span>;
-                                    const jS = seg.indexOf(" : ");
-                                    if (jS > 0) return (<span key={iS}><span className="font-bold">{seg.slice(0, jS)}</span><span className="font-normal text-stone-600"> : {seg.slice(jS + 3)}</span></span>);
-                                    return <span key={iS} className="font-normal text-stone-600">{seg}</span>;
-                                  })}</>) : <span className="font-bold">{it.d}</span>}
-                                </div>
-                                {/* 11/09 (CGP) : la ligne du conjoint a LA MÊME taille que celle du client. */}
-                                {it.sub ? (
-                                  <div className="text-[12.5px] leading-snug mt-0.5" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#57534e" }}>
-                                    {(() => { const jB = it.sub.indexOf(" : "); return jB > 0
-                                      ? (<><span className="font-bold" style={{ color: "#1d2735" }}>{it.sub.slice(0, jB)}</span><span className="font-normal"> : {it.sub.slice(jB + 3)}</span></>)
-                                      : <span>{it.sub}</span>; })()}
-                                  </div>
-                                ) : null}
-                              </div>
-                            );
+                          const cj = d.conjoint || {};
+                          const cjRev = d.conjointRev || {};
+                          const civMoi = d.civilite === "Mme" ? "Madame" : "Monsieur";
+                          const civLui = (cj.civilite || (d.civilite === "Mme" ? "M." : "Mme")) === "Mme" ? "Madame" : "Monsieur";
+                          /* profession, employeur et mois de salaire, lus dans la saisie */
+                          const metier = (pd, fem) => {
+                            const acts = pd.activites || [];
+                            const aS = pd.actSalarie || {};
+                            const out = [];
+                            if (acts.includes("salarie")) out.push(`Salarié${fem ? "e" : ""}${aS.statut === "cadre" ? " cadre" : ""}${aS.poste ? ` — ${aS.poste}` : ""}`);
+                            if (acts.includes("independant")) out.push(`Indépendant${(pd.actIndependant || {}).activite ? ` — ${(pd.actIndependant || {}).activite}` : ""}`);
+                            if (acts.includes("chef")) out.push(`Chef d'entreprise${(pd.actChef || {}).societe ? ` — ${(pd.actChef || {}).societe}` : ""}`);
+                            if (acts.includes("fonctionnaire")) out.push(`Fonctionnaire${(pd.actFonctionnaire || {}).poste ? ` — ${(pd.actFonctionnaire || {}).poste}` : ""}`);
+                            if (acts.includes("retraite")) out.push("Retraité(e)");
+                            if (acts.includes("autre")) out.push((pd.actAutre || {}).precision || "Autre activité");
+                            return out.length ? out.join(" · ") : "non renseignée";
                           };
+                          /* l'employeur n'apparaît QUE s'il est connu : « non renseigné · salaire
+                             sur 13 mois » n'est pas une information, c'est une ligne bancale. Le
+                             nombre de mois de salaire rejoint alors la profession. */
+                          const employeur = (pd) => {
+                            const aS = pd.actSalarie || {};
+                            const ent = (aS.entreprise || "").trim()
+                              || ((pd.actChef || {}).societe || "").trim()
+                              || ((pd.actFonctionnaire || {}).employeur || "").trim();
+                            return ent || null;
+                          };
+                          const moisSal = (pd) => {
+                            const nbM = parseInt((pd.actSalarie || {}).nbMois, 10) || 0;
+                            return nbM ? `${nbM} mois de salaire` : null;
+                          };
+                          const ageDe = (iso) => { const a = ncAgeDate(iso); return a != null ? `${a} ans` : "non renseigné"; };
+                          /* La banque n'est pas toujours saisie en tant que telle : quand elle ne
+                             l'est pas, on la lit sur les placements de la personne — l'épargne
+                             salariale exclue, elle est imposée par l'employeur (règle du 29/08). */
+                          const avB = d.avoirsQ === "oui" ? (d.avoirs || []) : [];
+                          const bqDe = (tit) => Array.from(new Set(avB
+                            .filter(a => a.type !== "epargne_salariale" && (a.titulaire === tit || (!a.titulaire && tit === "client")) && (a.etablissement || "").trim())
+                            .map(a => a.etablissement.trim())));
+                          const banque = (bp, tit) => { const b = String(bp || "").trim(); if (b) return b; const l = bqDe(tit); return l.length ? l.join(", ") : null; };
+                          const gens = [{
+                            nom: `${ncCapNom(d.prenom || "")} ${(d.nom || "").toUpperCase()}`.trim() || civMoi,
+                            lignes: [
+                              ["Âge", ageDe(d.dateNaissance)],
+                              ["Profession", [metier(d, d.civilite === "Mme"), moisSal(d)].filter(Boolean).join(" · ")],
+                              ["Employeur", employeur(d)],
+                              ["Banque", banque(d.banquePrincipale, "client")],
+                              ["Téléphone", (d.tel || "").trim() || "non renseigné"],
+                              ["Courriel", (d.email || "").trim() || "non renseigné"],
+                            ],
+                          }];
+                          if (enCouple && (cj.prenom || cj.nom)) gens.push({
+                            nom: `${ncCapNom(cj.prenom || "")} ${((cj.nom || d.nom) || "").toUpperCase()}`.trim() || civLui,
+                            lignes: [
+                              ["Âge", ageDe(cj.dateNaissance)],
+                              ["Profession", [metier(cjRev, civLui === "Madame"), moisSal(cjRev)].filter(Boolean).join(" · ")],
+                              ["Employeur", employeur(cjRev)],
+                              ["Banque", banque(d.banquePrincipaleConjoint, "conjoint")],
+                              ["Téléphone", (cj.tel || "").trim() || "non renseigné"],
+                              ["Courriel", (cj.email || "").trim() || "non renseigné"],
+                            ],
+                          });
+                          const REGIMES = { communaute_acquets: "communauté réduite aux acquêts", separation: "séparation de biens", communaute_universelle: "communauté universelle", participation: "participation aux acquêts" };
+                          const SIT = { marie: "Mariés", pacse: "Pacsés", union_libre: "Union libre", celibataire: "Célibataire", divorce: "Divorcé(e)", veuf: "Veuf(ve)" };
+                          const regime = `${SIT[d.situation] || "Situation non renseignée"}${d.situation === "marie" && d.regime ? ` — ${REGIMES[d.regime] || d.regime}` : ""}`;
+                          const ddv = d.situation === "marie"
+                            ? (d.ddvQ === "oui" ? "Donation au dernier vivant : en place" : d.ddvQ === "non" ? "Donation au dernier vivant : aucune" : "Donation au dernier vivant : à vérifier")
+                            : null;
+                          const parts = (() => { try { return ncCalcFisc(d, 2026).parts; } catch (e) { return null; } })();
+                          const enfants = (d.enfants || []).map(e => {
+                            const an = parseInt(e.annee, 10);
+                            const ageE = an ? (new Date().getFullYear() - an) : null;
+                            const fil = e.filiation === "client" ? `enfant de ${civMoi}` : e.filiation === "conjoint" ? `enfant de ${civLui}` : "enfant commun";
+                            return `${ncCapNom(e.prenom || "") || "Enfant"}${ageE != null ? `, ${ageE} ans` : ""} — ${fil}`;
+                          });
+                          const adresse = (d.adresseQ === "oui" && (d.adresse || d.ville))
+                            ? [d.adresse, [d.codePostal, d.ville].filter(Boolean).join(" ")].filter(Boolean)
+                            : ["non renseigné"];
+                          const Lab = ({ children }) => (
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.18em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700, marginBottom: 6 }}>{children}</div>
+                          );
                           return (
                             <>
-                              <div className="text-[9px] uppercase tracking-[0.18em] font-bold mb-1.5" style={{ color: "#1d2735" }}>Le foyer</div>
-                              <div className="grid grid-cols-3 gap-2 mb-3">
-                                {gFoyer.map((it, i) => <Tuile key={i} it={it} />)}
+                              <div className="grid gap-8" style={{ gridTemplateColumns: `repeat(${gens.length}, minmax(0,1fr))` }}>
+                                {gens.map((g, i) => (
+                                  <div key={i}>
+                                    <div style={{ borderTop: "1.5px solid #1d2735", paddingTop: 12 }}>
+                                      <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 600, color: "#1d2735", lineHeight: 1.15, marginBottom: 12 }}>{g.nom}</div>
+                                    </div>
+                                    {g.lignes.filter(l => l[1]).map((l, k) => (
+                                      <div key={k} className="flex items-baseline gap-3" style={{ paddingTop: 5, paddingBottom: 5 }}>
+                                        <span style={{ width: 98, flexShrink: 0, fontSize: 12, color: "#a8a29e" }}>{l[0]}</span>
+                                        <span style={{ fontSize: 13, color: "#1d2735", lineHeight: 1.45 }}>{l[1]}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ))}
                               </div>
-                              <div className="text-[9px] uppercase tracking-[0.18em] font-bold mb-1.5" style={{ color: "#1d2735" }}>Coordonnées</div>
-                              <div className="grid grid-cols-3 gap-2">
-                                {gCoord.map((it, i) => <Tuile key={i} it={it} />)}
+                              <div className="grid gap-6" style={{ gridTemplateColumns: "repeat(3, minmax(0,1fr))", marginTop: 26, paddingTop: 16, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
+                                <div>
+                                  <Lab>Régime matrimonial</Lab>
+                                  <div style={{ fontSize: 13, color: "#1d2735", lineHeight: 1.5 }}>{regime}</div>
+                                  {ddv ? <div style={{ fontSize: 13, color: d.ddvQ === "oui" ? "#0f766e" : "#0369a1", lineHeight: 1.5 }}>{ddv}</div> : null}
+                                </div>
+                                <div>
+                                  <Lab>{enfants.length ? `Enfants · ${parts != null ? `${String(parts).replace(".", ",")} part${parts > 1 ? "s" : ""} fiscale${parts > 1 ? "s" : ""}` : "parts fiscales"}` : "Enfants"}</Lab>
+                                  {enfants.length
+                                    ? enfants.map((e, k) => <div key={k} style={{ fontSize: 13, color: "#1d2735", lineHeight: 1.5 }}>{e}</div>)
+                                    : <div style={{ fontSize: 13, color: "#1d2735", lineHeight: 1.5 }}>Aucun enfant à charge{parts != null ? ` — ${String(parts).replace(".", ",")} part${parts > 1 ? "s" : ""} fiscale${parts > 1 ? "s" : ""}` : ""}</div>}
+                                </div>
+                                <div>
+                                  <Lab>Domicile</Lab>
+                                  {adresse.map((a, k) => <div key={k} style={{ fontSize: 13, color: "#1d2735", lineHeight: 1.5 }}>{a}</div>)}
+                                </div>
                               </div>
                             </>
                           );
                         })()}
                       </div>
+                      {/* ═══ VOS REVENUS MENSUELS (16/09/2026, CGP : « puis ensuite screen 2 ») ═══
+                          Deux colonnes en regard — ce qui entre, ce qui sort — puis les deux totaux
+                          en grands chiffres. Plus de cartes encadrées : des filets, de l'air, et le
+                          chiffre qui porte. Le « reste » retranche les charges ET l'épargne déjà
+                          versée : c'est ce dont le foyer dispose réellement chaque mois. */}
+                      {(() => {
+                        const nfR = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
+                        const epM = Math.round((synth && synth.ppMensuels) || 0);
+                        const reste = Math.max(0, Math.round((synth.totalRevenus || 0) - (synth.totalCharges || 0) - epM));
+                        const Ligne = ({ l, r, v, neg }) => (
+                          <div className="flex items-baseline justify-between gap-3" style={{ paddingTop: 9, paddingBottom: 9, borderBottom: "1px solid rgba(10,9,8,0.07)" }}>
+                            <span style={{ fontSize: 13.5, color: "#1d2735" }}>{l}{r ? <span style={{ fontSize: 11.5, color: "#a8a29e" }}> · {r}</span> : null}</span>
+                            <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 600, color: neg ? "#b91c1c" : "#1d2735" }}>{nfR(v)} €</span>
+                          </div>
+                        );
+                        return (
+                          <div className="rounded-2xl bg-white p-6 mb-4 border" data-nc-chap="Vos revenus mensuels" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.22em", textTransform: "uppercase", color: "#78716c", fontWeight: 700, marginBottom: 16 }}>Vos revenus mensuels</div>
+                            <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))" }}>
+                              <div>
+                                <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
+                                {synth.revenus.length === 0
+                                  ? <div style={{ fontSize: 13, color: "#a8a29e", paddingTop: 9 }}>Aucun revenu renseigné.</div>
+                                  : synth.revenus.map((r, i) => <Ligne key={i} l={r.label} r={r.regle} v={r.mensuel} neg={r.mensuel < 0} />)}
+                              </div>
+                              <div>
+                                <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
+                                {synth.charges.length === 0 && epM <= 0
+                                  ? <div style={{ fontSize: 13, color: "#a8a29e", paddingTop: 9 }}>Aucune charge renseignée.</div>
+                                  : null}
+                                {synth.charges.map((c, i) => <Ligne key={i} l={c.label} r={c.regle} v={c.mensuel} />)}
+                                {epM > 0 ? <Ligne l="Épargne versée chaque mois" v={epM} /> : null}
+                              </div>
+                            </div>
+                            <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))", marginTop: 18 }}>
+                              <div className="flex items-baseline justify-between gap-3">
+                                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c", fontWeight: 700 }}>Total des revenus du foyer</span>
+                                <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(synth.totalRevenus)} €</span>
+                              </div>
+                              <div className="flex items-baseline justify-between gap-3">
+                                <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: "#78716c", fontWeight: 700 }}>{epM > 0 ? "Reste après charges et épargne" : "Reste après charges"}</span>
+                                <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(reste)} €</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
 
                       {/* — Logement, immobilier & crédits : une ligne titre par élément, détails
                            en petites paires libellé/valeur — fini la phrase à rallonge (28/08). — */}
@@ -10561,44 +10704,15 @@
                         );
                       })()}
 
-                      <div className="flex items-center gap-3 mt-5 mb-3" data-nc-chap="Revenus et charges">
+
+
+                      {/* 16/09/2026 : les compteurs ouvrent désormais « Les chiffres du dossier » —
+                          les revenus, eux, sont passés juste après le foyer (ordre demandé par le CGP). */}
+                      <div className="flex items-center gap-3 mt-5 mb-3" data-nc-chap="Les chiffres du dossier">
                         <div className="text-[17px] font-bold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Les chiffres du dossier</div>
                         <div className="flex-1 h-px" style={{ background: "linear-gradient(90deg, rgba(184,146,78,0.5), rgba(184,146,78,0))" }}></div>
                       </div>
                   <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="bg-white border border-stone-200 rounded-2xl p-4 flex flex-col" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                      <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-2.5" style={{ color: "#0f766e" }}>Revenus mensuels retenus</div>
-                      {synth.revenus.length === 0 && <div className="text-[12px] text-stone-400">Aucun revenu renseigné.</div>}
-                      {synth.revenus.map((r, i) => (
-                        <div key={i} className="flex items-baseline justify-between gap-2 py-0.5">
-                          <span className="text-[12px] text-stone-600">{r.label}{r.regle && <span className="text-[10px] text-stone-400"> · {r.regle}</span>}</span>
-                          <span className="num text-[12px] font-bold whitespace-nowrap" style={{ color: r.mensuel < 0 ? "#b91c1c" : "#1c1917" }}>{new Intl.NumberFormat('fr-FR').format(r.mensuel)} €</span>
-                        </div>
-                      ))}
-                      <div className="flex items-baseline justify-between gap-2 mt-auto pt-1.5 border-t border-stone-200" style={{ marginTop: "auto" }}>
-                        <span className="text-[12px] font-bold text-stone-800">Total</span>
-                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalRevenus)} €/mois</span>
-                      </div>
-                    </div>
-                    {/* Total ancré en BAS de la carte : les deux totaux revenus/charges restent
-                        alignés sur la même ligne quel que soit le nombre de lignes (28/08). */}
-                    <div className="bg-white border border-stone-200 rounded-2xl p-4 flex flex-col" style={{ borderTop: "3px solid #b91c1c", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                      <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-2.5" style={{ color: "#b91c1c" }}>Charges mensuelles</div>
-                      {synth.charges.length === 0 && <div className="text-[12px] text-stone-400">Aucune charge renseignée.</div>}
-                      {synth.charges.map((c, i) => (
-                        <div key={i} className="flex items-baseline justify-between gap-2 py-0.5">
-                          <span className="text-[12px] text-stone-600">{c.label}{c.regle && <span className="text-[10px] text-stone-400"> · {c.regle}</span>}</span>
-                          <span className="num text-[12px] font-bold text-stone-900 whitespace-nowrap">{new Intl.NumberFormat('fr-FR').format(c.mensuel)} €</span>
-                        </div>
-                      ))}
-                      <div className="flex items-baseline justify-between gap-2 mt-auto pt-1.5 border-t border-stone-200" style={{ marginTop: "auto" }}>
-                        <span className="text-[12px] font-bold text-stone-800">Total</span>
-                        <span className="num text-[17px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#b91c1c" }}>{new Intl.NumberFormat('fr-FR').format(synth.totalCharges)} €/mois</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 mb-4" data-nc-chap="Endettement et capacité">
                     {/* ——— 1. Taux d'endettement — quand un prêt (RP compris) se termine sous
                          24 mois : DEUX petits compteurs AVANT / APRÈS la fin du prêt (28/08). ——— */}
                     {(() => {
@@ -10636,7 +10750,7 @@
                           sous={sous} />
                       );
                       return (
-                        <div className="rounded-2xl p-5 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Taux d'endettement</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                           {(() => {
@@ -10684,7 +10798,7 @@
                       const aCreditMd = (synth.charges || []).some(c => /crédit/i.test(c.label || ""));
                       const libEngage = aLoyerMd && aCreditMd ? (d.logement === "gratuit" ? "forfait logement + crédits" : "loyer + crédits en cours") : aLoyerMd ? (d.logement === "gratuit" ? "forfait logé à titre gratuit" : "loyer actuel") : aCreditMd ? "crédits en cours" : "charges retenues";
                       return (
-                        <div className="rounded-2xl p-5 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Mensualité disponible</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                           {(() => {
@@ -10787,7 +10901,7 @@
                       const txP = (x) => String(Math.round(x * 10000) / 100).replace(".", ",");
                       const nfC = (n) => ncNbsp(new Intl.NumberFormat('fr-FR').format(Math.round(n || 0)));
                       return (
-                        <div className="rounded-2xl p-5 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Capacité d'emprunt <span className="sfx">· {duree} ans</span></div>
                           {/* RÈGLE CABINET (28/08) : client déjà PROPRIÉTAIRE de sa RP → la capacité
                               se projette UNIQUEMENT sur l'investissement locatif — plus aucune
@@ -10891,7 +11005,7 @@
                       const coul = partFin < 0.25 ? "#b91c1c" : "#b45309";
                       const piste = partFin < 0.25 ? "#f3dcdc" : "#f6e8d8";
                       return (
-                        <div className="rounded-2xl p-5 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                        <div className="rounded-2xl p-4 bg-white border border-stone-200 flex flex-col" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Le financier</div>
                           <div className="nc-zone-jauge flex flex-col items-center justify-start">
                             <NcCompteur solo pct={partFin} marker={null}
@@ -11187,13 +11301,9 @@
                               <span className="text-[11.5px] font-bold text-stone-700">Total versé chaque mois</span>
                               <span className="num text-[19px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfA(total)} €/mois</span>
                             </div>
-                            {parQui.length > 1 ? (
-                              <div className="text-[11px] text-stone-600 mt-1 leading-snug">
-                                dont {parQui.map((x, i) => (
-                                  <span key={i}>{i > 0 ? " · " : ""}<b style={{ color: "#1d2735" }}>{x.l} {nfA(x.m)} €/mois</b></span>
-                                ))}
-                              </div>
-                            ) : null}
+                            {/* 16/09/2026 (CGP) : « supprime cette phrase, totalement inutile
+                                puisque tu donnes l'information juste au-dessus » — le détail par
+                                personne est déjà dans les cartes. */}
                             {revF > 0 ? (
                               <div className="text-[10.5px] text-stone-500 mt-1 leading-snug">Soit {String(Math.round((total / revF) * 1000) / 10).replace(".", ",")} % de {nfA(revF)} € de revenus mensuels. Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière.</div>
                             ) : null}
@@ -11259,14 +11369,23 @@
                                     <th className="text-right px-3.5 pb-2 align-bottom" style={{ background: "#fbfaf8", fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.12em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 700, borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
                                       Rendement annuel →
                                     </th>
+                                    {/* 16/09/2026 (CGP) : « au niveau des taux de rendement, ce n'est pas
+                                        centré et pas mis en valeur ». Les taux sont CENTRÉS sur leur
+                                        colonne, et le 5 % — hypothèse centrale du cabinet — est une
+                                        pastille pleine, lisible d'un coup d'œil.
+                                        Seule mention écrite sous un taux : « livrets » sous 1,7 %.
+                                        Nommer 5 % « équilibré » et 7 % « dynamique » serait une
+                                        qualification de profil que le cabinet n'a pas arbitrée. */}
                                     {DUREES.map((an, i) => TAUX.map((x, j) => (
-                                      <th key={i + "-" + j} className="text-right px-2.5 pb-2"
-                                        style={{ background: i === 1 ? "#f7f2e8" : "#fbfaf8", borderLeft: j === 0 ? "2px solid rgba(10,9,8,0.12)" : "none", borderBottom: x.t === 0.05 ? "2px solid #0f766e" : "1px solid rgba(10,9,8,0.12)" }}>
-                                        <div className="tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 800, lineHeight: 1.1, color: x.t === 0.05 ? "#0f766e" : x.t === 0.017 ? "#a8a29e" : "#44403c" }}>{x.l}</div>
-                                        {/* seule mention ÉCRITE et validée : 1,7 % = livrets. Nommer
-                                            5 % « équilibré » et 7 % « dynamique » serait une
-                                            qualification de profil que le cabinet n'a pas arbitrée. */}
-                                        <div style={{ fontSize: 8.5, fontWeight: 600, color: "#a8a29e", letterSpacing: "0.02em", minHeight: 11 }}>{x.t === 0.017 ? "livrets" : ""}</div>
+                                      <th key={i + "-" + j} className="text-center px-2 pb-2.5"
+                                        style={{ width: "11.5%", background: i === 1 ? "#f7f2e8" : "#fbfaf8", borderLeft: j === 0 ? "2px solid rgba(10,9,8,0.12)" : "none", borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
+                                        <span className="tabular-nums inline-block rounded-full"
+                                          style={x.t === 0.05
+                                            ? { fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 800, lineHeight: 1, color: "#ffffff", background: "#0f766e", padding: "5px 13px", boxShadow: "0 1px 3px rgba(15,118,110,0.35)" }
+                                            : { fontFamily: "'Lora','Playfair Display',serif", fontSize: 14.5, fontWeight: 700, lineHeight: 1, color: x.t === 0.017 ? "#a8a29e" : "#44403c", padding: "5px 11px" }}>
+                                          {x.l}
+                                        </span>
+                                        <div style={{ fontSize: 8.5, fontWeight: 600, color: "#a8a29e", letterSpacing: "0.02em", minHeight: 12, marginTop: 3 }}>{x.t === 0.017 ? "livrets" : ""}</div>
                                       </th>
                                     )))}
                                   </tr>
@@ -11291,7 +11410,7 @@
                                         {DUREES.map((an, k) => TAUX.map((y, j) => {
                                           const derniere = k === DUREES.length - 1 && j === TAUX.length - 1;
                                           return (
-                                            <td key={k + "-" + j} className="text-right px-2.5 py-3 tabular-nums whitespace-nowrap"
+                                            <td key={k + "-" + j} className="text-center px-2 py-3 tabular-nums whitespace-nowrap"
                                               style={{
                                                 fontSize: y.t === 0.05 ? 14 : 12.5,
                                                 color: y.t === 0.017 ? "#a8a29e" : y.t === 0.05 ? "#0f766e" : "#1d2735",
@@ -12053,7 +12172,12 @@
                     </div>
                   )}
 
-                  {/* — Protection du conjoint / partenaire (DDV & testament) — RDV 2 (contient une préconisation) */}
+                  {/* — Protection du conjoint / partenaire (DDV & testament) — RDV 2 (contient une préconisation)
+                      16/09/2026 (CGP) : « que vient faire le paragraphe Protection du partenaire de PACS
+                      dans ce document ? c'est totalement hors sujet ». Les blocs PACS, concubin et
+                      donation antérieure portaient un coût et une démarche — donc une préconisation —
+                      et sortaient pourtant dans l'AUDIT. Ils rejoignent celui du conjoint marié :
+                      RDV 2 uniquement. */}
                   {synMode === "preco" && marie && (
                     <div className={`mb-4 rounded-xl border p-3.5 ${d.ddvQ === "oui" ? "bg-emerald-50 border-emerald-200" : recomposee ? "bg-red-50 border-2 border-red-300" : "bg-amber-50 border-amber-300"}`} data-nc-chap="Protection du conjoint">
                       <div className="text-[10px] uppercase tracking-wider font-bold text-stone-500 mb-1.5">Protection du conjoint — donation au dernier vivant</div>
@@ -12098,7 +12222,7 @@
                       )}
                     </div>
                   )}
-                  {unionLibre && (
+                  {synMode === "preco" && unionLibre && (
                     <div className={`mb-4 rounded-xl border p-3.5 ${d.testamentQ === "oui" ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-2 border-red-300"}`} data-nc-chap="Protection du concubin">
                       <div className="text-[10px] uppercase tracking-wider font-bold text-stone-500 mb-1.5">Protection du concubin — testament</div>
                       {d.testamentQ === "oui" ? (
@@ -12113,7 +12237,7 @@
                       )}
                     </div>
                   )}
-                  {divorce && (d.ddvAncienneQ === "oui" || d.ddvAncienneQ === "nsp") && (
+                  {synMode === "preco" && divorce && (d.ddvAncienneQ === "oui" || d.ddvAncienneQ === "nsp") && (
                     <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-3.5" data-nc-chap="Donation au dernier vivant antérieure">
                       <div className="text-[10px] uppercase tracking-wider font-bold text-stone-500 mb-1.5">Donation au dernier vivant antérieure — effet du divorce</div>
                       <div className="text-[12px] text-stone-700 leading-relaxed">
@@ -12123,7 +12247,7 @@
                       </div>
                     </div>
                   )}
-                  {pacse && (
+                  {synMode === "preco" && pacse && (
                     <div className={`mb-4 rounded-xl border p-3.5 ${d.testamentQ === "oui" ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-300"}`} data-nc-chap="Protection du partenaire de PACS">
                       <div className="text-[10px] uppercase tracking-wider font-bold text-stone-500 mb-1.5">Protection du partenaire de PACS — testament</div>
                       {d.testamentQ === "oui" ? (
