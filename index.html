@@ -1162,7 +1162,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v231 (17/09 : LE CHAPITRE EPARGNE ECRIT COMME LE CHAPITRE REVENUS. (1) PAGE DE GARDE : le cadre « Votre etude patrimoniale » descend (« baisse un peu encore le bloc, on a de la place »). Il n est plus colle sous l en-tete : deux ressorts l encadrent, 0,54 au-dessus et 1 en dessous, ce qui le pose aux deux tiers du papier blanc et laisse respirer avant la photo, en suivant la hauteur reelle de la page quel que soit le format d impression. (2) VOS PLACEMENTS — ETAT DES LIEUX reprend EXACTEMENT l ecriture de « Vos revenus mensuels » (demande litterale du CGP) : une colonne par detenteur, un filet d encre de 1,5 px en tete de colonne, une ligne par contrat — libelle a gauche, encours a droite, filet clair entre chaque — et les totaux par personne en grands chiffres Lora. Les cartes encadrees disparaissent. Le smiley de suivi reste colle a l encours et les pastilles de suivi passent sous la ligne : ce sont des faits declares, ils ne disparaissent pas. En communaute (mariage sans contrat), la regle du 28/08 tient toujours : une seule colonne, « Le foyer ». (3) ESPACE entre « Vos placements — etat des lieux » et « Epargne constituee — total » : 30 px. (4) VOTRE EPARGNE MENSUELLE ACTUELLE : « tu mets en tout petit, tout ramasse Monsieur 200 €/mois Livret A, presente mieux cela ». Meme ecriture a son tour — une colonne par personne, le contrat a gauche, le montant a droite, le total en Lora 30. Les petites cartes a filet colore sont remplacees. CONTROLE : t_shot_pres.js lisait l ordre des mots (« 200 € … Livret ») et non l information ; il verifie desormais QUI verse, QUOI et COMBIEN, dans le nouvel ordre de lecture. RESULTAT MESURE : 6 pages, remplissage 100/99/86/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v232 (17/09 : LE PIED DE PAGE CALE, ET LE BLOC DES PIECES A RECLAMER DEVENU UTILISABLE. (1) ALIGNEMENT DU BAS DE PAGE. Le CGP : « probleme d alignement en bas de page ». Trois defauts se cumulaient. a. La hauteur du pied etait DEDUITE d un calcul (gapBas moins ajoute). Or les marges posees par occuperPage() FUSIONNENT avec les marges deja presentes (margin collapsing) : la poussee reelle est plus faible que la poussee calculee. On ne calcule plus, on POSE le pied, on MESURE ou il est tombe et on l etire jusqu au bord bas de SA page ; une passe de recalage finale repasse sur tous les pieds a la fin. b. Couper une rangee de compteurs obligeait a inserer le pied et le saut A L INTERIEUR d un conteneur flex, ou Chrome IGNORE break-after : la coupure tombait ailleurs. On coupe desormais le CONTENEUR lui-meme — les cartes restantes passent dans une rangee soeur — et le pied se pose ENTRE les deux, au niveau du document. c. Les boutons etaient masques a l impression mais VISIBLES pendant la mesure (la pagination se fait a l ecran) : la page raccourcissait a l impression. Ils sont maintenant RETIRES du clone. CE QUI A ETE COMPRIS EN CHEMIN, et qui vaut pour toute evolution : la feuille de style declare @page size A4 ; le navigateur met TOUJOURS en page dans une boite A4 de 1123 px, puis met la page entiere a l echelle de la feuille reelle. Le format du papier ne change RIEN a la mise en page. On vise volontairement 1056 (94 pct de la boite) : viser 1123 remplit au pixel pres et le pied, qui porte break-inside: avoid, part alors tout entier a la page suivante — une page ne contenant qu un pied. A 1056, le pied se pose a environ 2 cm du bord et n est jamais rogne. (2) POUR PREPARER NOTRE PROCHAIN RENDEZ-VOUS : meme taille de police que le reste du document (13,5 px pour le libelle, 13 px pour l explication, un filet entre chaque ligne), au lieu du 12 / 11,5 px d avant. (3) LE CHEMIN INFO-RETRAITE.FR EST ECRIT EN TOUTES LETTRES : « Egalement sur le site info-retraite.fr (en rouge), cliquez sur Mon epargne retraite puis Voir mes contrats (en bleu et en gras). Faites une copie d ecran ou telechargez le document. » Le site est en rouge dans les DEUX devoirs retraite, pour ne pas ecrire deux fois le meme nom de deux facons. (4) QUATRE PIECES ADMINISTRATIVES ferment la liste, demandees a tous les clients : piece d identite, justificatif de domicile, justificatif d origine des fonds, RIB du compte a prelever pour les placements financiers. Enoncees telles quelles, sans glose inventee. (5) LES CASES SONT CLIQUABLES. Le conseiller coche ce qu il reclame vraiment. L etat est range dans le DOSSIER (d.devoirsCoches), donc enregistre avec lui : on le retrouve a la reouverture, a l impression et dans le PDF envoye au client. Une case cochee s imprime pleine avec sa coche — c est un span, pas un bouton, que l impression masquerait. CONTROLE : t_devoirs.js coche une piece, verifie la coche, QUITTE la synthese et y revient (l etat survit), puis verifie que la coche est bien dans le CLONE D IMPRESSION, c est-a-dire dans le PDF ; il exige aussi les quatre pieces administratives et le chemin info-retraite.fr. RESULTAT MESURE : 7 pages, remplissage 97/93/86/95/100/98/98 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v231 (17/09 : LE CHAPITRE EPARGNE ECRIT COMME LE CHAPITRE REVENUS. (1) PAGE DE GARDE : le cadre « Votre etude patrimoniale » descend (« baisse un peu encore le bloc, on a de la place »). Il n est plus colle sous l en-tete : deux ressorts l encadrent, 0,54 au-dessus et 1 en dessous, ce qui le pose aux deux tiers du papier blanc et laisse respirer avant la photo, en suivant la hauteur reelle de la page quel que soit le format d impression. (2) VOS PLACEMENTS — ETAT DES LIEUX reprend EXACTEMENT l ecriture de « Vos revenus mensuels » (demande litterale du CGP) : une colonne par detenteur, un filet d encre de 1,5 px en tete de colonne, une ligne par contrat — libelle a gauche, encours a droite, filet clair entre chaque — et les totaux par personne en grands chiffres Lora. Les cartes encadrees disparaissent. Le smiley de suivi reste colle a l encours et les pastilles de suivi passent sous la ligne : ce sont des faits declares, ils ne disparaissent pas. En communaute (mariage sans contrat), la regle du 28/08 tient toujours : une seule colonne, « Le foyer ». (3) ESPACE entre « Vos placements — etat des lieux » et « Epargne constituee — total » : 30 px. (4) VOTRE EPARGNE MENSUELLE ACTUELLE : « tu mets en tout petit, tout ramasse Monsieur 200 €/mois Livret A, presente mieux cela ». Meme ecriture a son tour — une colonne par personne, le contrat a gauche, le montant a droite, le total en Lora 30. Les petites cartes a filet colore sont remplacees. CONTROLE : t_shot_pres.js lisait l ordre des mots (« 200 € … Livret ») et non l information ; il verifie desormais QUI verse, QUOI et COMBIEN, dans le nouvel ordre de lecture. RESULTAT MESURE : 6 pages, remplissage 100/99/86/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v230 (17/09 : LE DOCUMENT PRIS EN MAIN PAR LE CGP SUR SON PROPRE EXPORT. (1) PLUS D EN-TETE DE NAVIGATEUR. Son export portait « 17/09/2026 08:54   Synthese-patrimoniale-… » en haut de la page de garde. Ce n est pas le document : c est Chrome, qui imprime ses en-tetes des qu il a de la marge pour les loger. La marge @page de 34 px introduite en v229 lui avait donne cette place. Elle repasse a 0 et l aeration du haut de page revient DANS le document. (2) LA RESPIRATION EN TETE DE PAGE, ENFIN EFFECTIVE. L intercalaire de la v228 portait lui-meme break-before:page : il se retrouvait en tete de fragment, ou Chrome ne lui donne aucune hauteur — la respiration n existait que sur le papier. Le saut de page est desormais porte par le PIED DE PAGE (break-after), l intercalaire redevient un bloc ordinaire et occupe bien ses pixels. (3) PIED DE PAGE PHYSIQUE, PLUS JAMAIS position:fixed. Le pied cabinet se repetait chez moi et PAS DU TOUT sur le Mac du CGP : aucune page de son export n en avait. Cause : le porteur d impression porte un zoom, et selon la version de Chrome un ancetre zoome devient le bloc conteneur des descendants fixed — le pied se colle alors au bas du DOCUMENT. Il est maintenant construit en dur, une fois par page, a l endroit exact ou la pagination ferme la page, et il REMPLIT le blanc restant (texte plaque en bas). Contenu arbitre avec le CGP : nom du ou des clients et date a gauche, numero de page a droite, aucun nom de cabinet, et AUCUN pied sur la page de garde. (4) GEOMETRIE : pageFull = 1056/zC (papier Letter, le plus petit des deux formats), hPied = 46/zC, pageDispo = pageFull moins hPied. Tout est PHYSIQUE : plus aucun blanc virtuel, decalage reste a zero. (5) TOUT CE QUE LA PAGINATION INSERE DANS UNE RANGEE DE COMPTEURS occupe la largeur entiere (.nc-pied-physique et .nc-print-air rejoignent .nc-print-break) : sans cela le pied devenait une troisieme colonne et se retrouvait en HAUT de la page suivante, a cote d une carte esseulee. (6) VOTRE FOYER : la colonne porte la DATE DE NAISSANCE et non plus l age, ecrit deux lignes plus haut. (7) VOS REVENUS MENSUELS : a gauche les revenus et leur total, a droite les charges et LEUR TOTAL (le « reste apres charges » est remplace par le total des charges, demande du CGP). (8) LOGEMENT, IMMOBILIER ET CREDITS : meme ecriture aeree que le bloc des revenus — un filet d encre par rubrique, chaque donnee sur sa ligne, libelle a gauche et valeur a droite, sur deux colonnes. (9) SIX CHAPITRES au lieu d un : Etat civil, Revenus et charges, Epargne, Fiscalite, Les chiffres du dossier, Objectifs et questions. Le bloc fiscal REMONTE avant les compteurs et le tableau des versements programmes rejoint les objectifs (plan valide par le CGP). Le bandeau porte data-nc-chap et le bloc qui suit le perd : en mode presentation, bandeau et premiere carte font un seul ecran. RESULTAT MESURE : 6 pages, remplissage 100/99/82/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v229 (16/09 : LES TROIS GRIEFS DU DOCUMENT IMPRIME. (1) L EPARGNE SORT DU BLOC DES REVENUS. Le CGP : « supprime la partie verte, je ne veux pas voir d epargne a cet endroit ». La ligne verte « Epargne versee chaque mois », ajoutee en v228 pour la sortir des charges, est retiree : « Vos revenus mensuels » ne dit plus que ce qui ENTRE et ce qui SORT. Le total de droite redevient « Reste apres charges » = revenus moins charges, sans retrancher l epargne. L epargne mensuelle garde son propre chapitre, « Votre epargne mensuelle actuelle ». (2) DE L AIR EN TETE DE CHAQUE PAGE. Le CGP : « le debut de la page est cale tout en haut de la page ». La v228 inserait bien un intercalaire de respiration, mais SEULEMENT aux coupures que la pagination decide elle-meme : une page coupee par Chrome demarrait a ras du papier. La respiration passe donc dans @page (margin-top 34 px) : le moteur d impression l applique a TOUTES les pages. La hauteur utile d une page suit — Letter 1056 moins 34 de marge moins 57 de pied = 965 px (et non 999) ; les deux valeurs doivent rester d accord. (3) LES COMPTEURS : PLUS PETITS ET TOUS DE LA MEME TAILLE. Trois causes se cumulaient. a. La redistribution du blanc de bas de page posait une marge haute sur UNE carte de compteur : un element flex ainsi decale descend ET perd de la hauteur (align-items:stretch) — deux cartes voisines n avaient plus ni le meme haut ni la meme taille. Les enfants de .nc-duo sont desormais EXCLUS de la redistribution, et le reliquat porte sur la rangee entiere. b. Les deux rangees de cartes s alignaient chacune de son cote. Un EGALISEUR mesure apres rendu la plus haute des quatre cartes et impose sa hauteur aux autres, en style inline — le clone d impression la reprend telle quelle. c. Les cartes sont resserrees : arc de 138 a 104 px, zone de jauge de 104 a 78 px, interieur des cartes (.nc-cpt-notes) et titres rapproches. RESULTAT MESURE : le document passe de 6 a 5 pages ; remplissage 99/98/87/98/98 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v228 (16/09 : LE DOCUMENT IMPRIME, ENFIN VERIFIE. Le CGP : « une fois de plus tu ne verifies absolument pas ce que tu delivres ». Il avait raison : toutes mes verifications portaient sur l ECRAN. verif.sh fabrique desormais le PDF, le rend en images et MESURE le remplissage de chaque page, sur A4 ET SUR LETTER ; une page remplie a moins de 60 pct fait echouer la livraison. (1) CAUSE RACINE DES PAGES VIDES : la pagination etait calculee pour de l A4 (1066 px utiles) alors que le CGP imprime sur du papier LETTER (reglage macOS) : chaque bloc depassait de 67 px, Chrome le renvoyait a la page suivante et la cale, calculee sur la mauvaise hauteur, laissait une page a 30 pct. On calcule desormais sur la PLUS PETITE des deux pages (999 px) : juste sur Letter, et sur A4 le reliquat est absorbe. (2) Le blanc de bas de page se redistribue jusqu a 110 px par interstice (58 avant) et le reliquat descend sous le dernier bloc. (3) Les deux compteurs jumeaux passent d une GRILLE CSS a un conteneur FLEX : la pagination peut couper entre eux avec un intercalaire pleine largeur, ce qu une grille transformait en cellule fantome. (4) Un BANDEAU DE CHAPITRE n est jamais seul en bas de page : le saut est reporte avant lui. (5) TYPOGRAPHIE : le document avait DEUX systemes de titres — JetBrains Mono et Inter. Il n en reste qu UN, Inter en majuscules espacees, partout (.nc-ctitre comprise). (6) PAGE DE GARDE : etiree a la hauteur REELLE d une page (le placard blanc venait d une hauteur en dur, incompatible avec la mise a l echelle de l impression), titre dans un CADRE dore, photo descendue au tiers bas, pied de page sur le papier blanc et non sur l image. (7) L EPARGNE N EST PLUS UNE CHARGE : elle sort de la colonne des charges et prend sa propre ligne verte. (8) « Les chiffres du dossier » devient un BANDEAU DE CHAPITRE encre. (9) « Votre epargne mensuelle actuelle » passe sous « Vos placements ». (10) Compteurs encore reduits : zone de jauge 104 px, arc 138 px.)','font-weight:bold;color:#047857');
@@ -7572,6 +7573,14 @@
                                   inO.forEach((o, i) => { if (!inC[i]) return; if (o.type === "checkbox" || o.type === "radio") { inC[i].checked = o.checked; if (o.checked) inC[i].setAttribute("checked", "checked"); else inC[i].removeAttribute("checked"); } else { inC[i].value = o.value; inC[i].setAttribute("value", o.value); } });
                                 } catch (eSel) {}
                                 clone.querySelectorAll(".nc-syn-noprint").forEach(n => n.remove());
+                                /* 17/09/2026 — LES BOUTONS SONT RETIRÉS DU CLONE, PAS SEULEMENT MASQUÉS.
+                                   La feuille d'impression pose `button { display: none }`. Un bouton
+                                   restait donc VISIBLE pendant la mesure (la pagination se fait à
+                                   l'écran) et DISPARAISSAIT à l'impression : la page devenait plus
+                                   courte que prévu, et son pied de page remontait d'autant — une
+                                   vingtaine de pixels sur les pages portant les compteurs. En le
+                                   retirant du clone, ce qui est mesuré est exactement ce qui s'imprime. */
+                                clone.querySelectorAll("button").forEach(n => n.remove());
                                 // Chapitres : un titre ne reste jamais orphelin en bas de page —
                                 // s'il ne tient pas avec son contenu, il descend en début de page suivante.
                                 const TITRES = ["Les chiffres du dossier", "Problématiques à traiter", "Situation fiscale du foyer", "Vos placements — état des lieux", "Logement, immobilier & crédits", "Transmission — et si un décès survenait ?", "Les points forts du dossier", "Les axes de travail et d'amélioration", "Objectifs exprimés", "Objectif exprimé", "Participation mensuelle & apport envisagés", "Importance des versements programmés", "Pour préparer notre prochain rendez-vous"];
@@ -7652,18 +7661,38 @@
                                        pageFull  = la feuille entière, bord à bord ;
                                        hPied     = la bande du pied de page, en bas de chaque feuille ;
                                        pageDispo = ce qui reste pour le contenu = pageFull − hPied.
-                                     POURQUOI 1056 ET NON 1123. Le CGP imprime sur du papier LETTER
-                                     (réglage par défaut de macOS) : 1056 px à 96 dpi, contre 1123 pour
-                                     l'A4. On calcule sur la PLUS PETITE des deux feuilles — le document
-                                     tombe juste sur Letter, et sur A4 le reliquat est absorbé par la
-                                     redistribution du blanc de bas de page.
+                                     POURQUOI 1123, ET POURQUOI CE N'EST PAS UNE QUESTION DE PAPIER.
+                                     17/09/2026 — la vraie explication, enfin trouvée. La feuille de
+                                     style déclare `@page { size: A4 }` : le navigateur met TOUJOURS en
+                                     page dans une boîte A4 de 1123 px, PUIS met la page entière à
+                                     l'échelle de la feuille réelle (sur du Letter : 1056 / 1123 =
+                                     0,940). Le format du papier ne change donc RIEN à la mise en page.
+                                     Calculer sur 1056 « parce que le CGP imprime en Letter » revenait à
+                                     ne remplir que 94 % de la boîte A4 : chaque page perdait 62 px en
+                                     bas, et le pied de page flottait d'autant au-dessus du bord — le
+                                     « problème d'alignement en bas de page ». On calcule sur 1123,
+                                     et le document tombe juste sur les DEUX formats.
                                      ET SURTOUT : la marge @page vaut 0 (voir le commentaire de @page).
                                      Lui donner de la hauteur donnerait à Chrome la place d'imprimer SON
                                      en-tête — « 17/09/2026 08:54  Synthese-patrimoniale-… » — en haut de
                                      la page de garde. L'aération du haut de page vient de RESPIRE, posé
                                      dans le document, jamais de la marge papier. */
+                                  /* 1056 ET NON 1123 — ET CE N'EST PAS UNE HISTOIRE DE PAPIER.
+                                     Le navigateur met en page dans la boîte A4 déclarée par @page
+                                     (1123 px), puis met la page ENTIÈRE à l'échelle de la feuille
+                                     réelle. Viser 1123 remplit la boîte au pixel près : le pied de
+                                     page, qui porte break-inside: avoid, mord alors la coupure et part
+                                     tout entier à la page suivante — une page ne contenant qu'un pied.
+                                     On vise donc 1056 : le contenu occupe 94 % de la boîte et le pied
+                                     se pose à environ 2 cm du bord du papier, sans jamais être rogné. */
                                   const pageFull = Math.floor(1056 / zC);
                                   const hPied = Math.round(46 / zC);
+                                  /* Hauteur MINIMALE d'une bande de pied : le filet, son interligne et
+                                     la ligne de texte — rien de plus. Quand une page se ferme sur un
+                                     bloc qui déborde légèrement, le pied se contente de ce minimum
+                                     plutôt que d'ouvrir une page blanche (constaté le 17/09 : une page
+                                     de garde 8 px trop haute expédiait le pied à la page suivante). */
+                                  const H_PIED_MIN = Math.round(29 / zC);
                                   const pageDispo = pageFull - hPied;
                                   /* 16/09/2026 (CGP : « tu me laisses un placard blanc en bas de page ») :
                                      la page de garde est étirée à la hauteur RÉELLE d'une page —
@@ -7671,7 +7700,9 @@
                                      l'échelle à l'impression. */
                                   try {
                                     const cov = clone.querySelector(".nc-cover");
-                                    if (cov) cov.style.minHeight = Math.max(600, pageDispo - 8) + "px";
+                                    // − 30 : la carte porte encore sa marge basse (mb-4) ; sans cette
+                                    // réserve la page de garde déborde et chasse son propre pied de page.
+                                    if (cov) cov.style.minHeight = Math.max(600, pageDispo - PAD - 30) + "px";
                                   } catch (e) {}
                                   const RESPIRE = 54; // espace en tête de chaque nouvelle page
                                   const blocsNiveau = (el) => Array.prototype.slice.call(el.children).reduce((acc, c) => {
@@ -7690,7 +7721,7 @@
                                   const poserPied = (h, num) => {
                                     const pied = document.createElement("div");
                                     pied.className = "nc-pied-physique";
-                                    pied.style.cssText = "height:" + Math.max(hPied, Math.round(h)) + "px;display:flex;flex-direction:column;justify-content:flex-end;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always;";
+                                    pied.style.cssText = "height:" + Math.max(H_PIED_MIN, Math.round(h)) + "px;display:flex;flex-direction:column;justify-content:flex-end;break-inside:avoid;page-break-inside:avoid;break-after:page;page-break-after:always;";
                                     // La page de garde ne porte AUCUN pied : le bloc n'est alors qu'une
                                     // cale de remplissage (CGP, 17/09/2026 : « sur cette page on a déjà tout »).
                                     if (num <= 1) return pied;
@@ -7707,7 +7738,16 @@
                                     piedsPoses.push({ el: dte, num });
                                     return pied;
                                   };
-                                  const baseTop = clone.getBoundingClientRect().top;
+                                  /* ═══ L'ORIGINE DES MESURES EST LE PORTEUR, PAS LE CLONE (17/09/2026) ═══
+                                     Le porteur d'impression a 28 px de padding en tête (PAD). Mesurer
+                                     depuis le CLONE ignorait ces 28 px : la première page était donc
+                                     calculée 28 px trop longue, son pied débordait sur la page
+                                     suivante, et le décalage se propageait — d'où des pieds de page à
+                                     des hauteurs différentes d'une feuille à l'autre, jusqu'à être
+                                     coupés par le bord du papier sur l'export du CGP.
+                                     L'origine est maintenant le HAUT DU PORTEUR : les multiples de
+                                     pageFull tombent exactement sur les coupures du papier. */
+                                  const baseTop = holder.getBoundingClientRect().top;
                                   let decalage = 0;
                                   let pageBlocs = [];
                                   const occuperPage = (gap) => {
@@ -7779,13 +7819,54 @@
                                         cible = prec;
                                         pageBlocs.pop();
                                       }
+                                      /* ═══ COUPER UNE RANGÉE DE COMPTEURS SANS ENTRER DANS LE FLEX ═══
+                                         17/09/2026. Insérer le pied de page et le saut À L'INTÉRIEUR
+                                         d'un conteneur flex ne marche pas : Chrome y ignore
+                                         `break-after`, la coupure tombe ailleurs, et le pied de ces
+                                         pages-là se retrouvait 20 à 35 px trop haut — le « problème
+                                         d'alignement en bas de page » signalé par le CGP.
+                                         On coupe donc le CONTENEUR lui-même : les cartes restantes
+                                         passent dans une seconde rangée, sœur de la première, et le
+                                         pied comme le saut se posent ENTRE les deux, au niveau du
+                                         document. */
+                                      if (cible.parentNode && cible.parentNode.classList
+                                          && cible.parentNode.classList.contains("nc-duo")
+                                          && cible.parentNode.parentNode) {
+                                        const rangee = cible.parentNode;
+                                        const suite = rangee.cloneNode(false);
+                                        let n2 = cible;
+                                        const aDeplacer = [];
+                                        while (n2) { aDeplacer.push(n2); n2 = n2.nextElementSibling; }
+                                        aDeplacer.forEach(x => suite.appendChild(x));
+                                        rangee.parentNode.insertBefore(suite, rangee.nextSibling);
+                                        rangee.style.marginBottom = "0px";
+                                        cible = suite;
+                                      }
                                       const posCible = (cible === b ? posPage
                                         : ((cible.getBoundingClientRect().top - baseTop) + decalage) % pageFull);
                                       const gapBas = pageFull - posCible;          // jusqu'au bord bas du papier
                                       const ajoute = occuperPage(gapBas - hPied);  // on n'étire que la zone de contenu
                                       if (cible !== b) pageBlocs.push(cible);
-                                      // 1. le pied de page occupe tout le blanc restant, texte plaqué en bas
-                                      cible.parentNode.insertBefore(poserPied(gapBas - ajoute - 1, noPage), cible);
+                                      /* 1. LE PIED DE PAGE, ÉTIRÉ SUR MESURE ET NON PAR LE CALCUL.
+                                         17/09/2026 (CGP : « problème d'alignement en bas de page ») :
+                                         la hauteur du pied était déduite de `gapBas − ajoute`. Or les
+                                         marges ajoutées par occuperPage() SE FUSIONNENT avec les marges
+                                         déjà présentes sur les blocs (margin collapsing) : la poussée
+                                         réelle est plus faible que la poussée calculée, d'une quinzaine
+                                         de pixels par interstice. Le pied finissait donc plus haut que
+                                         le bord du papier — et de façon différente d'une page à l'autre,
+                                         jusqu'à être coupé par le bord sur l'export du CGP.
+                                         On ne calcule plus : on POSE le pied, on MESURE où il est tombé,
+                                         et on l'étire jusqu'au bord bas de SA page. Aucune arithmétique
+                                         ne peut dériver. */
+                                      const pied = poserPied(hPied, noPage);
+                                      cible.parentNode.insertBefore(pied, cible);
+                                      try {
+                                        const tP = (pied.getBoundingClientRect().top - baseTop) + decalage;
+                                        let bord = Math.floor(tP / pageFull) * pageFull + pageFull;
+                                        if (bord - tP < H_PIED_MIN) bord += pageFull;   // vraiment plus la place : page suivante
+                                        pied.style.height = Math.round(bord - tP - 1) + "px";
+                                      } catch (eH) {}
                                       /* 2. RESPIRE : la nouvelle page ne démarre jamais collée au bord haut.
                                          C'est LE PIED qui porte le saut de page (break-after), et non cet
                                          intercalaire : un bloc vide qui porte lui-même `break-before: page`
@@ -7843,24 +7924,61 @@
                                     //    une hauteur réelle ne l'est jamais). Elles s'arrêtent au-dessus du
                                     //    pied de page : la cale vise pageDispo, pas le bord du papier.
                                     if (estMentions) {
-                                      const cale = Math.round((pCible + pageDispo - 4 - hM) - (curTop + repartis));
+                                      /* Même principe que le pied : on MESURE la position réelle des
+                                         mentions après la redistribution, puis on cale leur BAS juste
+                                         au-dessus de la bande du pied de page. Un calcul à partir de
+                                         `decalage` dérive à cause de la fusion des marges. */
+                                      const rM2 = dernier.getBoundingClientRect();
+                                      const tM2 = (rM2.top - baseTop) + decalage;
+                                      const hM2 = rM2.height || 0;
+                                      const bordM = Math.ceil((tM2 + hM2 + hPied) / pageFull) * pageFull;
+                                      const cale = Math.round((bordM - hPied - hM2) - tM2);
                                       if (cale > 6) {
                                         const sp2 = document.createElement("div");
                                         sp2.style.height = cale + "px";
                                         dernier.parentNode.insertBefore(sp2, dernier);
                                       }
-                                      if (pCible > pageContenu) noPage += 1;   // les mentions ont ouvert une page
+                                      if (bordM > pageContenu + pageFull) noPage += 1;   // les mentions ont ouvert une page
                                     }
                                     // 3. PIED DE PAGE DE LA DERNIÈRE PAGE : posé après tout le contenu,
                                     //    il remplit ce qui reste jusqu'au bord bas de la feuille.
                                     try {
-                                      const rFin = clone.getBoundingClientRect();
-                                      const finDoc = (rFin.height || 0);
-                                      const gapFin = (Math.floor(Math.max(0, finDoc - 1) / pageFull) + 1) * pageFull - finDoc;
-                                      clone.appendChild(poserPied(gapFin - 1, noPage));
+                                      const piedFin = poserPied(hPied, noPage);
+                                      clone.appendChild(piedFin);
+                                      const tF = piedFin.getBoundingClientRect().top - baseTop;
+                                      let bordF = Math.floor(tF / pageFull) * pageFull + pageFull;
+                                      if (bordF - tF < H_PIED_MIN) bordF += pageFull;
+                                      piedFin.style.height = Math.round(bordF - tF - 1) + "px";
                                     } catch (eFin) {}
                                     try { window.__ncFinPage = { curTop: Math.round(curTop), finAvant: Math.round(finAvant), pageContenu, pCible, hM: Math.round(hM), repartis, n: pageBlocs.length, estM: estMentions, pages: noPage }; } catch (eD) {}
                                   }
+                                  /* ═══ RECALAGE FINAL DES PIEDS DE PAGE (17/09/2026) ═══
+                                     Le CGP : « problème d'alignement en bas de page ». Chaque pied est
+                                     déjà étiré au moment où il est posé, mais tout ce qui s'insère
+                                     ENSUITE (cale des mentions, marges fusionnées, hauteurs égalisées)
+                                     décale les pieds suivants de quelques pixels — et le lecteur, lui,
+                                     voit six lignes qui ne sont pas à la même hauteur.
+                                     On repasse donc sur TOUS les pieds, dans l'ordre du document, et on
+                                     les ré-étire d'après leur position RÉELLE. Deux passes : la première
+                                     corrige, la seconde vérifie que plus rien ne bouge. */
+                                  try {
+                                    for (let passe = 0; passe < 2; passe++) {
+                                      Array.prototype.forEach.call(clone.querySelectorAll(".nc-pied-physique"), pd => {
+                                        const tp = pd.getBoundingClientRect().top - baseTop;
+                                        let bd = Math.floor(tp / pageFull) * pageFull + pageFull;
+                                        if (bd - tp < H_PIED_MIN) bd += pageFull;
+                                        pd.style.height = Math.round(bd - tp - 1) + "px";
+                                      });
+                                    }
+                                    try {
+                                      window.__ncDbgPieds = Array.prototype.map.call(clone.querySelectorAll(".nc-pied-physique"), pd => {
+                                        const r = pd.getBoundingClientRect();
+                                        const tp = r.top - baseTop;
+                                        return { top: Math.round(tp), bas: Math.round(tp + r.height), page: Math.floor(tp / pageFull) + 1, modulo: Math.round((tp + r.height) % pageFull) };
+                                      });
+                                      window.__ncDbgGeo = { pageFull, hPied, zC, hClone: Math.round(clone.getBoundingClientRect().height) };
+                                    } catch (e2) {}
+                                  } catch (eRec) {}
                                   /* Une fois le nombre total de pages connu, chaque pied reçoit son
                                      « 2 / 5 ». La page de garde, elle, n'a pas de pied du tout :
                                      « sur cette page on a déjà tout » (CGP, 17/09/2026). */
@@ -11253,6 +11371,13 @@
                         <div style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 22, fontWeight: 700, color: "#ffffff", lineHeight: 1.15 }}>Les chiffres du dossier</div>
                         <div style={{ height: 3, width: 64, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginTop: 10 }}></div>
                       </div>
+                  {/* 17/09/2026 — LA RANGÉE DE COMPTEURS N'EST PLUS COUPÉE.
+                      Couper entre deux compteurs obligeait à insérer le pied de page et le
+                      saut À L'INTÉRIEUR d'un conteneur flex, où Chrome ignore `break-after` :
+                      la coupure tombait ailleurs et le pied se retrouvait 20 à 35 px trop haut
+                      sur ces pages-là (« problème d'alignement en bas de page »). Les quatre
+                      cartes sont désormais réduites et de hauteur égale : le bloc entier tient
+                      sur une page, il part donc d'un seul tenant. */}
                   <div className="flex flex-wrap gap-3 mb-4 nc-duo" data-nc-split="1">
                     {/* ——— 1. Taux d'endettement — quand un prêt (RP compris) se termine sous
                          24 mois : DEUX petits compteurs AVANT / APRÈS la fin du prêt (28/08). ——— */}
@@ -11995,9 +12120,14 @@
                           Un devoir ne se déduit JAMAIS d'un chiffre calculé : il vient d'un champ
                           que le conseiller a laissé vide ou marqué « je ne sais pas ». ═══ */}
                       {synMode === "constat" && (() => {
+                        /* 17/09/2026 (CGP) : le nom du site EN ROUGE, les deux points à cliquer
+                           EN BLEU ET EN GRAS — le client doit pouvoir suivre le chemin sans nous.
+                           Le site officiel s'écrit info-retraite.fr (au singulier). */
+                        const SITE = <b style={{ color: "#b91c1c" }}>info-retraite.fr</b>;
+                        const Clic = ({ children }) => <b style={{ color: "#0369a1" }}>{children}</b>;
                         const devoirs = [
-                          { t: "Votre estimation de retraite", d: "Connectez-vous à votre compte sur info-retraite.fr, puis téléchargez votre estimation de retraite (montant estimé de vos pensions)." },
-                          { t: "Vos contrats d'épargne retraite", d: "Sur le même site, onglet « Mon épargne retraite », puis « Voir mes contrats » : envoyez-nous une copie d'écran ou le document." },
+                          { t: "Votre estimation de retraite", d: <>Connectez-vous à votre compte sur {SITE}, puis téléchargez votre estimation de retraite (montant estimé de vos pensions).</> },
+                          { t: "Vos contrats d'épargne retraite", d: <>Également sur le site {SITE}, cliquez sur <Clic>« Mon épargne retraite »</Clic> puis <Clic>« Voir mes contrats »</Clic>. Faites une copie d'écran ou téléchargez le document.</> },
                         ];
 
                         /* ——— Crédits immobiliers du dossier : RP, locatifs, autres biens ——— */
@@ -12050,19 +12180,54 @@
                         });
 
                         const surMesure = devoirs.length - 2;
+                        /* 17/09/2026 (CGP) : les pièces administratives, demandées à tous les
+                           clients, ferment la liste. Elles sont énoncées telles quelles — aucune
+                           glose inventée. */
+                        [
+                          "Pièce d'identité",
+                          "Justificatif de domicile",
+                          "Justificatif d'origine des fonds",
+                          "RIB du compte à prélever pour les placements financiers",
+                        ].forEach(t => devoirs.push({ t, d: null }));
                         return (
                           <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" data-nc-chap="Préparer le prochain rendez-vous" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                             <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>Pour préparer notre prochain rendez-vous</div>
-                            {devoirs.map((x, i) => (
-                              <div key={i} className="flex gap-2.5 items-start mb-2.5 last:mb-0">
-                                <span className="flex-shrink-0 rounded" style={{ width: 15, height: 15, marginTop: 2, border: "1.5px solid #0f766e", background: "#fff" }}></span>
-                                <span className="flex-1 text-[12px] leading-snug">
-                                  <span className="font-bold text-stone-800">{x.t}</span>
-                                  <span className="block text-[11.5px] text-stone-600 mt-0.5">{x.d}</span>
-                                </span>
-                              </div>
-                            ))}
-                            <div className="text-[11px] mt-3 pt-2.5 leading-snug" style={{ borderTop: "1px solid rgba(10,9,8,0.08)", color: "#44403c" }}>
+                            {/* 17/09/2026 (CGP) : « pourquoi ne pas utiliser la même taille de
+                                police que le reste du document ? » — les libellés passent à 13,5 px et
+                                les explications à 13 px, comme les lignes de « Vos revenus mensuels ».
+                                LES CASES SONT CLIQUABLES : le conseiller coche ce qu'il réclame
+                                vraiment pour le prochain rendez-vous. L'état est rangé dans le
+                                DOSSIER (d.devoirsCoches), donc enregistré avec lui : on le retrouve à
+                                la réouverture, à l'impression et dans le PDF envoyé au client. Une
+                                case cochée s'imprime pleine, avec sa coche — ce n'est pas un bouton,
+                                que l'impression masquerait. */}
+                            {devoirs.map((x, i) => {
+                              const cle = String(x.t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                              const coche = !!((d.devoirsCoches || {})[cle]);
+                              return (
+                                <div key={i}
+                                  onClick={() => set("devoirsCoches", { ...(d.devoirsCoches || {}), [cle]: !coche })}
+                                  title="Cliquez pour cocher cette pièce"
+                                  style={{ display: "flex", gap: 12, alignItems: "flex-start", cursor: "pointer",
+                                    paddingTop: 10, paddingBottom: 10,
+                                    borderBottom: i === devoirs.length - 1 ? "none" : "1px solid rgba(10,9,8,0.07)" }}>
+                                  <span style={{ flexShrink: 0, width: 17, height: 17, marginTop: 1, borderRadius: 4,
+                                    border: "1.5px solid #0f766e", background: coche ? "#0f766e" : "#ffffff",
+                                    display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    {coche ? (
+                                      <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true">
+                                        <path d="M2 6.3 L4.7 9 L10 3.2" stroke="#ffffff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                                      </svg>
+                                    ) : null}
+                                  </span>
+                                  <span style={{ flex: 1 }}>
+                                    <span style={{ fontSize: 13.5, fontWeight: 700, color: "#1d2735" }}>{x.t}</span>
+                                    {x.d ? <span style={{ display: "block", fontSize: 13, color: "#57534e", lineHeight: 1.5, marginTop: 3 }}>{x.d}</span> : null}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                            <div style={{ fontSize: 13, marginTop: 14, paddingTop: 12, lineHeight: 1.5, borderTop: "1px solid rgba(10,9,8,0.08)", color: "#44403c" }}>
                               {surMesure > 0
                                 ? "Ces documents nous permettent de chiffrer précisément vos revenus à la retraite et de préparer, pour le prochain rendez-vous, les simulations qui vous concernent."
                                 : "Ces deux documents nous permettent de chiffrer précisément vos revenus à la retraite et de recenser vos contrats existants."}
