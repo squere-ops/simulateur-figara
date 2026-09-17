@@ -1162,7 +1162,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v230 (17/09 : LE DOCUMENT PRIS EN MAIN PAR LE CGP SUR SON PROPRE EXPORT. (1) PLUS D EN-TETE DE NAVIGATEUR. Son export portait « 17/09/2026 08:54   Synthese-patrimoniale-… » en haut de la page de garde. Ce n est pas le document : c est Chrome, qui imprime ses en-tetes des qu il a de la marge pour les loger. La marge @page de 34 px introduite en v229 lui avait donne cette place. Elle repasse a 0 et l aeration du haut de page revient DANS le document. (2) LA RESPIRATION EN TETE DE PAGE, ENFIN EFFECTIVE. L intercalaire de la v228 portait lui-meme break-before:page : il se retrouvait en tete de fragment, ou Chrome ne lui donne aucune hauteur — la respiration n existait que sur le papier. Le saut de page est desormais porte par le PIED DE PAGE (break-after), l intercalaire redevient un bloc ordinaire et occupe bien ses pixels. (3) PIED DE PAGE PHYSIQUE, PLUS JAMAIS position:fixed. Le pied cabinet se repetait chez moi et PAS DU TOUT sur le Mac du CGP : aucune page de son export n en avait. Cause : le porteur d impression porte un zoom, et selon la version de Chrome un ancetre zoome devient le bloc conteneur des descendants fixed — le pied se colle alors au bas du DOCUMENT. Il est maintenant construit en dur, une fois par page, a l endroit exact ou la pagination ferme la page, et il REMPLIT le blanc restant (texte plaque en bas). Contenu arbitre avec le CGP : nom du ou des clients et date a gauche, numero de page a droite, aucun nom de cabinet, et AUCUN pied sur la page de garde. (4) GEOMETRIE : pageFull = 1056/zC (papier Letter, le plus petit des deux formats), hPied = 46/zC, pageDispo = pageFull moins hPied. Tout est PHYSIQUE : plus aucun blanc virtuel, decalage reste a zero. (5) TOUT CE QUE LA PAGINATION INSERE DANS UNE RANGEE DE COMPTEURS occupe la largeur entiere (.nc-pied-physique et .nc-print-air rejoignent .nc-print-break) : sans cela le pied devenait une troisieme colonne et se retrouvait en HAUT de la page suivante, a cote d une carte esseulee. (6) VOTRE FOYER : la colonne porte la DATE DE NAISSANCE et non plus l age, ecrit deux lignes plus haut. (7) VOS REVENUS MENSUELS : a gauche les revenus et leur total, a droite les charges et LEUR TOTAL (le « reste apres charges » est remplace par le total des charges, demande du CGP). (8) LOGEMENT, IMMOBILIER ET CREDITS : meme ecriture aeree que le bloc des revenus — un filet d encre par rubrique, chaque donnee sur sa ligne, libelle a gauche et valeur a droite, sur deux colonnes. (9) SIX CHAPITRES au lieu d un : Etat civil, Revenus et charges, Epargne, Fiscalite, Les chiffres du dossier, Objectifs et questions. Le bloc fiscal REMONTE avant les compteurs et le tableau des versements programmes rejoint les objectifs (plan valide par le CGP). Le bandeau porte data-nc-chap et le bloc qui suit le perd : en mode presentation, bandeau et premiere carte font un seul ecran. RESULTAT MESURE : 6 pages, remplissage 100/99/82/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v231 (17/09 : LE CHAPITRE EPARGNE ECRIT COMME LE CHAPITRE REVENUS. (1) PAGE DE GARDE : le cadre « Votre etude patrimoniale » descend (« baisse un peu encore le bloc, on a de la place »). Il n est plus colle sous l en-tete : deux ressorts l encadrent, 0,54 au-dessus et 1 en dessous, ce qui le pose aux deux tiers du papier blanc et laisse respirer avant la photo, en suivant la hauteur reelle de la page quel que soit le format d impression. (2) VOS PLACEMENTS — ETAT DES LIEUX reprend EXACTEMENT l ecriture de « Vos revenus mensuels » (demande litterale du CGP) : une colonne par detenteur, un filet d encre de 1,5 px en tete de colonne, une ligne par contrat — libelle a gauche, encours a droite, filet clair entre chaque — et les totaux par personne en grands chiffres Lora. Les cartes encadrees disparaissent. Le smiley de suivi reste colle a l encours et les pastilles de suivi passent sous la ligne : ce sont des faits declares, ils ne disparaissent pas. En communaute (mariage sans contrat), la regle du 28/08 tient toujours : une seule colonne, « Le foyer ». (3) ESPACE entre « Vos placements — etat des lieux » et « Epargne constituee — total » : 30 px. (4) VOTRE EPARGNE MENSUELLE ACTUELLE : « tu mets en tout petit, tout ramasse Monsieur 200 €/mois Livret A, presente mieux cela ». Meme ecriture a son tour — une colonne par personne, le contrat a gauche, le montant a droite, le total en Lora 30. Les petites cartes a filet colore sont remplacees. CONTROLE : t_shot_pres.js lisait l ordre des mots (« 200 € … Livret ») et non l information ; il verifie desormais QUI verse, QUOI et COMBIEN, dans le nouvel ordre de lecture. RESULTAT MESURE : 6 pages, remplissage 100/99/86/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v230 (17/09 : LE DOCUMENT PRIS EN MAIN PAR LE CGP SUR SON PROPRE EXPORT. (1) PLUS D EN-TETE DE NAVIGATEUR. Son export portait « 17/09/2026 08:54   Synthese-patrimoniale-… » en haut de la page de garde. Ce n est pas le document : c est Chrome, qui imprime ses en-tetes des qu il a de la marge pour les loger. La marge @page de 34 px introduite en v229 lui avait donne cette place. Elle repasse a 0 et l aeration du haut de page revient DANS le document. (2) LA RESPIRATION EN TETE DE PAGE, ENFIN EFFECTIVE. L intercalaire de la v228 portait lui-meme break-before:page : il se retrouvait en tete de fragment, ou Chrome ne lui donne aucune hauteur — la respiration n existait que sur le papier. Le saut de page est desormais porte par le PIED DE PAGE (break-after), l intercalaire redevient un bloc ordinaire et occupe bien ses pixels. (3) PIED DE PAGE PHYSIQUE, PLUS JAMAIS position:fixed. Le pied cabinet se repetait chez moi et PAS DU TOUT sur le Mac du CGP : aucune page de son export n en avait. Cause : le porteur d impression porte un zoom, et selon la version de Chrome un ancetre zoome devient le bloc conteneur des descendants fixed — le pied se colle alors au bas du DOCUMENT. Il est maintenant construit en dur, une fois par page, a l endroit exact ou la pagination ferme la page, et il REMPLIT le blanc restant (texte plaque en bas). Contenu arbitre avec le CGP : nom du ou des clients et date a gauche, numero de page a droite, aucun nom de cabinet, et AUCUN pied sur la page de garde. (4) GEOMETRIE : pageFull = 1056/zC (papier Letter, le plus petit des deux formats), hPied = 46/zC, pageDispo = pageFull moins hPied. Tout est PHYSIQUE : plus aucun blanc virtuel, decalage reste a zero. (5) TOUT CE QUE LA PAGINATION INSERE DANS UNE RANGEE DE COMPTEURS occupe la largeur entiere (.nc-pied-physique et .nc-print-air rejoignent .nc-print-break) : sans cela le pied devenait une troisieme colonne et se retrouvait en HAUT de la page suivante, a cote d une carte esseulee. (6) VOTRE FOYER : la colonne porte la DATE DE NAISSANCE et non plus l age, ecrit deux lignes plus haut. (7) VOS REVENUS MENSUELS : a gauche les revenus et leur total, a droite les charges et LEUR TOTAL (le « reste apres charges » est remplace par le total des charges, demande du CGP). (8) LOGEMENT, IMMOBILIER ET CREDITS : meme ecriture aeree que le bloc des revenus — un filet d encre par rubrique, chaque donnee sur sa ligne, libelle a gauche et valeur a droite, sur deux colonnes. (9) SIX CHAPITRES au lieu d un : Etat civil, Revenus et charges, Epargne, Fiscalite, Les chiffres du dossier, Objectifs et questions. Le bloc fiscal REMONTE avant les compteurs et le tableau des versements programmes rejoint les objectifs (plan valide par le CGP). Le bandeau porte data-nc-chap et le bloc qui suit le perd : en mode presentation, bandeau et premiere carte font un seul ecran. RESULTAT MESURE : 6 pages, remplissage 100/99/82/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v229 (16/09 : LES TROIS GRIEFS DU DOCUMENT IMPRIME. (1) L EPARGNE SORT DU BLOC DES REVENUS. Le CGP : « supprime la partie verte, je ne veux pas voir d epargne a cet endroit ». La ligne verte « Epargne versee chaque mois », ajoutee en v228 pour la sortir des charges, est retiree : « Vos revenus mensuels » ne dit plus que ce qui ENTRE et ce qui SORT. Le total de droite redevient « Reste apres charges » = revenus moins charges, sans retrancher l epargne. L epargne mensuelle garde son propre chapitre, « Votre epargne mensuelle actuelle ». (2) DE L AIR EN TETE DE CHAQUE PAGE. Le CGP : « le debut de la page est cale tout en haut de la page ». La v228 inserait bien un intercalaire de respiration, mais SEULEMENT aux coupures que la pagination decide elle-meme : une page coupee par Chrome demarrait a ras du papier. La respiration passe donc dans @page (margin-top 34 px) : le moteur d impression l applique a TOUTES les pages. La hauteur utile d une page suit — Letter 1056 moins 34 de marge moins 57 de pied = 965 px (et non 999) ; les deux valeurs doivent rester d accord. (3) LES COMPTEURS : PLUS PETITS ET TOUS DE LA MEME TAILLE. Trois causes se cumulaient. a. La redistribution du blanc de bas de page posait une marge haute sur UNE carte de compteur : un element flex ainsi decale descend ET perd de la hauteur (align-items:stretch) — deux cartes voisines n avaient plus ni le meme haut ni la meme taille. Les enfants de .nc-duo sont desormais EXCLUS de la redistribution, et le reliquat porte sur la rangee entiere. b. Les deux rangees de cartes s alignaient chacune de son cote. Un EGALISEUR mesure apres rendu la plus haute des quatre cartes et impose sa hauteur aux autres, en style inline — le clone d impression la reprend telle quelle. c. Les cartes sont resserrees : arc de 138 a 104 px, zone de jauge de 104 a 78 px, interieur des cartes (.nc-cpt-notes) et titres rapproches. RESULTAT MESURE : le document passe de 6 a 5 pages ; remplissage 99/98/87/98/98 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v228 (16/09 : LE DOCUMENT IMPRIME, ENFIN VERIFIE. Le CGP : « une fois de plus tu ne verifies absolument pas ce que tu delivres ». Il avait raison : toutes mes verifications portaient sur l ECRAN. verif.sh fabrique desormais le PDF, le rend en images et MESURE le remplissage de chaque page, sur A4 ET SUR LETTER ; une page remplie a moins de 60 pct fait echouer la livraison. (1) CAUSE RACINE DES PAGES VIDES : la pagination etait calculee pour de l A4 (1066 px utiles) alors que le CGP imprime sur du papier LETTER (reglage macOS) : chaque bloc depassait de 67 px, Chrome le renvoyait a la page suivante et la cale, calculee sur la mauvaise hauteur, laissait une page a 30 pct. On calcule desormais sur la PLUS PETITE des deux pages (999 px) : juste sur Letter, et sur A4 le reliquat est absorbe. (2) Le blanc de bas de page se redistribue jusqu a 110 px par interstice (58 avant) et le reliquat descend sous le dernier bloc. (3) Les deux compteurs jumeaux passent d une GRILLE CSS a un conteneur FLEX : la pagination peut couper entre eux avec un intercalaire pleine largeur, ce qu une grille transformait en cellule fantome. (4) Un BANDEAU DE CHAPITRE n est jamais seul en bas de page : le saut est reporte avant lui. (5) TYPOGRAPHIE : le document avait DEUX systemes de titres — JetBrains Mono et Inter. Il n en reste qu UN, Inter en majuscules espacees, partout (.nc-ctitre comprise). (6) PAGE DE GARDE : etiree a la hauteur REELLE d une page (le placard blanc venait d une hauteur en dur, incompatible avec la mise a l echelle de l impression), titre dans un CADRE dore, photo descendue au tiers bas, pied de page sur le papier blanc et non sur l image. (7) L EPARGNE N EST PLUS UNE CHARGE : elle sort de la colonne des charges et prend sa propre ligne verte. (8) « Les chiffres du dossier » devient un BANDEAU DE CHAPITRE encre. (9) « Votre epargne mensuelle actuelle » passe sous « Vos placements ». (10) Compteurs encore reduits : zone de jauge 104 px, arc 138 px.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v227 (16/09 : LE DOCUMENT REPRIS SUR LES MAQUETTES DU CGP. (1) HORS SUJET SUPPRIME : les blocs « Protection du partenaire de PACS », « Protection du concubin » et « Donation au dernier vivant anterieure » portaient un cout et une demarche — donc une preconisation — et sortaient pourtant dans l AUDIT. Ils rejoignent celui du conjoint marie : RDV 2 uniquement. (2) PAGE DE GARDE : une PHOTO en transparence occupe le bas de page, meme traitement que la couverture du simulateur (desaturee, brumeuse, fondu blanc progressif, aucun trait de coupe). La phrase d identite, qui restait isolee au milieu du papier, en est retiree — elle ouvre desormais le chapitre « Le foyer ». (3) VOTRE FOYER refait sur le screen 1 : une COLONNE PAR PERSONNE, nom en tete, puis les memes lignes en regard — age, profession, employeur, banque, telephone, courriel — et une bande de trois colonnes en pied : regime matrimonial, enfants et parts fiscales, domicile. L employeur n apparait que s il est connu, le nombre de mois de salaire rejoint la profession, et la banque se lit sur les placements quand elle n est pas saisie. (4) VOS REVENUS MENSUELS refait sur le screen 2 et REMONTE juste apres le foyer : deux colonnes en regard, ce qui entre et ce qui sort, puis les deux totaux en grands chiffres — le reste retranche les charges ET l epargne deja versee. (5) COMPTEURS : la zone de jauge passe de 196 a 122 px et l arc de 210 a 156 px de large — « les blocs sont beaucoup trop gros et imposants ». (6) TAUX DE RENDEMENT du tableau des versements CENTRES sur leur colonne, le 5 pct en pastille pleine. (7) « dont Monsieur … · Madame … » supprime : l information est deja dans les cartes au-dessus. CONTROLE : t_rdv1, t_exp167 et t_rp suivent les nouveaux reperes (nom present 4 fois — bandeau, garde, colonne du foyer, signature —, « Domicile », « Courriel », banque en colonne).)','font-weight:bold;color:#047857');
@@ -10351,7 +10352,14 @@
                                   désormais dans un CADRE qui occupe la moitié haute ; la photo
                                   descend derrière ; le pied de page reste sur le papier blanc, entre
                                   les deux, jamais sur l'image. */}
-                              <div style={{ border: "1px solid rgba(184,146,78,0.55)", borderTop: "4px solid #b8924e", borderRadius: 14, background: "rgba(255,255,255,0.86)", padding: "38px 40px 34px", marginTop: 26 }}>
+                              {/* 17/09/2026 (CGP) : « baisse un peu encore le bloc "étude
+                                  patrimoniale", on a de la place ». Le cadre n'est plus collé sous
+                                  l'en-tête : deux ressorts l'encadrent, 0,54 au-dessus et 1 en
+                                  dessous, ce qui le pose aux deux tiers du papier blanc tout en
+                                  laissant respirer avant la photo — et qui suit la hauteur réelle
+                                  de la page, quel que soit le format d'impression. */}
+                              <div style={{ flex: "0.54 1 0", minHeight: 30 }}></div>
+                              <div style={{ border: "1px solid rgba(184,146,78,0.55)", borderTop: "4px solid #b8924e", borderRadius: 14, background: "rgba(255,255,255,0.86)", padding: "38px 40px 34px" }}>
                                 <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 20 }}></div>
                                 <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 38, fontWeight: 700, color: "#1d2735", lineHeight: 1.1, letterSpacing: "-0.01em" }}>{titre}</div>
                                 <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 19, color: "#1d2735", marginTop: 16, lineHeight: 1.45 }}>
@@ -10787,47 +10795,66 @@
                               const CellEnc = ({ x }) => x._fiscal && !(ncInt(x.valeur) > 0)
                                 ? <span className="text-[10.5px] font-bold" style={{ color: "#b45309" }}>à compléter</span>
                                 : <span className="num font-extrabold text-stone-900 whitespace-nowrap">{nfA(ncInt(x.valeur))} €</span>;
-                              if (grouperP) {
-                                // ——— DEUX BLOCS LÉGERS Monsieur | Madame (28/08) : une carte par
-                                // détenteur, en-tête prénom + total, lignes aérées (nom, encours,
-                                // smiley à droite, badges dessous) — fini le grand tableau unique. ———
+                              /* ═══ MÊME ÉCRITURE QUE « VOS REVENUS MENSUELS » (17/09/2026) ═══
+                                 Le CGP : « pour la partie épargne, reprends EXACTEMENT la même typo
+                                 et les mêmes blocs et lignes que dans revenus et charges ».
+                                 Donc : une colonne par détenteur, un filet d'encre de 1,5 px en tête
+                                 de colonne, une ligne par contrat — libellé à gauche, encours à
+                                 droite, filet clair entre chaque — et les totaux en bas, en grands
+                                 chiffres Lora. Le smiley de suivi reste collé à l'encours et les
+                                 pastilles de suivi passent sous la ligne : ce sont des faits
+                                 déclarés, ils ne disparaissent pas.
+                                 Le groupement par détenteur ne s'applique pas en communauté : le
+                                 patrimoine du couple s'y lit d'un seul bloc (règle du 28/08). */
+                              {
                                 const map = [];
                                 lignesTab.forEach(x => {
-                                  const k = detLib(x);
+                                  const k = grouperP ? detLib(x) : "Le foyer";
                                   let e = map.find(g => g.k === k);
                                   if (!e) { e = { k, list: [] }; map.push(e); }
                                   e.list.push(x);
                                 });
                                 const ordre = [moiT, luiT, "Commun"];
                                 map.sort((a, b) => { const ia = ordre.indexOf(a.k), ib = ordre.indexOf(b.k); return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib); });
+                                const nCol = Math.min(2, map.length);
                                 return (
-                                  <div className={`grid ${map.length >= 2 ? "grid-cols-2" : "grid-cols-1"} gap-3 items-start`}>
-                                    {map.map((g, gi) => (
-                                      /* 02/09 : un bloc seul sur sa derniere ligne (typiquement
-                                         l epargne COMMUNE apres Monsieur et Madame) est CENTRE
-                                         entre les deux colonnes, au lieu d etre colle a gauche. */
-                                      <div key={gi} className="rounded-xl border border-stone-200 px-3.5 pt-3 pb-2"
-                                        style={{ background: "#fafcfd", borderTop: `2.5px solid ${(NC_PERS_C[g.k] || "#0e7490")}88`,
-                                          ...(map.length > 1 && map.length % 2 === 1 && gi === map.length - 1
-                                            ? { gridColumn: "1 / -1", width: "calc(50% - 6px)", justifySelf: "center" } : {}) }}>
-                                        <div className="flex items-baseline justify-between gap-2 pb-1.5 mb-0.5" style={{ borderBottom: `1px solid ${(NC_PERS_C[g.k] || "#0e7490")}2e` }}>
-                                          <span className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: NC_PERS_C[g.k] || "#0e7490" }}>{NC_PERS_C[g.k] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.k], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.k}</span>
-                                          <span className="num text-[14px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: NC_PERS_C[g.k] || "#0e7490" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
-                                        </div>
-                                        {g.list.map((x, i) => (
-                                          <div key={i} className="py-2 border-t border-stone-100 first:border-t-0">
-                                            <div className="flex items-center justify-between gap-2">
-                                              <span className="text-[11.5px] font-bold text-stone-800">{nomP(x)}{x._fiscal ? <span className="font-normal text-stone-400"> (déclaré en fiscalité)</span> : null}</span>
-                                              <span className="flex items-center gap-1.5 flex-shrink-0"><CellEnc x={x} /><NcSmiley etat={x.contentQ} /></span>
-                                            </div>
-                                            {(() => { const bb = suiviBadges(x); return bb.length ? <div className="mt-1 leading-none">{bb.map((b, k) => <Badge key={k} txt={b.txt} bg={b.bg} fg={b.fg} bd={b.bd} />)}</div> : null; })()}
+                                  <>
+                                    <div className="grid" style={{ gridTemplateColumns: `repeat(${nCol}, minmax(0,1fr))`, columnGap: 32, rowGap: 22 }}>
+                                      {map.map((g, gi) => (
+                                        <div key={gi}>
+                                          <div className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: NC_PERS_C[g.k] || "#0e7490", marginBottom: 7 }}>
+                                            {NC_PERS_C[g.k] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.k], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.k}
                                           </div>
-                                        ))}
-                                      </div>
-                                    ))}
-                                  </div>
+                                          <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
+                                          {g.list.map((x, i) => (
+                                            <div key={i} style={{ paddingTop: 9, paddingBottom: 9, borderBottom: "1px solid rgba(10,9,8,0.07)" }}>
+                                              <div className="flex items-baseline justify-between gap-3">
+                                                <span style={{ fontSize: 13.5, color: "#1d2735" }}>{nomP(x)}{x._fiscal ? <span style={{ fontSize: 11.5, color: "#a8a29e" }}> · déclaré en fiscalité</span> : null}</span>
+                                                <span className="flex items-baseline gap-1.5 flex-shrink-0 whitespace-nowrap">
+                                                  <span className="num tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 600, color: "#1d2735" }}>
+                                                    {x._fiscal && !(ncInt(x.valeur) > 0) ? <span style={{ fontSize: 12, fontWeight: 700, color: "#b45309" }}>à compléter</span> : `${nfA(ncInt(x.valeur))} €`}
+                                                  </span>
+                                                  <NcSmiley etat={x.contentQ} />
+                                                </span>
+                                              </div>
+                                              {(() => { const bb = suiviBadges(x); return bb.length ? <div className="mt-1.5 leading-none">{bb.map((b, k) => <Badge key={k} txt={b.txt} bg={b.bg} fg={b.fg} bd={b.bd} />)}</div> : null; })()}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <div className="grid" style={{ gridTemplateColumns: `repeat(${nCol}, minmax(0,1fr))`, columnGap: 32, rowGap: 10, marginTop: 18 }}>
+                                      {map.map((g, gi) => (
+                                        <div key={gi} className="flex items-baseline justify-between gap-3">
+                                          <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total {g.k.toLowerCase()}</span>
+                                          <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 26, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </>
                                 );
                               }
+                              /* eslint-disable no-unreachable */
                               return (
                                 <table className="w-full text-[11.5px]" style={{ borderCollapse: "collapse" }}>
                                   <thead>
@@ -10889,7 +10916,9 @@
                               const excedent = PR.excedent, manque = PR.manque;
                               const cV = sousDote ? "#b91c1c" : surDote ? "#b45309" : "#0f766e";
                               return (
-                                <div className="rounded-xl px-5 py-4 border border-stone-200 mt-4" style={{ background: "#fafaf8", borderLeft: `3px solid ${cV}` }}>
+                                /* 17/09/2026 (CGP) : « mets de l'espace entre "vos placements —
+                                   état des lieux" et "épargne constituée — total" ». */
+                                <div className="rounded-xl px-5 py-4 border border-stone-200" style={{ background: "#fafaf8", borderLeft: `3px solid ${cV}`, marginTop: 30 }}>
                                   <div className="flex items-baseline justify-between gap-2 mb-3.5" style={{ borderBottom: "1px solid rgba(120,113,108,0.15)", paddingBottom: 8 }}>
                                     <span className="nc-ctitre">Épargne constituée — total</span>
                                     <span className="num text-[21px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0e7490" }}>{nfG(total)} €</span>
@@ -11006,20 +11035,44 @@
                             {/* 15/09/2026 (CGP) : « supprime ce genre de phrase qui ne sert
                                 strictement à rien » — le sous-titre répétait le titre. Le bloc
                                 montre des chiffres, il n'a pas à s'expliquer. */}
-                            <div className="grid gap-2" style={{ gridTemplateColumns: lignes.length > 2 ? "repeat(3, minmax(0,1fr))" : `repeat(${lignes.length}, minmax(0,1fr))` }}>
-                              {lignes.map((x, i) => (
-                                <div key={i} className="rounded-lg px-3 py-2.5 bg-white border border-stone-200" style={{ borderLeft: "3px solid " + x.c }}>
-                                  <div className="text-[9px] uppercase tracking-wider font-bold mb-1" style={{ color: x.c }}>{x.qui}</div>
-                                  <div className="num text-[16px] font-extrabold leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{nfA(x.m)} €<span className="text-[10px] font-semibold" style={{ fontFamily: "'Inter', sans-serif", color: "#a8a29e" }}>/mois</span></div>
-                                  <div className="text-[11px] font-bold text-stone-700 mt-0.5 leading-snug">{x.l}</div>
-                                  {x.sous ? <div className="text-[10px] text-stone-400 leading-snug">{x.sous}</div> : null}
-                                </div>
-                              ))}
-                            </div>
-                            <div className="flex items-baseline justify-between gap-3 mt-3 pt-2.5" style={{ borderTop: "1px solid rgba(10,9,8,0.08)" }}>
-                              <span className="text-[11.5px] font-bold text-stone-700">Total versé chaque mois</span>
-                              <span className="num text-[19px] font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfA(total)} €/mois</span>
-                            </div>
+                            {/* 17/09/2026 (CGP) : « tu mets en tout petit, tout ramassé
+                                "Monsieur 200 €/mois Livret A" — présente mieux cela ». Reprise de
+                                l'écriture de « Vos revenus mensuels » : une COLONNE PAR PERSONNE,
+                                un filet d'encre en tête, une ligne par versement — le contrat à
+                                gauche, le montant à droite — et le total en grands chiffres. */}
+                            {(() => {
+                              const cols = [];
+                              lignes.forEach(x => {
+                                let g = cols.find(c => c.qui === x.qui);
+                                if (!g) { g = { qui: x.qui, c: x.c, list: [] }; cols.push(g); }
+                                g.list.push(x);
+                              });
+                              const nC = Math.min(2, cols.length);
+                              return (
+                                <>
+                                  <div className="grid" style={{ gridTemplateColumns: `repeat(${nC}, minmax(0,1fr))`, columnGap: 32, rowGap: 22 }}>
+                                    {cols.map((g, gi) => (
+                                      <div key={gi}>
+                                        <div className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: NC_PERS_C[g.qui] || "#0f766e", marginBottom: 7 }}>
+                                          {NC_PERS_C[g.qui] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.qui], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.qui}
+                                        </div>
+                                        <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
+                                        {g.list.map((x, i) => (
+                                          <div key={i} className="flex items-baseline justify-between gap-3" style={{ paddingTop: 9, paddingBottom: 9, borderBottom: "1px solid rgba(10,9,8,0.07)" }}>
+                                            <span style={{ fontSize: 13.5, color: "#1d2735" }}>{x.l}{x.sous ? <span style={{ fontSize: 11.5, color: "#a8a29e" }}> · {x.sous}</span> : null}</span>
+                                            <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 600, color: "#1d2735" }}>{nfA(x.m)} €<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, fontWeight: 600, color: "#a8a29e" }}>/mois</span></span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    ))}
+                                  </div>
+                                  <div className="flex items-baseline justify-between gap-3" style={{ marginTop: 18 }}>
+                                    <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total versé chaque mois</span>
+                                    <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#0f766e", letterSpacing: "0.02em" }}>{nfA(total)} €<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 600, color: "#a8a29e" }}>/mois</span></span>
+                                  </div>
+                                </>
+                              );
+                            })()}
                             {/* 16/09/2026 (CGP) : « supprime cette phrase, totalement inutile
                                 puisque tu donnes l'information juste au-dessus » — le détail par
                                 personne est déjà dans les cartes. */}
