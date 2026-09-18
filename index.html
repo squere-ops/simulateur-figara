@@ -1162,7 +1162,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v233 (17/09 : LES QUESTIONS, RETRAVAILLEES AVEC LE CGP. LA REGLE DE FOND : le client doit trouver la question interessante et NE PAS POUVOIR Y REPONDRE — c est ce manque qui cree le second rendez-vous. Ni racoleur, ni grossier. Les questions ouvrent l assurance vie, le PER et l investissement locatif sans jamais nommer un produit. (1) TROIS REGLES DE SELECTION, lues dans la SAISIE et non dans un chiffre calcule. a. SANS CAPACITE D EMPRUNT, PAS UN MOT D INVESTISSEMENT : la famille « levier » sort du tirage quand la capacite d emprunt ou la mensualite disponible est nulle. Poser une question d investissement locatif a un client qui ne peut pas emprunter trahit un dossier mal lu. b. S IL A DEJA UN PER, la question ne porte plus sur le dispositif mais sur le RENDEMENT : elle passe en tete du tirage. c. S IL A DES ENFANTS, la transmission entre dans le tirage ; sinon elle en sort et la protection du conjoint ou du partenaire remonte. (2) QUESTION DE TRANSMISSION (nouvelle, si enfants) : « Vos deux enfants peuvent recevoir 305 000 € hors succession, sans un euro de droits. Connaissez-vous l article 990 I du code general des impots ? » Le montant est CALCULE sur le dossier : 152 500 € par beneficiaire, capitaux deces d assurance vie alimentes avant 70 ans. Formulation choisie par le CGP : aucun client ne connait cet article, il ne peut donc pas repondre. (3) QUESTION DE RENDEMENT (nouvelle) : « D ici vos 65 ans, soit 19 ans, vos 183 000 € d epargne places au taux des livrets plutot qu a 5 pct representent 210 346 € de capital en moins. Savez-vous a quel taux votre epargne travaille reellement, frais deduits ? » Memes taux que le tableau des versements programmes (1,7 et 5 pct) : le document ne peut pas dire deux choses differentes. (4) QUESTION FISCALE REECRITE, arbitrage du CGP « le mecanisme, pas le montant » : « A legislation constante, vous verserez 262 000 € d impot d ici dix ans. Savez-vous quelle part peut etre reorientee vers votre propre patrimoine, et par quel mecanisme ? » Le client peut estimer un montant ; il ne peut pas nommer le mecanisme. (5) QUESTION DE LEVIER REECRITE : « La banque vous preterait encore 801 195 €. Savez-vous quel loyer et quelle economie d impot ce financement peut produire, sans modifier votre budget mensuel ? » — l ancienne (« quelle serait la solution la plus pertinente pour l utiliser ? ») appelait « acheter un bien », une reponse que le client trouve seul. (6) MECANIQUE : une question peut desormais entrer dans le tirage par une CONDITION DE FAIT (des enfants, un capital place) et plus seulement par une faiblesse du dossier. CONTROLE : t_devoirs.js saisit reellement DEUX ENFANTS (le banc en annoncait deux et n en saisissait aucun depuis des mois), verifie que la question 990 I sort avec 305 000 € calcules, et refuse une question d investissement sur un dossier sans capacite d emprunt.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v234 (18/09 : LE DOCUMENT SORTAIT RETRECI D UN TIERS — A CAUSE D UNE SEULE LIGNE. (1) LA CAUSE. Le CGP : « le document parait tout petit et sous-dimensionne » et « souci d impression au niveau de Note dans autres credits ». Un seul et meme defaut : la ligne « Note » d un credit qui se termine sous 24 mois est une PHRASE ENTIERE, posee dans une colonne de chiffres avec white-space: nowrap. Elle ne se coupait pas, debordait la largeur du papier, et Chrome met alors LA PAGE ENTIERE a l echelle pour la faire tenir : tout le document sortait a deux tiers de sa taille, tasse en haut a gauche de la feuille. REGLE DESORMAIS GRAVEE : dans un document imprime, aucune valeur de longueur libre ne porte nowrap. Une valeur de plus de 28 caracteres prend en plus la LARGEUR ENTIERE de la ligne, hors de la colonne de chiffres. (2) LE CONTROLE QUI MANQUAIT. t_pdf_pages.js emule le media print, mesure le debordement horizontal de CHAQUE element du porteur d impression et echoue au premier pixel de trop ; t_devoirs.js fait la meme mesure sur la synthese a l ecran, sur un dossier qui porte justement cette ligne « Note ». Ce defaut ne se lit NI a l ecran NI dans le compte de pages : sans mesure, il repasse. (3) VOS PLACEMENTS — ETAT DES LIEUX, presentation reprise (« la c est vraiment trop fouillis »). Les trois totaux du bas (Total Monsieur, Total Madame, Total commun) sont SUPPRIMES : le total de chaque colonne remonte dans son EN-TETE, a droite du nom. L ordre de lecture devient Monsieur · Commun · Madame — l epargne commune AU MILIEU, entre les deux personnes qu elle concerne. (4) TROIS FACONS DE RENSEIGNER LA NAISSANCE D UN ENFANT (demande du CGP) : la date complete, l annee seule, ou l age. Les trois champs se tiennent — ce qui est saisi dans l un met les autres a jour — et l age remonte automatiquement dans la synthese : age EXACT au jour pres quand la date est connue, age atteint dans l annee sinon. Ce qui est STOCKE : la date si elle est connue, et toujours l annee ; jamais l age, qui deviendrait faux a la reouverture du dossier. Le calcul fiscal garde sa regle propre (age apprecie au 1er janvier, art. 6, 3 CGI). CONTROLE : t_devoirs.js saisit le premier enfant par sa DATE (age exact 13 ans) et le second par son AGE (10 ans), et verifie que les deux remontent dans « Votre foyer ». Neuf bancs ont ete mis a jour : le champ « Annee naiss. » n existe plus sous ce nom. RESULTAT MESURE : 7 pages, remplissage 97/93/82/95/100/98/98 pct, identique sur A4 et sur Letter, aucun debordement horizontal, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v233 (17/09 : LES QUESTIONS, RETRAVAILLEES AVEC LE CGP. LA REGLE DE FOND : le client doit trouver la question interessante et NE PAS POUVOIR Y REPONDRE — c est ce manque qui cree le second rendez-vous. Ni racoleur, ni grossier. Les questions ouvrent l assurance vie, le PER et l investissement locatif sans jamais nommer un produit. (1) TROIS REGLES DE SELECTION, lues dans la SAISIE et non dans un chiffre calcule. a. SANS CAPACITE D EMPRUNT, PAS UN MOT D INVESTISSEMENT : la famille « levier » sort du tirage quand la capacite d emprunt ou la mensualite disponible est nulle. Poser une question d investissement locatif a un client qui ne peut pas emprunter trahit un dossier mal lu. b. S IL A DEJA UN PER, la question ne porte plus sur le dispositif mais sur le RENDEMENT : elle passe en tete du tirage. c. S IL A DES ENFANTS, la transmission entre dans le tirage ; sinon elle en sort et la protection du conjoint ou du partenaire remonte. (2) QUESTION DE TRANSMISSION (nouvelle, si enfants) : « Vos deux enfants peuvent recevoir 305 000 € hors succession, sans un euro de droits. Connaissez-vous l article 990 I du code general des impots ? » Le montant est CALCULE sur le dossier : 152 500 € par beneficiaire, capitaux deces d assurance vie alimentes avant 70 ans. Formulation choisie par le CGP : aucun client ne connait cet article, il ne peut donc pas repondre. (3) QUESTION DE RENDEMENT (nouvelle) : « D ici vos 65 ans, soit 19 ans, vos 183 000 € d epargne places au taux des livrets plutot qu a 5 pct representent 210 346 € de capital en moins. Savez-vous a quel taux votre epargne travaille reellement, frais deduits ? » Memes taux que le tableau des versements programmes (1,7 et 5 pct) : le document ne peut pas dire deux choses differentes. (4) QUESTION FISCALE REECRITE, arbitrage du CGP « le mecanisme, pas le montant » : « A legislation constante, vous verserez 262 000 € d impot d ici dix ans. Savez-vous quelle part peut etre reorientee vers votre propre patrimoine, et par quel mecanisme ? » Le client peut estimer un montant ; il ne peut pas nommer le mecanisme. (5) QUESTION DE LEVIER REECRITE : « La banque vous preterait encore 801 195 €. Savez-vous quel loyer et quelle economie d impot ce financement peut produire, sans modifier votre budget mensuel ? » — l ancienne (« quelle serait la solution la plus pertinente pour l utiliser ? ») appelait « acheter un bien », une reponse que le client trouve seul. (6) MECANIQUE : une question peut desormais entrer dans le tirage par une CONDITION DE FAIT (des enfants, un capital place) et plus seulement par une faiblesse du dossier. CONTROLE : t_devoirs.js saisit reellement DEUX ENFANTS (le banc en annoncait deux et n en saisissait aucun depuis des mois), verifie que la question 990 I sort avec 305 000 € calcules, et refuse une question d investissement sur un dossier sans capacite d emprunt.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v232 (17/09 : LE PIED DE PAGE CALE, ET LE BLOC DES PIECES A RECLAMER DEVENU UTILISABLE. (1) ALIGNEMENT DU BAS DE PAGE. Le CGP : « probleme d alignement en bas de page ». Trois defauts se cumulaient. a. La hauteur du pied etait DEDUITE d un calcul (gapBas moins ajoute). Or les marges posees par occuperPage() FUSIONNENT avec les marges deja presentes (margin collapsing) : la poussee reelle est plus faible que la poussee calculee. On ne calcule plus, on POSE le pied, on MESURE ou il est tombe et on l etire jusqu au bord bas de SA page ; une passe de recalage finale repasse sur tous les pieds a la fin. b. Couper une rangee de compteurs obligeait a inserer le pied et le saut A L INTERIEUR d un conteneur flex, ou Chrome IGNORE break-after : la coupure tombait ailleurs. On coupe desormais le CONTENEUR lui-meme — les cartes restantes passent dans une rangee soeur — et le pied se pose ENTRE les deux, au niveau du document. c. Les boutons etaient masques a l impression mais VISIBLES pendant la mesure (la pagination se fait a l ecran) : la page raccourcissait a l impression. Ils sont maintenant RETIRES du clone. CE QUI A ETE COMPRIS EN CHEMIN, et qui vaut pour toute evolution : la feuille de style declare @page size A4 ; le navigateur met TOUJOURS en page dans une boite A4 de 1123 px, puis met la page entiere a l echelle de la feuille reelle. Le format du papier ne change RIEN a la mise en page. On vise volontairement 1056 (94 pct de la boite) : viser 1123 remplit au pixel pres et le pied, qui porte break-inside: avoid, part alors tout entier a la page suivante — une page ne contenant qu un pied. A 1056, le pied se pose a environ 2 cm du bord et n est jamais rogne. (2) POUR PREPARER NOTRE PROCHAIN RENDEZ-VOUS : meme taille de police que le reste du document (13,5 px pour le libelle, 13 px pour l explication, un filet entre chaque ligne), au lieu du 12 / 11,5 px d avant. (3) LE CHEMIN INFO-RETRAITE.FR EST ECRIT EN TOUTES LETTRES : « Egalement sur le site info-retraite.fr (en rouge), cliquez sur Mon epargne retraite puis Voir mes contrats (en bleu et en gras). Faites une copie d ecran ou telechargez le document. » Le site est en rouge dans les DEUX devoirs retraite, pour ne pas ecrire deux fois le meme nom de deux facons. (4) QUATRE PIECES ADMINISTRATIVES ferment la liste, demandees a tous les clients : piece d identite, justificatif de domicile, justificatif d origine des fonds, RIB du compte a prelever pour les placements financiers. Enoncees telles quelles, sans glose inventee. (5) LES CASES SONT CLIQUABLES. Le conseiller coche ce qu il reclame vraiment. L etat est range dans le DOSSIER (d.devoirsCoches), donc enregistre avec lui : on le retrouve a la reouverture, a l impression et dans le PDF envoye au client. Une case cochee s imprime pleine avec sa coche — c est un span, pas un bouton, que l impression masquerait. CONTROLE : t_devoirs.js coche une piece, verifie la coche, QUITTE la synthese et y revient (l etat survit), puis verifie que la coche est bien dans le CLONE D IMPRESSION, c est-a-dire dans le PDF ; il exige aussi les quatre pieces administratives et le chemin info-retraite.fr. RESULTAT MESURE : 7 pages, remplissage 97/93/86/95/100/98/98 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v231 (17/09 : LE CHAPITRE EPARGNE ECRIT COMME LE CHAPITRE REVENUS. (1) PAGE DE GARDE : le cadre « Votre etude patrimoniale » descend (« baisse un peu encore le bloc, on a de la place »). Il n est plus colle sous l en-tete : deux ressorts l encadrent, 0,54 au-dessus et 1 en dessous, ce qui le pose aux deux tiers du papier blanc et laisse respirer avant la photo, en suivant la hauteur reelle de la page quel que soit le format d impression. (2) VOS PLACEMENTS — ETAT DES LIEUX reprend EXACTEMENT l ecriture de « Vos revenus mensuels » (demande litterale du CGP) : une colonne par detenteur, un filet d encre de 1,5 px en tete de colonne, une ligne par contrat — libelle a gauche, encours a droite, filet clair entre chaque — et les totaux par personne en grands chiffres Lora. Les cartes encadrees disparaissent. Le smiley de suivi reste colle a l encours et les pastilles de suivi passent sous la ligne : ce sont des faits declares, ils ne disparaissent pas. En communaute (mariage sans contrat), la regle du 28/08 tient toujours : une seule colonne, « Le foyer ». (3) ESPACE entre « Vos placements — etat des lieux » et « Epargne constituee — total » : 30 px. (4) VOTRE EPARGNE MENSUELLE ACTUELLE : « tu mets en tout petit, tout ramasse Monsieur 200 €/mois Livret A, presente mieux cela ». Meme ecriture a son tour — une colonne par personne, le contrat a gauche, le montant a droite, le total en Lora 30. Les petites cartes a filet colore sont remplacees. CONTROLE : t_shot_pres.js lisait l ordre des mots (« 200 € … Livret ») et non l information ; il verifie desormais QUI verse, QUOI et COMBIEN, dans le nouvel ordre de lecture. RESULTAT MESURE : 6 pages, remplissage 100/99/86/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v230 (17/09 : LE DOCUMENT PRIS EN MAIN PAR LE CGP SUR SON PROPRE EXPORT. (1) PLUS D EN-TETE DE NAVIGATEUR. Son export portait « 17/09/2026 08:54   Synthese-patrimoniale-… » en haut de la page de garde. Ce n est pas le document : c est Chrome, qui imprime ses en-tetes des qu il a de la marge pour les loger. La marge @page de 34 px introduite en v229 lui avait donne cette place. Elle repasse a 0 et l aeration du haut de page revient DANS le document. (2) LA RESPIRATION EN TETE DE PAGE, ENFIN EFFECTIVE. L intercalaire de la v228 portait lui-meme break-before:page : il se retrouvait en tete de fragment, ou Chrome ne lui donne aucune hauteur — la respiration n existait que sur le papier. Le saut de page est desormais porte par le PIED DE PAGE (break-after), l intercalaire redevient un bloc ordinaire et occupe bien ses pixels. (3) PIED DE PAGE PHYSIQUE, PLUS JAMAIS position:fixed. Le pied cabinet se repetait chez moi et PAS DU TOUT sur le Mac du CGP : aucune page de son export n en avait. Cause : le porteur d impression porte un zoom, et selon la version de Chrome un ancetre zoome devient le bloc conteneur des descendants fixed — le pied se colle alors au bas du DOCUMENT. Il est maintenant construit en dur, une fois par page, a l endroit exact ou la pagination ferme la page, et il REMPLIT le blanc restant (texte plaque en bas). Contenu arbitre avec le CGP : nom du ou des clients et date a gauche, numero de page a droite, aucun nom de cabinet, et AUCUN pied sur la page de garde. (4) GEOMETRIE : pageFull = 1056/zC (papier Letter, le plus petit des deux formats), hPied = 46/zC, pageDispo = pageFull moins hPied. Tout est PHYSIQUE : plus aucun blanc virtuel, decalage reste a zero. (5) TOUT CE QUE LA PAGINATION INSERE DANS UNE RANGEE DE COMPTEURS occupe la largeur entiere (.nc-pied-physique et .nc-print-air rejoignent .nc-print-break) : sans cela le pied devenait une troisieme colonne et se retrouvait en HAUT de la page suivante, a cote d une carte esseulee. (6) VOTRE FOYER : la colonne porte la DATE DE NAISSANCE et non plus l age, ecrit deux lignes plus haut. (7) VOS REVENUS MENSUELS : a gauche les revenus et leur total, a droite les charges et LEUR TOTAL (le « reste apres charges » est remplace par le total des charges, demande du CGP). (8) LOGEMENT, IMMOBILIER ET CREDITS : meme ecriture aeree que le bloc des revenus — un filet d encre par rubrique, chaque donnee sur sa ligne, libelle a gauche et valeur a droite, sur deux colonnes. (9) SIX CHAPITRES au lieu d un : Etat civil, Revenus et charges, Epargne, Fiscalite, Les chiffres du dossier, Objectifs et questions. Le bloc fiscal REMONTE avant les compteurs et le tableau des versements programmes rejoint les objectifs (plan valide par le CGP). Le bandeau porte data-nc-chap et le bloc qui suit le perd : en mode presentation, bandeau et premiere carte font un seul ecran. RESULTAT MESURE : 6 pages, remplissage 100/99/82/95/98/96 pct, identique sur A4 et sur Letter, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
@@ -2955,6 +2956,21 @@
       const a = new Date().getFullYear() - y;
       return a >= 0 && a < 110 ? a : null;
     };
+    /* ═══ ÂGE D'UN ENFANT (18/09/2026, CGP) ═══
+       « Il faudrait pouvoir remplir la date de naissance complète des enfants, ou
+       l'année de naissance, ou l'âge, et que les infos remontent dans la synthèse
+       automatiquement. »
+       Trois entrées, une seule vérité : la DATE COMPLÈTE quand elle est connue (âge
+       exact au jour près), sinon l'ANNÉE (âge atteint dans l'année). Un âge saisi est
+       converti en année de naissance — c'est l'année qui est stockée, jamais l'âge :
+       un âge vieillirait mal dans un dossier rouvert six mois plus tard.
+       Le calcul fiscal, lui, garde sa propre règle : l'âge s'apprécie au 1er JANVIER
+       de l'année d'imposition (art. 6, 3 CGI) et se calcule donc sur l'année seule. */
+    const ncAgeEnfant = (e) => {
+      if (!e) return null;
+      const exact = ncAgeDate(e.dateNaissance);
+      return exact != null ? exact : ncAgeAnnee(e.annee);
+    };
     const NcAge = ({ a }) => a == null ? null : (
       <span className="num text-[12px] font-bold text-teal-700 whitespace-nowrap flex-shrink-0">{a} an{a > 1 ? "s" : ""}</span>
     );
@@ -3167,7 +3183,7 @@
       if (d.pensionQ === "oui") {
         const pMens = ncMens(d.pensionPercue, d.pensionPeriode);
         if (pMens > 0) {
-          const agesEnf = (d.enfantsQ === "oui" ? (d.enfants || []) : []).map(e => ncAgeAnnee(e.annee)).filter(a => a != null);
+          const agesEnf = (d.enfantsQ === "oui" ? (d.enfants || []) : []).map(e => ncAgeEnfant(e)).filter(a => a != null);
           const plusJeune = agesEnf.length ? Math.min(...agesEnf) : null;
           if (plusJeune != null && plusJeune >= 16) {
             revenus.push({ label: "Pension perçue", mensuel: 0, regle: `non retenue — enfant le plus jeune ${plusJeune} ans : versée au plus jusqu'à ses 25 ans, horizon trop court pour un financement long (règle cabinet)`, qui: "foyer", cat: "pension" });
@@ -8802,7 +8818,7 @@
                         <Chip key={n} act={d.enfants.length === n} on={() => {
                           setD(p => {
                             let e = p.enfants.slice(0, n);
-                            while (e.length < n) e.push({ id: e.length + 1, prenom: "", annee: "", charge: "100", filiation: "commun", handicap: "non" });
+                            while (e.length < n) e.push({ id: e.length + 1, prenom: "", dateNaissance: "", annee: "", charge: "100", filiation: "commun", handicap: "non" });
                             return { ...p, enfants: e };
                           });
                         }}>{n}</Chip>
@@ -8815,9 +8831,51 @@
                           <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400 flex-shrink-0">Enfant {i+1}</span>
                           <input type="text" value={e.prenom} placeholder="Prénom" onChange={ev => setList("enfants", e.id, "prenom", ev.target.value)}
                             className="flex-1 min-w-0 px-2 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none" />
-                          <input type="text" inputMode="numeric" value={e.annee} placeholder="Année naiss." onChange={ev => setList("enfants", e.id, "annee", ev.target.value.replace(/[^\d]/g,"").slice(0,4))}
-                            className="num w-24 px-2 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none" />
-                          <NcAge a={ncAgeAnnee(e.annee)} />
+                        </div>
+                        {/* 18/09/2026 (CGP) : TROIS FAÇONS DE RENSEIGNER LA NAISSANCE — la date
+                            complète, l'année seule, ou l'âge. Les trois champs se tiennent : ce qui
+                            est saisi dans l'un met les autres à jour, et l'âge remonte ensuite tout
+                            seul dans la synthèse. On renseigne CE QUE L'ON SAIT, rien de plus.
+                            Ce qui est STOCKÉ : la date si elle est connue, et toujours l'année —
+                            jamais l'âge, qui deviendrait faux à la réouverture du dossier. */}
+                        <div className="flex items-end gap-2 mb-2 flex-wrap">
+                          <label className="flex flex-col gap-1">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Date de naissance</span>
+                            <input type="date" value={e.dateNaissance || ""}
+                              onChange={ev => {
+                                const v = ev.target.value;
+                                const an = v ? v.slice(0, 4) : (e.annee || "");
+                                setD(p => ({ ...p, enfants: p.enfants.map(x => x.id === e.id ? { ...x, dateNaissance: v, annee: an } : x) }));
+                              }}
+                              className="num px-2 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none" />
+                          </label>
+                          <span className="text-[11px] text-stone-400 pb-2">ou</span>
+                          <label className="flex flex-col gap-1">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Année</span>
+                            <input type="text" inputMode="numeric" value={e.annee || ""} placeholder="2012"
+                              onChange={ev => {
+                                const an = ev.target.value.replace(/[^\d]/g, "").slice(0, 4);
+                                /* une année saisie à la main efface la date : on ne peut pas inventer
+                                   un jour et un mois que le client n'a pas donnés. */
+                                setD(p => ({ ...p, enfants: p.enfants.map(x => x.id === e.id ? { ...x, annee: an, dateNaissance: "" } : x) }));
+                              }}
+                              className="num w-20 px-2 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none" />
+                          </label>
+                          <span className="text-[11px] text-stone-400 pb-2">ou</span>
+                          <label className="flex flex-col gap-1">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Âge</span>
+                            <input type="text" inputMode="numeric" value={ncAgeEnfant(e) == null ? "" : String(ncAgeEnfant(e))} placeholder="14"
+                              onChange={ev => {
+                                const brut = ev.target.value.replace(/[^\d]/g, "").slice(0, 2);
+                                const ag = parseInt(brut, 10);
+                                const an = (brut === "" || isNaN(ag)) ? "" : String(new Date().getFullYear() - ag);
+                                setD(p => ({ ...p, enfants: p.enfants.map(x => x.id === e.id ? { ...x, annee: an, dateNaissance: "" } : x) }));
+                              }}
+                              className="num w-14 px-2 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none" />
+                          </label>
+                          {ncAgeDate(e.dateNaissance) != null
+                            ? <span className="num text-[11.5px] font-bold text-teal-700 pb-2">âge exact : {ncAgeDate(e.dateNaissance)} ans</span>
+                            : <NcAge a={ncAgeAnnee(e.annee)} />}
                         </div>
                         <Chips opts={[{v:"100",l:"À charge 100 %"},{v:"alternee",l:"Garde alternée"},{v:"majeur_rattache",l:"Majeur rattaché"},{v:"non",l:"Non à charge"}]}
                           val={e.charge} on={v => setList("enfants", e.id, "charge", v)} />
@@ -10592,8 +10650,8 @@
                             : null;
                           const parts = (() => { try { return ncCalcFisc(d, 2026).parts; } catch (e) { return null; } })();
                           const enfants = (d.enfants || []).map(e => {
-                            const an = parseInt(e.annee, 10);
-                            const ageE = an ? (new Date().getFullYear() - an) : null;
+                            // l'âge affiché suit la DATE quand elle est connue, sinon l'année
+                            const ageE = ncAgeEnfant(e);
                             const fil = e.filiation === "client" ? `enfant de ${civMoi}` : e.filiation === "conjoint" ? `enfant de ${civLui}` : "enfant commun";
                             return `${ncCapNom(e.prenom || "") || "Enfant"}${ageE != null ? `, ${ageE} ans` : ""} — ${fil}`;
                           });
@@ -10829,12 +10887,27 @@
                                     <div style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 14.5, fontWeight: 700, color: "#1d2735", lineHeight: 1.3 }}>{it.d}</div>
                                     {it.rows && it.rows.length > 0 && (
                                       <div className="grid" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))", columnGap: 32, marginTop: 6 }}>
-                                        {it.rows.map((r, m) => (
-                                          <div key={m} className="flex items-baseline justify-between gap-3" style={{ paddingTop: 7, paddingBottom: 7, borderBottom: "1px solid rgba(10,9,8,0.07)" }}>
-                                            <span style={{ fontSize: 12, color: "#a8a29e" }}>{r.l}</span>
-                                            <span className="num tabular-nums whitespace-nowrap" style={{ fontSize: 13, fontWeight: 600, color: "#1d2735" }}>{r.v}</span>
-                                          </div>
-                                        ))}
+                                        {/* 18/09/2026 — POURQUOI IL N'Y A PLUS DE `whitespace-nowrap` ICI.
+                                            Le CGP : « le document paraît tout petit et sous-dimensionné »,
+                                            et « souci d'impression au niveau de Note dans autres crédits ».
+                                            Même cause pour les deux : la valeur d'une ligne « Note » fait
+                                            une phrase entière ; en nowrap elle ne se coupe pas, déborde la
+                                            largeur du papier, et Chrome met alors LA PAGE ENTIÈRE à
+                                            l'échelle pour la faire tenir — tout le document rétrécit d'un
+                                            tiers. Règle : dans un document imprimé, aucune valeur de
+                                            longueur libre ne porte nowrap. Une valeur longue prend en plus
+                                            la LARGEUR ENTIÈRE, sur sa propre ligne : elle n'a rien à faire
+                                            dans une colonne de chiffres. */}
+                                        {it.rows.map((r, m) => {
+                                          const longue = String(r.v || "").length > 28;
+                                          return (
+                                            <div key={m} className={longue ? "flex items-baseline gap-3" : "flex items-baseline justify-between gap-3"}
+                                              style={{ paddingTop: 7, paddingBottom: 7, borderBottom: "1px solid rgba(10,9,8,0.07)", gridColumn: longue ? "1 / -1" : undefined }}>
+                                              <span style={{ fontSize: 12, color: "#a8a29e", flexShrink: 0 }}>{r.l}</span>
+                                              <span className={longue ? "" : "num tabular-nums"} style={{ fontSize: longue ? 12 : 13, fontWeight: longue ? 400 : 600, color: longue ? "#57534e" : "#1d2735", lineHeight: 1.45, textAlign: longue ? "left" : "right", flex: longue ? "1 1 auto" : "0 1 auto", minWidth: 0, overflowWrap: "anywhere" }}>{r.v}</span>
+                                            </div>
+                                          );
+                                        })}
                                       </div>
                                     )}
                                   </div>
@@ -10933,16 +11006,25 @@
                                   if (!e) { e = { k, list: [] }; map.push(e); }
                                   e.list.push(x);
                                 });
-                                const ordre = [moiT, luiT, "Commun"];
+                                /* 18/09/2026 (CGP) : « supprime Total Mr, Total Mme, Total commun, et
+                                   travaille mieux les infos au-dessus, en mettant l'épargne COMMUNE AU
+                                   MILIEU ». L'ordre de lecture devient donc Monsieur · Commun · Madame,
+                                   le commun entre les deux personnes qu'il concerne — et le total de
+                                   chaque colonne remonte DANS SON EN-TÊTE, à droite du nom : une seule
+                                   ligne au lieu d'une rangée de totaux en bas. */
+                                const ordre = [moiT, "Commun", luiT];
                                 map.sort((a, b) => { const ia = ordre.indexOf(a.k), ib = ordre.indexOf(b.k); return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib); });
-                                const nCol = Math.min(2, map.length);
+                                const nCol = Math.min(3, map.length);
                                 return (
                                   <>
                                     <div className="grid" style={{ gridTemplateColumns: `repeat(${nCol}, minmax(0,1fr))`, columnGap: 32, rowGap: 22 }}>
                                       {map.map((g, gi) => (
                                         <div key={gi}>
-                                          <div className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: NC_PERS_C[g.k] || "#0e7490", marginBottom: 7 }}>
-                                            {NC_PERS_C[g.k] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.k], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.k}
+                                          <div className="flex items-baseline justify-between gap-2" style={{ marginBottom: 7 }}>
+                                            <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: NC_PERS_C[g.k] || "#0e7490" }}>
+                                              {NC_PERS_C[g.k] ? <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: 9, background: NC_PERS_C[g.k], marginRight: 5, verticalAlign: "1px" }}></span> : null}{g.k}
+                                            </span>
+                                            <span className="num tabular-nums" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 700, color: NC_PERS_C[g.k] || "#0e7490" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
                                           </div>
                                           <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
                                           {g.list.map((x, i) => (
@@ -10959,14 +11041,6 @@
                                               {(() => { const bb = suiviBadges(x); return bb.length ? <div className="mt-1.5 leading-none">{bb.map((b, k) => <Badge key={k} txt={b.txt} bg={b.bg} fg={b.fg} bd={b.bd} />)}</div> : null; })()}
                                             </div>
                                           ))}
-                                        </div>
-                                      ))}
-                                    </div>
-                                    <div className="grid" style={{ gridTemplateColumns: `repeat(${nCol}, minmax(0,1fr))`, columnGap: 32, rowGap: 10, marginTop: 18 }}>
-                                      {map.map((g, gi) => (
-                                        <div key={gi} className="flex items-baseline justify-between gap-3">
-                                          <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total {g.k.toLowerCase()}</span>
-                                          <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 26, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfA(g.list.reduce((t2, y) => t2 + ncInt(y.valeur), 0))} €</span>
                                         </div>
                                       ))}
                                     </div>
