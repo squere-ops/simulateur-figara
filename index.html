@@ -1162,7 +1162,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v238 (18/09 : LES CHIFFRES DU DOSSIER SE REGARDENT, ILS NE SE LISENT PLUS. Le CGP : « tu ecris trop. Je veux un camembert pour le taux d endettement qui permette de lire que les 14,1 pct sont consommes par le loyer ; s il y avait eu un autre credit, il aurait fallu une autre couleur et mettre par exemple pret auto, ou residence secondaire, ou Pinel. Idem pour les autres : je veux quelque chose de visuel, avec aucun texte ou le minimum. » (1) LES QUATRE VIGNETTES DEVIENNENT DES CAMEMBERTS (NcDonut, SVG dessine a la main — aucune librairie, rien ne s execute a l impression). Taux d endettement : une part par LIGNE DE CHARGE, chacune nommee et coloree, le solde jusqu au plafond des 35 pct en gris, le taux au centre. Mensualite disponible : le meme anneau lu EN EUROS, la mensualite disponible au centre. Capacite d emprunt : le meme anneau (arbitrage du CGP), le montant empruntable au centre. Le financier : financier contre immobilier, la part du financier au centre. LA LEGENDE EST LE SEUL TEXTE ADMIS — un carre de couleur, le nom du poste, sa valeur. (2) LES PARAGRAPHES DE REGLE CABINET qui occupaient le bas des cartes sont retires. Ce qui ne se deduit PAS du dessin reste seul (« ces deux montants ne s additionnent pas : c est la meme enveloppe d endettement »), le reste est deja dans « Voir les hypotheses ». (3) CE QUI N A PAS DISPARU AVEC LES JAUGES : la regle du 29/08 — quand la situation CHANGE (projet d achat de residence principale, credits finissant sous 24 mois), on montre les DEUX ETATS COTE A COTE — tient toujours, en deux camemberts jumeaux avec leurs titres. Le dessin remplace les jauges, jamais la regle ; quatre bancs l ont vu avant moi en tombant en echec. (4) L HISTOGRAMME DES VERSEMENTS PROGRAMMES remplace le tableau croise : un seul horizon, VINGT ANS (arbitrage du CGP — un histogramme ne peut pas porter deux durees sans redevenir un tableau), un groupe par montant mensuel, trois barres par groupe (1,7 pct pierre, 5 pct vert cabinet, 7 pct or), le capital ecrit au-dessus de chaque barre. Dessine en FLEX et non en SVG : les hauteurs restent justes quand le document est mis a l echelle. Couleurs MAISON — le CGP a explicitement ecarte celles de l exemple qu il avait fourni. CONTROLES : cinq assertions de t_rdv1 et t_exp167 portaient sur les phrases explicatives que le CGP a fait retirer ; elles suivent desormais l INFORMATION dans la legende des camemberts, et non l ancienne phrase.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v239 (18/09 : LES CAMEMBERTS RESPIRENT, ET LES SIX QUESTIONS SONT DICTEES PAR LE CGP. (1) « Fais les camemberts plus grands afin que JAMAIS le texte ou les chiffres ne touchent le camembert ». Le camembert passe de 118 a 138 px (108 pour les jumeaux), le trou s agrandit (rayon 31 a 35), l ecart avec la legende passe a 20 px, et LA TAILLE DU CHIFFRE CENTRAL EST CALCULEE sur la largeur utile a l interieur de l anneau — jamais choisie au juge : un montant long comme « 721 039 € » descend de lui-meme jusqu a tenir. (2) UN SECTEUR A 100 PCT NE DESSINAIT RIEN. Un arc SVG dont le depart et l arrivee sont le meme point est vide : sur un dossier sans immobilier, l anneau du « financier » disparaissait purement et simplement. Il est desormais trace en DEUX DEMI-ARCS avec fillRule evenodd. (3) LA PHRASE DE CONCLUSION DES VERSEMENTS PROGRAMMES est supprimee (« supprime ton texte A 500 €/mois pendant 20 ans… chaque mois ») : l histogramme le dit mieux qu elle. (4) LES SIX QUESTIONS, ECRITURES DEFINITIVES DU CGP — plus courtes, plus frontales, la condition d abord et rien de plus. 1 « En cas de deces, sans testament, savez-vous ce que percevra votre partenaire ? » 2 « Connaissez-vous l article 990 I du code general des impots ? » — SEULE, sans preambule et sans montant : le chiffre est la reponse, et elle se paie d un second rendez-vous. 3 « Que vous evoque le chiffre de 278 710 € ? » — le montant d impot sur dix ans, jete sur la table. 4 « Dans 21 ans, vous aurez 64 ans, vos revenus passeront de 13 417 € a environ 6 000 €/mois. Comment comptez-vous compenser cette baisse ? » — l ECHEANCE d abord, la pension ARRONDIE aux 500 € et precedee d « environ ». 6 « Connaissez-vous un placement qui permet de beneficier de l equivalent d un rendement garanti par l Etat de 30 pct la premiere annee ? » — le taux reste la TMI du foyer. CONTROLES : t_devoirs.js suit les nouvelles tournures une par une et lit toujours la TMI dans le bloc fiscal du meme document ; t_shot_pres.js accepte les ouvertures « En cas de », « Dans » et « Vous conservez ».)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v238 (18/09 : LES CHIFFRES DU DOSSIER SE REGARDENT, ILS NE SE LISENT PLUS. Le CGP : « tu ecris trop. Je veux un camembert pour le taux d endettement qui permette de lire que les 14,1 pct sont consommes par le loyer ; s il y avait eu un autre credit, il aurait fallu une autre couleur et mettre par exemple pret auto, ou residence secondaire, ou Pinel. Idem pour les autres : je veux quelque chose de visuel, avec aucun texte ou le minimum. » (1) LES QUATRE VIGNETTES DEVIENNENT DES CAMEMBERTS (NcDonut, SVG dessine a la main — aucune librairie, rien ne s execute a l impression). Taux d endettement : une part par LIGNE DE CHARGE, chacune nommee et coloree, le solde jusqu au plafond des 35 pct en gris, le taux au centre. Mensualite disponible : le meme anneau lu EN EUROS, la mensualite disponible au centre. Capacite d emprunt : le meme anneau (arbitrage du CGP), le montant empruntable au centre. Le financier : financier contre immobilier, la part du financier au centre. LA LEGENDE EST LE SEUL TEXTE ADMIS — un carre de couleur, le nom du poste, sa valeur. (2) LES PARAGRAPHES DE REGLE CABINET qui occupaient le bas des cartes sont retires. Ce qui ne se deduit PAS du dessin reste seul (« ces deux montants ne s additionnent pas : c est la meme enveloppe d endettement »), le reste est deja dans « Voir les hypotheses ». (3) CE QUI N A PAS DISPARU AVEC LES JAUGES : la regle du 29/08 — quand la situation CHANGE (projet d achat de residence principale, credits finissant sous 24 mois), on montre les DEUX ETATS COTE A COTE — tient toujours, en deux camemberts jumeaux avec leurs titres. Le dessin remplace les jauges, jamais la regle ; quatre bancs l ont vu avant moi en tombant en echec. (4) L HISTOGRAMME DES VERSEMENTS PROGRAMMES remplace le tableau croise : un seul horizon, VINGT ANS (arbitrage du CGP — un histogramme ne peut pas porter deux durees sans redevenir un tableau), un groupe par montant mensuel, trois barres par groupe (1,7 pct pierre, 5 pct vert cabinet, 7 pct or), le capital ecrit au-dessus de chaque barre. Dessine en FLEX et non en SVG : les hauteurs restent justes quand le document est mis a l echelle. Couleurs MAISON — le CGP a explicitement ecarte celles de l exemple qu il avait fourni. CONTROLES : cinq assertions de t_rdv1 et t_exp167 portaient sur les phrases explicatives que le CGP a fait retirer ; elles suivent desormais l INFORMATION dans la legende des camemberts, et non l ancienne phrase.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v237 (18/09 : LES QUESTIONS, REPRISES MOT A MOT AVEC LE CGP. (1) LA QUESTION QUI DOIT SORTIR AVANT TOUTES LES AUTRES. Le CGP, sur un dossier reel : « pourquoi autant d epargne court terme, qui ne rapporte pas grand-chose et qui sera frappee de plein fouet par les droits de succession en cas de deces, alors qu il n y a AUCUN projet d achat de residence principale ? ». Trois conditions reunies — tresorerie de 50 000 € ou plus sur livrets et comptes courants, rendement de livret, et aucune destination annoncee — et la question passe en priorite 1 : « Vous conservez X € sur des livrets et des comptes courants, sans projet d achat de residence principale. Cette somme rapporte peu et entrerait integralement dans votre succession. Comment comptez-vous la reorganiser ? ». Si un projet de RP existe, la tresorerie a une destination : la question sort du tirage. (2) ARTICLE 990 I, formulation reprise par le CGP : « Savez-vous que l article 990 I du code general des impots vous permet de transmettre a votre deces 152 500 € a chacun de vos beneficiaires declares, sans un euro d impot ? ». Le montant N EST PLUS multiplie par le nombre d enfants : l abattement vaut 152 500 € PAR BENEFICIAIRE, et c est ainsi qu il se dit en rendez-vous. « a chacun de » a ete ajoute a la phrase du CGP pour que l enonce reste juste. (3) QUESTION FISCALE : « sur les dix prochaines annees » remplace « d ici dix ans ». (4) QUESTION DE LEVIER, formulation du CGP : « Si la banque vous faisait un pret d environ 350 000 €, dans quoi l investiriez-vous ? ». Le montant est ARRONDI aux 50 000 € : un chiffre au franc pres appellerait une discussion sur le calcul, alors que la question porte sur l EMPLOI des fonds. (5) UNE SIXIEME QUESTION, EN BONUS : « Savez-vous que vous pouvez beneficier d un placement garanti a 30 pct par l Etat la premiere annee ? Le montant est plafonne : il se verifie sur votre dernier avis d imposition. » LE TAUX ANNONCE EST LA TMI DU FOYER, jamais un taux generique — 30, 41 ou 45 pct selon le dossier. En dessous de 30 pct l argument ne porte pas : la question ne sort pas. Note interne, absente du document : ce placement garanti par l Etat est la deduction du versement PER du revenu imposable, dont l economie vaut exactement la TMI. Aucun produit n est nomme au client. CONTROLES : t_devoirs.js verifie les quatre formulations et exige que la question bonus annonce EXACTEMENT la TMI lue dans le bloc fiscal du meme document ; t_shot_pres.js accepte six questions au lieu de cinq et les deux nouvelles ouvertures (« Savez-vous que… », « Si la banque… »).)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v236 (18/09 : DEUX DEMANDES DU CGP. (1) LOGEMENT, IMMOBILIER ET CREDITS : l allusion a la VEFA disparait de la note du credit qui se termine sous 24 mois. La regle cabinet tient sans elle — la franchise de remboursement se dit dans tous les cas, l achat sur plan est un cas particulier qui n a rien a faire dans un constat. ATTENTION : la meme regle est rappelee une seconde fois sous le compteur du taux d endettement, ou l allusion SUBSISTE — a trancher avec le CGP. (2) VOS PLACEMENTS — ETAT DES LIEUX : « peux-tu faire de beaux cadres pour l epargne de Monsieur, de Madame et la commune ? ». Chaque detenteur a desormais SA CARTE — filet de couleur en tete (bleu Monsieur, rouge Madame, teal commun), nom et total sur la meme ligne, puis les contrats en dessous dans l ecriture de « Vos revenus mensuels ». L ordre de lecture reste Monsieur · Commun · Madame, arbitre la veille. CONTROLE : t_devoirs.js isole le bloc « Logement, immobilier & credits » et exige qu il ne contienne plus le mot VEFA — borne au bloc vise, pour ne pas masquer la seconde occurrence restee ailleurs.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v235 (18/09 : LA DATE DE NAISSANCE DES ENFANTS RESSORT, ET LES NOTES PASSENT AU-DESSUS DES QUESTIONS. (1) LE CGP : « quel interet de renseigner la date de naissance de l enfant si tu ne la reprends pas dans l analyse ? ». Il avait raison : la v234 ajoutait le champ mais la date n apparaissait NULLE PART — seul l age en sortait. Le chapitre « Votre foyer » ecrit desormais la date quand elle est connue : « Lea — 15/01/2013, 13 ans — enfant commun ». Meme regle que pour les parents, dont la colonne porte la date. Aucune date n est INVENTEE : un enfant saisi par son age ou par son annee ressort sans date, avec son age seul. (2) LES NOTES DU RENDEZ-VOUS passent JUSTE AU-DESSUS des questions (« peux-tu mettre les notes qui sont prises au-dessus des questions »). C est leur place : ce qui a ete dit de vive voix precede les questions qui ouvrent le rendez-vous suivant. Elles passent au passage a la taille du reste du document (13 px au lieu de 12), retours a la ligne conserves. CONTROLES : t_devoirs.js exige la date ET l age pour l enfant saisi par sa date, et refuse toute date inventee pour celui saisi par son age ; t_notes172.js controle la POSITION des notes par rapport aux questions. AU PASSAGE, DEUX ASSERTIONS PERIMEES de t_notes172.js remises d aplomb : elles cherchaient dans la synthese du PREMIER rendez-vous une phrase qui appartient aux puces de capacite du volet « Simulation et plan d action ». Ce banc n etant pas appele par verif.sh, l echec dormait depuis des mois — le meme defaut que celui corrige le 02/09 sur t_rdv1 et t_exp167.)','font-weight:bold;color:#047857');
@@ -2603,19 +2604,41 @@
        Le camembert est dessiné en SVG (pas de librairie) : il doit sortir à
        l'impression, où aucun script ne tourne. */
     const NC_PARTS_C = ["#b91c1c", "#b45309", "#6d28d9", "#0369a1", "#9d4a6b", "#4d7c0f", "#a16207"];
-    const NcDonut = ({ parts, centre, centreSous, taille = 118, libre = true, libreLib = "Disponible", libreAff }) => {
+    const NcDonut = ({ parts, centre, centreSous, taille = 138, libre = true, libreLib = "Disponible", libreAff }) => {
       const list = (parts || []).filter(x => x && x.v > 0);
       const somme = list.reduce((s, x) => s + x.v, 0);
       const total = Math.max(somme, (libre && typeof libre === "number") ? libre : somme);
       if (!(total > 0)) return null;
       const reste = Math.max(0, total - somme);
       const secteurs = reste > 0.0001 ? list.concat([{ l: libreLib, v: reste, c: "#e7e5e4", pale: true, aff: libreAff }]) : list;
-      const R = 50, r = 31, cx = 60, cy = 60;
+      /* 18/09/2026 (CGP) : « fais les camemberts plus grands afin que JAMAIS le texte ou
+         les chiffres ne touchent le camembert ». Le trou est agrandi (rayon 31 → 35) et
+         la taille du chiffre central est CALCULÉE sur la largeur disponible à
+         l'intérieur de l'anneau, jamais choisie au jugé : un montant long descend de
+         lui-même jusqu'à tenir. */
+      const R = 50, r = 35, cx = 60, cy = 60;
       let a0 = -Math.PI / 2;
       const arcs = secteurs.map((x, i) => {
         const ang = (x.v / total) * Math.PI * 2;
         const a1 = a0 + ang;
         const gd = ang > Math.PI ? 1 : 0;
+        /* UN SEUL SECTEUR À 100 % : un arc SVG dont le départ et l'arrivée sont le même
+           point ne dessine RIEN — l'anneau disparaissait (constaté le 18/09 sur « Le
+           financier » d'un dossier sans immobilier). On le trace alors en DEUX demi-arcs. */
+        if (ang >= Math.PI * 2 - 0.0001) {
+          const anneau = [
+            `M ${cx} ${cy - R}`,
+            `A ${R} ${R} 0 1 1 ${cx} ${cy + R}`,
+            `A ${R} ${R} 0 1 1 ${cx} ${cy - R}`,
+            `Z`,
+            `M ${cx} ${cy - r}`,
+            `A ${r} ${r} 0 1 0 ${cx} ${cy + r}`,
+            `A ${r} ${r} 0 1 0 ${cx} ${cy - r}`,
+            `Z`,
+          ].join(" ");
+          a0 = a1;
+          return { d: anneau, c: x.c || NC_PARTS_C[i % NC_PARTS_C.length], k: i, plein: true };
+        }
         const p = [
           `M ${cx + R * Math.cos(a0)} ${cy + R * Math.sin(a0)}`,
           `A ${R} ${R} 0 ${gd} 1 ${cx + R * Math.cos(a1)} ${cy + R * Math.sin(a1)}`,
@@ -2627,11 +2650,12 @@
         return { d: p, c: x.c || NC_PARTS_C[i % NC_PARTS_C.length], k: i };
       });
       const txt = String(centre == null ? "" : centre);
-      const fs = txt.length <= 5 ? 17 : txt.length <= 7 ? 14.5 : txt.length <= 9 ? 12.5 : 11;
+      /* largeur utile dans le trou = 2r × 0,88 ; une glyphe fait ≈ 0,58 × la taille. */
+      const fs = Math.max(8, Math.min(19, (2 * r * 0.88) / (0.58 * Math.max(1, txt.length))));
       return (
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex items-center w-full" style={{ gap: 20 }}>
           <svg viewBox="0 0 120 120" style={{ width: taille, height: taille, flexShrink: 0 }} aria-hidden="true">
-            {arcs.map(a => <path key={a.k} d={a.d} fill={a.c} />)}
+            {arcs.map(a => <path key={a.k} d={a.d} fill={a.c} fillRule={a.plein ? "evenodd" : undefined} />)}
             <text x="60" y={centreSous ? 58 : 63} textAnchor="middle" fontSize={fs} fontWeight="800" fill="#1d2735" style={{ fontFamily: "'Lora','Playfair Display',serif" }}>{txt}</text>
             {centreSous ? <text x="60" y="72" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#a8a29e" style={{ letterSpacing: "0.08em" }}>{centreSous}</text> : null}
           </svg>
@@ -11595,7 +11619,7 @@
                               <NcDonut parts={enPct(arr)} libre={plaf} libreLib="Marge jusqu'à 35 %"
                                 libreAff={`${un(pcD(Math.max(0, plaf - arr.reduce((a2, b2) => a2 + b2.v, 0))))} %`}
                                 centre={taux != null ? `${un(taux * 100)} %` : "—"} centreSous="ENDETTEMENT"
-                                taille={(duoProj || duoFin) ? 92 : 118} />
+                                taille={(duoProj || duoFin) ? 108 : 138} />
                             );
                             /* RÈGLE CABINET conservée (29/08) : quand la situation CHANGE — projet
                                d'achat de résidence principale, ou crédits qui se terminent sous
@@ -11669,7 +11693,7 @@
                             const Camembert2 = ({ arr, centre, petit }) => (
                               <NcDonut parts={enEur(arr)} libre={envD} libreLib="Encore disponible"
                                 libreAff={`${nfMd(Math.max(0, envD - arr.reduce((a2, b2) => a2 + b2.v, 0)))} €`}
-                                centre={`${nfMd(centre)} €`} centreSous="DISPONIBLE" taille={petit ? 92 : 118} />
+                                centre={`${nfMd(centre)} €`} centreSous="DISPONIBLE" taille={petit ? 108 : 138} />
                             );
                             /* RÈGLE CABINET (29/08) conservée : deux états côte à côte quand la
                                situation change — le dessin remplace les jauges, pas la règle. */
@@ -11992,10 +12016,8 @@
                                 </div>
                               );
                             })()}
-                            <div className="text-[11.5px] mt-2.5 leading-snug" style={{ color: "#44403c" }}>
-                              À <b style={{ color: "#1d2735" }}>{eurV(ref.m)}/mois pendant 20 ans</b>, vous versez {eurV(ref.m * 240)} dans tous les cas :
-                              obtenir 5 % au lieu de 1,7 % représente <b style={{ color: "#0f766e" }}>{eurV(ecart)} de plus</b>, sans un euro de plus chaque mois.
-                            </div>
+                            {/* 18/09/2026 (CGP) : « supprime ton texte "À 500 €/mois pendant
+                                20 ans… chaque mois" ». L'histogramme le dit mieux que la phrase. */}
                             <div className="text-[10px] italic mt-1.5" style={{ color: "#a8a29e" }}>
                               Hypothèses de rendement annuel, versements en début de mois, hors fiscalité et frais. 1,7 % correspond au rendement des livrets. Les performances passées ne préjugent pas des performances futures.
                             </div>
@@ -12239,7 +12261,7 @@
                                vaut 152 500 € PAR BÉNÉFICIAIRE désigné, et c'est ainsi qu'il se dit
                                en rendez-vous. « à chacun de » a été ajouté à la phrase du CGP pour
                                que l'énoncé reste juste. */
-                            q: "Savez-vous que l'article 990 I du code général des impôts vous permet de transmettre à votre décès 152 500 € à chacun de vos bénéficiaires déclarés, sans un euro d'impôt ?" },
+                            q: "Connaissez-vous l'article 990 I du code général des impôts ?" },
                           /* ═══ RENDEMENT — le capital mal placé, chiffré jusqu'à 65 ans ═══
                              17/09/2026 (CGP) : « si le client a un PER, il vaut mieux lui poser des
                              questions sur la rentabilité des placements, sur le fait qu'un capital
@@ -12258,12 +12280,15 @@
                              qui passe devant toutes les autres (p : 1). */
                           { p: 1, fam: "tresorerie", cond: courtTQ >= 50000 && !projetRPQ, re: /jamais/,
                             q: `Vous conservez ${nfQ(courtTQ)} € sur des livrets et des comptes courants, sans projet d'achat de résidence principale. Cette somme rapporte peu et entrerait intégralement dans votre succession. Comment comptez-vous la réorganiser ?` },
+                          /* 18/09/2026, tournures dictées par le CGP : la CONDITION d'abord
+                             (« en cas de décès, sans testament »), la question ensuite, au futur
+                             simple — « savez-vous ce que percevra… ». Plus court, plus frontal. */
                           { p: 1, fam: "protection", re: /conjoint insuffisamment protégé|décès/i,
                             q: enCouple
-                              ? `Que percevrait ${sujetProt} en cas de décès, en l'absence de donation au dernier vivant ?`
-                              : "Que percevraient vos héritiers en cas de décès, en l'absence de disposition particulière ?" },
+                              ? `En cas de décès, sans donation au dernier vivant, savez-vous ce que percevra ${sujetProt} ?`
+                              : "En cas de décès, sans disposition particulière, savez-vous ce que percevront vos héritiers ?" },
                           { p: 1, fam: "protection", re: /partenaire|concubin|pacs/i,
-                            q: "Que percevrait votre partenaire en cas de décès, au vu de l'absence de testament ?" },
+                            q: "En cas de décès, sans testament, savez-vous ce que percevra votre partenaire ?" },
                           { p: 2, fam: "protection", re: /succession/i,
                             q: aEnfants
                               ? `Vos ${(d.enfants || []).length > 1 ? "enfants disposeraient" : "enfants disposeraient"} de six mois pour régler les droits de succession. Comment comptez-vous leur en donner les moyens ?`
@@ -12273,11 +12298,11 @@
                              C'est ce dernier mot qui crée le second rendez-vous. */
                           { p: 3, fam: "fiscalite", re: /fiscalité subie|impôt/i,
                             q: impot10 > 0
-                              ? `À législation constante, vous verserez ${nfQ(impot10)} € d'impôt sur les dix prochaines années. Savez-vous quelle part peut être réorientée vers votre propre patrimoine, et par quel mécanisme ?`
+                              ? `Que vous évoque le chiffre de ${nfQ(impot10)} € ?`
                               : "Savez-vous quelle part de votre imposition peut être réorientée vers votre propre patrimoine, et par quel mécanisme ?" },
                           { p: 4, fam: "retraite", re: /dispositif retraite|retraite de .* non préparée|retraite non préparée/i,
                             q: (pension > 0 && revAuj > 0)
-                              ? `À ${ageRet} ans${anneesRet > 0 ? `, soit dans ${anneesRet} ans` : ""}, vos revenus passeraient de ${nfQ(revAuj)} € à ${nfQ(pension)} € par mois. Comment comptez-vous compenser cette baisse ?`
+                              ? `${anneesRet > 0 ? `Dans ${anneesRet} ans, vous aurez ${ageRet} ans` : `À ${ageRet} ans`}, vos revenus passeront de ${nfQ(revAuj)} € à environ ${nfQ(Math.round(pension / 500) * 500)} €/mois. Comment comptez-vous compenser cette baisse ?`
                               : "Vos revenus baisseront au moment de votre retraite. Comment comptez-vous compenser cette baisse ?" },
                           /* La famille « levier » n'entre dans le tirage que si le client PEUT
                              emprunter (voir peutEmprunter) : sans capacité, on n'en parle pas. */
@@ -12338,7 +12363,7 @@
                            (Note interne : ce « placement garanti par l'État » est la déduction du
                            versement PER du revenu imposable — l'économie d'impôt vaut la TMI.) */
                         if (tmiQ >= 30) vues.push({ fam: "bonus", bonus: true,
-                          q: `Savez-vous que vous pouvez bénéficier d'un placement garanti à ${tmiQ} % par l'État la première année ? Le montant est plafonné : il se vérifie sur votre dernier avis d'imposition.` });
+                          q: `Connaissez-vous un placement qui permet de bénéficier de l'équivalent d'un rendement garanti par l'État de ${tmiQ} % la première année ?` });
                         if (!vues.length) return null;
                         return (
                           <div className="rounded-2xl bg-white border p-5 mb-4" data-nc-chap="Les questions du prochain rendez-vous" style={{ borderColor: "rgba(184,146,78,0.45)", borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
