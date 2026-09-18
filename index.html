@@ -1162,7 +1162,8 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v237 (18/09 : LES QUESTIONS, REPRISES MOT A MOT AVEC LE CGP. (1) LA QUESTION QUI DOIT SORTIR AVANT TOUTES LES AUTRES. Le CGP, sur un dossier reel : « pourquoi autant d epargne court terme, qui ne rapporte pas grand-chose et qui sera frappee de plein fouet par les droits de succession en cas de deces, alors qu il n y a AUCUN projet d achat de residence principale ? ». Trois conditions reunies — tresorerie de 50 000 € ou plus sur livrets et comptes courants, rendement de livret, et aucune destination annoncee — et la question passe en priorite 1 : « Vous conservez X € sur des livrets et des comptes courants, sans projet d achat de residence principale. Cette somme rapporte peu et entrerait integralement dans votre succession. Comment comptez-vous la reorganiser ? ». Si un projet de RP existe, la tresorerie a une destination : la question sort du tirage. (2) ARTICLE 990 I, formulation reprise par le CGP : « Savez-vous que l article 990 I du code general des impots vous permet de transmettre a votre deces 152 500 € a chacun de vos beneficiaires declares, sans un euro d impot ? ». Le montant N EST PLUS multiplie par le nombre d enfants : l abattement vaut 152 500 € PAR BENEFICIAIRE, et c est ainsi qu il se dit en rendez-vous. « a chacun de » a ete ajoute a la phrase du CGP pour que l enonce reste juste. (3) QUESTION FISCALE : « sur les dix prochaines annees » remplace « d ici dix ans ». (4) QUESTION DE LEVIER, formulation du CGP : « Si la banque vous faisait un pret d environ 350 000 €, dans quoi l investiriez-vous ? ». Le montant est ARRONDI aux 50 000 € : un chiffre au franc pres appellerait une discussion sur le calcul, alors que la question porte sur l EMPLOI des fonds. (5) UNE SIXIEME QUESTION, EN BONUS : « Savez-vous que vous pouvez beneficier d un placement garanti a 30 pct par l Etat la premiere annee ? Le montant est plafonne : il se verifie sur votre dernier avis d imposition. » LE TAUX ANNONCE EST LA TMI DU FOYER, jamais un taux generique — 30, 41 ou 45 pct selon le dossier. En dessous de 30 pct l argument ne porte pas : la question ne sort pas. Note interne, absente du document : ce placement garanti par l Etat est la deduction du versement PER du revenu imposable, dont l economie vaut exactement la TMI. Aucun produit n est nomme au client. CONTROLES : t_devoirs.js verifie les quatre formulations et exige que la question bonus annonce EXACTEMENT la TMI lue dans le bloc fiscal du meme document ; t_shot_pres.js accepte six questions au lieu de cinq et les deux nouvelles ouvertures (« Savez-vous que… », « Si la banque… »).)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v238 (18/09 : LES CHIFFRES DU DOSSIER SE REGARDENT, ILS NE SE LISENT PLUS. Le CGP : « tu ecris trop. Je veux un camembert pour le taux d endettement qui permette de lire que les 14,1 pct sont consommes par le loyer ; s il y avait eu un autre credit, il aurait fallu une autre couleur et mettre par exemple pret auto, ou residence secondaire, ou Pinel. Idem pour les autres : je veux quelque chose de visuel, avec aucun texte ou le minimum. » (1) LES QUATRE VIGNETTES DEVIENNENT DES CAMEMBERTS (NcDonut, SVG dessine a la main — aucune librairie, rien ne s execute a l impression). Taux d endettement : une part par LIGNE DE CHARGE, chacune nommee et coloree, le solde jusqu au plafond des 35 pct en gris, le taux au centre. Mensualite disponible : le meme anneau lu EN EUROS, la mensualite disponible au centre. Capacite d emprunt : le meme anneau (arbitrage du CGP), le montant empruntable au centre. Le financier : financier contre immobilier, la part du financier au centre. LA LEGENDE EST LE SEUL TEXTE ADMIS — un carre de couleur, le nom du poste, sa valeur. (2) LES PARAGRAPHES DE REGLE CABINET qui occupaient le bas des cartes sont retires. Ce qui ne se deduit PAS du dessin reste seul (« ces deux montants ne s additionnent pas : c est la meme enveloppe d endettement »), le reste est deja dans « Voir les hypotheses ». (3) CE QUI N A PAS DISPARU AVEC LES JAUGES : la regle du 29/08 — quand la situation CHANGE (projet d achat de residence principale, credits finissant sous 24 mois), on montre les DEUX ETATS COTE A COTE — tient toujours, en deux camemberts jumeaux avec leurs titres. Le dessin remplace les jauges, jamais la regle ; quatre bancs l ont vu avant moi en tombant en echec. (4) L HISTOGRAMME DES VERSEMENTS PROGRAMMES remplace le tableau croise : un seul horizon, VINGT ANS (arbitrage du CGP — un histogramme ne peut pas porter deux durees sans redevenir un tableau), un groupe par montant mensuel, trois barres par groupe (1,7 pct pierre, 5 pct vert cabinet, 7 pct or), le capital ecrit au-dessus de chaque barre. Dessine en FLEX et non en SVG : les hauteurs restent justes quand le document est mis a l echelle. Couleurs MAISON — le CGP a explicitement ecarte celles de l exemple qu il avait fourni. CONTROLES : cinq assertions de t_rdv1 et t_exp167 portaient sur les phrases explicatives que le CGP a fait retirer ; elles suivent desormais l INFORMATION dans la legende des camemberts, et non l ancienne phrase.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v237 (18/09 : LES QUESTIONS, REPRISES MOT A MOT AVEC LE CGP. (1) LA QUESTION QUI DOIT SORTIR AVANT TOUTES LES AUTRES. Le CGP, sur un dossier reel : « pourquoi autant d epargne court terme, qui ne rapporte pas grand-chose et qui sera frappee de plein fouet par les droits de succession en cas de deces, alors qu il n y a AUCUN projet d achat de residence principale ? ». Trois conditions reunies — tresorerie de 50 000 € ou plus sur livrets et comptes courants, rendement de livret, et aucune destination annoncee — et la question passe en priorite 1 : « Vous conservez X € sur des livrets et des comptes courants, sans projet d achat de residence principale. Cette somme rapporte peu et entrerait integralement dans votre succession. Comment comptez-vous la reorganiser ? ». Si un projet de RP existe, la tresorerie a une destination : la question sort du tirage. (2) ARTICLE 990 I, formulation reprise par le CGP : « Savez-vous que l article 990 I du code general des impots vous permet de transmettre a votre deces 152 500 € a chacun de vos beneficiaires declares, sans un euro d impot ? ». Le montant N EST PLUS multiplie par le nombre d enfants : l abattement vaut 152 500 € PAR BENEFICIAIRE, et c est ainsi qu il se dit en rendez-vous. « a chacun de » a ete ajoute a la phrase du CGP pour que l enonce reste juste. (3) QUESTION FISCALE : « sur les dix prochaines annees » remplace « d ici dix ans ». (4) QUESTION DE LEVIER, formulation du CGP : « Si la banque vous faisait un pret d environ 350 000 €, dans quoi l investiriez-vous ? ». Le montant est ARRONDI aux 50 000 € : un chiffre au franc pres appellerait une discussion sur le calcul, alors que la question porte sur l EMPLOI des fonds. (5) UNE SIXIEME QUESTION, EN BONUS : « Savez-vous que vous pouvez beneficier d un placement garanti a 30 pct par l Etat la premiere annee ? Le montant est plafonne : il se verifie sur votre dernier avis d imposition. » LE TAUX ANNONCE EST LA TMI DU FOYER, jamais un taux generique — 30, 41 ou 45 pct selon le dossier. En dessous de 30 pct l argument ne porte pas : la question ne sort pas. Note interne, absente du document : ce placement garanti par l Etat est la deduction du versement PER du revenu imposable, dont l economie vaut exactement la TMI. Aucun produit n est nomme au client. CONTROLES : t_devoirs.js verifie les quatre formulations et exige que la question bonus annonce EXACTEMENT la TMI lue dans le bloc fiscal du meme document ; t_shot_pres.js accepte six questions au lieu de cinq et les deux nouvelles ouvertures (« Savez-vous que… », « Si la banque… »).)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v236 (18/09 : DEUX DEMANDES DU CGP. (1) LOGEMENT, IMMOBILIER ET CREDITS : l allusion a la VEFA disparait de la note du credit qui se termine sous 24 mois. La regle cabinet tient sans elle — la franchise de remboursement se dit dans tous les cas, l achat sur plan est un cas particulier qui n a rien a faire dans un constat. ATTENTION : la meme regle est rappelee une seconde fois sous le compteur du taux d endettement, ou l allusion SUBSISTE — a trancher avec le CGP. (2) VOS PLACEMENTS — ETAT DES LIEUX : « peux-tu faire de beaux cadres pour l epargne de Monsieur, de Madame et la commune ? ». Chaque detenteur a desormais SA CARTE — filet de couleur en tete (bleu Monsieur, rouge Madame, teal commun), nom et total sur la meme ligne, puis les contrats en dessous dans l ecriture de « Vos revenus mensuels ». L ordre de lecture reste Monsieur · Commun · Madame, arbitre la veille. CONTROLE : t_devoirs.js isole le bloc « Logement, immobilier & credits » et exige qu il ne contienne plus le mot VEFA — borne au bloc vise, pour ne pas masquer la seconde occurrence restee ailleurs.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v235 (18/09 : LA DATE DE NAISSANCE DES ENFANTS RESSORT, ET LES NOTES PASSENT AU-DESSUS DES QUESTIONS. (1) LE CGP : « quel interet de renseigner la date de naissance de l enfant si tu ne la reprends pas dans l analyse ? ». Il avait raison : la v234 ajoutait le champ mais la date n apparaissait NULLE PART — seul l age en sortait. Le chapitre « Votre foyer » ecrit desormais la date quand elle est connue : « Lea — 15/01/2013, 13 ans — enfant commun ». Meme regle que pour les parents, dont la colonne porte la date. Aucune date n est INVENTEE : un enfant saisi par son age ou par son annee ressort sans date, avec son age seul. (2) LES NOTES DU RENDEZ-VOUS passent JUSTE AU-DESSUS des questions (« peux-tu mettre les notes qui sont prises au-dessus des questions »). C est leur place : ce qui a ete dit de vive voix precede les questions qui ouvrent le rendez-vous suivant. Elles passent au passage a la taille du reste du document (13 px au lieu de 12), retours a la ligne conserves. CONTROLES : t_devoirs.js exige la date ET l age pour l enfant saisi par sa date, et refuse toute date inventee pour celui saisi par son age ; t_notes172.js controle la POSITION des notes par rapport aux questions. AU PASSAGE, DEUX ASSERTIONS PERIMEES de t_notes172.js remises d aplomb : elles cherchaient dans la synthese du PREMIER rendez-vous une phrase qui appartient aux puces de capacite du volet « Simulation et plan d action ». Ce banc n etant pas appele par verif.sh, l echec dormait depuis des mois — le meme defaut que celui corrige le 02/09 sur t_rdv1 et t_exp167.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v234 (18/09 : LE DOCUMENT SORTAIT RETRECI D UN TIERS — A CAUSE D UNE SEULE LIGNE. (1) LA CAUSE. Le CGP : « le document parait tout petit et sous-dimensionne » et « souci d impression au niveau de Note dans autres credits ». Un seul et meme defaut : la ligne « Note » d un credit qui se termine sous 24 mois est une PHRASE ENTIERE, posee dans une colonne de chiffres avec white-space: nowrap. Elle ne se coupait pas, debordait la largeur du papier, et Chrome met alors LA PAGE ENTIERE a l echelle pour la faire tenir : tout le document sortait a deux tiers de sa taille, tasse en haut a gauche de la feuille. REGLE DESORMAIS GRAVEE : dans un document imprime, aucune valeur de longueur libre ne porte nowrap. Une valeur de plus de 28 caracteres prend en plus la LARGEUR ENTIERE de la ligne, hors de la colonne de chiffres. (2) LE CONTROLE QUI MANQUAIT. t_pdf_pages.js emule le media print, mesure le debordement horizontal de CHAQUE element du porteur d impression et echoue au premier pixel de trop ; t_devoirs.js fait la meme mesure sur la synthese a l ecran, sur un dossier qui porte justement cette ligne « Note ». Ce defaut ne se lit NI a l ecran NI dans le compte de pages : sans mesure, il repasse. (3) VOS PLACEMENTS — ETAT DES LIEUX, presentation reprise (« la c est vraiment trop fouillis »). Les trois totaux du bas (Total Monsieur, Total Madame, Total commun) sont SUPPRIMES : le total de chaque colonne remonte dans son EN-TETE, a droite du nom. L ordre de lecture devient Monsieur · Commun · Madame — l epargne commune AU MILIEU, entre les deux personnes qu elle concerne. (4) TROIS FACONS DE RENSEIGNER LA NAISSANCE D UN ENFANT (demande du CGP) : la date complete, l annee seule, ou l age. Les trois champs se tiennent — ce qui est saisi dans l un met les autres a jour — et l age remonte automatiquement dans la synthese : age EXACT au jour pres quand la date est connue, age atteint dans l annee sinon. Ce qui est STOCKE : la date si elle est connue, et toujours l annee ; jamais l age, qui deviendrait faux a la reouverture du dossier. Le calcul fiscal garde sa regle propre (age apprecie au 1er janvier, art. 6, 3 CGI). CONTROLE : t_devoirs.js saisit le premier enfant par sa DATE (age exact 13 ans) et le second par son AGE (10 ans), et verifie que les deux remontent dans « Votre foyer ». Neuf bancs ont ete mis a jour : le champ « Annee naiss. » n existe plus sous ce nom. RESULTAT MESURE : 7 pages, remplissage 97/93/82/95/100/98/98 pct, identique sur A4 et sur Letter, aucun debordement horizontal, quinze etapes de verif.sh au vert.)','font-weight:bold;color:#047857');
@@ -2590,6 +2591,64 @@
         <div style={{ height: 3, width: 64, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginTop: 10 }}></div>
       </div>
     );
+    /* ═══ CAMEMBERT DE RÉPARTITION (18/09/2026, CGP) ═══
+       « Pour les chiffres du dossier, tu écris trop. Je veux un camembert pour le taux
+       d'endettement qui permette de lire que les 14,1 % sont consommés par le loyer ;
+       s'il y avait eu un autre crédit, il aurait fallu mettre une autre couleur et
+       mettre par exemple prêt auto, ou résidence secondaire, ou Pinel. Idem pour les
+       autres : je veux quelque chose de visuel, avec aucun texte ou le minimum. »
+       UNE PART PAR POSTE, chacune sa couleur et son nom ; le solde en gris clair. Au
+       centre, LE chiffre de la carte. La légende est le seul texte admis : un point de
+       couleur, le nom du poste, sa valeur. Rien d'autre.
+       Le camembert est dessiné en SVG (pas de librairie) : il doit sortir à
+       l'impression, où aucun script ne tourne. */
+    const NC_PARTS_C = ["#b91c1c", "#b45309", "#6d28d9", "#0369a1", "#9d4a6b", "#4d7c0f", "#a16207"];
+    const NcDonut = ({ parts, centre, centreSous, taille = 118, libre = true, libreLib = "Disponible", libreAff }) => {
+      const list = (parts || []).filter(x => x && x.v > 0);
+      const somme = list.reduce((s, x) => s + x.v, 0);
+      const total = Math.max(somme, (libre && typeof libre === "number") ? libre : somme);
+      if (!(total > 0)) return null;
+      const reste = Math.max(0, total - somme);
+      const secteurs = reste > 0.0001 ? list.concat([{ l: libreLib, v: reste, c: "#e7e5e4", pale: true, aff: libreAff }]) : list;
+      const R = 50, r = 31, cx = 60, cy = 60;
+      let a0 = -Math.PI / 2;
+      const arcs = secteurs.map((x, i) => {
+        const ang = (x.v / total) * Math.PI * 2;
+        const a1 = a0 + ang;
+        const gd = ang > Math.PI ? 1 : 0;
+        const p = [
+          `M ${cx + R * Math.cos(a0)} ${cy + R * Math.sin(a0)}`,
+          `A ${R} ${R} 0 ${gd} 1 ${cx + R * Math.cos(a1)} ${cy + R * Math.sin(a1)}`,
+          `L ${cx + r * Math.cos(a1)} ${cy + r * Math.sin(a1)}`,
+          `A ${r} ${r} 0 ${gd} 0 ${cx + r * Math.cos(a0)} ${cy + r * Math.sin(a0)}`,
+          "Z",
+        ].join(" ");
+        a0 = a1;
+        return { d: p, c: x.c || NC_PARTS_C[i % NC_PARTS_C.length], k: i };
+      });
+      const txt = String(centre == null ? "" : centre);
+      const fs = txt.length <= 5 ? 17 : txt.length <= 7 ? 14.5 : txt.length <= 9 ? 12.5 : 11;
+      return (
+        <div className="flex items-center gap-4 w-full">
+          <svg viewBox="0 0 120 120" style={{ width: taille, height: taille, flexShrink: 0 }} aria-hidden="true">
+            {arcs.map(a => <path key={a.k} d={a.d} fill={a.c} />)}
+            <text x="60" y={centreSous ? 58 : 63} textAnchor="middle" fontSize={fs} fontWeight="800" fill="#1d2735" style={{ fontFamily: "'Lora','Playfair Display',serif" }}>{txt}</text>
+            {centreSous ? <text x="60" y="72" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#a8a29e" style={{ letterSpacing: "0.08em" }}>{centreSous}</text> : null}
+          </svg>
+          <div className="flex-1" style={{ minWidth: 0 }}>
+            {secteurs.map((x, i) => (
+              <div key={i} className="flex items-baseline justify-between gap-2" style={{ paddingTop: 3, paddingBottom: 3 }}>
+                <span className="flex items-baseline gap-2" style={{ minWidth: 0 }}>
+                  <span style={{ display: "inline-block", width: 8, height: 8, borderRadius: 2, background: arcs[i] ? arcs[i].c : "#e7e5e4", flexShrink: 0 }}></span>
+                  <span style={{ fontSize: 11.5, color: x.pale ? "#a8a29e" : "#44403c", overflowWrap: "anywhere" }}>{x.l}</span>
+                </span>
+                <span className="num tabular-nums" style={{ fontSize: 12, fontWeight: 700, color: x.pale ? "#a8a29e" : "#1d2735", flexShrink: 0 }}>{x.aff}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    };
     // Smiley d'un placement (28/08) : vert souriant = satisfait, gris neutre = sans
     // avis, rouge triste = non satisfait — en SVG (les emojis systèmes ne sortent
     // pas de façon fiable dans les PDF).
@@ -11516,39 +11575,62 @@
                       return (
                         <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Taux d'endettement</div>
-                          <div className="nc-zone-jauge flex flex-col items-center justify-start">
+                          {/* 18/09/2026 (CGP) : « je veux un camembert qui permette de lire que les
+                              14,1 % sont consommés par le loyer ; s'il y avait eu un autre crédit,
+                              il aurait fallu une autre couleur et son nom ». UNE PART PAR LIGNE DE
+                              CHARGE, chacune nommée, le solde jusqu'au plafond des 35 % en gris.
+                              Les paragraphes de règle cabinet qui occupaient le bas de la carte sont
+                              retirés : « tu écris trop ». */}
                           {(() => {
-                            // RÈGLE CABINET (29/08) : deux jauges dans un même bloc = on doit voir
-                            // TOUT DE SUITE de quoi on parle — TITRE bien lisible AU-DESSUS de
-                            // chaque jauge (pas une petite ligne grise à déchiffrer dessous).
-                            const DuoT = ({ t, sub, c }) => (
-                              <div className="text-center mb-1 leading-tight">
-                                <div className="text-[12px] uppercase tracking-wide font-extrabold" style={{ color: c || "#1d2735" }}>{t}</div>
-                                {sub && <div className="text-[10.5px] font-bold text-stone-500 mt-0.5">{sub}</div>}
+                            const revD = synth.totalRevenus || 0;
+                            const pcD = (v) => revD > 0 ? (v / revD * 100) : 0;
+                            // une décimale TOUJOURS affichée : « 20,0 % », jamais « 20 % »
+                            const un = (x) => Number(x || 0).toFixed(1).replace(".", ",");
+                            const nfD = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
+                            const plaf = revD * 0.35;
+                            const base0 = (synth.charges || []).filter(c => ncInt(c.mensuel) > 0)
+                              .map(c => ({ l: c.label, v: ncInt(c.mensuel) }));
+                            const enPct = (arr) => arr.map(x => ({ l: x.l, v: x.v, c: x.c, aff: `${un(pcD(x.v))} %` }));
+                            const Camembert = ({ arr, taux }) => (
+                              <NcDonut parts={enPct(arr)} libre={plaf} libreLib="Marge jusqu'à 35 %"
+                                libreAff={`${un(pcD(Math.max(0, plaf - arr.reduce((a2, b2) => a2 + b2.v, 0))))} %`}
+                                centre={taux != null ? `${un(taux * 100)} %` : "—"} centreSous="ENDETTEMENT"
+                                taille={(duoProj || duoFin) ? 92 : 118} />
+                            );
+                            /* RÈGLE CABINET conservée (29/08) : quand la situation CHANGE — projet
+                               d'achat de résidence principale, ou crédits qui se terminent sous
+                               24 mois — on montre les DEUX états côte à côte, chacun avec son
+                               camembert et son titre. Le dessin remplace les jauges, pas la règle. */
+                            const Titre = ({ t, sub, c }) => (
+                              <div className="text-center mb-1.5 leading-tight">
+                                <div className="text-[11px] uppercase tracking-wide font-extrabold" style={{ color: c || "#1d2735" }}>{t}</div>
+                                {sub ? <div className="text-[10px] font-bold text-stone-500 mt-0.5">{sub}</div> : null}
                               </div>
                             );
-                            const nfT = (n) => new Intl.NumberFormat('fr-FR').format(n || 0);
-                            if (duoProj) return (
-                            <>
-                              <div className="grid grid-cols-2 gap-2 w-full">
-                                <div><DuoT t="Aujourd'hui" sub={`loyer actuel ${nfT(ncInt(d.loyer))} €/mois`} /><Cpt t={tActu} sous={null} /></div>
-                                <div><DuoT t="Avec le projet RP" c="#0f766e" sub={`futur crédit ${nfT(projCpt)} €/mois`} /><Cpt t={synth.taux} sous={null} /></div>
-                              </div>
-                              <div className="w-full mt-1.5 text-[9px] text-stone-400 text-center leading-snug">règle cabinet : l'endettement retenu intègre la mensualité envisagée du futur crédit de résidence principale, à la place du loyer actuel — pour ne pas bloquer ce futur achat par un investissement locatif dimensionné au maximum</div>
-                            </>
-                            );
-                            if (duoFin) return (
-                            <>
-                              <div className="grid grid-cols-2 gap-2 w-full">
-                                <div><DuoT t="Aujourd'hui" sub="tous crédits comptés" /><Cpt t={tA} sous={null} /></div>
-                                <div><DuoT t={`Après la fin ${rpFinM > 0 ? "du prêt RP" : "des crédits"}`} c="#0f766e" sub="moins de 24 mois" /><Cpt t={tP} sous={null} /></div>
-                              </div>
-                              <div className="w-full mt-1.5 text-[9px] text-stone-400 text-center leading-snug">règle cabinet : un prêt finissant sous 24 mois n'est pas compté — un nouveau financement peut prévoir une franchise de remboursement le temps de sa fin (VEFA : prêt soldé le temps de la construction et de la livraison)</div>
-                            </>
-                            );
-                            return <Cpt t={synth.taux} sous={base} solo />;
+                            if (duoProj) {
+                              /* « aujourd'hui » : le futur crédit de résidence principale n'existe
+                                 pas encore, c'est le loyer actuel qui pèse. */
+                              const sansProjet = base0.filter(x => !/projet|future? résidence|crédit rp projeté/i.test(x.l));
+                              const gauche = sansProjet.concat(ncInt(d.loyer) > 0 ? [{ l: "Loyer actuel", v: ncInt(d.loyer) }] : []);
+                              return (
+                                <div className="grid grid-cols-2 gap-3 w-full">
+                                  <div><Titre t="Aujourd'hui" sub={`loyer actuel ${nfD(ncInt(d.loyer))} €/mois`} /><Camembert arr={gauche} taux={tActu} /></div>
+                                  <div><Titre t="Avec le projet RP" c="#0f766e" sub={`futur crédit ${nfD(projCpt)} €/mois`} /><Camembert arr={base0} taux={synth.taux} /></div>
+                                </div>
+                              );
+                            }
+                            if (duoFin) {
+                              const finissants = exclusConso + rpFinM;
+                              const gauche = base0.concat(finissants > 0 ? [{ l: "Crédits finissant sous 24 mois", v: finissants }] : []);
+                              return (
+                                <div className="grid grid-cols-2 gap-3 w-full">
+                                  <div><Titre t="Aujourd'hui" sub="tous crédits comptés" /><Camembert arr={gauche} taux={tA} /></div>
+                                  <div><Titre t={`Après la fin ${rpFinM > 0 ? "du prêt RP" : "des crédits"}`} c="#0f766e" sub="moins de 24 mois" /><Camembert arr={base0} taux={tP} /></div>
+                                </div>
+                              );
+                            }
+                            return <Camembert arr={base0} taux={synth.taux} />;
                           })()}
-                          </div>
                         </div>
                       );
                     })()}
@@ -11564,8 +11646,14 @@
                       return (
                         <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Mensualité disponible</div>
-                          <div className="nc-zone-jauge flex flex-col items-center justify-start">
+                          {/* 18/09/2026 (CGP) : même camembert que le taux d'endettement, mais lu
+                              EN EUROS — ce qui est déjà engagé, poste par poste, et ce qui reste
+                              dans l'enveloppe des 35 %. Au centre, la mensualité encore disponible.
+                              Les deux paragraphes de règle cabinet sont retirés : « tu écris trop ». */}
                           {(() => {
+                            const envD = Math.round((synth.totalRevenus || 0) * 0.35);
+                            const base0 = (synth.charges || []).filter(c => ncInt(c.mensuel) > 0)
+                              .map(c => ({ l: c.label, v: ncInt(c.mensuel) }));
                             const mtnY = new Date();
                             const exclusC2 = (d.credits || []).reduce((s2, c) => {
                               const [fa, fm] = ((c.finMois || (c.fin ? `${c.fin}-12` : "")) + "").split("-");
@@ -11577,61 +11665,45 @@
                             const rpFin2 = d.logement === "proprietaire" && d.rpCreditQ === "oui" && isFinite(dRP2) && dRP2 > 0 && dRP2 <= 2 ? ncInt(d.rpMensualite) : 0;
                             const duo2 = exclusC2 > 0 || rpFin2 > 0;
                             const proj2 = synth.rpProjetRetenu || 0;
-                            // Deux jauges = titres bien lisibles AU-DESSUS (règle cabinet 29/08).
-                            const DuoT2 = ({ t, sub, c }) => (
-                              <div className="text-center mb-1 leading-tight">
-                                <div className="text-[12px] uppercase tracking-wide font-extrabold" style={{ color: c || "#1d2735" }}>{t}</div>
-                                {sub && <div className="text-[10.5px] font-bold text-stone-500 mt-0.5">{sub}</div>}
+                            const enEur = (arr) => arr.map(x => ({ l: x.l, v: x.v, aff: `${nfMd(x.v)} €` }));
+                            const Camembert2 = ({ arr, centre, petit }) => (
+                              <NcDonut parts={enEur(arr)} libre={envD} libreLib="Encore disponible"
+                                libreAff={`${nfMd(Math.max(0, envD - arr.reduce((a2, b2) => a2 + b2.v, 0)))} €`}
+                                centre={`${nfMd(centre)} €`} centreSous="DISPONIBLE" taille={petit ? 92 : 118} />
+                            );
+                            /* RÈGLE CABINET (29/08) conservée : deux états côte à côte quand la
+                               situation change — le dessin remplace les jauges, pas la règle. */
+                            const Titre2 = ({ t, sub, c }) => (
+                              <div className="text-center mb-1.5 leading-tight">
+                                <div className="text-[11px] uppercase tracking-wide font-extrabold" style={{ color: c || "#1d2735" }}>{t}</div>
+                                {sub ? <div className="text-[10px] font-bold text-stone-500 mt-0.5">{sub}</div> : null}
                               </div>
                             );
                             if (proj2 > 0) {
-                              const dispoActu2 = Math.max(0, Math.round((synth.totalRevenus || 0) * 0.35 - Math.max(0, (synth.totalCharges || 0) - proj2 + ncInt(d.loyer))));
+                              const sansProjet = base0.filter(x => !/projet|future? résidence|crédit rp projeté/i.test(x.l));
+                              const gauche = sansProjet.concat(ncInt(d.loyer) > 0 ? [{ l: "Loyer actuel", v: ncInt(d.loyer) }] : []);
+                              const dispoActu2 = Math.max(0, Math.round(envD - gauche.reduce((a2, b2) => a2 + b2.v, 0)));
                               return (
-                                <div className="grid grid-cols-2 gap-2 w-full">
-                                  <div><DuoT2 t="Aujourd'hui" sub="avec le loyer actuel" />
-                                  <NcCompteur pct={envMd > 0 ? dispoActu2 / envMd : 0} marker={null}
-                                    minLib="0 €" maxLib={`${nfMd(envMd)} €`}
-                                    couleur="#1d2735" piste="#dcdfe4" valeur={`${nfMd(dispoActu2)} €`} /></div>
-                                  <div><DuoT2 t="Avec le projet RP" c="#0f766e" sub={`futur crédit ${nfMd(proj2)} €/mois`} />
-                                  <NcCompteur pct={envMd > 0 ? synth.dispo35 / envMd : 0} marker={null}
-                                    minLib="0 €" maxLib={`${nfMd(envMd)} €`}
-                                    couleur="#0f766e" piste="#d9ebe7" valeur={`${nfMd(synth.dispo35)} €`} /></div>
+                                <div className="grid grid-cols-2 gap-3 w-full">
+                                  <div><Titre2 t="Aujourd'hui" sub="avec le loyer actuel" /><Camembert2 arr={gauche} centre={dispoActu2} petit /></div>
+                                  <div><Titre2 t="Avec le projet RP" c="#0f766e" sub={`futur crédit ${nfMd(proj2)} €/mois`} /><Camembert2 arr={base0} centre={synth.dispo35} petit /></div>
                                 </div>
                               );
                             }
-                            if (!duo2) return (
-                              <NcCompteur solo pct={envMd > 0 ? synth.dispo35 / envMd : 0} marker={null}
-                                minLib="0 €" maxLib={`${nfMd(envMd)} €`}
-                                couleur="#1d2735" piste="#dcdfe4" valeur={`${nfMd(synth.dispo35)} €`}
-                                sous="encore disponible pour de nouveaux crédits" />
-                            );
-                            const dispoAvant = Math.max(0, Math.round((synth.totalRevenus || 0) * 0.35 - ((synth.totalCharges || 0) + exclusC2)));
-                            const dispoApres = Math.max(0, Math.round((synth.totalRevenus || 0) * 0.35 - Math.max(0, (synth.totalCharges || 0) - rpFin2)));
-                            return (
-                              <div className="grid grid-cols-2 gap-2 w-full">
-                                <div><DuoT2 t="Aujourd'hui" sub="tous crédits comptés" />
-                                <NcCompteur pct={envMd > 0 ? dispoAvant / envMd : 0} marker={null}
-                                  minLib="0 €" maxLib={`${nfMd(envMd)} €`}
-                                  couleur="#1d2735" piste="#dcdfe4" valeur={`${nfMd(dispoAvant)} €`} /></div>
-                                <div><DuoT2 t={`Après la fin ${rpFin2 > 0 ? "du prêt RP" : "des crédits"}`} c="#0f766e" sub="moins de 24 mois" />
-                                <NcCompteur pct={envMd > 0 ? dispoApres / envMd : 0} marker={null}
-                                  minLib="0 €" maxLib={`${nfMd(envMd)} €`}
-                                  couleur="#0f766e" piste="#d9ebe7" valeur={`${nfMd(dispoApres)} €`} /></div>
-                              </div>
-                            );
+                            if (duo2) {
+                              const finissants = exclusC2 + rpFin2;
+                              const gauche = base0.concat(finissants > 0 ? [{ l: "Crédits finissant sous 24 mois", v: finissants }] : []);
+                              const dispoAvant = Math.max(0, Math.round(envD - gauche.reduce((a2, b2) => a2 + b2.v, 0)));
+                              const dispoApres = Math.max(0, Math.round(envD - base0.reduce((a2, b2) => a2 + b2.v, 0)));
+                              return (
+                                <div className="grid grid-cols-2 gap-3 w-full">
+                                  <div><Titre2 t="Aujourd'hui" sub="tous crédits comptés" /><Camembert2 arr={gauche} centre={dispoAvant} petit /></div>
+                                  <div><Titre2 t={`Après la fin ${rpFin2 > 0 ? "du prêt RP" : "des crédits"}`} c="#0f766e" sub="moins de 24 mois" /><Camembert2 arr={base0} centre={dispoApres} petit /></div>
+                                </div>
+                              );
+                            }
+                            return <Camembert2 arr={base0} centre={synth.dispo35} />;
                           })()}
-                          </div>
-                          <div className="w-full border-t border-stone-100 nc-cpt-notes">
-                            <div className="text-[9px] text-stone-400 leading-snug">capacité d'endettement bancaire ≠ reste à vivre : cette enveloppe mesure ce que la banque peut prêter, pas ce que le budget peut épargner (voir capacité d'épargne réelle)</div>
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="text-[10px] font-semibold text-stone-500">Enveloppe d'endettement — 35 % des revenus</span>
-                              <span className="num text-[11.5px] font-extrabold text-stone-800 whitespace-nowrap">{nfMd(envMd)} €/mois</span>
-                            </div>
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="text-[10px] font-semibold text-stone-500">Déjà engagés ({libEngage})</span>
-                              <span className="num text-[11.5px] font-extrabold text-stone-800 whitespace-nowrap">{nfMd(synth.totalCharges)} €/mois</span>
-                            </div>
-                          </div>
                           {loyerMd > 0 && (
                             <div className="border-t border-stone-100 text-center nc-cpt-notes">
                               <div className="num text-[13px] font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{nfMd(synth.dispo35 + loyerMd)} €<span className="text-[9.5px] font-medium text-stone-500"> · achat RP ({d.logement === "gratuit" ? "forfait logement supprimé" : "loyer supprimé"})</span></div>
@@ -11667,29 +11739,32 @@
                       return (
                         <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Capacité d'emprunt <span className="sfx">· {duree} ans</span></div>
-                          {/* RÈGLE CABINET (28/08) : client déjà PROPRIÉTAIRE de sa RP → la capacité
-                              se projette UNIQUEMENT sur l'investissement locatif — plus aucune
-                              référence à une résidence principale ou secondaire. */}
+                          {/* 18/09/2026 (CGP, arbitrage) : la vignette porte LE CAMEMBERT DU BUDGET
+                              DES 35 %, légendé en euros — ce qui est engagé, ce qui reste — et au
+                              centre le montant que la banque prêterait. Les quatre vignettes des
+                              « chiffres du dossier » se lisent ainsi de la même façon.
+                              RÈGLE CABINET (28/08) : client déjà PROPRIÉTAIRE de sa RP → la capacité
+                              se projette UNIQUEMENT sur l'investissement locatif. */}
+                          {(() => {
+                            const envC = Math.round((synth.totalRevenus || 0) * 0.35);
+                            const partsC = (synth.charges || [])
+                              .filter(c => ncInt(c.mensuel) > 0)
+                              .map(c => ({ l: c.label, v: ncInt(c.mensuel), aff: `${nfC(ncInt(c.mensuel))} €` }));
+                            return <NcDonut parts={partsC} libre={envC} libreLib="Encore disponible"
+                              libreAff={`${nfC(Math.max(0, envC - partsC.reduce((a2, b2) => a2 + b2.v, 0)))} €`}
+                              centre={`${nfC(capLoc)} €`} centreSous="EMPRUNTABLE" />;
+                          })()}
                           {d.logement === "proprietaire" ? (
                             <>
-                              <div className="nc-zone-jauge flex flex-col items-center justify-start">
-                              <NcCompteur solo pct={1} marker={null}
-                                minLib="0 €" maxLib={`${nfC(capLoc)} €`}
-                                couleur="#0f766e" piste="#d9ebe7" valeur={`≈ ${nfC(capLoc)} €`}
-                                sous="investissement locatif" />
-                              </div>
                               <div className="w-full border-t border-stone-100 nc-cpt-notes">
-                                <div className="text-[9px] text-stone-400">retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus · déjà propriétaire : projection locative uniquement (règle cabinet)</div>
+                                <div className="flex items-baseline justify-between gap-2">
+                                  <span className="text-[10px] font-semibold" style={{ color: "#0f766e" }}>Investissement locatif</span>
+                                  <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: "#0f766e" }}>≈ {nfC(capLoc)} €</span>
+                                </div>
                               </div>
                             </>
                           ) : (
                             <>
-                              <div className="nc-zone-jauge flex flex-col items-center justify-start">
-                              <NcCompteur solo pct={1} marker={null}
-                                minLib="0 €" maxLib={`${nfC(capLoc)} €`}
-                                couleur="#0f766e" piste="#d9ebe7" valeur={`≈ ${nfC(capLoc)} €`}
-                                sous={pRP.chiffre ? "place pour un INVESTISSEMENT LOCATIF, une fois le projet de résidence principale financé — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance" : `INVESTISSEMENT LOCATIF, ${d.logement === "gratuit" ? "logement actuel conservé" : "location actuelle conservée"} — hypothèses : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance`} />
-                              </div>
                               <div className="w-full border-t border-stone-100 nc-cpt-notes">
                                 {/* 02/09 : options EXCLUSIVES, jamais cumulables — c est la MEME
                                     enveloppe d endettement. 10/09 : la residence secondaire est
@@ -11704,7 +11779,7 @@
                                       <span className="text-[10px] font-semibold" style={{ color: "#0f766e" }}>② Place restante pour du locatif <span className="font-normal text-stone-400">— {nfC(synth.dispo35)} €/mois encore disponibles + loyers attendus</span></span>
                                       <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: "#0f766e" }}>≈ {nfC(capLoc)} €</span>
                                     </div>
-                                    <div className="text-[9px] text-stone-400">le futur crédit RP est compté dans l'endettement à la place du loyer actuel · retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus · hypothèses cabinet août 2026</div>
+
                                   </>
                                 ) : (
                                   <>
@@ -11716,8 +11791,11 @@
                                       <span className="text-[10px] font-semibold text-stone-500">② Résidence principale <span className="font-normal text-stone-400">— {d.logement === "gratuit" ? "forfait logement supprimé" : "loyer actuel supprimé"}</span></span>
                                       <span className="num text-[11.5px] font-extrabold whitespace-nowrap text-stone-600">≈ {nfC(capRetenu)} €</span>
                                     </div>
-                                    <div className="text-[9px] leading-snug" style={{ color: "#b45309" }}>Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement, selon l'usage du bien.</div>
-                                    <div className="text-[9px] text-stone-400">retour de loyer attendu : 4 % · 75 % des loyers comptés en revenus{loyerCapT > 0 ? " · achat RP : loyer actuel quitté, retiré des charges" : ""} · hypothèses cabinet août 2026</div>
+                                    {/* 18/09/2026 (CGP : « tu écris trop ») : les deux paragraphes
+                                        d'hypothèses sont retirés. Ce qui RESTE est ce qui ne se
+                                        déduit pas du dessin : les deux montants ne s'additionnent
+                                        pas. Les hypothèses de calcul sont dans « Voir les hypothèses ». */}
+                                    <div className="text-[9.5px] leading-snug" style={{ color: "#b45309" }}>Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement, selon l'usage du bien.</div>
                                   </>
                                 )}
                                 {/* 29/08 (contrôle expert n°3) : en union libre, le montant global
@@ -11771,23 +11849,17 @@
                       return (
                         <div className="rounded-2xl px-4 py-3 bg-white border border-stone-200 flex flex-col nc-cpt" style={{ boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                           <div className="nc-ctitre mb-3">Le financier</div>
-                          <div className="nc-zone-jauge flex flex-col items-center justify-start">
-                            <NcCompteur solo pct={partFin} marker={null}
-                              minLib="0 %" maxLib="100 %"
-                              couleur={coul} piste={piste}
-                              valeur={`${Math.round(partFin * 100)} %`}
-                              sous={sousTxt} />
-                          </div>
-                          <div className="w-full border-t border-stone-100 nc-cpt-notes">
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="text-[10px] font-semibold text-stone-500">Financier</span>
-                              <span className="num text-[11.5px] font-extrabold whitespace-nowrap" style={{ color: coul }}>{nfI(Math.max(0, actifT - synth.actifImmo))} €</span>
-                            </div>
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="text-[10px] font-semibold text-stone-500">Immobilier{projRP ? " (avant l'achat de la RP)" : ""}</span>
-                              <span className="num text-[11.5px] font-extrabold text-stone-800 whitespace-nowrap">{nfI(synth.actifImmo)} €</span>
-                            </div>
-                          </div>
+                          {/* 18/09/2026 (CGP) : le camembert de la composition du patrimoine — la
+                              poche financière et la poche immobilière, en euros dans la légende, et
+                              la part du financier au centre. La phrase explicative est retirée : le
+                              dessin la dit. */}
+                          <NcDonut
+                            parts={[
+                              { l: "Financier", v: Math.max(0, actifT - synth.actifImmo), c: coul, aff: `${nfI(Math.max(0, actifT - synth.actifImmo))} €` },
+                              { l: projRP ? "Immobilier (avant l'achat de la RP)" : "Immobilier", v: Math.max(0, synth.actifImmo), c: "#1d2735", aff: `${nfI(synth.actifImmo)} €` },
+                            ]}
+                            libre={false}
+                            centre={`${Math.round(partFin * 100)} %`} centreSous="FINANCIER" />
                         </div>
                       );
                     })()}
@@ -11865,94 +11937,61 @@
                             <div className="text-[11.5px] text-stone-600 mb-3 leading-snug">
                               Une épargne régulière, selon le rendement obtenu — <b style={{ color: "#1d2735" }}>la même somme, placée autrement</b>.
                             </div>
-                            {/* 15/09/2026 (CGP, deuxième passe) : « la partie taux de rendement n'est
-                                pas claire ni mise en avant » et « mets en avant avec un encadrement
-                                en vert la capacité d'épargne déclarée ».
-                                — le mot RENDEMENT ANNUEL est écrit en toutes lettres dans l'en-tête,
-                                  et chaque taux est un vrai chiffre lisible, plus une mention en
-                                  petit (« livrets » / « hypothèse du cabinet ») ;
-                                — la ligne de la capacité déclarée est ENCADRÉE EN VERT sur toute sa
-                                  largeur : c'est la ligne dont on parle au client. */}
-                            <div className="rounded-xl overflow-hidden" style={{ border: "1px solid rgba(10,9,8,0.12)" }}>
-                              <table className="w-full" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
-                                <thead>
-                                  <tr>
-                                    <th className="text-left px-3.5 pt-2.5 pb-1 align-bottom" style={{ width: "28%", background: "#fbfaf8", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "#57534e", fontWeight: 800 }}>
-                                      Épargne mensuelle
-                                    </th>
-                                    {DUREES.map((an, i) => (
-                                      <th key={i} colSpan={3} className="text-center px-2 pt-2.5 pb-1"
-                                        style={{ background: i === 1 ? "#f7f2e8" : "#fbfaf8", fontFamily: "'Lora','Playfair Display',serif", fontSize: 14, fontWeight: 700, color: i === 1 ? "#8a6d34" : "#57534e", borderLeft: "2px solid rgba(10,9,8,0.12)" }}>
-                                        Dans {an} ans
-                                      </th>
-                                    ))}
-                                  </tr>
-                                  <tr>
-                                    <th className="text-right px-3.5 pb-2 align-bottom" style={{ background: "#fbfaf8", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "#a8a29e", fontWeight: 800, borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
-                                      Rendement annuel →
-                                    </th>
-                                    {/* 16/09/2026 (CGP) : « au niveau des taux de rendement, ce n'est pas
-                                        centré et pas mis en valeur ». Les taux sont CENTRÉS sur leur
-                                        colonne, et le 5 % — hypothèse centrale du cabinet — est une
-                                        pastille pleine, lisible d'un coup d'œil.
-                                        Seule mention écrite sous un taux : « livrets » sous 1,7 %.
-                                        Nommer 5 % « équilibré » et 7 % « dynamique » serait une
-                                        qualification de profil que le cabinet n'a pas arbitrée. */}
-                                    {DUREES.map((an, i) => TAUX.map((x, j) => (
-                                      <th key={i + "-" + j} className="text-center px-2 pb-2.5"
-                                        style={{ width: "11.5%", background: i === 1 ? "#f7f2e8" : "#fbfaf8", borderLeft: j === 0 ? "2px solid rgba(10,9,8,0.12)" : "none", borderBottom: "1px solid rgba(10,9,8,0.12)" }}>
-                                        <span className="tabular-nums inline-block rounded-full"
-                                          style={x.t === 0.05
-                                            ? { fontFamily: "'Lora','Playfair Display',serif", fontSize: 15, fontWeight: 800, lineHeight: 1, color: "#ffffff", background: "#0f766e", padding: "5px 13px", boxShadow: "0 1px 3px rgba(15,118,110,0.35)" }
-                                            : { fontFamily: "'Lora','Playfair Display',serif", fontSize: 14.5, fontWeight: 700, lineHeight: 1, color: x.t === 0.017 ? "#a8a29e" : "#44403c", padding: "5px 11px" }}>
-                                          {x.l}
+                            {/* ═══ HISTOGRAMME À 20 ANS (18/09/2026, CGP) ═══
+                                « Pour "importance des versements programmés", préfère quelque chose
+                                de plus visuel, tel que le screen — par contre je n'aime pas les
+                                couleurs de l'exemple. » Un seul horizon, VINGT ANS (arbitrage du
+                                CGP) : le tableau croisait deux durées et trois taux, un histogramme
+                                ne peut pas tout porter sans redevenir un tableau.
+                                UN GROUPE PAR MONTANT MENSUEL, trois barres par groupe — le taux des
+                                livrets, l'hypothèse centrale du cabinet, et 7 % — le capital écrit
+                                au-dessus de chaque barre. Couleurs MAISON : pierre pour les livrets,
+                                vert cabinet pour les 5 %, or pour les 7 %. Dessiné en flex et non en
+                                SVG : les hauteurs restent justes à l'impression, où le document est
+                                mis à l'échelle. */}
+                            {(() => {
+                              const H = 20;                       // l'horizon retenu : 20 ans
+                              const COUL = { 0.017: "#cfcac2", 0.05: "#0f766e", 0.07: "#b8924e" };
+                              const groupes = lignes.map(x => ({
+                                m: x.m, l: x.l, fort: x.fort,
+                                barres: TAUX.map(t => ({ t: t.t, lt: t.l, v: Math.round(ncpCap(0, x.m, t.t, H)) })),
+                              }));
+                              const maxV = Math.max(1, ...groupes.map(g => Math.max(...g.barres.map(b => b.v))));
+                              return (
+                                <div className="rounded-xl" style={{ border: "1px solid rgba(10,9,8,0.12)", padding: "14px 14px 10px", background: "#fdfcfa" }}>
+                                  <div className="flex items-baseline justify-between gap-3" style={{ marginBottom: 12 }}>
+                                    <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Capital après {H} ans</span>
+                                    <span className="flex items-center gap-3">
+                                      {TAUX.map(t => (
+                                        <span key={t.l} className="flex items-center gap-1.5">
+                                          <span style={{ display: "inline-block", width: 9, height: 9, borderRadius: 2, background: COUL[t.t] }}></span>
+                                          <span className="text-[10px] font-bold" style={{ color: "#57534e" }}>{t.l}</span>
                                         </span>
-                                        <div style={{ fontSize: 8.5, fontWeight: 600, color: "#a8a29e", letterSpacing: "0.02em", minHeight: 12, marginTop: 3 }}>{x.t === 0.017 ? "livrets" : ""}</div>
-                                      </th>
-                                    )))}
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {lignes.map((x, i) => {
-                                    const cadre = x.fort ? "2px solid #0f766e" : null;
-                                    const fond = x.fort ? "#f0fdf8" : "#ffffff";
-                                    const nbCol = 1 + DUREES.length * TAUX.length;
-                                    return (
-                                      <tr key={i}>
-                                        <td className="px-3.5 py-3" style={{
-                                          background: fond,
-                                          borderTop: cadre || (i > 0 ? "1px solid rgba(10,9,8,0.07)" : "none"),
-                                          borderBottom: cadre || "none",
-                                          borderLeft: cadre || "none",
-                                        }}>
-                                          <span className="tabular-nums whitespace-nowrap font-bold" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, color: "#1d2735" }}>{eurV(x.m)}</span>
+                                      ))}
+                                    </span>
+                                  </div>
+                                  <div className="grid" style={{ gridTemplateColumns: `repeat(${groupes.length}, minmax(0,1fr))`, columnGap: 18, alignItems: "end" }}>
+                                    {groupes.map((g, gi) => (
+                                      <div key={gi}>
+                                        <div className="flex items-end justify-center gap-2" style={{ height: 172 }}>
+                                          {g.barres.map((b, bi) => (
+                                            <div key={bi} className="flex flex-col items-center" style={{ flex: "1 1 0", minWidth: 0 }}>
+                                              <span className="num tabular-nums whitespace-nowrap" style={{ fontSize: 10.5, fontWeight: 700, color: b.t === 0.017 ? "#a8a29e" : "#1d2735", marginBottom: 3 }}>{eurV(b.v)}</span>
+                                              <div style={{ width: "100%", height: Math.max(4, Math.round((b.v / maxV) * 132)), background: COUL[b.t], borderRadius: "3px 3px 0 0" }}></div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                        <div style={{ borderTop: "1.5px solid rgba(10,9,8,0.18)", marginTop: 4, paddingTop: 7, textAlign: "center" }}>
+                                          <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 700, color: g.fort ? "#0f766e" : "#1d2735" }}>{eurV(g.m)}</span>
                                           <span className="text-[10px] font-semibold" style={{ color: "#a8a29e" }}>/mois</span>
-                                          {x.l ? <div className="text-[10.5px] mt-0.5 font-bold" style={{ color: x.fort ? "#0f766e" : "#a8a29e" }}>{x.l}</div> : null}
-                                        </td>
-                                        {DUREES.map((an, k) => TAUX.map((y, j) => {
-                                          const derniere = k === DUREES.length - 1 && j === TAUX.length - 1;
-                                          return (
-                                            <td key={k + "-" + j} className="text-center px-2 py-3 tabular-nums whitespace-nowrap"
-                                              style={{
-                                                fontSize: y.t === 0.05 ? 14 : 12.5,
-                                                color: y.t === 0.017 ? "#a8a29e" : y.t === 0.05 ? "#0f766e" : "#1d2735",
-                                                fontWeight: y.t === 0.05 ? 800 : 600,
-                                                background: y.t === 0.05 && !x.fort ? "rgba(15,118,110,0.06)" : fond,
-                                                borderTop: cadre || (i > 0 ? "1px solid rgba(10,9,8,0.07)" : "none"),
-                                                borderBottom: cadre || "none",
-                                                borderLeft: j === 0 ? "2px solid rgba(10,9,8,0.12)" : "none",
-                                                borderRight: derniere ? (cadre || "none") : "none",
-                                              }}>
-                                              {eurV(ncpCap(0, x.m, y.t, an))}
-                                            </td>
-                                          );
-                                        }))}
-                                      </tr>
-                                    );
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
+                                          {g.l ? <div className="text-[10px] font-bold" style={{ color: g.fort ? "#0f766e" : "#a8a29e", marginTop: 1 }}>{g.l}</div> : null}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            })()}
                             <div className="text-[11.5px] mt-2.5 leading-snug" style={{ color: "#44403c" }}>
                               À <b style={{ color: "#1d2735" }}>{eurV(ref.m)}/mois pendant 20 ans</b>, vous versez {eurV(ref.m * 240)} dans tous les cas :
                               obtenir 5 % au lieu de 1,7 % représente <b style={{ color: "#0f766e" }}>{eurV(ecart)} de plus</b>, sans un euro de plus chaque mois.
