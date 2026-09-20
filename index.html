@@ -1168,7 +1168,9 @@
   </script>
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
-        console.log('%cBUILD v242 (19/09 : TROIS DEMANDES DU CGP. (1) UNE CARTE SEULE SUR SA LIGNE NE PREND PLUS TOUTE LA LARGEUR. Le CGP : « dans les blocs capacite d emprunt et financier, fais-les sur la moitie de la page et pas sur toute la largeur ». Les quatre compteurs des chiffres du dossier vivent dans un conteneur flex (.nc-duo) ou chaque carte valait flex: 1 1 calc(50% - 6px) — flex-GROW 1. Tant que les cartes vont par deux, personne ne le voit. Mais quand la pagination coupe la rangee entre la 3e et la 4e carte, la 3e se retrouve seule sur sa ligne et la 4e seule dans la rangee soeur : flex-grow les etire alors chacune sur TOUTE la largeur de la page — le donut a l extreme gauche, la legende a l extreme droite, c est exactement ce que le CGP a vu sur Capacite d emprunt et Le financier. flex-grow passe a 0 : une carte vaut une demi-page, seule ou non. MESURE : carte seule = 352 px sur 758 avec le correctif, 713 px sans. (2) INFO-RETRAITE.FR DEVIENT UNE PASTILLE ENCADREE. Le CGP : « des que tu parles d info-retraite, fais un encadre comme un bouton afin de le rendre plus visible ». Dans le bloc des pieces a reclamer, le nom du site est desormais une pastille inline-block — encre rouge, fond rose tres pale, filet rouge, coins arrondis — au lieu d un simple mot en gras rouge. inline-block et non un vrai bouton : le document part a l impression, la pastille doit couler dans la ligne sans casser la justification. (3) LES DEUX CARTES DU CABINET ENTRENT DANS L AUDIT. Le CGP : « dans l audit, inclure dans le chapitre objectifs et questions, juste apres les objectifs exprimes et la participation mensuelle, le tableau qui est dans le document simulation et plan d action page 5 : les objectifs recommandes par le cabinet et les preconisations, sans changer la suite de l audit ». Ces deux cartes larges etaient gardees pour le RDV 2 depuis le 15/09 ; le filtre synMode === preco disparait. Elles sortent maintenant dans les DEUX documents, a la meme place et sous la meme forme : juste sous la rangee Objectifs exprimes / Participation mensuelle. Rien d autre ne bouge — notes, questions et pieces a reclamer suivent dans l ordre inchange. Le banc de controle verifiait l ANCIENNE regle : son assertion est retournee, elle interdit desormais le filtre et exige la presence des deux cartes. VERIFIE : 15 etapes au vert, 7 pages mesurees sur A4 et Letter (97/93/84/99/91/79/100 pct), chaque page relue.)','font-weight:bold;color:#047857');
+
+        console.log('%cBUILD v243 (20/09 : L ANALYSE R2, ET DEUX CALCULS REMIS D APLOMB. (1) LES QUOTITES D ASSURANCE EMPRUNTEUR SONT ENFIN LUES. Le CGP : « au niveau des credits on informe systematiquement si le pret est assure a 100 pct sur chaque tete ou autre ; pourtant dans tes analyses posterieures tu reagis comme si tu n etais pas au courant ». Il avait raison : la quotite etait saisie sur la RP, sur chaque locatif, sur chaque autre bien et sur chaque credit conso, et un seul endroit la lisait — la liste des pieces a reclamer, pour dire qu on ne la connaissait pas. Trois branchements sont faits. a. ncCalcSuccession ne nette plus la dette dans le patrimoine des la saisie : chaque dette est une ligne, avec la part portee par chacun et la quotite assuree par tete. REGLE ARBITREE AVEC LE CGP : au deces, le pret assure sur la tete du defunt est SOLDE a hauteur de sa quotite — sa dette ne se deduit plus de son actif transmissible, en 50/50 la moitie s eteint. Mesure sur un couple, RP 400 000 detenue a 50/50, credit 200 000 : actif transmissible du client 58 500 en quotite inconnue, 108 500 en 50/50, 158 500 en 100 pct sur chaque tete. b. La problematique du deces du revenu principal annonce le capital reellement solde au lieu de renvoyer a « quotites a verifier ». c. Le curseur de quotite de la projection, qui valait 100 par defaut sans aucun lien avec le dossier, part desormais de la saisie. La formule prudente ne subsiste que si une quotite manque encore, et un banc de mesure (t_quotites, etape 15 sur 16) garde les quatre cas. (2) L ECONOMIE DES GISEMENTS, C EST L ECART D INTERETS. Le CGP : « les vraies economies sont le calcul des interets places a 1,7 pct vs 5,2 pct, le capital ne doit pas rentrer dans le calcul ». Les modules « arbitrage du capital place » et « redirection des versements » affichaient le CAPITAL supplementaire a l horizon divise par le nombre de mois — un gain compose sur vingt ans ramene a une moyenne, qui ne correspondait a aucun euro gagne dans le mois et qui grossissait avec la duree retenue. Ils affichent maintenant l ecart d interets de la premiere annee, ramene au mois : arbitrage = montant × (taux cabinet − taux actuel) ÷ 12 ; redirection = assiette non pas un capital mais CE QUI AURA ETE VERSE DANS L ANNEE (versement × 12), decision du CGP du 20/09. Le capital a l horizon garde sa place, en seconde ligne. (3) L ONGLET PROJECTION DEVIENT L ANALYSE R2. Renomme « Analyse R2 », il porte le document « Analyse et plan d action » et son propre nom de fichier. Sa page de garde est celle de l etude patrimoniale — bandeau photo, cadre dore, noms, « document prepare par » — et ne porte plus aucun chiffre. L ordre suit la demande du CGP : page de garde ; page 2 avec la baisse de revenus a la retraite, les objectifs exprimes et la participation mensuelle et l apport envisages ; l analyse du dossier (points forts et axes a travailler) ; un bandeau rappelant l objectif de participation ; ou trouver l epargne ; les solutions retenues, ouvertes par les preconisations de l audit ; le tableau avant / apres. Les deux blocs partages avec l etude — objectifs et participation, points forts et axes — sont hoistes en deux fonctions de rendu et passes en props : un seul corps, deux points d appel, aucun jeu de libelles a tenir a jour en double. L onglet « Simulation et plan d action » devient « Simulation ». VERIFIE : 16 etapes au vert, document R2 relu page par page.','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v242 (19/09 : TROIS DEMANDES DU CGP. (1) UNE CARTE SEULE SUR SA LIGNE NE PREND PLUS TOUTE LA LARGEUR. Le CGP : « dans les blocs capacite d emprunt et financier, fais-les sur la moitie de la page et pas sur toute la largeur ». Les quatre compteurs des chiffres du dossier vivent dans un conteneur flex (.nc-duo) ou chaque carte valait flex: 1 1 calc(50% - 6px) — flex-GROW 1. Tant que les cartes vont par deux, personne ne le voit. Mais quand la pagination coupe la rangee entre la 3e et la 4e carte, la 3e se retrouve seule sur sa ligne et la 4e seule dans la rangee soeur : flex-grow les etire alors chacune sur TOUTE la largeur de la page — le donut a l extreme gauche, la legende a l extreme droite, c est exactement ce que le CGP a vu sur Capacite d emprunt et Le financier. flex-grow passe a 0 : une carte vaut une demi-page, seule ou non. MESURE : carte seule = 352 px sur 758 avec le correctif, 713 px sans. (2) INFO-RETRAITE.FR DEVIENT UNE PASTILLE ENCADREE. Le CGP : « des que tu parles d info-retraite, fais un encadre comme un bouton afin de le rendre plus visible ». Dans le bloc des pieces a reclamer, le nom du site est desormais une pastille inline-block — encre rouge, fond rose tres pale, filet rouge, coins arrondis — au lieu d un simple mot en gras rouge. inline-block et non un vrai bouton : le document part a l impression, la pastille doit couler dans la ligne sans casser la justification. (3) LES DEUX CARTES DU CABINET ENTRENT DANS L AUDIT. Le CGP : « dans l audit, inclure dans le chapitre objectifs et questions, juste apres les objectifs exprimes et la participation mensuelle, le tableau qui est dans le document simulation et plan d action page 5 : les objectifs recommandes par le cabinet et les preconisations, sans changer la suite de l audit ». Ces deux cartes larges etaient gardees pour le RDV 2 depuis le 15/09 ; le filtre synMode === preco disparait. Elles sortent maintenant dans les DEUX documents, a la meme place et sous la meme forme : juste sous la rangee Objectifs exprimes / Participation mensuelle. Rien d autre ne bouge — notes, questions et pieces a reclamer suivent dans l ordre inchange. Le banc de controle verifiait l ANCIENNE regle : son assertion est retournee, elle interdit desormais le filtre et exige la presence des deux cartes. VERIFIE : 15 etapes au vert, 7 pages mesurees sur A4 et Letter (97/93/84/99/91/79/100 pct), chaque page relue.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v241 (19/09 : LE TRIO PATRIMOINE NE QUITTE PLUS LES COMPTEURS. Le CGP : « sur la version imprimable de l audit, reduis un peu la taille des blocs des chiffres du dossier pour pouvoir mettre sur la meme page actif total / passif / patrimoine net ». Deux leviers, l un visuel, l autre structurel. (1) LES CARTES DE COMPTEUR MAIGRISSENT : camembert de 138 a 120 px (96 pour les jumeaux), interieur des cartes en py-2,5 au lieu de py-3, interligne de la legende a 2 px, titre rapproche. La garantie obtenue la veille tient toujours — le chiffre central est CALCULE sur la largeur utile du trou, il ne peut pas toucher l anneau quelle que soit la taille. (2) ET SURTOUT : « ACTIF TOTAL / PASSIF / PATRIMOINE NET » NE SE DETACHE PLUS de la rangee de compteurs qui le precede. Le trio porte data-nc-colle-precedent, et la pagination reporte alors le saut de page EN AMONT de cette rangee — exactement le mecanisme qui empeche depuis le 16/09 qu un bandeau de chapitre reste seul en bas d une page. C est structurel : quel que soit le dossier, le trio suit les compteurs. CE QUI N A PAS ETE FAIT, ET POURQUOI : mettre les QUATRE compteurs ET le trio sur une seule et meme page obligerait soit a reduire les cartes d un tiers (ce qui annulerait l agrandissement demande la veille), soit a deplacer le bloc entier sur sa propre page — et la page de la fiscalite retomberait alors sous 55 pct de remplissage, ce que le banc refuse depuis le 16/09. A arbitrer avec le CGP. CONTROLE : t_rdv1.js verifie la presence de la marque data-nc-colle-precedent sur le trio ; sans elle, il peut se retrouver seul en haut d une page.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v240 (18/09 : LA QUESTION BONUS REECRITE, ET LES DIAPOSITIVES REGROUPEES. (1) QUESTION 6, ecriture definitive du CGP : « Connaissez-vous un placement qui vous permette d obtenir l equivalent d un rendement de 45 pct garanti par l Etat la premiere annee ? ». Le taux se place AVANT « garanti par l Etat », et non apres. Il reste LA TMI DU FOYER — 30, 41 ou 45 selon le dossier. (2) MODE PRESENTATION : quatre blocs ne fabriquent plus leur propre diapositive, ils completent la precedente. « Mets sur la meme slide revenus et charges et logement, immobilier & credits. Il faut aussi que la slide 6 puisse aller avec la 5, idem pour la 8 et la 9, idem pour la 11 et la 12. » LOGEMENT, IMMOBILIER ET CREDITS rejoint REVENUS ET CHARGES ; VOTRE EPARGNE MENSUELLE ACTUELLE rejoint EPARGNE ; PATRIMOINE NET rejoint LES CHIFFRES DU DOSSIER ; LES QUESTIONS DU PROCHAIN RENDEZ-VOUS rejoignent la diapositive precedente. Le constat passe de douze a NEUF chapitres. Aucun bloc n est deplace ni duplique : il perd seulement son data-nc-chap et rejoint le chapitre precedent — c est la regle de construction du mode presentation depuis la v220, elle n a pas bouge. Consequence voulue quand des NOTES ont ete saisies : elles ouvrent la diapositive et les questions la completent, donc les notes restent juste au-dessus des questions, comme demande le matin meme. CONTROLE : t_presentation.js ne compte plus seulement les chapitres, il verifie leur LISTE titre par titre — les neuf attendus, dans l ordre.)','font-weight:bold;color:#047857');
         console.log('%cANCIEN BUILD v239 (18/09 : LES CAMEMBERTS RESPIRENT, ET LES SIX QUESTIONS SONT DICTEES PAR LE CGP. (1) « Fais les camemberts plus grands afin que JAMAIS le texte ou les chiffres ne touchent le camembert ». Le camembert passe de 118 a 138 px (108 pour les jumeaux), le trou s agrandit (rayon 31 a 35), l ecart avec la legende passe a 20 px, et LA TAILLE DU CHIFFRE CENTRAL EST CALCULEE sur la largeur utile a l interieur de l anneau — jamais choisie au juge : un montant long comme « 721 039 € » descend de lui-meme jusqu a tenir. (2) UN SECTEUR A 100 PCT NE DESSINAIT RIEN. Un arc SVG dont le depart et l arrivee sont le meme point est vide : sur un dossier sans immobilier, l anneau du « financier » disparaissait purement et simplement. Il est desormais trace en DEUX DEMI-ARCS avec fillRule evenodd. (3) LA PHRASE DE CONCLUSION DES VERSEMENTS PROGRAMMES est supprimee (« supprime ton texte A 500 €/mois pendant 20 ans… chaque mois ») : l histogramme le dit mieux qu elle. (4) LES SIX QUESTIONS, ECRITURES DEFINITIVES DU CGP — plus courtes, plus frontales, la condition d abord et rien de plus. 1 « En cas de deces, sans testament, savez-vous ce que percevra votre partenaire ? » 2 « Connaissez-vous l article 990 I du code general des impots ? » — SEULE, sans preambule et sans montant : le chiffre est la reponse, et elle se paie d un second rendez-vous. 3 « Que vous evoque le chiffre de 278 710 € ? » — le montant d impot sur dix ans, jete sur la table. 4 « Dans 21 ans, vous aurez 64 ans, vos revenus passeront de 13 417 € a environ 6 000 €/mois. Comment comptez-vous compenser cette baisse ? » — l ECHEANCE d abord, la pension ARRONDIE aux 500 € et precedee d « environ ». 6 « Connaissez-vous un placement qui permet de beneficier de l equivalent d un rendement garanti par l Etat de 30 pct la premiere annee ? » — le taux reste la TMI du foyer. CONTROLES : t_devoirs.js suit les nouvelles tournures une par une et lit toujours la TMI dans le bloc fiscal du meme document ; t_shot_pres.js accepte les ouvertures « En cas de », « Dans » et « Vous conservez ».)','font-weight:bold;color:#047857');
@@ -3086,6 +3088,70 @@
     // « à préciser » et se ventilait 50/50 au lieu de 100 % au déclarant. On stocke
     // désormais « client », et on NORMALISE partout pour les anciens dossiers.
     const ncTit = (t) => t === "m" ? "client" : t;
+    /* ═══════════════════════════════════════════════════════════════════════════
+       20/09/2026 (CGP) — LA QUOTITÉ D'ASSURANCE EMPRUNTEUR EST ENFIN LUE.
+       « Au niveau des crédits on informe systématiquement si le prêt est assuré à
+       100 % sur chaque tête ou autre. Pourtant dans tes analyses postérieures, tu
+       réagis comme si tu n'étais pas au courant alors que tout a été renseigné. »
+       Il avait raison : la quotité était saisie sur la RP, sur chaque locatif, sur
+       chaque autre bien et sur chaque crédit à la consommation, et elle n'était lue
+       QUE par la liste des pièces à réclamer, pour dire qu'on ne la connaissait pas.
+       ncQuotPart traduit le code saisi en part couverte PAR TÊTE. Il rend `null`
+       quand la quotité n'est pas connue (« je ne sais pas », champ vide) : dans ce
+       cas, et dans ce cas seulement, le calcul reste prudent — la dette n'est pas
+       éteinte et la phrase « quotités à vérifier » garde son sens.
+       Hors couple, la quotité vaut 100 % sur la seule tête par construction : le
+       champ n'est même pas posé à la saisie.
+       RÈGLE RETENUE PAR LE CGP (20/09/2026) : au décès, le prêt assuré sur la tête
+       du défunt est SOLDÉ à hauteur de sa quotité — l'actif transmissible augmente
+       d'autant et les charges du survivant baissent. En 50/50, la moitié du capital
+       restant dû s'éteint.
+       ═══════════════════════════════════════════════════════════════════════════ */
+    const ncQuotPart = (code, enCouple) => {
+      if (!enCouple) return { client: 1, conjoint: 0 };
+      switch ((code || "").trim()) {
+        case "100_100": return { client: 1, conjoint: 1 };
+        case "100_client": return { client: 1, conjoint: 0 };
+        case "100_conjoint": return { client: 0, conjoint: 1 };
+        case "50_50": return { client: 0.5, conjoint: 0.5 };
+        case "70_30": return { client: 0.7, conjoint: 0.3 };
+        case "30_70": return { client: 0.3, conjoint: 0.7 };
+        default: return null;                 // « nsp » ou champ vide : on ne sait pas
+      }
+    };
+    /* Quotité de départ du curseur de la projection : la plus forte part assurée sur
+       une tête, tous prêts en cours confondus. C'est elle qui commande la prévoyance
+       apportée par le crédit. Aucune quotité connue → 100, valeur historique, et le
+       conseiller garde la main sur le curseur. */
+    const ncQuotDefaut = (d) => {
+      const enCouple = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
+      if (!enCouple) return 100;
+      const codes = [];
+      if (d.logement === "proprietaire" && d.rpCreditQ === "oui") codes.push(d.rpAssurQuotite);
+      (d.locatifs || []).forEach(l => { if (l.creditQ === "oui") codes.push(l.assurQuotite); });
+      (d.biens || []).forEach(b => { if (b.creditQ === "oui") codes.push(b.assurQuotite); });
+      let max = null;
+      codes.forEach(c => {
+        const q = ncQuotPart(c, true);
+        if (!q) return;
+        const m = Math.max(q.client, q.conjoint) * 100;
+        if (max == null || m > max) max = m;
+      });
+      return max == null ? 100 : Math.round(max);
+    };
+    /* Le dossier connaît-il la quotité de TOUS ses prêts en cours ? Sert aux textes :
+       tant que c'est faux, la formule « quotités à vérifier » reste légitime. */
+    const ncQuotitesConnues = (d) => {
+      const enCouple = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
+      if (!enCouple) return true;
+      const codes = [];
+      if (d.logement === "proprietaire" && d.rpCreditQ === "oui") codes.push(d.rpAssurQuotite);
+      (d.locatifs || []).forEach(l => { if (l.creditQ === "oui") codes.push(l.assurQuotite); });
+      (d.biens || []).forEach(b => { if (b.creditQ === "oui") codes.push(b.assurQuotite); });
+      (d.credits || []).forEach(c => { if (ncInt(c.crd) > 0) codes.push(c.assurQuotite); });
+      if (!codes.length) return true;
+      return codes.every(c => ncQuotPart(c, true) !== null);
+    };
     // INDIVISION (31/08/2026, validé par le CGP) : pour un « autre bien » détenu en
     // indivision (une ou plusieurs autres personnes), on saisit la VALEUR TOTALE du
     // bien + la QUOTE-PART détenue (%) — seule la quote-part entre au bilan, au
@@ -3440,6 +3506,27 @@
       const pRPs = d.rpDetenteur === "client" ? 1 : d.rpDetenteur === "conjoint" ? 0
         : d.rpDetenteur === "libre" ? Math.min(100, Math.max(0, ncInt(d.rpPartClient))) / 100 : 0.5;
       const pat = { client: 0, conjoint: 0 }, rpPart = { client: 0, conjoint: 0 }, rpCrdPart = { client: 0, conjoint: 0 }, avHors = { client: 0, conjoint: 0 };
+      /* ═══ 20/09/2026 (CGP) — LES DETTES SONT SUIVIES À PART, AVEC LEUR QUOTITÉ ═══
+         Jusqu'ici le capital restant dû était NETTÉ dans le patrimoine dès la saisie :
+         impossible, ensuite, de savoir laquelle des deux têtes l'assurance couvrait.
+         Chaque dette est désormais une ligne : la part portée par chacun (selon la
+         détention du bien) et la quotité assurée par tête. Au décès de X, la part de X
+         est éteinte à hauteur de sa quotité et ne se déduit plus de son actif
+         transmissible. Quotité inconnue → rien n'est éteint (lecture prudente). */
+      const dettes = [];
+      const poserDette = (montant, titulaire, codeQuotite) => {
+        const m = Math.max(0, montant || 0);
+        if (m <= 0) return;
+        const t = ncTit(titulaire);
+        const part = !enCoupleS ? { client: m, conjoint: 0 }
+          : t === "client" ? { client: m, conjoint: 0 }
+          : t === "conjoint" ? { client: 0, conjoint: m }
+          : { client: m / 2, conjoint: m / 2 };
+        dettes.push({ part, q: ncQuotPart(codeQuotite, enCoupleS) });
+      };
+      /* Dette restant à la charge de la succession de `qui` : sa part, moins ce que
+         l'assurance solde sur SA tête. */
+      const detteDe = (qui) => dettes.reduce((s, x) => s + x.part[qui] * (1 - (x.q ? x.q[qui] : 0)), 0);
       if (d.logement === "proprietaire") {
         // CORRECTION (29/08, contrôle expert dossier Polo) : l'abattement de 20 %
         // (art. 764 bis) porte sur la VALEUR VÉNALE de la RP — le capital restant dû
@@ -3449,11 +3536,22 @@
         const crdRP = d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0;
         rpPart.client = brutRP * (enCoupleS ? pRPs : 1); rpPart.conjoint = enCoupleS ? brutRP * (1 - pRPs) : 0;
         rpCrdPart.client = crdRP * (enCoupleS ? pRPs : 1); rpCrdPart.conjoint = enCoupleS ? crdRP * (1 - pRPs) : 0;
+        /* la RP se partage selon sa DÉTENTION (pRPs), pas selon un titulaire nommé :
+           on pose les deux parts telles quelles, avec la quotité saisie sur le prêt. */
+        if (crdRP > 0) dettes.push({ part: { client: rpCrdPart.client, conjoint: rpCrdPart.conjoint }, q: ncQuotPart(d.rpAssurQuotite, enCoupleS) });
       }
       // Hors couple, TOUT appartient au client (pas de partage 50/50 d'un titulaire vide).
       const ventS = (v, t, cible) => { if (!enCoupleS) { cible.client += v; return; } if (t === "client") cible.client += v; else if (t === "conjoint") cible.conjoint += v; else { cible.client += v / 2; cible.conjoint += v / 2; } };
-      (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => ventS(ncBienValeur(b) - ncInt(b.crd), ncTit(b.titulaire), pat));
-      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventS(ncInt(l.valeur) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire), pat));
+      /* 20/09/2026 : la valeur BRUTE entre au patrimoine, la dette part dans `dettes`
+         avec sa quotité — au lieu d'être nettée ici, où elle devenait invisible. */
+      (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => {
+        ventS(ncBienValeur(b), ncTit(b.titulaire), pat);
+        poserDette(ncInt(b.crd), b.titulaire, b.creditQ === "oui" ? b.assurQuotite : "");
+      });
+      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => {
+        ventS(ncInt(l.valeur), ncTit(l.titulaire), pat);
+        if (l.creditQ === "oui") poserDette(ncInt(l.crd), l.titulaire, l.assurQuotite);
+      });
       (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => {
         // L'assurance-vie ET le PER sont HORS SUCCESSION (art. 990 I) : isolés, jamais dans l'assiette.
         // Décision du CGP (10/09/2026) : le PER est traité comme l'assurance-vie ; seuls les livrets
@@ -3462,7 +3560,7 @@
         if (a.type === "av" || a.type === "per") ventS(ncInt(a.valeur), a.titulaire, avHors);
         else ventS(ncInt(a.valeur), a.titulaire, pat);
       });
-      (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(c => ventS(-ncInt(c.crd), null, pat));
+      (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(c => poserDette(ncInt(c.crd), null, c.assurQuotite));
       // PER saisi à l'étape Fiscalité sans avoir correspondant (29/08) : son encours
       // rejoint l'assurance-vie hors succession (art. 990 I) — règle du CGP du 10/09/2026.
       if (d.reductionsPer && !(d.avoirs || []).some(a => a.type === "per" && ncInt(a.valeur) > 0)) {
@@ -3472,10 +3570,22 @@
       const rpAbatt = enCoupleS && (marieS || pacseS);
       // Frais funéraires forfaitaires déductibles : 1 500 € (art. 775 CGI).
       const FRAIS_FUNERAIRES = 1500;
+      /* 20/09/2026 : `detteDe` remplace la soustraction directe du capital restant dû.
+         L'ordre de l'article 768 est conservé — l'abattement de 20 % porte sur la
+         valeur vénale de la RP, les dettes se déduisent ENSUITE — mais la dette
+         déduite est celle qui SURVIT à l'assurance emprunteur. */
       const assiette = {
-        client: Math.max(0, pat.client + rpPart.client * (rpAbatt ? 0.8 : 1) - rpCrdPart.client - FRAIS_FUNERAIRES),
-        conjoint: Math.max(0, pat.conjoint + rpPart.conjoint * (rpAbatt ? 0.8 : 1) - rpCrdPart.conjoint - FRAIS_FUNERAIRES),
+        client: Math.max(0, pat.client + rpPart.client * (rpAbatt ? 0.8 : 1) - detteDe("client") - FRAIS_FUNERAIRES),
+        conjoint: Math.max(0, pat.conjoint + rpPart.conjoint * (rpAbatt ? 0.8 : 1) - detteDe("conjoint") - FRAIS_FUNERAIRES),
       };
+      /* Ce que l'assurance emprunteur solde au décès de chacun — chiffre rendu au
+         document pour que la phrase ne soit plus « quotités à vérifier » mais le
+         montant réellement éteint. */
+      const detteSoldee = {
+        client: dettes.reduce((s, x) => s + x.part.client * (x.q ? x.q.client : 0), 0),
+        conjoint: dettes.reduce((s, x) => s + x.part.conjoint * (x.q ? x.q.conjoint : 0), 0),
+      };
+      const quotitesConnues = ncQuotitesConnues(d);
       // — Donations de moins de 15 ans, rattachées par prénom d'enfant (art. 784) —
       const anNow = new Date().getFullYear();
       const dons15 = {};
@@ -3503,7 +3613,13 @@
         const survivant = qui === "client" ? "conjoint" : "client";
         // Héritiers en ligne directe du défunt : enfants communs + ses enfants d'une autre union.
         const heritiers = enfantsS.filter(e => (e.filiation || "commun") === "commun" || (e.filiation || "commun") === qui);
-        const v = { qui, nom: enCoupleS ? civS[qui] : civS.client, assiette: Math.round(assiette[qui]), avHors: Math.round(avHors[qui]), rpAbatt20: rpAbatt && rpPart[qui] > 0, scenarios: [], notes: [] };
+        const v = { qui, nom: enCoupleS ? civS[qui] : civS.client, assiette: Math.round(assiette[qui]), avHors: Math.round(avHors[qui]), rpAbatt20: rpAbatt && rpPart[qui] > 0, scenarios: [], notes: [],
+          /* 20/09/2026 : ce que l'assurance emprunteur solde au décès de CETTE tête,
+             et ce qui reste à déduire. Le document les affiche au lieu de la phrase
+             « hypothèse retenue : prêts non couverts, quotités à vérifier ». */
+          detteSoldee: Math.round(dettes.reduce((s2, x) => s2 + x.part[qui] * (x.q ? x.q[qui] : 0), 0)),
+          detteRestante: Math.round(dettes.reduce((s2, x) => s2 + x.part[qui] * (1 - (x.q ? x.q[qui] : 0)), 0)),
+          quotitesConnues };
         if (!heritiers.length) {
           v.notes.push("aucun enfant héritier en ligne directe — dévolution (parents, frères et sœurs…) à étudier avec le CGP et le notaire");
           if (marieS) v.notes.push("le conjoint survivant est exonéré de droits (art. 796-0 bis CGI)");
@@ -3619,7 +3735,7 @@
         }
         volets.push(v);
       });
-      return { volets, enCouple: enCoupleS, marie: marieS, pacse: pacseS, ul: ulS, nbEnfants: enfantsS.length, dons15, rpAbatt };
+      return { volets, enCouple: enCoupleS, marie: marieS, pacse: pacseS, ul: ulS, nbEnfants: enfantsS.length, dons15, rpAbatt, detteSoldee, quotitesConnues, detteRestante: { client: detteDe("client"), conjoint: detteDe("conjoint") } };
     }
 
     const NC_BAREME_IR = [
@@ -4376,8 +4492,10 @@
       // ———————————————————————————————————————————————
       const deuxRevenus = enCouple && (revC > 0 || revJ > 0);
       const hautEstClient = revC >= revJ;
-      const haut = { n: hautEstClient ? nomC : nomJ, r: hautEstClient ? revC : revJ };
-      const bas = { n: hautEstClient ? nomJ : nomC, r: hautEstClient ? revJ : revC };
+      /* 20/09/2026 : la clé (client | conjoint) accompagne le nom — c’est elle qui
+         permet de lire la quotité d’assurance emprunteur souscrite sur CETTE tête. */
+      const haut = { k: hautEstClient ? "client" : "conjoint", n: hautEstClient ? nomC : nomJ, r: hautEstClient ? revC : revJ };
+      const bas = { k: hautEstClient ? "conjoint" : "client", n: hautEstClient ? nomJ : nomC, r: hautEstClient ? revJ : revC };
       const partHaut = revFoyer > 0 ? haut.r / revFoyer : 0;
       const revenuApres = Math.max(0, revFoyer - haut.r);
       const soldeApres = revenuApres - chFoyer;
@@ -4402,7 +4520,17 @@
             + (soldeApres < 0
                 ? `soit un déficit de ${eur(Math.abs(soldeApres))} par mois en l'état.`
                 : `soit ${eur(soldeApres)} de reste à vivre, sans plus aucune marge d'épargne ni de sécurité.`)
-            + ` À nuancer selon les assurances emprunteur : si les crédits sont assurés sur la tête de ${haut.n} (quotités à vérifier), ils seraient soldés au décès et les charges d'autant réduites.`
+            /* 20/09/2026 (CGP) : « dans tes analyses postérieures, tu réagis comme si tu
+               n'étais pas au courant alors que tout a été renseigné ». On ne renvoie plus le
+               conseiller à ses relevés : la quotité saisie donne le capital soldé au décès
+               de cette tête. La formule prudente ne subsiste que si elle manque encore. */
+            + (() => {
+                const sc = (() => { try { return ncCalcSuccession(d); } catch (eQ) { return null; } })();
+                const sold = sc && sc.detteSoldee ? Math.round(sc.detteSoldee[haut.k] || 0) : 0;
+                if (sold > 0) return ` Les crédits assurés sur la tête de ${haut.n} seraient soldés au décès à hauteur de ${eur(sold)} selon les quotités saisies : les charges du foyer en seraient réduites d'autant.`;
+                if (sc && sc.quotitesConnues === false) return ` À nuancer selon les assurances emprunteur : la quotité n'est pas renseignée sur au moins un prêt — si les crédits sont assurés sur la tête de ${haut.n}, ils seraient soldés au décès et les charges d'autant réduites.`;
+                return "";
+              })()
             // RÈGLE CABINET (27/08) : la prévoyance, c'est AUSSI le cash, l'immobilier et les
             // placements laissés aux héritiers — jamais d'alerte sur la seule absence de
             // contrat sans mettre le besoin en regard du patrimoine transmissible.
@@ -6035,7 +6163,13 @@
       return c;
     }
 
-    function NcProjection({ d, synth, syn, ageClient, estTNS, inputs }) {
+    /* 20/09/2026 (CGP) — L'ANALYSE R2 REÇOIT DEUX BLOCS TOUT RENDUS.
+       `blocObjectifs` = « Objectifs exprimés » + « Participation mensuelle & apport
+       envisagés » ; `blocForces` = « Les points forts du dossier » + « Les axes à
+       travailler ». Les deux vivent dans le composant parent (ils ont besoin de `set`
+       et de `setEditOpen` pour les corrections à l'écran) : NcProjection les affiche,
+       il ne les fabrique pas. */
+    function NcProjection({ d, synth, syn, ageClient, estTNS, inputs, blocObjectifs, blocForces }) {
       const eur = (n) => ncNbsp((Math.round(n || 0)).toLocaleString('fr-FR')) + ' €';
       /* 11/09/2026 (CGP) : « apport passé de 5 k à 10 k, la tuile indique 0k ». Cause :
          parseFloat("10 000") = 10 — l'espace des milliers coupait la lecture, et
@@ -6098,7 +6232,13 @@
       const [h, setH] = React.useState({
         gImmo: "1,0", tLiv: "1,7", tAv0: "2,5", tMed: "5,2", tBas: "4,2", tHaut: "6,2", irl: "2,0",
         ageAct: String(ageClient || 45), ageFin: String(ageDep || 64),
-        env: "", precaCible: "", rpValMod: "", locValMod: "", txCredExist: "3,6", quotRP: "100"
+        env: "", precaCible: "", rpValMod: "", locValMod: "", txCredExist: "3,6",
+        /* 20/09/2026 (CGP) : ce curseur valait 100 par défaut, sans aucun lien avec le
+           dossier — « tout a été renseigné » et la projection l'ignorait. Il part
+           désormais de la quotité SAISIE sur les prêts en cours, tête par tête : la
+           plus élevée des deux (c'est elle qui commande la prévoyance du crédit).
+           Quotité inconnue → 100 comme avant, et le conseiller garde la main. */
+        quotRP: String(ncQuotDefaut(d))
       });
       const sh = (k, v) => setH(p => ({ ...p, [k]: v }));
 
@@ -6119,7 +6259,8 @@
         locRegime: "nu", mobilier: "8000", partTerrain: "20", dureeBati: "40", dureeMob: "10", comptaAn: "500", fraisAmortis: false,
         /* dispositifs : Denormandie, Malraux, LLI */
         dnDuree: "9", dnSurface: "", mxZone: "psmv", mxAnsTravaux: "2", lliTva: true,
-        quotLoc: "100"
+        /* même origine que quotRP : la quotité déclarée sur les prêts du dossier. */
+        quotLoc: String(ncQuotDefaut(d))
       });
       const sl = (k, v) => setL(p => ({ ...p, [k]: v }));
 
@@ -6521,7 +6662,27 @@
         const gainArbCap = G.arb ? montArb * (Math.pow(1 + tMed, H) - Math.pow(1 + txArbAct, H)) : 0;
         const gainRedCap = redActif ? (ncpCap(0, versMens, tMed, H) - ncpCap(0, versMens, txVersAct, H)) : 0;
         const parMois = (cap) => (H > 0 ? cap / (12 * H) : 0);
-        const mArb = parMois(gainArbCap);
+        /* ═══ 20/09/2026 (CGP) — L'ÉCONOMIE MENSUELLE, C'EST L'ÉCART D'INTÉRÊTS ═══
+           Le CGP : « les vraies économies sont le calcul des intérêts placés à 1,7 %
+           vs 5,2 %, le capital ne doit pas rentrer dans le calcul ».
+           Ce qui était affiché en €/mois était le CAPITAL supplémentaire à l'horizon
+           divisé par le nombre de mois (gainArbCap / 12H) : un gain composé sur vingt
+           ans ramené à une moyenne, qui ne correspond à aucun euro réellement gagné
+           dans le mois et qui grossit avec la durée retenue.
+           Ce qu'on affiche désormais est l'écart d'INTÉRÊTS de la première année :
+           — arbitrage : le capital dort à txArbAct au lieu de tMed → montant × écart ;
+           — redirection : le versement n'est pas un capital, l'assiette est donc CE QUI
+             AURA ÉTÉ VERSÉ DANS L'ANNÉE (versement × 12), décision du CGP du 20/09.
+           Les deux se lisent par an, puis divisés par douze pour le €/mois. Le capital
+           supplémentaire à l'horizon (gainArbCap / gainRedCap) reste calculé : il garde
+           sa place en seconde ligne, mais il ne se déguise plus en économie mensuelle. */
+        const ecartArb = Math.max(0, tMed - txArbAct);
+        const ecartRed = Math.max(0, tMed - txVersAct);
+        const ecoArbAn = G.arb ? montArb * ecartArb : 0;
+        const ecoRedAn = redActif ? (versMens * 12) * ecartRed : 0;
+        const ecoArbAnPot = montArb > 0 ? montArb * ecartArb : 0;
+        const ecoRedAnPot = versMens > 0 ? (versMens * 12) * ecartRed : 0;
+        const mArb = ecoArbAn / 12;
         /* PART EXACTE DE LA REALLOCATION : la meme enveloppe capitalisee au taux des
            supports actuels, puis au taux retenu. On n attribue pas a l ecart de
            rendement ce qui vient du locatif ou des gisements. */
@@ -6533,7 +6694,7 @@
         const arbApres = G.arb ? montArb * Math.pow(1 + tMed, H) : 0;
         const redAvant = redActif ? ncpCap(0, versMens, txVersAct, H) : 0;
         const redApres = redActif ? ncpCap(0, versMens, tMed, H) : 0;
-        const mRed = parMois(gainRedCap);
+        const mRed = ecoRedAn / 12;
 
         /* ═══ GISEMENTS : POTENTIEL D UN LEVIER NON RETENU (03/09) ═══
            Le CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi
@@ -6568,6 +6729,7 @@
           effLocMoy: (() => { if (H <= 0) return effAn(0); let t = 0; for (let y = 0; y < H; y++) t += effAn(y); return t / H; })(),
           rdtBrut, mTot, loyNet, dC,
           ecoAss, assSousSeuil, mArb, mRed, gainArbCap, gainRedCap, gainRendCap: gainArbCap + gainRedCap,
+          ecoArbAn, ecoRedAn, ecoArbAnPot, ecoRedAnPot, ecartArb, ecartRed,
           arbAvant, arbApres, redAvant, redApres, gainReallocation, locNouveau: !!L.loc, baseAvant, finMens,
           mTreso: ecoAss, mRend: mArb + mRed, mTotalGis: ecoAss + mArb + mRed,
           ecoAssPot, gainArbPot, gainRedPot, gainRendPot: gainArbPot + gainRedPot,
@@ -6768,97 +6930,211 @@
             const enC = ["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui";
             const cj = d.conjoint || {};
             const nomJ = enC ? `${civLui} ${ncCapNom(cj.prenom || "")} ${(cj.nom || d.nom || "").toUpperCase()}`.replace(/\s+/g, " ").trim() : "";
-            return (
-            <div className="rounded-2xl bg-white mb-4 border nc-print-avoid flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "38px 44px 34px", minHeight: 1040 }}>
-              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
-                <div className="flex items-center gap-3">
-                  {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8.5pt", letterSpacing: "0.24em", textTransform: "uppercase", color: C.or, fontWeight: 800 }}>{cab}</div>
-                </div>
-                <div className="text-right" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "8pt", letterSpacing: "0.16em", textTransform: "uppercase", color: C.gris2 }}>Projection patrimoniale · {new Date().toLocaleDateString('fr-FR')}</div>
+            return (<>
+            <div className="rounded-2xl bg-white mb-4 border nc-print-avoid nc-cover flex flex-col" data-nc-chap="Ouverture" style={{ borderColor: "rgba(10,9,8,0.10)", boxShadow: "0 1px 3px rgba(0,0,0,0.03)", padding: "44px 46px 0", minHeight: 966, position: "relative", overflow: "hidden" }}>
+              {/* ═══ 20/09/2026 (CGP) — PAGE DE GARDE DE L'ANALYSE R2 ═══
+                  « Faire une page de garde telle que l'étude patrimoniale, et reprendre
+                  nom, prénom, fait par… ». C'est LA MÊME page de garde : même bandeau
+                  photo, même cadre doré aux deux tiers de la feuille, même ligne
+                  « Document préparé par … ». Seul le titre change.
+                  Tout ce qui l'encombrait — le chiffre de la baisse de revenus à la
+                  retraite, les objectifs, les préconisations, la phrase d'engagement —
+                  en est SORTI : la baisse de revenus et les objectifs ouvrent la page
+                  suivante, les préconisations rejoignent « Les solutions retenues ». */}
+              <div className="nc-cover-photo" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=85" alt="" />
               </div>
-              <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 22 }}></div>
-              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 800, color: C.encre, lineHeight: 1.15, letterSpacing: "-0.01em" }}>Votre projection patrimoniale</div>
-              <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, color: C.encre, marginTop: 10, lineHeight: 1.4 }}>
-                {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: C.or, fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
-              </div>
-              {/* 11/09 (CGP) : la phrase « Ce document projette votre situation à X ans… »
-                  est supprimée de la page de garde. */}
-              <div style={{ flex: 1, minHeight: 24 }}></div>
-              {intro.baisse > 0 ? (
-                <div className="rounded-xl px-5 py-5" style={{ marginTop: 10, marginBottom: 34, background: "#fafaf9", border: "1px solid " + C.bord, borderLeft: "4px solid #b91c1c" }}>
-                  {/* 02/09 : UN chiffre median, et le montant reste INSECABLE avec son
-                      unite — « € par mois » se retrouvait seul a la ligne suivante. */}
-                  <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
-                    Prévision de baisse de vos revenus à la retraite estimée à{" "}
-                    <span style={{ color: "#b91c1c", whiteSpace: "nowrap" }}>{eur((intro.baisse + intro.baisseH) / 2)} par mois</span>.
+              <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", flex: 1 }}>
+                <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginBottom: 26 }}>
+                  <div className="flex items-center gap-3">
+                    {logo ? <img src={logo} alt="" style={{ height: 44, width: "auto", maxWidth: 160, objectFit: "contain" }} /> : null}
+                    <div className="text-[10px] uppercase tracking-[0.24em] font-bold" style={{ color: "#b8924e" }}>{cab}</div>
                   </div>
-                  <div className="text-[12.5px]" style={{ color: C.encre, marginTop: 7, lineHeight: 1.6 }}>
-                    Vos revenus passeraient de <b style={{ whiteSpace: "nowrap" }}>{eur(intro.act)}</b> à{" "}
-                    <b style={{ whiteSpace: "nowrap", color: "#b91c1c" }}>{eur((intro.pensBas + intro.pensHaut) / 2)}</b> par mois.
-                  </div>
-                  <div className="text-[10.5px] italic" style={{ color: C.gris2, marginTop: 5, lineHeight: 1.55 }}>
-                    {intro.reel ? "Montants relevés sur info-retraite.fr." : intro.hyp.charAt(0).toUpperCase() + intro.hyp.slice(1) + " — à vérifier sur info-retraite.fr."}
+                  <div className="text-right text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#a8a29e" }}>
+                    Analyse et plan d'action · {new Date().toLocaleDateString('fr-FR')}
                   </div>
                 </div>
-              ) : null}
-              <div className="text-[12.5px] mb-4" style={{ color: C.encre, fontWeight: 600, marginTop: intro.baisse > 0 ? 0 : 26 }}>
-                Vos objectifs et les préconisations de votre audit sont les suivants :
-              </div>
-              {/* les préconisations portent bien plus de texte que les objectifs :
-                  la colonne verte est élargie, celle des objectifs resserrée */}
-              <div className="grid gap-3.5" style={{ gridTemplateColumns: intro.objectifs.length && intro.preco.length ? "minmax(0,0.72fr) minmax(0,1.28fr)" : "1fr" }}>
-                {intro.objectifs.length ? (
-                  <div className="rounded-xl px-4 py-4 border" style={{ borderColor: C.bord, borderTop: "3px solid " + C.or, background: "linear-gradient(180deg,rgba(184,146,78,0.04),#fff 55%)" }}>
-                    <div className="nc-ctitre mb-3">Vos objectifs<span className="sfx">par ordre de priorité</span></div>
-                    {intro.objectifs.map((o, i) => (
-                      <div key={i} className="flex gap-2.5 items-start mb-2.5 last:mb-0">
-                        <span className="shrink-0 rounded-full flex items-center justify-center" style={{ width: 19, height: 19, marginTop: 2, background: "rgba(184,146,78,0.16)", border: "1px solid rgba(184,146,78,0.45)", color: "#7a5f2b", fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, fontWeight: 800 }}>{i + 1}</span>
-                        <span className="text-[12.5px] font-bold leading-snug" style={{ color: C.encre }}>{o}</span>
-                      </div>
-                    ))}
+                <div style={{ flex: "0.54 1 0", minHeight: 30 }}></div>
+                <div style={{ border: "1px solid rgba(184,146,78,0.55)", borderTop: "4px solid #b8924e", borderRadius: 14, background: "rgba(255,255,255,0.86)", padding: "38px 40px 34px" }}>
+                  <div style={{ height: 3, width: 72, background: "linear-gradient(90deg, #b8924e, #d8bc86)", marginBottom: 20 }}></div>
+                  <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 38, fontWeight: 700, color: "#1d2735", lineHeight: 1.1, letterSpacing: "-0.01em" }}>Analyse et plan d'action</div>
+                  <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 19, color: "#1d2735", marginTop: 16, lineHeight: 1.45 }}>
+                    {nomC}{nomJ ? <span style={{ fontFamily: "inherit" }}> <span style={{ color: "#b8924e", fontFamily: "inherit" }}>&amp;</span> {nomJ}</span> : null}
                   </div>
-                ) : null}
-                {intro.preco.length ? (
-                  <div className="rounded-xl px-4 py-4 border" style={{ borderColor: C.vertBord, borderTop: "3px solid " + C.vert, background: "linear-gradient(180deg,#ecfdf5,#fff 55%)" }}>
-                    <div className="nc-ctitre mb-3">Les préconisations<span className="sfx">retenues à l'audit</span></div>
-                    {intro.preco.map((o, i) => (
-                      <div key={i} className="flex gap-2.5 items-start mb-2.5 last:mb-0">
-                        <span className="shrink-0" style={{ width: 7, height: 7, marginTop: 8, background: C.vert, transform: "rotate(45deg)" }} />
-                        {(() => {
-                          const P = ncPrecoParts(o);
-                          return <span className="text-[12.5px] leading-snug" style={{ color: C.encre }}>
-                            <b style={{ fontWeight: 800 }}>{P.titre}</b>
-                            {P.suite ? <span style={{ fontWeight: 400 }}>{P.suite}</span> : null}
-                          </span>;
-                        })()}
-                      </div>
-                    ))}
+                  <div className="text-[11px]" style={{ color: "#57534e", marginTop: 20, paddingTop: 14, borderTop: "1px solid rgba(10,9,8,0.10)" }}>
+                    {cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}
                   </div>
-                ) : null}
-              </div>
-              {/* 14/09/2026 (CGP, dossier Coconut) : PLUS de bandeau enveloppe · employée ·
-                  reste sur la page de garde — « d'où sortent les 305 € ? il faut une logique
-                  de lecture ». À la place, la phrase d'engagement sur ce que le client a
-                  DÉCLARÉ à l'audit (fourchette et apport), rien d'autre. */}
-              {!engagement.aucun ? (
-                <div className="rounded-xl px-5 py-4 border" style={{ marginTop: 22, borderColor: C.bord, background: "#fafaf9" }} data-nc-engagement="1">
-                  <div className="text-[13px]" style={{ color: C.encre, lineHeight: 1.6 }}>
-                    L'engagement que vous souhaitez consacrer au développement et à l'optimisation de votre situation patrimoniale :{" "}
-                    {engagement.cap ? <b style={{ color: C.vert, whiteSpace: "nowrap" }}>{engagement.cap}{engagement.capJ ? " (" + civMoi + ")" : ""}</b> : null}
-                    {engagement.capJ ? <span> et <b style={{ color: C.vert, whiteSpace: "nowrap" }}>{engagement.capJ} ({civLui})</b></span> : null}
-                    {engagement.ap ? <span>{engagement.cap ? " et " : ""}un capital de <b style={{ color: C.or, whiteSpace: "nowrap" }}>{engagement.ap}</b></span> : null}.
-                  </div>
+                  <div className="text-[10px] italic" style={{ color: "#a8a29e", marginTop: 3 }}>Document non contractuel — hypothèses détaillées en fin de document</div>
                 </div>
-              ) : null}
-              <div style={{ flex: 1, minHeight: 24 }}></div>
-              <div className="flex items-center justify-between gap-4 flex-wrap" style={{ marginTop: 34, paddingTop: 14, borderTop: "1px solid " + C.bord }}>
-                <div className="text-[10.5px]" style={{ color: C.gris2 }}>{cons ? `Document préparé par ${cons} — ${cab}` : `Document préparé par ${cab}`}</div>
-                <div className="text-[10px] italic" style={{ color: C.gris3 }}>Projection non contractuelle — hypothèses détaillées en fin de document</div>
+                <div style={{ flex: 1, minHeight: 12 }}></div>
               </div>
             </div>
+          {/* ═══ 20/09/2026 (CGP) — PAGE 2 DE L'ANALYSE R2 ═══
+              « Je veux ensuite sur la seconde page que tu reprennes les objectifs
+              exprimés par le client ainsi que les participations mensuelles et apport
+              envisagée. » Ce sont EXACTEMENT les deux cartes de l'étude — un seul corps,
+              rendu par le composant parent et reçu ici en prop : aucun second jeu de
+              libellés à tenir à jour. La baisse de revenus à la retraite, qui encombrait
+              la page de garde, ouvre cette page : elle pose le pourquoi avant le quoi. */}
+          <div className="rounded-2xl bg-white p-6 mb-4 border" data-nc-chap="Vos objectifs et vos moyens" data-nc-force-break="1" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
+                {intro.baisse > 0 ? (
+                  <div className="rounded-xl px-5 py-5" style={{ marginTop: 10, marginBottom: 34, background: "#fafaf9", border: "1px solid " + C.bord, borderLeft: "4px solid #b91c1c" }}>
+                    {/* 02/09 : UN chiffre median, et le montant reste INSECABLE avec son
+                        unite — « € par mois » se retrouvait seul a la ligne suivante. */}
+                    <div style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.encre, lineHeight: 1.45 }}>
+                      Prévision de baisse de vos revenus à la retraite estimée à{" "}
+                      <span style={{ color: "#b91c1c", whiteSpace: "nowrap" }}>{eur((intro.baisse + intro.baisseH) / 2)} par mois</span>.
+                    </div>
+                    <div className="text-[12.5px]" style={{ color: C.encre, marginTop: 7, lineHeight: 1.6 }}>
+                      Vos revenus passeraient de <b style={{ whiteSpace: "nowrap" }}>{eur(intro.act)}</b> à{" "}
+                      <b style={{ whiteSpace: "nowrap", color: "#b91c1c" }}>{eur((intro.pensBas + intro.pensHaut) / 2)}</b> par mois.
+                    </div>
+                    <div className="text-[10.5px] italic" style={{ color: C.gris2, marginTop: 5, lineHeight: 1.55 }}>
+                      {intro.reel ? "Montants relevés sur info-retraite.fr." : intro.hyp.charAt(0).toUpperCase() + intro.hyp.slice(1) + " — à vérifier sur info-retraite.fr."}
+                    </div>
+                  </div>
+                ) : null}
+            {blocObjectifs}
+          </div>
+          {/* ═══ 20/09/2026 (CGP) — L'ANALYSE DU DOSSIER ═══
+              « Puis analyse du dossier avec les points forts et axes à travailler. »
+              Même corps que dans la synthèse : rendreForcesAxes(), reçu en prop. */}
+          {/* pas de marque de chapitre ici : le bloc rendu en porte déjà une
+              (« Points forts et axes de travail »). Deux marques imbriquées = un
+              chapitre fantôme en mode présentation. */}
+          {blocForces}
+            </>);
+          })()}
+          {/* ═══ 20/09/2026 (CGP) — LE BANDEAU DE PARTICIPATION, JUSTE AVANT LES GISEMENTS ═══
+              « Reprends à nouveau un bandeau avec son objectif de participation mensuelle,
+              et mets en dessous le bloc où trouver de l'épargne afin de faire gonfler sa
+              poche d'euros à consacrer aux projets. » Le bandeau redit CE QUE LE CLIENT A
+              ANNONCÉ — rien de calculé — pour que les euros trouvés juste en dessous se
+              lisent en regard de cet objectif. */}
+          {!engagement.aucun ? (
+            <div className="rounded-2xl mb-4 border" data-nc-force-break="1" style={{ borderColor: "rgba(184,146,78,0.55)", borderTop: "4px solid " + C.or, background: "linear-gradient(180deg, rgba(184,146,78,0.07), #ffffff 60%)", padding: "18px 24px 16px" }}>
+              <div className="text-[9.5px] uppercase tracking-[0.2em] font-bold" style={{ color: "#8a6d34", marginBottom: 8 }}>Votre objectif de participation</div>
+              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
+                {engagement.cap ? (
+                  <span>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{engagement.cap}</span>
+                    {engagement.capJ ? <span className="text-[11px] font-bold" style={{ color: C.gris2 }}> ({civMoi})</span> : null}
+                  </span>
+                ) : null}
+                {engagement.capJ ? (
+                  <span>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert }}>{engagement.capJ}</span>
+                    <span className="text-[11px] font-bold" style={{ color: C.gris2 }}> ({civLui})</span>
+                  </span>
+                ) : null}
+                {engagement.ap ? (
+                  <span>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.or }}>{engagement.ap}</span>
+                    <span className="text-[11px] font-bold" style={{ color: C.gris2 }}> d'apport</span>
+                  </span>
+                ) : null}
+              </div>
+              <div className="text-[11px]" style={{ color: C.gris2, marginTop: 8, lineHeight: 1.55 }}>Ce que vous avez annoncé pouvoir consacrer à vos projets. Les leviers ci-dessous cherchent à grossir cette poche sans rien demander de plus à votre budget.</div>
+            </div>
+          ) : null}
+          {/* ═══ OÙ TROUVER L'ÉPARGNE ═══
+              10/09 (decision E) : vient APRÈS les solutions, le bandeau collant suit le
+              défilement. 11/09 (CGP) : « plus petit en visuel, plus lisible rapidement »,
+              et l'ÉCONOMIE EST MENSUALISÉE — on cherche de l'épargne mensuelle à
+              réinvestir dans le projet : le €/mois est le chiffre principal, le gain
+              à terme sur N ans passe en second. Trois cartes compactes sur une ligne,
+              puis une ligne de résumé par nature (trésorerie réelle / rendement en
+              moyenne) — les deux natures ne s'additionnent toujours pas. */}
+          {(() => {
+            const Hm = 12 * Math.max(1, R.H);
+            const pctTxt = (v, def) => String(nb(v, def)).replace(".", ",") + " %";
+            const tMedTxt = pctTxt(h.tMed, 5.2);
+            const dRest = Math.round(nb(G.dRest, 0));
+            /* 20/09/2026 (CGP) : le €/mois affiché sur ces deux cartes était le capital
+               à l'horizon divisé par le nombre de mois. Il vaut désormais l'ÉCART
+               D'INTÉRÊTS de la première année, ramené au mois — le capital ne rentre
+               plus dans le calcul de l'économie. */
+            const mArb = Math.round(R.ecoArbAn / 12), mArbPot = Math.round(R.ecoArbAnPot / 12);
+            const mRed = Math.round(R.ecoRedAn / 12), mRedPot = Math.round(R.ecoRedAnPot / 12);
+            const mRend = mArb + mRed;
+            const ass = G.ass && R.ecoAss > 0, rend = (mArb + mRed) > 0;
+            return (
+          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne">
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
+            <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
+              L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
+            </div>
+            <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
+              <Carte petit on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
+                pot={!G.ass && R.ecoAssPot > 0}
+                eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
+                effSub={G.ass
+                  ? "libérés chaque mois · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans"
+                  : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
+                Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
+                Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
+                Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
+                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Résiliable à tout moment (loi Lemoine)</span>
+              </Carte>
+              <Carte petit on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
+                pot={!G.arb && R.gainArbPot > 0}
+                eff={G.arb ? "+ " + eur(mArb) + "/mois" : (R.gainArbPot > 0 ? "+ " + eur(mArbPot) + "/mois" : "—")}
+                effSub={G.arb
+                  ? "d'intérêts en plus chaque mois · " + pctTxt(G.txArbAct, 2.5) + " → " + tMedTxt + " · soit + " + eur(R.gainArbCap) + " de capital dans " + R.H + " ans"
+                  : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainArbPot) + " dans " + R.H + " ans" : "renseignez le montant et son rendement actuel")}>
+                Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
+                Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
+                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Vers l'hypothèse cabinet ({tMedTxt})</span>
+              </Carte>
+              <Carte petit on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
+                pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
+                eff={R.redActif ? "+ " + eur(mRed) + "/mois" : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? "+ " + eur(mRedPot) + "/mois" : "—"))}
+                effSub={R.redActif
+                  ? "d'intérêts en plus chaque mois sur ce qui aura été versé dans l'année · " + pctTxt(G.txVersAct, 1.7) + " → " + tMedTxt + " · soit + " + eur(R.gainRedCap) + " de capital dans " + R.H + " ans"
+                  : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainRedPot) + " dans " + R.H + " ans" : "renseignez le versement et son rendement actuel"))}>
+                Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
+                Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
+                <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
+                  <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
+                  <span style={{ fontSize: 10.5 }}>versé sur un livret</span>
+                </label>
+              </Carte>
+            </div>
+            {/* résumé par NATURE : une trésorerie réelle d'un côté, un rendement ramené
+                au mois de l'autre — jamais additionnés. Structure lue par t_gisements :
+                le titre dans un span, la valeur dans le DERNIER span du même parent. */}
+            <div className="grid gap-3 mt-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))" }}>
+              {[
+                { titre: "Trésorerie libérée chaque mois", actif: ass, val: ass ? eur(R.ecoAss) + "/mois" : "—",
+                  sous: ass ? "d'argent disponible en plus · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans" : "aucun levier retenu" },
+                { titre: "Meilleur rendement sur la durée", actif: rend, val: rend ? "≈ " + eur(mRend) + "/mois" : "—",
+                  sous: rend ? "d'intérêts en plus chaque mois · soit + " + eur(R.gainRendCap) + " de capital dans " + R.H + " ans" : "aucun levier retenu" }
+              ].map((f, i) => (
+                <div key={i} className="rounded-xl px-3.5 py-2 border" style={{ borderColor: f.actif ? C.vertBord : C.bord, background: f.actif ? C.vertPale : "#fafaf9" }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: f.actif ? C.vert : C.gris, fontWeight: 800, display: "block" }}>{f.titre}</span>
+                  <span style={{ display: "block", marginTop: 2, lineHeight: 1.3 }}>
+                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, color: C.gris2, marginLeft: 7 }}>{f.sous}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            {/* 14/09/2026 (CGP) : UN bloc qui additionne — « 238 € d'épargne à réorienter »
+                = trésorerie libérée + rendement ramené au mois. */}
+            {(ass ? R.ecoAss : 0) + (rend ? mRend : 0) > 0 ? (
+              <div className="rounded-xl px-4 py-3 mt-3 flex flex-wrap items-baseline border" style={{ columnGap: 12, rowGap: 4, borderColor: C.vertBord, background: "linear-gradient(135deg,#ecfdf5,#ffffff)" }} data-nc-gisements-total="1">
+                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert, letterSpacing: "-0.02em" }}>{eur(Math.round((ass ? R.ecoAss : 0) + (rend ? mRend : 0)))}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span></span>
+                <span className="text-[12.5px] font-bold" style={{ color: C.encre }}>d'épargne à réorienter</span>
+                <span className="text-[10.5px]" style={{ color: C.gris2 }}>{[ass ? eur(Math.round(R.ecoAss)) + " libérés" : null, rend ? eur(mRend) + " de rendement en moyenne" : null].filter(Boolean).join(" + ")}</span>
+              </div>
+            ) : null}
+            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
+            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
+            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
+          </div>
             );
           })()}
+
           {/* ═══ 11/09/2026 (CGP) — ORDRE : page de garde → LES SOLUTIONS RETENUES (avec le
               bandeau enveloppe · employée · reste EN FIXE, imprimé, en grand) → OÙ TROUVER
               L'ÉPARGNE → le tableau à l'horizon. L'ancienne rubrique « Votre participation
@@ -6866,6 +7142,29 @@
               ses trois colonnes SONT le bandeau. */}
           <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-proj-solutions="1" data-nc-chap="Les solutions retenues" data-nc-force-break="1">
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Les solutions retenues</div>
+            {/* ═══ 20/09/2026 (CGP) — LES PRÉCONISATIONS DE L'AUDIT OUVRENT LES SOLUTIONS ═══
+                Elles vivaient sur la page de garde, à côté des objectifs. La page de garde
+                de l'Analyse R2 est désormais une vraie page de garde : les préconisations
+                descendent ici, en tête des solutions — c'est ce qu'elles sont. Rien n'est
+                perdu, le bloc est le même, seule sa place change. */}
+            {intro.preco.length ? (
+              <div className="rounded-xl px-4 py-4 border" style={{ borderColor: C.vertBord, borderTop: "3px solid " + C.vert, background: "linear-gradient(180deg,#ecfdf5,#fff 55%)" }}>
+                <div className="nc-ctitre mb-3">Les préconisations<span className="sfx">retenues à l'audit</span></div>
+                {intro.preco.map((o, i) => (
+                  <div key={i} className="flex gap-2.5 items-start mb-2.5 last:mb-0">
+                    <span className="shrink-0" style={{ width: 7, height: 7, marginTop: 8, background: C.vert, transform: "rotate(45deg)" }} />
+                    {(() => {
+                      const P = ncPrecoParts(o);
+                      return <span className="text-[12.5px] leading-snug" style={{ color: C.encre }}>
+                        <b style={{ fontWeight: 800 }}>{P.titre}</b>
+                        {P.suite ? <span style={{ fontWeight: 400 }}>{P.suite}</span> : null}
+                      </span>;
+                    })()}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
             {!engagement.aucun ? (
               <div className="text-[13px]" style={{ color: C.encre, marginTop: 10, lineHeight: 1.6 }}>
                 {engagement.cap ? (
@@ -7060,99 +7359,6 @@
             )}
           </div>
 
-          {/* ═══ OÙ TROUVER L'ÉPARGNE ═══
-              10/09 (decision E) : vient APRÈS les solutions, le bandeau collant suit le
-              défilement. 11/09 (CGP) : « plus petit en visuel, plus lisible rapidement »,
-              et l'ÉCONOMIE EST MENSUALISÉE — on cherche de l'épargne mensuelle à
-              réinvestir dans le projet : le €/mois est le chiffre principal, le gain
-              à terme sur N ans passe en second. Trois cartes compactes sur une ligne,
-              puis une ligne de résumé par nature (trésorerie réelle / rendement en
-              moyenne) — les deux natures ne s'additionnent toujours pas. */}
-          {(() => {
-            const Hm = 12 * Math.max(1, R.H);
-            const pctTxt = (v, def) => String(nb(v, def)).replace(".", ",") + " %";
-            const tMedTxt = pctTxt(h.tMed, 5.2);
-            const dRest = Math.round(nb(G.dRest, 0));
-            const mArb = Math.round(R.gainArbCap / Hm), mArbPot = Math.round(R.gainArbPot / Hm);
-            const mRed = Math.round(R.gainRedCap / Hm), mRedPot = Math.round(R.gainRedPot / Hm);
-            const mRend = Math.round(R.gainRendCap / Hm);
-            const ass = G.ass && R.ecoAss > 0, rend = R.gainRendCap > 0;
-            return (
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne">
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
-            <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
-              L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
-            </div>
-            <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
-              <Carte petit on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
-                pot={!G.ass && R.ecoAssPot > 0}
-                eff={G.ass ? eur(R.ecoAss) + "/mois" : (R.ecoAssPot > 0 ? eur(R.ecoAssPot) + "/mois" : "—")}
-                effSub={G.ass
-                  ? "libérés chaque mois · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans"
-                  : (R.ecoAssPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée" : "renseignez le capital et les deux taux")}>
-                Capital emprunté <Mini v={G.capIni} on={v => sg('capIni', v)} /> €<br />
-                Durée restante <Mini v={G.dRest} on={v => sg('dRest', v)} w={44} /> ans<br />
-                Taux actuel <Mini v={G.txAss} on={v => sg('txAss', v)} w={50} /> % · délégation <Mini v={G.txDel} on={v => sg('txDel', v)} w={50} /> %<br />
-                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Résiliable à tout moment (loi Lemoine)</span>
-              </Carte>
-              <Carte petit on={G.arb} toggle={() => sg('arb', !G.arb)} titre="Arbitrage du capital placé"
-                pot={!G.arb && R.gainArbPot > 0}
-                eff={G.arb ? "+ " + eur(mArb) + "/mois" : (R.gainArbPot > 0 ? "+ " + eur(mArbPot) + "/mois" : "—")}
-                effSub={G.arb
-                  ? "en moyenne · soit + " + eur(R.gainArbCap) + " dans " + R.H + " ans · " + pctTxt(G.txArbAct, 2.5) + " → " + tMedTxt
-                  : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainArbPot) + " dans " + R.H + " ans" : "renseignez le montant et son rendement actuel")}>
-                Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
-                Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
-                <span className="italic" style={{ color: C.gris2, fontSize: 10 }}>Vers l'hypothèse cabinet ({tMedTxt})</span>
-              </Carte>
-              <Carte petit on={R.redActif} toggle={() => sg('red', !G.red)} titre="Redirection des versements"
-                pot={!R.redActif && !R.redBloque && R.gainRedPot > 0}
-                eff={R.redActif ? "+ " + eur(mRed) + "/mois" : (R.redBloque ? "bloqué" : (R.gainRedPot > 0 ? "+ " + eur(mRedPot) + "/mois" : "—"))}
-                effSub={R.redActif
-                  ? "en moyenne · soit + " + eur(R.gainRedCap) + " dans " + R.H + " ans · " + pctTxt(G.txVersAct, 1.7) + " → " + tMedTxt
-                  : (R.redBloque ? "l'épargne de précaution doit d'abord être constituée" : (R.gainRedPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainRedPot) + " dans " + R.H + " ans" : "renseignez le versement et son rendement actuel"))}>
-                Versement <Mini v={G.versMens} on={v => sg('versMens', v)} /> €/mois<br />
-                Rendement actuel <Mini v={G.txVersAct} on={v => sg('txVersAct', v)} w={48} /> %/an<br />
-                <label className="flex items-center gap-1.5" onClick={e => e.stopPropagation()}>
-                  <input type="checkbox" checked={G.versLivret} onChange={() => sg('versLivret', !G.versLivret)} className="w-3.5 h-3.5" style={{ accentColor: C.vert }} />
-                  <span style={{ fontSize: 10.5 }}>versé sur un livret</span>
-                </label>
-              </Carte>
-            </div>
-            {/* résumé par NATURE : une trésorerie réelle d'un côté, un rendement ramené
-                au mois de l'autre — jamais additionnés. Structure lue par t_gisements :
-                le titre dans un span, la valeur dans le DERNIER span du même parent. */}
-            <div className="grid gap-3 mt-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))" }}>
-              {[
-                { titre: "Trésorerie libérée chaque mois", actif: ass, val: ass ? eur(R.ecoAss) + "/mois" : "—",
-                  sous: ass ? "d'argent disponible en plus · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans" : "aucun levier retenu" },
-                { titre: "Meilleur rendement sur la durée", actif: rend, val: rend ? "≈ " + eur(mRend) + "/mois" : "—",
-                  sous: rend ? "en moyenne · soit + " + eur(R.gainRendCap) + " de capital dans " + R.H + " ans" : "aucun levier retenu" }
-              ].map((f, i) => (
-                <div key={i} className="rounded-xl px-3.5 py-2 border" style={{ borderColor: f.actif ? C.vertBord : C.bord, background: f.actif ? C.vertPale : "#fafaf9" }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: f.actif ? C.vert : C.gris, fontWeight: 800, display: "block" }}>{f.titre}</span>
-                  <span style={{ display: "block", marginTop: 2, lineHeight: 1.3 }}>
-                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
-                    <span style={{ fontSize: 10, fontWeight: 600, color: C.gris2, marginLeft: 7 }}>{f.sous}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-            {/* 14/09/2026 (CGP) : UN bloc qui additionne — « 238 € d'épargne à réorienter »
-                = trésorerie libérée + rendement ramené au mois. */}
-            {(ass ? R.ecoAss : 0) + (rend ? mRend : 0) > 0 ? (
-              <div className="rounded-xl px-4 py-3 mt-3 flex flex-wrap items-baseline border" style={{ columnGap: 12, rowGap: 4, borderColor: C.vertBord, background: "linear-gradient(135deg,#ecfdf5,#ffffff)" }} data-nc-gisements-total="1">
-                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert, letterSpacing: "-0.02em" }}>{eur(Math.round((ass ? R.ecoAss : 0) + (rend ? mRend : 0)))}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span></span>
-                <span className="text-[12.5px] font-bold" style={{ color: C.encre }}>d'épargne à réorienter</span>
-                <span className="text-[10.5px]" style={{ color: C.gris2 }}>{[ass ? eur(Math.round(R.ecoAss)) + " libérés" : null, rend ? eur(mRend) + " de rendement en moyenne" : null].filter(Boolean).join(" + ")}</span>
-              </div>
-            ) : null}
-            {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
-            {R.redBloque ? <Alerte><b>Redirection bloquée.</b> Les {eur(nb(G.versMens, 0))}/mois alimentent un livret et l'épargne de précaution constituée (<b>{eur(socle.courtTerme)}</b>) est inférieure à la cible ({eur(R.precaCible)}). Il manque {eur(R.precaCible - socle.courtTerme)}.</Alerte> : null}
-            {R.redActif && G.versLivret ? <Alerte ok>Précaution vérifiée : {eur(socle.courtTerme)} constitués pour une cible de {eur(R.precaCible)}.</Alerte> : null}
-          </div>
-            );
-          })()}
 
 
           {/* ═══ LA PHOTO : AVANT / APRÈS (02/09) ═══
@@ -7434,7 +7640,7 @@
           const cons = ((inputs && inputs.conseillerNom) || "").trim();
           const civ = d.civilite === "Mme" ? "Madame" : "Monsieur";
           const titre = synMode === "preco" ? "Votre simulation et votre plan d'action"
-                      : synMode === "proj" ? "Votre projection patrimoniale"
+                      : synMode === "proj" ? "Votre analyse et votre plan d'action"
                       : "Votre étude patrimoniale";
           const corps = [
             civ + " " + ((d.nom || "") + "").toUpperCase() + ",",
@@ -8127,7 +8333,7 @@
                                 const pad = (n) => String(n).padStart(2, "0");
                                 /* un nom par volet : les trois exports d un meme client ne
                                    portaient qu un seul et meme nom de fichier */
-                                const VOLET = { constat: "Audit-et-synthese", preco: "Simulation-et-plan-d-action", proj: "Projection" };
+                                const VOLET = { constat: "Audit-et-synthese", preco: "Simulation", proj: "Analyse-et-plan-d-action" };
                                 document.title = `Synthese-patrimoniale-${VOLET[synMode] || "Synthese"}-${(d.nom || "dossier").replace(/\s+/g, "-")}-${(d.prenom || "").replace(/\s+/g, "-")}-${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
                                 document.body.classList.add("nc-print-syn");
                                 document.documentElement.classList.add("nc-print-syn-root");
@@ -8219,6 +8425,319 @@
       useEffect(() => {
         if (niveau === "complet" && irAuto && !d.tmiManuel && d.tmi !== irAuto.tmi) set("tmi", irAuto.tmi);
       }, [irAuto ? irAuto.tmi : null, d.tmiManuel, niveau]);
+
+      /* ═══════════════════════════════════════════════════════════════════
+         20/09/2026 (CGP) — DEUX BLOCS PARTAGÉS PAR L'ÉTUDE ET L'ANALYSE R2.
+         Le CGP veut retrouver, dans le document du second rendez-vous :
+         « les objectifs exprimés par le client ainsi que les participations
+         mensuelles et apport envisagé », puis « l'analyse du dossier avec les
+         points forts et axes à travailler ».
+         Ces deux blocs vivaient au milieu du JSX de la synthèse, où NcProjection
+         — un composant SÉPARÉ — ne pouvait pas les atteindre. Ils deviennent deux
+         fonctions de rendu du composant parent : la synthèse les appelle à sa
+         place, et NcProjection les reçoit tout rendus, en props. Rien n'est
+         dupliqué : un seul corps, deux points d'appel.
+         ═══════════════════════════════════════════════════════════════════ */
+      const rendreObjectifsParticipation = ({ cartesCabinet = true, chapitre = "Objectifs et participation" } = {}) => {
+        /* 15/09/2026 (CGP, seconde décision) : les MOYENS que le client consacre
+           à ses objectifs (apport, mensualité) et le RAPPEL DE SES OBJECTIFS
+           reviennent au RDV 1, juste sous « Importance des versements
+           programmés ». Le bloc RESTE AUSSI au RDV 2 (choix du CGP), où il
+           s'accompagne des cartes larges du cabinet — celles-ci ne sortent
+           jamais au premier rendez-vous. */
+        /* 19/09/2026 (CGP) : « j'aimerais que dans l'audit tu puisses inclure,
+           dans le chapitre objectifs et questions, juste après les objectifs
+           exprimés et la participation mensuelle, le tableau qui est dans le
+           document "votre simulation et plan d'action" page 5 : les objectifs
+           recommandés par le cabinet et les préconisations, sans changer la
+           suite de l'audit. »
+           Les deux cartes larges du cabinet — « Objectifs recommandés par le
+           cabinet » et « Préconisations » — étaient réservées au RDV 2 (filtre
+           synMode === "preco"). Elles sortent désormais AUSSI dans l'audit,
+           à la même place et sous la même forme qu'au RDV 2 : immédiatement
+           sous la rangée « Objectifs exprimés / Participation mensuelle ».
+           Rien d'autre ne bouge : les notes, les questions et les pièces à
+           réclamer suivent dans l'ordre inchangé. */
+        const largeVisibles = syn.resume.filter(it => it.large);
+        const objExp = largeVisibles.find(it => it.t === "Objectifs exprimés" || it.t === "Objectif exprimé");
+        /* 20/09/2026 : les deux cartes du cabinet (objectifs recommandés, préconisations)
+           accompagnent les objectifs dans l'ÉTUDE. Dans l'Analyse R2, le CGP ne veut sur
+           cette page que « les objectifs exprimés par le client ainsi que les
+           participations mensuelles et apport envisagée » : les préconisations y ont
+           leur place plus bas, en tête des solutions retenues. */
+        const autresLarges = cartesCabinet ? largeVisibles.filter(it => it !== objExp) : [];
+        const CarteLarge = ({ it }) => (
+          <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
+            style={{ borderTop: `3px solid ${it.c || "#b8924e"}`, background: `linear-gradient(180deg, ${(it.c || "#b8924e")}0a, #ffffff 55%)`, boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+            <div className="text-[9.5px] uppercase tracking-wider font-bold mb-2.5" style={{ color: it.c || "#8a6d34" }}>{it.t}</div>
+            {(it.list || [it.d]).filter(Boolean).map((li, k) => (
+              <div key={k} className="flex gap-3 items-start mb-2.5 last:mb-0">
+                {(() => {
+                  /* titre en GRAS, suite en graisse normale : une carte
+                     entierement en gras ne se hierarchise plus. */
+                  const P = ncPrecoParts(li);
+                  return <>
+                    <NcPicto texte={P.plein} c={it.c || "#b8924e"} />
+                    <span className="leading-snug text-[14px]" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
+                      <b style={{ fontWeight: 800 }}>{P.titre}</b>
+                      {P.suite ? <span style={{ fontWeight: 400 }}>{P.suite}</span> : null}
+                      {P.href ? <>{" "}
+                        <a href={P.href} target="_blank" rel="noopener noreferrer" className="inline-block align-middle ml-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold no-underline"
+                          style={{ background: "rgba(109,40,217,0.08)", border: "1px solid rgba(109,40,217,0.35)", color: "#6d28d9", fontFamily: "'Inter', sans-serif" }}>{P.linkLabel}</a>
+                      </> : null}
+                    </span>
+                  </>;
+                })()}
+              </div>
+            ))}
+            {it.sub ? <div className="text-[10px] text-stone-500 mt-1.5 leading-snug">{it.sub}</div> : null}
+          </div>
+        );
+        const participation = (() => {
+          const nfE = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
+          const CAP_LIB = { "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
+          const HOR_LIB = { "<5": "moins de 5 ans", "5-10": "5 à 10 ans", "10-15": "10 à 15 ans", ">15": "plus de 15 ans" };
+          const lignes = [];
+          // 03/09 : la précision ("fourchette indiquée" / "montant précis indiqué")
+          // ressort désormais en SOUS-LIGNE séparée (l.sub), et non plus concaténée
+          // dans le même texte que le nombre — sinon son retour à la ligne dépend
+          // de la longueur du nombre et les tuiles voisines se désalignent.
+          const capTxt = (code, libre) => code === "libre" ? { v: `${nfE(ncInt(libre))} €/mois`, sub: "montant précis indiqué" } : { v: CAP_LIB[code] || code, sub: "fourchette indiquée" };
+          // Réflexion patrimoniale séparée (28/08) : une tuile PAR personne
+          // (ex. Monsieur 500 €/mois, Madame 200 €/mois) — jamais fusionnées.
+          if (d.reflexionPatrimoine === "separee" && (d.capaciteEpargne || d.capaciteEpargneConjoint)) {
+            const civMoi2 = d.civilite === "Mme" ? "Madame" : "Monsieur";
+            const civLui2 = d.civilite === "Mme" ? "Monsieur" : "Madame";
+            if (d.capaciteEpargne) { const c = capTxt(d.capaciteEpargne, d.capaciteEpargneLibre); lignes.push({ t: `Participation de ${civMoi2}`, d: c.v, sub: c.sub }); }
+            if (d.capaciteEpargneConjoint) { const c = capTxt(d.capaciteEpargneConjoint, d.capaciteEpargneConjointLibre); lignes.push({ t: `Participation de ${civLui2}`, d: c.v, sub: c.sub }); }
+          } else if (d.capaciteEpargne) { const c = capTxt(d.capaciteEpargne, d.capaciteEpargneLibre); lignes.push({ t: "Participation mensuelle envisagée", d: c.v, sub: c.sub }); }
+          // Apport initial mobilisable (29/08) — posé avec la participation, ressort en tuile.
+          if (d.apportInitial) lignes.push(d.apportInitial === "libre"
+            ? { t: "Apport initial mobilisable", d: `${nfE(ncInt(d.apportInitialLibre))} €`, sub: "montant précis indiqué" }
+            : { t: "Apport initial mobilisable", d: NC_APPORT_LIB[d.apportInitial] || d.apportInitial, sub: d.apportInitial === "aucun" ? null : "fourchette indiquée" });
+          if (ncInt(d.epargnePrecaution) > 0) lignes.push({ t: "Épargne de précaution souhaitée", d: `${nfE(ncInt(d.epargnePrecaution))} € à conserver disponibles.` });
+          const odL = (d.objectifsDetail || {}).locatif || {};
+          if (ncInt(odL.apport) > 0) lignes.push({ t: "Apport envisagé (projet locatif)", d: `${nfE(ncInt(odL.apport))} €${ncInt(odL.budget) > 0 ? ` pour un budget d'environ ${nfE(ncInt(odL.budget))} €` : ""}.` });
+          if (d.horizon) lignes.push({ t: "Horizon de placement", d: HOR_LIB[d.horizon] || d.horizon });
+          if ((d.notes || "").trim()) lignes.push({ t: "Notes d'entretien", d: (d.notes || "").trim() });
+          if (!lignes.length) return null;
+          return (
+            <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
+              style={{ borderTop: "3px solid #0f766e", background: "linear-gradient(180deg, #0f766e0a, #ffffff 55%)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>Participation mensuelle & apport envisagés</div>
+              <div className="grid grid-cols-2 gap-2.5">
+                {lignes.map((l, i) => (
+                  <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
+                    <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{l.t}</div>
+                    <div className={l.t === "Notes d'entretien" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
+                    {/* 03/09 : ligne dédiée, toujours à la même position sous le nombre —
+                        ne dépend plus du retour à la ligne du texte du dessus (cf. tuile
+                        voisine, dont le nombre peut être plus court ou plus long). */}
+                    {l.sub ? <div className="text-[10px] font-semibold mt-0.5" style={{ color: "#0f766e99" }}>{l.sub}</div> : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })();
+        return (
+          <>
+            {(objExp || participation) && (
+              <div className={`grid ${objExp && participation ? "grid-cols-2" : "grid-cols-1"} gap-3 mb-4`} data-nc-chap={chapitre || undefined}>
+                {objExp && <CarteLarge it={objExp} />}
+                {participation}
+              </div>
+            )}
+            {autresLarges.length > 0 && (
+              <div className="grid grid-cols-1 gap-3 mb-4">
+                {autresLarges.map((it, i) => <CarteLarge key={i} it={it} />)}
+              </div>
+            )}
+          </>
+        );
+      };
+      const rendreForcesAxes = () => {
+        // ——— CORRECTIONS EN PRODUCTION (28/08) : le conseiller peut, à l'écran,
+        // CORRIGER le texte d'un point (✎), le MASQUER (✕) et RÉORDONNER les axes
+        // par priorité avec le client (↑ ↓). Tout est stocké dans le dossier
+        // (synthEdits / synthOrdreAxes) et le PDF reprend la version corrigée —
+        // les boutons, eux, ne s'impriment jamais (nc-syn-noprint). ———
+        const ed = d.synthEdits || {};
+        const appliquer = (liste) => liste
+          .filter(f => !(ed[f.t] && ed[f.t].hide))
+          .map(f => ed[f.t] && ed[f.t].d ? { ...f, d: ed[f.t].d } : f);
+        const ordonner = (liste) => {
+          const ordre = d.synthOrdreAxes || [];
+          if (!ordre.length) return liste;
+          return [...liste].sort((a, b) => {
+            const ia = ordre.indexOf(a.t), ib = ordre.indexOf(b.t);
+            return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+          });
+        };
+        const forcesAff = appliquer(syn.forces);
+        const axesAff = ordonner(appliquer(syn.faiblesses));
+        const setEd = (t, patch) => set("synthEdits", { ...(d.synthEdits || {}), [t]: { ...((d.synthEdits || {})[t] || {}), ...patch } });
+        const editer = (f) => setEditOpen({ f, valeur: f.d });
+        const masquer = (f) => setEd(f.t, { hide: true });
+        const retablirUn = (f) => { const { [f.t]: _drop, ...reste } = d.synthEdits || {}; set("synthEdits", reste); };
+        const bouger = (f, dir) => {
+          const titres = axesAff.map(x => x.t);
+          const i = titres.indexOf(f.t); const j = i + dir;
+          if (j < 0 || j >= titres.length) return;
+          const nv = [...titres]; nv[i] = titres[j]; nv[j] = titres[i];
+          set("synthOrdreAxes", nv);
+        };
+        const nbMasques = Object.keys(ed).filter(t => ed[t] && ed[t].hide).length;
+        const nbCorriges = Object.keys(ed).filter(t => ed[t] && ed[t].d && !ed[t].hide).length;
+        const btnCls = "w-[18px] h-[18px] rounded border border-stone-200 text-[10px] leading-none text-stone-400 hover:text-stone-900 hover:border-stone-500 bg-white";
+        const Controles = ({ f, axes }) => {
+          const corrige = !!(ed[f.t] && ed[f.t].d);
+          return (
+            <span className="nc-syn-noprint inline-flex items-center gap-1 ml-2 align-middle flex-shrink-0">
+              {corrige && (
+                <span title="Ce texte a été corrigé à la main — il ne suit plus les mises à jour du moteur tant qu'il n'est pas rétabli" className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wide" style={{ background: "#b8924e1a", color: "#8a6d34" }}>
+                  texte personnalisé
+                  <button type="button" title="Revenir au texte généré par le moteur" className="hover:text-stone-900" onClick={() => retablirUn(f)}>↺</button>
+                </span>
+              )}
+              {axes && <button type="button" title="Monter — priorité du client" className={btnCls} onClick={() => bouger(f, -1)}>↑</button>}
+              {axes && <button type="button" title="Descendre" className={btnCls} onClick={() => bouger(f, 1)}>↓</button>}
+              <button type="button" title="Corriger le texte" className={btnCls} onClick={() => editer(f)}>✎</button>
+              <button type="button" title="Masquer du document" className={btnCls} onClick={() => masquer(f)}>✕</button>
+            </span>
+          );
+        };
+        return (
+          <div className="grid grid-cols-1 gap-6 mb-4 mt-6" data-nc-chap="Points forts et axes de travail">
+            {(nbMasques > 0 || nbCorriges > 0) && (
+              <div className="nc-syn-noprint -mb-3 flex items-center gap-3 text-[10.5px] text-stone-500">
+                <span>{nbCorriges > 0 ? `${nbCorriges} texte${nbCorriges > 1 ? "s" : ""} corrigé${nbCorriges > 1 ? "s" : ""}` : ""}{nbCorriges > 0 && nbMasques > 0 ? " · " : ""}{nbMasques > 0 ? `${nbMasques} élément${nbMasques > 1 ? "s" : ""} masqué${nbMasques > 1 ? "s" : ""}` : ""}</span>
+                <button type="button" className="underline hover:text-stone-900" onClick={() => { set("synthEdits", {}); set("synthOrdreAxes", []); }}>tout rétablir</button>
+              </div>
+            )}
+            <div className="rounded-2xl bg-white border border-stone-200 p-4" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+              <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>
+                Les points forts du dossier {forcesAff.length > 0 && <span className="text-stone-300 font-semibold">· {forcesAff.length}</span>}
+              </div>
+              {forcesAff.length === 0 && <div className="text-[12px] text-stone-400 italic">Aucun point d'appui identifié à ce stade du dossier.</div>}
+              <ul className="space-y-2.5">
+                {forcesAff.map((f, i) => (
+                  <li key={i} className="text-[12px] leading-snug flex gap-2.5">
+                    <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#0f766e" }}></span>
+                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="font-semibold text-stone-700"> — {f.d}</span>
+                      {/* 10/09 : les points forts se lisent en PUCES courtes, comme les axes (demande du CGP) ; le chiffre de tête en semi-gras pour l'impact. */}
+                      {Array.isArray(f.puces) && f.puces.length ? (
+                        <span className="block mt-1.5">
+                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
+                            <span key={k} className="flex gap-2 items-start mt-1">
+                              <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
+                              <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
+                            </span>
+                          ))}
+                        </span>
+                      ) : null}
+                      <Controles f={f} axes={false} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl bg-white border border-stone-200 p-4" style={{ borderTop: "3px solid #b91c1c", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+              <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+                <div className="text-[10px] uppercase tracking-[0.18em] font-bold" style={{ color: "#b91c1c" }}>
+                  Les axes de travail et d'amélioration {axesAff.length > 0 && <span className="text-stone-300 font-semibold">· {axesAff.length}</span>}
+                </div>
+                <span className="nc-syn-noprint text-[9.5px] text-stone-400">↑ ↓ : classer avec le client par ordre de priorité · ✎ corriger · ✕ masquer</span>
+              </div>
+              {axesAff.length === 0 && <div className="text-[12px] text-stone-400 italic">Aucune faiblesse majeure détectée.</div>}
+              <ul className="space-y-2.5">
+                {axesAff.map((f, i) => (
+                  <li key={i} className="text-[12px] leading-snug flex gap-2.5">
+                    <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#b91c1c" }}></span>
+                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="text-stone-500"> — {ncChiffreFort(f.d)}</span>
+                      {/* 02/09 : un axe qui porte plusieurs idees les met en PUCES.
+                          Six idees a la file, en petits caracteres, ne se lisent pas. */}
+                      {Array.isArray(f.puces) && f.puces.length ? (
+                        <span className="block mt-1.5">
+                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
+                            <span key={k} className="flex gap-2 items-start mt-1">
+                              <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
+                              <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
+                            </span>
+                          ))}
+                        </span>
+                      ) : null}
+                      {/* 14/09 (CGP) : phrase de VERDICT — ce que le constat veut dire, en une ligne
+                          (« le problème n'est pas fiscal, il est civil »). Portée par l'axe (f.verdict),
+                          rendue en retrait avec un filet — seulement quand l'axe en a une. */}
+                      {f.verdict ? (
+                        <span className="block mt-2 pl-2.5 text-[11.5px] leading-snug font-semibold" style={{ color: "#1d2735", borderLeft: "2px solid #b8924e" }}>{f.verdict}</span>
+                      ) : null}
+                      <Controles f={f} axes={true} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* ——— VOS PRIORITÉS (02/09) : au-delà de quelques axes, le client
+                ne peut plus hiérarchiser. Les axes sont regroupés sous quatre
+                CHANTIERS, chacun avec une case vide à numéroter à la main
+                pendant le rendez-vous. Le détail reste au-dessus. ——— */}
+            {(() => {
+              if (axesAff.length < 4) return null;
+              const CHANTIERS = [
+                { k: "proteger", l: "Protéger la famille", c: "#6d28d9",
+                  re: /conjoint|prévoyance|prevoyance|décès|deces|succession|donation|protection|disparité|disparite|veuf|survivant|bénéficiaire|beneficiaire/i },
+                { k: "travailler", l: "Faire travailler l'épargne qui dort", c: "#0369a1",
+                  re: /épargne|epargne|performance|rendement|livret|liquid|versement|précaution|precaution|allocation|support|contrat/i },
+                { k: "impot", l: "Réduire l'impôt", c: "#b45309",
+                  re: /fiscal|impôt|impot|tmi|tranche|per\b|déduction|deduction|défisc|defisc/i },
+                { k: "patrimoine", l: "Construire du patrimoine", c: "#0f766e",
+                  re: /locatif|immobilier|emprunt|endettement|locataire|levier|crédit|credit|acquisition|patrimoine/i }
+              ];
+              const range = CHANTIERS.map(ch => ({ ...ch, items: [] }));
+              const autres = [];
+              axesAff.forEach(f => {
+                const txt = (f.t || "") + " " + (f.d || "");
+                const g = range.find(ch => ch.re.test(txt));
+                if (g) g.items.push(f.t); else autres.push(f.t);
+              });
+              if (autres.length) {
+                const dern = range[range.length - 1];
+                autres.forEach(x => dern.items.push(x));
+              }
+              const retenus = range.filter(ch => ch.items.length > 0);
+              if (retenus.length < 2) return null;
+              return (
+                <div className="rounded-2xl bg-white border border-stone-200 p-4 mt-3" style={{ borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                  <div className="flex items-baseline justify-between gap-3 mb-1 flex-wrap">
+                    <div className="text-[10px] uppercase tracking-[0.18em] font-bold" style={{ color: "#8a6d34" }}>Vos priorités — à classer ensemble</div>
+                    <span className="text-[9.5px] text-stone-400">{axesAff.length} axes regroupés en {retenus.length} chantiers</span>
+                  </div>
+                  <div className="text-[11px] text-stone-500 mb-3">Numérotez les cases de 1 à {retenus.length} selon ce qui compte le plus pour vous : c'est l'ordre dans lequel nous travaillerons.<span className="nc-syn-noprint"> Les numéros saisis ici sont repris sur le document imprimé ; laissés vides, les cases se remplissent au stylo.</span></div>
+                  <div className="space-y-2">
+                    {retenus.map((ch, i) => (
+                      <div key={i} className="flex gap-3 items-start rounded-xl border border-stone-200 px-3 py-2.5" style={{ background: "#fcfcfb", borderLeft: `3px solid ${ch.c}` }}>
+                        <span className="shrink-0 rounded-md border-2 flex items-center justify-center relative" style={{ width: 26, height: 26, borderColor: ch.c + "66", background: "#fff" }}>
+                          <input type="text" inputMode="numeric" maxLength={1}
+                            value={prioNum[ch.k] || ""}
+                            onChange={(e) => { const v = e.target.value.replace(/[^1-9]/g, "").slice(0, 1); setPrioNum(p => ({ ...p, [ch.k]: v })); }}
+                            className="nc-syn-noprint absolute inset-0 w-full h-full text-center bg-transparent border-0 outline-none"
+                            style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }} />
+                          <span className="nc-print-only" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }}>{prioNum[ch.k] || ""}</span>
+                        </span>
+                        <span className="flex-1">
+                          <span className="text-[13px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{ch.l}</span>
+                          <span className="block text-[10.5px] text-stone-500 leading-snug mt-0.5">{ch.items.join(" · ")}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        );
+      };
+
 
       const valider = () => {
         if (!nomOk || !prenomOk) { setTouched(true); if (niveau === "complet") goEtape(1); return; }
@@ -10583,7 +11102,7 @@
                                 que le constat factuel (« si on en dit trop au premier RDV, le client se
                                 dira qu'il peut faire le job tout seul sur internet »). Noms validés :
                                 Audit et synthèse · Projection · Simulation et plan d'action. */}
-                            {[{ v: "constat", l: "Audit et synthèse" }, { v: "proj", l: "Projection" }, { v: "preco", l: "Simulation et plan d'action" }].map(o => (
+                            {[{ v: "constat", l: "Audit et synthèse" }, { v: "proj", l: "Analyse R2" }, { v: "preco", l: "Simulation" }].map(o => (
                               <button key={o.v} type="button" onClick={() => setSynMode(o.v)}
                                 className={`px-3 py-1.5 text-[10.5px] font-bold transition ${synMode === o.v ? "text-white" : "text-stone-500 hover:text-stone-800"}`}
                                 style={synMode === o.v ? { background: "#1d2735" } : undefined}>{o.l}</button>
@@ -10595,7 +11114,7 @@
                     <div style={{ height: 3, background: "linear-gradient(90deg, #b8924e, #d8bc86 45%, rgba(216,188,134,0))" }}></div>
                   </div>
 
-                  {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} />}
+                  {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} blocObjectifs={rendreObjectifsParticipation({ cartesCabinet: false, chapitre: null })} blocForces={rendreForcesAxes()} />}
                   {syn && synMode !== "proj" && (
                     <div className="mb-5" data-nc-pres-host="1">
                       {/* ═══ PAGE DE PRÉSENTATION (15/09/2026, CGP : « il faut une page de
@@ -12063,119 +12582,7 @@
                       {/* Objectifs exprimés (gauche) + Participation mensuelle & apport (droite) dans
                           UN MÊME bloc (27/08) — le mot « effort d'épargne » est banni. Les autres
                           cartes larges (recommandés, préconisations — RDV 2) restent en pleine largeur. */}
-                      {(() => {
-                        /* 15/09/2026 (CGP, seconde décision) : les MOYENS que le client consacre
-                           à ses objectifs (apport, mensualité) et le RAPPEL DE SES OBJECTIFS
-                           reviennent au RDV 1, juste sous « Importance des versements
-                           programmés ». Le bloc RESTE AUSSI au RDV 2 (choix du CGP), où il
-                           s'accompagne des cartes larges du cabinet — celles-ci ne sortent
-                           jamais au premier rendez-vous. */
-                        /* 19/09/2026 (CGP) : « j'aimerais que dans l'audit tu puisses inclure,
-                           dans le chapitre objectifs et questions, juste après les objectifs
-                           exprimés et la participation mensuelle, le tableau qui est dans le
-                           document "votre simulation et plan d'action" page 5 : les objectifs
-                           recommandés par le cabinet et les préconisations, sans changer la
-                           suite de l'audit. »
-                           Les deux cartes larges du cabinet — « Objectifs recommandés par le
-                           cabinet » et « Préconisations » — étaient réservées au RDV 2 (filtre
-                           synMode === "preco"). Elles sortent désormais AUSSI dans l'audit,
-                           à la même place et sous la même forme qu'au RDV 2 : immédiatement
-                           sous la rangée « Objectifs exprimés / Participation mensuelle ».
-                           Rien d'autre ne bouge : les notes, les questions et les pièces à
-                           réclamer suivent dans l'ordre inchangé. */
-                        const largeVisibles = syn.resume.filter(it => it.large);
-                        const objExp = largeVisibles.find(it => it.t === "Objectifs exprimés" || it.t === "Objectif exprimé");
-                        const autresLarges = largeVisibles.filter(it => it !== objExp);
-                        const CarteLarge = ({ it }) => (
-                          <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
-                            style={{ borderTop: `3px solid ${it.c || "#b8924e"}`, background: `linear-gradient(180deg, ${(it.c || "#b8924e")}0a, #ffffff 55%)`, boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                            <div className="text-[9.5px] uppercase tracking-wider font-bold mb-2.5" style={{ color: it.c || "#8a6d34" }}>{it.t}</div>
-                            {(it.list || [it.d]).filter(Boolean).map((li, k) => (
-                              <div key={k} className="flex gap-3 items-start mb-2.5 last:mb-0">
-                                {(() => {
-                                  /* titre en GRAS, suite en graisse normale : une carte
-                                     entierement en gras ne se hierarchise plus. */
-                                  const P = ncPrecoParts(li);
-                                  return <>
-                                    <NcPicto texte={P.plein} c={it.c || "#b8924e"} />
-                                    <span className="leading-snug text-[14px]" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
-                                      <b style={{ fontWeight: 800 }}>{P.titre}</b>
-                                      {P.suite ? <span style={{ fontWeight: 400 }}>{P.suite}</span> : null}
-                                      {P.href ? <>{" "}
-                                        <a href={P.href} target="_blank" rel="noopener noreferrer" className="inline-block align-middle ml-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold no-underline"
-                                          style={{ background: "rgba(109,40,217,0.08)", border: "1px solid rgba(109,40,217,0.35)", color: "#6d28d9", fontFamily: "'Inter', sans-serif" }}>{P.linkLabel}</a>
-                                      </> : null}
-                                    </span>
-                                  </>;
-                                })()}
-                              </div>
-                            ))}
-                            {it.sub ? <div className="text-[10px] text-stone-500 mt-1.5 leading-snug">{it.sub}</div> : null}
-                          </div>
-                        );
-                        const participation = (() => {
-                          const nfE = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
-                          const CAP_LIB = { "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
-                          const HOR_LIB = { "<5": "moins de 5 ans", "5-10": "5 à 10 ans", "10-15": "10 à 15 ans", ">15": "plus de 15 ans" };
-                          const lignes = [];
-                          // 03/09 : la précision ("fourchette indiquée" / "montant précis indiqué")
-                          // ressort désormais en SOUS-LIGNE séparée (l.sub), et non plus concaténée
-                          // dans le même texte que le nombre — sinon son retour à la ligne dépend
-                          // de la longueur du nombre et les tuiles voisines se désalignent.
-                          const capTxt = (code, libre) => code === "libre" ? { v: `${nfE(ncInt(libre))} €/mois`, sub: "montant précis indiqué" } : { v: CAP_LIB[code] || code, sub: "fourchette indiquée" };
-                          // Réflexion patrimoniale séparée (28/08) : une tuile PAR personne
-                          // (ex. Monsieur 500 €/mois, Madame 200 €/mois) — jamais fusionnées.
-                          if (d.reflexionPatrimoine === "separee" && (d.capaciteEpargne || d.capaciteEpargneConjoint)) {
-                            const civMoi2 = d.civilite === "Mme" ? "Madame" : "Monsieur";
-                            const civLui2 = d.civilite === "Mme" ? "Monsieur" : "Madame";
-                            if (d.capaciteEpargne) { const c = capTxt(d.capaciteEpargne, d.capaciteEpargneLibre); lignes.push({ t: `Participation de ${civMoi2}`, d: c.v, sub: c.sub }); }
-                            if (d.capaciteEpargneConjoint) { const c = capTxt(d.capaciteEpargneConjoint, d.capaciteEpargneConjointLibre); lignes.push({ t: `Participation de ${civLui2}`, d: c.v, sub: c.sub }); }
-                          } else if (d.capaciteEpargne) { const c = capTxt(d.capaciteEpargne, d.capaciteEpargneLibre); lignes.push({ t: "Participation mensuelle envisagée", d: c.v, sub: c.sub }); }
-                          // Apport initial mobilisable (29/08) — posé avec la participation, ressort en tuile.
-                          if (d.apportInitial) lignes.push(d.apportInitial === "libre"
-                            ? { t: "Apport initial mobilisable", d: `${nfE(ncInt(d.apportInitialLibre))} €`, sub: "montant précis indiqué" }
-                            : { t: "Apport initial mobilisable", d: NC_APPORT_LIB[d.apportInitial] || d.apportInitial, sub: d.apportInitial === "aucun" ? null : "fourchette indiquée" });
-                          if (ncInt(d.epargnePrecaution) > 0) lignes.push({ t: "Épargne de précaution souhaitée", d: `${nfE(ncInt(d.epargnePrecaution))} € à conserver disponibles.` });
-                          const odL = (d.objectifsDetail || {}).locatif || {};
-                          if (ncInt(odL.apport) > 0) lignes.push({ t: "Apport envisagé (projet locatif)", d: `${nfE(ncInt(odL.apport))} €${ncInt(odL.budget) > 0 ? ` pour un budget d'environ ${nfE(ncInt(odL.budget))} €` : ""}.` });
-                          if (d.horizon) lignes.push({ t: "Horizon de placement", d: HOR_LIB[d.horizon] || d.horizon });
-                          if ((d.notes || "").trim()) lignes.push({ t: "Notes d'entretien", d: (d.notes || "").trim() });
-                          if (!lignes.length) return null;
-                          return (
-                            <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
-                              style={{ borderTop: "3px solid #0f766e", background: "linear-gradient(180deg, #0f766e0a, #ffffff 55%)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>Participation mensuelle & apport envisagés</div>
-                              <div className="grid grid-cols-2 gap-2.5">
-                                {lignes.map((l, i) => (
-                                  <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
-                                    <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{l.t}</div>
-                                    <div className={l.t === "Notes d'entretien" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
-                                    {/* 03/09 : ligne dédiée, toujours à la même position sous le nombre —
-                                        ne dépend plus du retour à la ligne du texte du dessus (cf. tuile
-                                        voisine, dont le nombre peut être plus court ou plus long). */}
-                                    {l.sub ? <div className="text-[10px] font-semibold mt-0.5" style={{ color: "#0f766e99" }}>{l.sub}</div> : null}
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        })();
-                        return (
-                          <>
-                            {(objExp || participation) && (
-                              <div className={`grid ${objExp && participation ? "grid-cols-2" : "grid-cols-1"} gap-3 mb-4`} data-nc-chap="Objectifs et participation">
-                                {objExp && <CarteLarge it={objExp} />}
-                                {participation}
-                              </div>
-                            )}
-                            {autresLarges.length > 0 && (
-                              <div className="grid grid-cols-1 gap-3 mb-4">
-                                {autresLarges.map((it, i) => <CarteLarge key={i} it={it} />)}
-                              </div>
-                            )}
-                          </>
-                        );
-                      })()}
+                      {rendreObjectifsParticipation()}
 
                       {/* ═══ NOTES DU RENDEZ-VOUS — JUSTE AU-DESSUS DES QUESTIONS (18/09/2026) ═══
                           Le CGP : « peux-tu mettre les notes qui sont prises au-dessus des
@@ -12595,7 +13002,26 @@
                                   <div className="rounded-lg bg-white border border-stone-200 px-2.5 py-2 mb-1.5 space-y-1" style={{ borderLeftWidth: 3, borderLeftColor: "#d6d3d1" }}>
                                     {v.rpAbatt20 && <div className="text-[10px] text-stone-500 leading-relaxed">abattement de 20 % appliqué sur la valeur vénale de la résidence principale occupée par le conjoint (art. 764 bis CGI), dettes ensuite déduites en intégralité (art. 768), frais funéraires forfaitaires déduits (1 500 €, art. 775)</div>}
                                     {!v.rpAbatt20 && <div className="text-[10px] text-stone-500 leading-relaxed">dettes déduites (art. 768), frais funéraires forfaitaires déduits (1 500 €, art. 775)</div>}
-                                    <div className="text-[10px] text-stone-500 leading-relaxed"><b className="text-stone-700">Hypothèse retenue</b> : prêts non couverts, capitaux restant dus déduits de l'actif. <b className="text-stone-700">Hypothèse alternative</b> (non retenue ici) : assurance emprunteur à 100 % — le crédit s'éteindrait au décès et l'actif transmissible augmenterait d'autant. Les deux ne se cumulent pas : vérifier les quotités au relevé avant toute préconisation.</div>
+                                    {/* ═══ 20/09/2026 (CGP) — LA QUOTITÉ SAISIE PARLE ═══
+                                        « Au niveau des crédits on informe systématiquement si le prêt est assuré
+                                        à 100 % sur chaque tête ou autre. Pourtant dans tes analyses postérieures,
+                                        tu réagis comme si tu n’étais pas au courant. » La note disait : hypothèse
+                                        retenue, prêts non couverts, quotités à vérifier. Elle dit maintenant CE QUE
+                                        LE DOSSIER SAIT — le capital soldé par l’assurance au décès de cette tête,
+                                        et ce qui reste à déduire. La formule prudente ne revient que si une quotité
+                                        est encore inconnue. */}
+                                    {v.detteSoldee > 0 ? (
+                                      <div className="text-[10px] text-stone-500 leading-relaxed">
+                                        <b className="text-stone-700">Assurance emprunteur</b> : {nfS(v.detteSoldee)} € de capital restant dû seraient soldés au décès de {v.nom} selon les quotités saisies — cette dette ne se déduit donc pas de l’actif transmissible.
+                                        {v.detteRestante > 0 ? <span> Reste {nfS(v.detteRestante)} € de dette non couverte, déduite de l’actif (art. 768).</span> : null}
+                                      </div>
+                                    ) : (
+                                      <div className="text-[10px] text-stone-500 leading-relaxed">
+                                        <b className="text-stone-700">Assurance emprunteur</b> : {v.quotitesConnues
+                                          ? <span>aucun capital restant dû ne serait soldé au décès de {v.nom} selon les quotités saisies — les dettes se déduisent en intégralité (art. 768).</span>
+                                          : <span>quotité non renseignée sur au moins un prêt. Hypothèse prudente retenue : prêts non couverts, capitaux restant dus déduits de l’actif (art. 768). À compléter au relevé.</span>}
+                                      </div>
+                                    )}
                                   </div>
                                   {v.avHors > 0 && (
                                     <div className="text-[10.5px] font-semibold mb-1" style={{ color: "#0f766e" }}>+ {nfS(v.avHors)} € d'assurance-vie et de PER HORS succession (art. 990 I — abattement 152 500 € par bénéficiaire, clause bénéficiaire à vérifier)</div>
@@ -12710,188 +13136,7 @@
                       {/* Forces / Faiblesses — empilés, avec un vrai espace entre les deux (27/08).
                           15/09/2026 (CGP) : réservés au RDV 2 — le premier rendez-vous lève les
                           problématiques sans les commenter (« c'est une info qui sera sur le RDV 2 »). */}
-                      {(() => {
-                        if (synMode !== "preco") return null;
-                        // ——— CORRECTIONS EN PRODUCTION (28/08) : le conseiller peut, à l'écran,
-                        // CORRIGER le texte d'un point (✎), le MASQUER (✕) et RÉORDONNER les axes
-                        // par priorité avec le client (↑ ↓). Tout est stocké dans le dossier
-                        // (synthEdits / synthOrdreAxes) et le PDF reprend la version corrigée —
-                        // les boutons, eux, ne s'impriment jamais (nc-syn-noprint). ———
-                        const ed = d.synthEdits || {};
-                        const appliquer = (liste) => liste
-                          .filter(f => !(ed[f.t] && ed[f.t].hide))
-                          .map(f => ed[f.t] && ed[f.t].d ? { ...f, d: ed[f.t].d } : f);
-                        const ordonner = (liste) => {
-                          const ordre = d.synthOrdreAxes || [];
-                          if (!ordre.length) return liste;
-                          return [...liste].sort((a, b) => {
-                            const ia = ordre.indexOf(a.t), ib = ordre.indexOf(b.t);
-                            return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-                          });
-                        };
-                        const forcesAff = appliquer(syn.forces);
-                        const axesAff = ordonner(appliquer(syn.faiblesses));
-                        const setEd = (t, patch) => set("synthEdits", { ...(d.synthEdits || {}), [t]: { ...((d.synthEdits || {})[t] || {}), ...patch } });
-                        const editer = (f) => setEditOpen({ f, valeur: f.d });
-                        const masquer = (f) => setEd(f.t, { hide: true });
-                        const retablirUn = (f) => { const { [f.t]: _drop, ...reste } = d.synthEdits || {}; set("synthEdits", reste); };
-                        const bouger = (f, dir) => {
-                          const titres = axesAff.map(x => x.t);
-                          const i = titres.indexOf(f.t); const j = i + dir;
-                          if (j < 0 || j >= titres.length) return;
-                          const nv = [...titres]; nv[i] = titres[j]; nv[j] = titres[i];
-                          set("synthOrdreAxes", nv);
-                        };
-                        const nbMasques = Object.keys(ed).filter(t => ed[t] && ed[t].hide).length;
-                        const nbCorriges = Object.keys(ed).filter(t => ed[t] && ed[t].d && !ed[t].hide).length;
-                        const btnCls = "w-[18px] h-[18px] rounded border border-stone-200 text-[10px] leading-none text-stone-400 hover:text-stone-900 hover:border-stone-500 bg-white";
-                        const Controles = ({ f, axes }) => {
-                          const corrige = !!(ed[f.t] && ed[f.t].d);
-                          return (
-                            <span className="nc-syn-noprint inline-flex items-center gap-1 ml-2 align-middle flex-shrink-0">
-                              {corrige && (
-                                <span title="Ce texte a été corrigé à la main — il ne suit plus les mises à jour du moteur tant qu'il n'est pas rétabli" className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wide" style={{ background: "#b8924e1a", color: "#8a6d34" }}>
-                                  texte personnalisé
-                                  <button type="button" title="Revenir au texte généré par le moteur" className="hover:text-stone-900" onClick={() => retablirUn(f)}>↺</button>
-                                </span>
-                              )}
-                              {axes && <button type="button" title="Monter — priorité du client" className={btnCls} onClick={() => bouger(f, -1)}>↑</button>}
-                              {axes && <button type="button" title="Descendre" className={btnCls} onClick={() => bouger(f, 1)}>↓</button>}
-                              <button type="button" title="Corriger le texte" className={btnCls} onClick={() => editer(f)}>✎</button>
-                              <button type="button" title="Masquer du document" className={btnCls} onClick={() => masquer(f)}>✕</button>
-                            </span>
-                          );
-                        };
-                        return (
-                          <div className="grid grid-cols-1 gap-6 mb-4 mt-6" data-nc-chap="Points forts et axes de travail">
-                            {(nbMasques > 0 || nbCorriges > 0) && (
-                              <div className="nc-syn-noprint -mb-3 flex items-center gap-3 text-[10.5px] text-stone-500">
-                                <span>{nbCorriges > 0 ? `${nbCorriges} texte${nbCorriges > 1 ? "s" : ""} corrigé${nbCorriges > 1 ? "s" : ""}` : ""}{nbCorriges > 0 && nbMasques > 0 ? " · " : ""}{nbMasques > 0 ? `${nbMasques} élément${nbMasques > 1 ? "s" : ""} masqué${nbMasques > 1 ? "s" : ""}` : ""}</span>
-                                <button type="button" className="underline hover:text-stone-900" onClick={() => { set("synthEdits", {}); set("synthOrdreAxes", []); }}>tout rétablir</button>
-                              </div>
-                            )}
-                            <div className="rounded-2xl bg-white border border-stone-200 p-4" style={{ borderTop: "3px solid #0f766e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                              <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-3" style={{ color: "#0f766e" }}>
-                                Les points forts du dossier {forcesAff.length > 0 && <span className="text-stone-300 font-semibold">· {forcesAff.length}</span>}
-                              </div>
-                              {forcesAff.length === 0 && <div className="text-[12px] text-stone-400 italic">Aucun point d'appui identifié à ce stade du dossier.</div>}
-                              <ul className="space-y-2.5">
-                                {forcesAff.map((f, i) => (
-                                  <li key={i} className="text-[12px] leading-snug flex gap-2.5">
-                                    <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#0f766e" }}></span>
-                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="font-semibold text-stone-700"> — {f.d}</span>
-                                      {/* 10/09 : les points forts se lisent en PUCES courtes, comme les axes (demande du CGP) ; le chiffre de tête en semi-gras pour l'impact. */}
-                                      {Array.isArray(f.puces) && f.puces.length ? (
-                                        <span className="block mt-1.5">
-                                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
-                                            <span key={k} className="flex gap-2 items-start mt-1">
-                                              <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
-                                              <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
-                                            </span>
-                                          ))}
-                                        </span>
-                                      ) : null}
-                                      <Controles f={f} axes={false} /></span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div className="rounded-2xl bg-white border border-stone-200 p-4" style={{ borderTop: "3px solid #b91c1c", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                              <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-                                <div className="text-[10px] uppercase tracking-[0.18em] font-bold" style={{ color: "#b91c1c" }}>
-                                  Les axes de travail et d'amélioration {axesAff.length > 0 && <span className="text-stone-300 font-semibold">· {axesAff.length}</span>}
-                                </div>
-                                <span className="nc-syn-noprint text-[9.5px] text-stone-400">↑ ↓ : classer avec le client par ordre de priorité · ✎ corriger · ✕ masquer</span>
-                              </div>
-                              {axesAff.length === 0 && <div className="text-[12px] text-stone-400 italic">Aucune faiblesse majeure détectée.</div>}
-                              <ul className="space-y-2.5">
-                                {axesAff.map((f, i) => (
-                                  <li key={i} className="text-[12px] leading-snug flex gap-2.5">
-                                    <span className="mt-[5px] w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#b91c1c" }}></span>
-                                    <span className="flex-1"><span className="font-bold text-stone-800">{f.t}</span><span className="text-stone-500"> — {ncChiffreFort(f.d)}</span>
-                                      {/* 02/09 : un axe qui porte plusieurs idees les met en PUCES.
-                                          Six idees a la file, en petits caracteres, ne se lisent pas. */}
-                                      {Array.isArray(f.puces) && f.puces.length ? (
-                                        <span className="block mt-1.5">
-                                          {ncSansDoublon(f.d, f.puces).map((x, k) => (
-                                            <span key={k} className="flex gap-2 items-start mt-1">
-                                              <span className="mt-[6px] w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a8a29e" }}></span>
-                                              <span className="text-[11.5px] leading-snug text-stone-600">{x}</span>
-                                            </span>
-                                          ))}
-                                        </span>
-                                      ) : null}
-                                      {/* 14/09 (CGP) : phrase de VERDICT — ce que le constat veut dire, en une ligne
-                                          (« le problème n'est pas fiscal, il est civil »). Portée par l'axe (f.verdict),
-                                          rendue en retrait avec un filet — seulement quand l'axe en a une. */}
-                                      {f.verdict ? (
-                                        <span className="block mt-2 pl-2.5 text-[11.5px] leading-snug font-semibold" style={{ color: "#1d2735", borderLeft: "2px solid #b8924e" }}>{f.verdict}</span>
-                                      ) : null}
-                                      <Controles f={f} axes={true} /></span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            {/* ——— VOS PRIORITÉS (02/09) : au-delà de quelques axes, le client
-                                ne peut plus hiérarchiser. Les axes sont regroupés sous quatre
-                                CHANTIERS, chacun avec une case vide à numéroter à la main
-                                pendant le rendez-vous. Le détail reste au-dessus. ——— */}
-                            {(() => {
-                              if (axesAff.length < 4) return null;
-                              const CHANTIERS = [
-                                { k: "proteger", l: "Protéger la famille", c: "#6d28d9",
-                                  re: /conjoint|prévoyance|prevoyance|décès|deces|succession|donation|protection|disparité|disparite|veuf|survivant|bénéficiaire|beneficiaire/i },
-                                { k: "travailler", l: "Faire travailler l'épargne qui dort", c: "#0369a1",
-                                  re: /épargne|epargne|performance|rendement|livret|liquid|versement|précaution|precaution|allocation|support|contrat/i },
-                                { k: "impot", l: "Réduire l'impôt", c: "#b45309",
-                                  re: /fiscal|impôt|impot|tmi|tranche|per\b|déduction|deduction|défisc|defisc/i },
-                                { k: "patrimoine", l: "Construire du patrimoine", c: "#0f766e",
-                                  re: /locatif|immobilier|emprunt|endettement|locataire|levier|crédit|credit|acquisition|patrimoine/i }
-                              ];
-                              const range = CHANTIERS.map(ch => ({ ...ch, items: [] }));
-                              const autres = [];
-                              axesAff.forEach(f => {
-                                const txt = (f.t || "") + " " + (f.d || "");
-                                const g = range.find(ch => ch.re.test(txt));
-                                if (g) g.items.push(f.t); else autres.push(f.t);
-                              });
-                              if (autres.length) {
-                                const dern = range[range.length - 1];
-                                autres.forEach(x => dern.items.push(x));
-                              }
-                              const retenus = range.filter(ch => ch.items.length > 0);
-                              if (retenus.length < 2) return null;
-                              return (
-                                <div className="rounded-2xl bg-white border border-stone-200 p-4 mt-3" style={{ borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                                  <div className="flex items-baseline justify-between gap-3 mb-1 flex-wrap">
-                                    <div className="text-[10px] uppercase tracking-[0.18em] font-bold" style={{ color: "#8a6d34" }}>Vos priorités — à classer ensemble</div>
-                                    <span className="text-[9.5px] text-stone-400">{axesAff.length} axes regroupés en {retenus.length} chantiers</span>
-                                  </div>
-                                  <div className="text-[11px] text-stone-500 mb-3">Numérotez les cases de 1 à {retenus.length} selon ce qui compte le plus pour vous : c'est l'ordre dans lequel nous travaillerons.<span className="nc-syn-noprint"> Les numéros saisis ici sont repris sur le document imprimé ; laissés vides, les cases se remplissent au stylo.</span></div>
-                                  <div className="space-y-2">
-                                    {retenus.map((ch, i) => (
-                                      <div key={i} className="flex gap-3 items-start rounded-xl border border-stone-200 px-3 py-2.5" style={{ background: "#fcfcfb", borderLeft: `3px solid ${ch.c}` }}>
-                                        <span className="shrink-0 rounded-md border-2 flex items-center justify-center relative" style={{ width: 26, height: 26, borderColor: ch.c + "66", background: "#fff" }}>
-                                          <input type="text" inputMode="numeric" maxLength={1}
-                                            value={prioNum[ch.k] || ""}
-                                            onChange={(e) => { const v = e.target.value.replace(/[^1-9]/g, "").slice(0, 1); setPrioNum(p => ({ ...p, [ch.k]: v })); }}
-                                            className="nc-syn-noprint absolute inset-0 w-full h-full text-center bg-transparent border-0 outline-none"
-                                            style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }} />
-                                          <span className="nc-print-only" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 800, color: ch.c }}>{prioNum[ch.k] || ""}</span>
-                                        </span>
-                                        <span className="flex-1">
-                                          <span className="text-[13px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{ch.l}</span>
-                                          <span className="block text-[10.5px] text-stone-500 leading-snug mt-0.5">{ch.items.join(" · ")}</span>
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                          </div>
-                        );
-                      })()}
+                      {synMode === "preco" ? rendreForcesAxes() : null}
 
 
                       {synMode === "preco" && (<>
@@ -13146,7 +13391,7 @@
                           </div>
                           <div className="flex items-center gap-5 flex-wrap" style={{ padding: "9px 22px" }}>
                             <div className="inline-flex rounded-lg overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.25)" }}>
-                              {[{ v: "constat", l: "Audit et synthèse" }, { v: "proj", l: "Projection" }, { v: "preco", l: "Simulation et plan d'action" }].map(o => (
+                              {[{ v: "constat", l: "Audit et synthèse" }, { v: "proj", l: "Analyse R2" }, { v: "preco", l: "Simulation" }].map(o => (
                                 <button key={o.v} type="button" onClick={() => setSynMode(o.v)}
                                   className="px-3 py-1.5 text-[10.5px] font-bold transition"
                                   style={synMode === o.v ? { background: "#b8924e", color: "#ffffff" } : { color: "rgba(255,255,255,0.62)" }}>{o.l}</button>
