@@ -281,6 +281,9 @@
     body.nc-pres [data-nc-chap="Ouverture"] { min-height: 620px !important; }
     /* un cran de lisibilité : l'écran se lit à deux, à distance d'un bureau */
     body.nc-pres .nc-syn-zone > *:not([data-nc-pres-ui]) { zoom: 1.1; }
+    /* 21/09/2026 : les boutons de correction du document (✎ ✕ ↺, « + Ajouter une ligne »)
+       ne s'affichent pas devant le client, en présentation. */
+    body.nc-pres [data-nc-doc-ctl], body.nc-pres [data-nc-doc-ajout] { display: none !important; }
 
     /* ============================================================
        MODE PRÉSENTATION CLIENT — DIRECTION ARTISTIQUE ÉDITORIALE
@@ -1169,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v246 (21/09 : LES CLIENTS TYPES VISIBLES SUR LE POSTE DU CGP. Il ouvre index.html directement depuis son dossier (file://) : c est la version PRODUCTION, ou les boutons etaient caches, et il ne les trouvait pas. NC_DEMO est desormais vrai aussi quand la page est ouverte en file:// ; servi par figara.fr (https), le fichier ne les montre toujours pas. Banc t_clients_types : controle ajoute en file://.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v248 (21/09 : LE MOTEUR RAISONNE APRES L ACHAT DE LA RESIDENCE PRINCIPALE. Le CGP, sur le dossier MARTIN : « comment peux-tu dire capacite d emprunt disponible = 0 € dans les points forts ? tresorerie trop importante alors qu il va consacrer 40 000 € d apport a sa RP d ici un an ? epargne a zero alors qu il va rembourser 1 200 €/mois de credit, qui est une epargne immobiliere ? Il faut que tu te serves absolument des informations recueillies. » (1) Projection apres achat : l apport du projet RP sort du court terme avant tout jugement de tresorerie ; le capital rembourse du credit RP (decision du CGP : le capital, pas la mensualite entiere, et il augmente a chaque echeance) compte comme epargne mensuelle ; le point fort « capacite d emprunt » et les recommandations locatives lisent la place restante APRES le projet. (2) Document RECENTRE pour toute personne dont la capacite d emprunt est mobilisee (plus de place pour du locatif, projet RP ou credits en cours) : feliciter pour la residence principale, preparer la retraite par PER et assurance-vie, deleguer l assurance de pret — rien de plus, dans tout le document (points forts, axes, problematiques, objectifs du cabinet, preconisations, questions). (3) Fenetre des INCOHERENCES en quittant l etape Objectifs : objectif locatif sans capacite restante, apport declare superieur a l epargne restant apres l apport RP ; « Corriger la saisie » ou « Continuer quand meme ». Mesure Martin : 489 €/mois de capital rembourse, 17 950 € d epargne restant apres 40 000 € d apport. Banc t_recentre (etape 19/20).)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v247 (21/09 : QUATRE DEMANDES DU CGP SUR L EXPORT DU DOSSIER MARTIN. (1) Souci d edition page 5 : deux camemberts JUMEAUX (aujourd hui / avec le projet RP) dans une carte d une demi-page laissaient a chaque legende quelques pixels — « Credit auto 1 » s ecrivait une lettre par ligne, la carte montait a 400 px, et l egaliseur etirait les deux cartes suivantes (Capacite d emprunt, Le financier) a la meme hauteur vide. NcDonut prend un parametre vertical : l anneau en haut, la legende dessous sur toute la largeur ; les jumeaux l emploient. (2) « Sortie totale de tresorerie » retiree du document quand il y a un projet d achat de RP ; elle reste a l ecran de saisie. (3) « contre 18 pct en moyenne pour les Francais, dont 9 pct en epargne financiere ». (4) Objectifs recommandes par le cabinet, Preconisations et questions CORRIGEABLES par le conseiller : ✎ corriger, ✕ masquer, ↺ revenir au texte genere, + ajouter une ligne ; stockes dans d.docEdits et d.docAjouts, repris a l impression, boutons jamais imprimes ni montres en presentation. Cle d une ligne = son debut coupe au premier chiffre (les montants bougent) ; cle d une question = sa famille. Le bloc s intitule « Les questions ». Bancs : t_doc_edits (etape 18/19), t_rp retourne (la ligne ne doit plus etre dans le document), t_shot_pres lit le document sans les boutons du conseiller.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v246 (21/09 : LES CLIENTS TYPES VISIBLES SUR LE POSTE DU CGP. Il ouvre index.html directement depuis son dossier (file://) : c est la version PRODUCTION, ou les boutons etaient caches, et il ne les trouvait pas. NC_DEMO est desormais vrai aussi quand la page est ouverte en file:// ; servi par figara.fr (https), le fichier ne les montre toujours pas. Banc t_clients_types : controle ajoute en file://.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v245 (21/09 : QUATRE CLIENTS TYPES, VERSION DEMO SEULEMENT. Le CGP : « est-ce qu il est possible d enregistrer deux ou trois clients types afin que je ne doive pas systematiquement re-remplir tout de A a Z ? Trop fastidieux. Un celibataire, un pacse, un marie, un veuf. » Fiches validees le 21/09 : Thomas MARTIN (celibataire locataire, projet RP, credit auto), Julie et Nicolas LEROY (pacses sans testament, 2 enfants, RP a credit assuree 50/50), Philippe et Catherine DURAND (maries, TNS, 3 enfants, locatif assure 100 pct sur chaque tete, tresorerie dormante), Monique BERNARD (veuve de 71 ans, donation de moins de 15 ans). Un clic en tete de l etape 1 remplit tout l audit, sur les SEPT pages : chaque fiche repond a toutes les questions que l audit pose (adresse, pension alimentaire, revenus mobiliers, reductions, impot reel), sinon la regle cabinet du 29/08 — une question sans reponse, pas de page suivante — bloquait l acces a la synthese des la premiere page. Confirmation si une saisie est deja en cours. VERSION DEMO SEULEMENT : NC_DEMO lit le PREFIXE du projet Supabase de la demo, pour que le decompte des identifiants complets reste 1 1 0 0 ; les bancs forcent l affichage par window.__NC_FORCE_DEMO. CORRECTION DE LA FICHE DES DURAND : elle annoncait une TMI a 41 pct ; 147 600 € de revenus sur 4 parts tombent a 30 pct, le moteur le calcule, la TMI n est donc PAS forcee — un chiffre faux n entre pas dans un dossier, meme de demonstration. Banc t_clients_types, etape 17/18 : absents en production, les quatre se chargent, la synthese s ouvre et fait sortir ce pour quoi chaque fiche a ete batie.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v244 (21/09 : ANALYSE R2 — CE QUE LES GISEMENTS TROUVENT GROSSIT LE BUDGET, ET LE BANDEAU COLLANT ATTEND QU ON PARLE D ARGENT. (1) Le CGP : « lorsque l on va chercher de l epargne avec la renegociation de l assurance de pret ou les placements, cela ne vient pas s additionner a l epargne que le client souhaite mettre ; si le client souhaite mettre entre 300 et 500 €/mois et que l on a ete chercher 250 € de tresorerie supplementaire, il faut que son budget mensuel passe de 550 a 750 €/mois grace aux renegociations, et que cela se voie ». Seule la delegation d assurance entrait dans l enveloppe, et sur la seule borne HAUTE : la fourchette affichait « 300 a 750 ». Desormais les TROIS leviers coches — delegation, arbitrage, redirection — s additionnent (gainsMens) et montent les DEUX bornes (envBasTot = borne basse + gainsMens, ENV = borne haute + gainsMens). Les ecarts d interets sont calcules plus tot, avec les entrees des gisements, pour pouvoir entrer dans l enveloppe. Un bandeau vert « Votre nouveau budget mensuel » s affiche juste apres les gisements, des qu un levier est coche : la fourchette augmentee, la part de la poche, le montant trouve, et le detail levier par levier. Le bandeau des solutions dit la meme chose, et son item « Libere » devient « Trouve », tous leviers compris. MESURE (banc t_budget, etape 16/17) : fourchette declaree 500 a 1 000, delegation 37 € + arbitrage 360 € → 897 a 1 397 €/mois. (2) Le CGP : « lorsque l on arrive sur le document, je ne veux pas voir le bandeau de son epargne au tout debut, ca n a pas de sens ». Le bandeau collant enveloppe · employee · reste s affichait des l ouverture, par-dessus la page de garde. Il reste cache tant que la section « Ou trouver l epargne » n est pas atteinte (IntersectionObserver sur la section elle-meme — un temoin vide ajoute expres etait compte comme un bloc par le mode presentation). VERIFIE : 17 etapes au vert.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v243 (20/09 : L ANALYSE R2, ET DEUX CALCULS REMIS D APLOMB. (1) LES QUOTITES D ASSURANCE EMPRUNTEUR SONT ENFIN LUES. Le CGP : « au niveau des credits on informe systematiquement si le pret est assure a 100 pct sur chaque tete ou autre ; pourtant dans tes analyses posterieures tu reagis comme si tu n etais pas au courant ». Il avait raison : la quotite etait saisie sur la RP, sur chaque locatif, sur chaque autre bien et sur chaque credit conso, et un seul endroit la lisait — la liste des pieces a reclamer, pour dire qu on ne la connaissait pas. Trois branchements sont faits. a. ncCalcSuccession ne nette plus la dette dans le patrimoine des la saisie : chaque dette est une ligne, avec la part portee par chacun et la quotite assuree par tete. REGLE ARBITREE AVEC LE CGP : au deces, le pret assure sur la tete du defunt est SOLDE a hauteur de sa quotite — sa dette ne se deduit plus de son actif transmissible, en 50/50 la moitie s eteint. Mesure sur un couple, RP 400 000 detenue a 50/50, credit 200 000 : actif transmissible du client 58 500 en quotite inconnue, 108 500 en 50/50, 158 500 en 100 pct sur chaque tete. b. La problematique du deces du revenu principal annonce le capital reellement solde au lieu de renvoyer a « quotites a verifier ». c. Le curseur de quotite de la projection, qui valait 100 par defaut sans aucun lien avec le dossier, part desormais de la saisie. La formule prudente ne subsiste que si une quotite manque encore, et un banc de mesure (t_quotites, etape 15 sur 16) garde les quatre cas. (2) L ECONOMIE DES GISEMENTS, C EST L ECART D INTERETS. Le CGP : « les vraies economies sont le calcul des interets places a 1,7 pct vs 5,2 pct, le capital ne doit pas rentrer dans le calcul ». Les modules « arbitrage du capital place » et « redirection des versements » affichaient le CAPITAL supplementaire a l horizon divise par le nombre de mois — un gain compose sur vingt ans ramene a une moyenne, qui ne correspondait a aucun euro gagne dans le mois et qui grossissait avec la duree retenue. Ils affichent maintenant l ecart d interets de la premiere annee, ramene au mois : arbitrage = montant × (taux cabinet − taux actuel) ÷ 12 ; redirection = assiette non pas un capital mais CE QUI AURA ETE VERSE DANS L ANNEE (versement × 12), decision du CGP du 20/09. Le capital a l horizon garde sa place, en seconde ligne. (3) L ONGLET PROJECTION DEVIENT L ANALYSE R2. Renomme « Analyse R2 », il porte le document « Analyse et plan d action » et son propre nom de fichier. Sa page de garde est celle de l etude patrimoniale — bandeau photo, cadre dore, noms, « document prepare par » — et ne porte plus aucun chiffre. L ordre suit la demande du CGP : page de garde ; page 2 avec la baisse de revenus a la retraite, les objectifs exprimes et la participation mensuelle et l apport envisages ; l analyse du dossier (points forts et axes a travailler) ; un bandeau rappelant l objectif de participation ; ou trouver l epargne ; les solutions retenues, ouvertes par les preconisations de l audit ; le tableau avant / apres. Les deux blocs partages avec l etude — objectifs et participation, points forts et axes — sont hoistes en deux fonctions de rendu et passes en props : un seul corps, deux points d appel, aucun jeu de libelles a tenir a jour en double. L onglet « Simulation et plan d action » devient « Simulation ». VERIFIE : 16 etapes au vert, document R2 relu page par page.','color:#94a3b8');
@@ -2760,7 +2765,16 @@
        Le camembert est dessiné en SVG (pas de librairie) : il doit sortir à
        l'impression, où aucun script ne tourne. */
     const NC_PARTS_C = ["#b91c1c", "#b45309", "#6d28d9", "#0369a1", "#9d4a6b", "#4d7c0f", "#a16207"];
-    const NcDonut = ({ parts, centre, centreSous, taille = 120, libre = true, libreLib = "Disponible", libreAff }) => {
+    /* 21/09/2026 (CGP, export du dossier MARTIN : « souci d'édition page 5 »).
+       Deux camemberts JUMEAUX (aujourd'hui / avec le projet RP) dans une carte d'une
+       demi-page laissaient à chaque légende une colonne de quelques pixels : « Crédit
+       auto 1 » s'écrivait une lettre par ligne, la carte montait à 400 px, et
+       l'égaliseur étirait les deux cartes de la page suivante à la même hauteur —
+       d'où les grands blancs de « Capacité d'emprunt » et « Le financier ».
+       `vertical` : l'anneau en haut, centré, et la légende EN DESSOUS, sur toute la
+       largeur de la colonne. Les jumeaux l'emploient ; une carte seule garde la
+       légende à droite. */
+    const NcDonut = ({ parts, centre, centreSous, taille = 120, libre = true, libreLib = "Disponible", libreAff, vertical = false }) => {
       const list = (parts || []).filter(x => x && x.v > 0);
       const somme = list.reduce((s, x) => s + x.v, 0);
       const total = Math.max(somme, (libre && typeof libre === "number") ? libre : somme);
@@ -2809,13 +2823,13 @@
       /* largeur utile dans le trou = 2r × 0,88 ; une glyphe fait ≈ 0,58 × la taille. */
       const fs = Math.max(8, Math.min(19, (2 * r * 0.88) / (0.58 * Math.max(1, txt.length))));
       return (
-        <div className="flex items-center w-full" style={{ gap: 20 }}>
+        <div className={vertical ? "flex flex-col items-center w-full" : "flex items-center w-full"} style={{ gap: vertical ? 8 : 20 }}>
           <svg viewBox="0 0 120 120" style={{ width: taille, height: taille, flexShrink: 0 }} aria-hidden="true">
             {arcs.map(a => <path key={a.k} d={a.d} fill={a.c} fillRule={a.plein ? "evenodd" : undefined} />)}
             <text x="60" y={centreSous ? 58 : 63} textAnchor="middle" fontSize={fs} fontWeight="800" fill="#1d2735" style={{ fontFamily: "'Lora','Playfair Display',serif" }}>{txt}</text>
             {centreSous ? <text x="60" y="72" textAnchor="middle" fontSize="7.5" fontWeight="700" fill="#a8a29e" style={{ letterSpacing: "0.08em" }}>{centreSous}</text> : null}
           </svg>
-          <div className="flex-1" style={{ minWidth: 0 }}>
+          <div className={vertical ? "w-full" : "flex-1"} style={{ minWidth: 0 }}>
             {secteurs.map((x, i) => (
               <div key={i} className="flex items-baseline justify-between gap-2" style={{ paddingTop: 2, paddingBottom: 2 }}>
                 <span className="flex items-baseline gap-2" style={{ minWidth: 0 }}>
@@ -4606,7 +4620,42 @@
       // JAMAIS appliquée dans l'analyse alors que la barre de synthèse l'affichait.
       const estTNS = ((d.activites || []).some(v => v === "independant" || v === "chef"))
         || (d.conjointQ === "oui" && (((d.conjointRev || {}).activites) || []).some(v => v === "independant" || v === "chef"));
-      const courtTermeM = av.filter(a => a.type === "livrets" || a.type === "compte_courant").reduce((x, y) => x + ncInt(y.valeur), 0);
+      /* ═══════════════════════════════════════════════════════════════════════════
+         21/09/2026 (CGP, dossier MARTIN) — RAISONNER APRÈS L'ACHAT, PAS AVANT.
+         « Comment peux-tu dire, dans les points forts, capacité d'emprunt disponible
+         = 0 € ? Comment peux-tu dire qu'il a une trésorerie court terme trop importante
+         alors même qu'il déclare vouloir acquérir sa résidence principale d'ici un an
+         et y consacrer une grosse partie de son épargne ? Il faut que tu te serves
+         absolument des informations recueillies. » Le moteur lisait chaque champ
+         isolément ; il projette désormais le dossier APRÈS l'achat de la RP :
+         — l'APPORT du projet sort du court terme avant tout jugement de trésorerie ;
+         — le CRÉDIT de la RP est une ÉPARGNE IMMOBILIÈRE : la part de capital
+           remboursée (décision du CGP : le capital, pas la mensualité entière, et
+           « cela va bouger au fil des remboursements, les intérêts baissent et le
+           capital augmente ») compte dans l'épargne mensuelle ;
+         — quand la capacité d'emprunt n'a plus de place pour du locatif parce
+           qu'elle est mobilisée (projet RP ou crédits en cours), le document entier se
+           RECENTRE : féliciter pour la résidence principale, préparer la retraite par
+           PER et assurance-vie, faire étudier la délégation d'assurance de prêt.
+           « Rien de plus » (décision du 21/09 : tout le document d'analyse).
+         ═══════════════════════════════════════════════════════════════════════════ */
+      const pRPsyn = ncProjetRP(d);
+      const projetRPsyn = !!(pRPsyn && pRPsyn.chiffre);
+      const apportRPsyn = projetRPsyn ? (pRPsyn.apport || 0) : 0;
+      /* capital remboursé le PREMIER mois : mensualité − intérêts (capital × taux / 12) */
+      const capRemb1 = (mens, crd, tx) => (mens > 0 && crd > 0 && tx > 0) ? Math.max(0, mens - crd * tx / 12) : 0;
+      const txRPexist = (parseFloat(String(d.rpTaux || "").replace(",", ".")) || 0) / 100;
+      const epargneImmo = Math.round(projetRPsyn
+        ? capRemb1(pRPsyn.mens, pRPsyn.capital, pRPsyn.tx)
+        : (proprio && d.rpCreditQ === "oui" ? capRemb1(ncInt(d.rpMensualite), ncInt(d.rpCrd), txRPexist) : 0));
+      const creditsEnCours = (proprio && d.rpCreditQ === "oui")
+        || (d.fonciersQ === "oui" && (d.locatifs || []).some(l => l.creditQ === "oui"))
+        || (d.biensQ === "oui" && (d.biens || []).some(b => b.creditQ === "oui"))
+        || (d.creditsQ === "oui" && (d.credits || []).some(c => ncInt(c.mensualite) > 0));
+      const recentre = capLocMax < 80000 && (projetRPsyn || creditsEnCours);
+      const courtTermeAvant = av.filter(a => a.type === "livrets" || a.type === "compte_courant").reduce((x, y) => x + ncInt(y.valeur), 0);
+      /* le court terme APRÈS l'apport de la résidence principale : c'est lui qu'on juge */
+      const courtTermeM = Math.max(0, courtTermeAvant - apportRPsyn);
       const retrM = (d.activites || []).includes("retraite") && !estTNS;
       const doubleRevM = d.conjointQ === "oui" && (((d.conjointRev || {}).activites) || []).length > 0;
       /* cible de precaution : POINT D ENTREE UNIQUE ncPrecaution — ne jamais
@@ -5227,7 +5276,10 @@
       // résidence principale ni la secondaire. Et une RÉSIDENCE SECONDAIRE ne
       // produit AUCUN loyer : sa capacité est inférieure à celle du locatif — les
       // annoncer au même montant était faux et surestimait le budget du client.
-      if (capMax >= 80000) {
+      /* 21/09/2026 : avec un projet RP chiffré, c'est la place qui RESTE pour du locatif
+         qu'annonce ce point fort — sous le seuil, il ne sort pas (« capacité d'emprunt
+         disponible ≈ 0 € » présenté comme un point fort). */
+      if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
         const pRP = ncProjetRP(d);
         const pucesCap = [];
         if (pRP.chiffre) {
@@ -5548,7 +5600,7 @@
       if (bienNonRenego > 0) faiblesses.push({ t: "Assurance de prêt", d: bienNonRenego > 1 ? `${bienNonRenego} crédits en cours` : "un crédit en cours",
         puces: ["Simulation de renégociation de l'assurance de prêt à faire : des économies sont souvent possibles"] });
       if (enfantsJeunes > 0 && budgetEtudes === 0 && epargne < 15000 * enfantsJeunes) faiblesses.push({ t: "Études des enfants non provisionnées", d: `${enfantsJeunes} enfant${enfantsJeunes > 1 ? "s" : ""} mineur${enfantsJeunes > 1 ? "s" : ""}`, puces: ["Aucune épargne dédiée"] });
-      if (S.ppMensuels === 0 && (revC > 0 || revJ > 0)) faiblesses.push({ t: "Absence totale d'épargne mensuelle", d: "aucun versement programmé",
+      if (S.ppMensuels === 0 && epargneImmo <= 0 && (revC > 0 || revJ > 0)) faiblesses.push({ t: "Absence totale d'épargne mensuelle", d: "aucun versement programmé",
         puces: [`Une petite épargne régulière sur une longue durée fait un capital significatif : 200 €/mois à 4 % pendant 20 ans = ${eur(Math.round(200 * ((Math.pow(1 + 0.04 / 12, 240) - 1) / (0.04 / 12))))}`] });
       // 29/08 (contrôle expert) : pour un divorcé, les vrais risques sont le testament
       // antérieur (non révoqué automatiquement) et la clause bénéficiaire nominative.
@@ -5690,13 +5742,17 @@
       {
         const conseils = [];
         // 1. Effort d'épargne sous la moyenne française (INSEE ≈ 18 % du revenu disponible).
-        const effortM = S.ppMensuels || 0;
+        /* 21/09/2026 : le capital remboursé sur le crédit de la RP est une épargne
+           immobilière — il entre dans l'effort d'épargne. */
+        const effortM = (S.ppMensuels || 0) + epargneImmo;
         const pctEffort = revFoyer > 0 ? effortM / revFoyer : null;
         if (pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
-          conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français`);
+          /* 21/09/2026 (CGP) : « rajoute 9 % en financier sur 18 % au total ». Même
+             repère que le bloc « Votre épargne mensuelle actuelle » (INSEE). */
+          conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
         }
         // 2. Capacité d'endettement disponible non utilisée (même seuil que le point fort).
-        if (capMax >= 80000) {
+        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
           conseils.push("Utiliser votre capacité d'endettement pour préparer votre retraite et protéger vos héritiers");
         }
         // 3. Baisse de revenus au passage à la retraite (taux de remplacement cabinet).
@@ -5725,7 +5781,7 @@
       {
         const precos = [];
         precos.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: ` : vérifier qu'il correspond à votre profil de risque et que son rendement et sa gestion donnent satisfaction — sinon, arbitrage ou optimisation du contrat recommandé${age != null && age >= 65 ? " (versements avant l'anniversaire des 70 ans, art. 990 I CGI)" : ""}` } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
-        if (capMax >= 80000) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" });
+        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" });
         if (revC > 0 || revJ > 0) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
         // PER : TOUJOURS en dernier — et une SEULE mention dans toute la synthèse
         // quand le levier fiscal n'est pas réel (règle cabinet des 5 000 € à 30 %).
@@ -5739,6 +5795,104 @@
         if (precos.length) phrases.push({ t: "Préconisations", c: "#6d28d9", list: precos, large: true });
       }
 
+      /* ═══ 21/09/2026 (CGP) — LE DOCUMENT RECENTRÉ ═══
+         « Sur un profil tel que celui-là, il faut le féliciter d'acquérir sa RP, lui
+         dire qu'il est jeune et qu'il est essentiel de réfléchir à préparer sa retraite
+         par le biais d'un PER et d'une assurance-vie, de regarder pour une délégation
+         d'assurance de prêt. Rien de plus. » S'applique à toute personne qui n'a plus de
+         place pour du locatif parce que sa capacité d'emprunt est mobilisée. */
+      if (recentre) {
+        const PCr = ncPensionFoyer(d, { revenuClient: revC, revenuConjoint: revJ });
+        const ageRetR = ncInt(((d.objectifsDetail || {}).retraite || {}).age) || 64;
+        const ansAvant = age != null ? Math.max(0, ageRetR - age) : null;
+        const txLib = (t) => String(Math.round(t * 10000) / 100).replace(".", ",") + " %";
+        /* points forts */
+        const forcesR = [];
+        if (projetRPsyn) {
+          forcesR.push({ t: "Acquisition de votre résidence principale", d: `un projet de ${eur(pRPsyn.budget)}, ${eur(pRPsyn.mens)}/mois sur ${pRPsyn.ans} ans à ${txLib(pRPsyn.tx)}`,
+            puces: [
+              "Une étape essentielle : chaque mensualité rembourse du capital et construit votre patrimoine",
+              epargneImmo > 0 ? `Épargne immobilière : ${eur(epargneImmo)}/mois de capital remboursé dès la première année, en hausse à chaque échéance` : null,
+              /* le CGP : « il va consommer 40 k€ d'apport sur 57 950 € qui lui serviront d'épargne
+                 de précaution » — c'est l'épargne TOTALE, pas le seul court terme, qui reste. */
+              apportRPsyn > 0 ? `Après un apport de ${eur(apportRPsyn)}, il vous reste ${eur(Math.max(0, (epargne || 0) - apportRPsyn))} d'épargne : votre épargne de précaution` : null,
+            ].filter(Boolean) });
+        } else if (proprio && d.rpCreditQ === "oui") {
+          forcesR.push({ t: "Résidence principale en cours de remboursement", d: epargneImmo > 0 ? `${eur(epargneImmo)}/mois de capital remboursé : une épargne immobilière qui augmente à chaque échéance` : "chaque mensualité rembourse du capital et construit votre patrimoine" });
+        }
+        forces.filter(f => /retraite déjà amorcée|assurance-vie ouverte/i.test(f.t)).forEach(f => forcesR.push(f));
+        forces.length = 0; forcesR.forEach(f => forces.push(f));
+        /* axes de travail */
+        const faibR = [];
+        faibR.push({ t: "Préparer votre retraite", d: ansAvant != null ? `à ${age} ans, ${ansAvant} ans avant la retraite : le temps joue pour vous` : "le temps joue pour vous",
+          puces: [
+            PCr && PCr.act > 0 && PCr.median > 0 ? `Revenus estimés à la retraite : environ ${eur(Math.round(PCr.median))}/mois, contre ${eur(PCr.act)} aujourd'hui` : null,
+            "Un PER et une assurance-vie alimentés chaque mois, dès maintenant",
+            perPertinent ? `Versements PER déductibles à votre TMI de ${pc(F.tmi)}` : null,
+          ].filter(Boolean) });
+        faibR.push({ t: "Assurance de votre prêt", d: projetRPsyn ? "à faire étudier en délégation dès l'offre de prêt" : "à faire étudier en délégation",
+          puces: ["La délégation d'assurance emprunteur peut en réduire nettement le coût — résiliable à tout moment (loi Lemoine)"] });
+        faiblesses.length = 0; faibR.forEach(f => faiblesses.push(f));
+        /* problématiques (second rendez-vous) : les MÊMES deux sujets, écrits pour le
+           tableau constat → conséquence → préconisation. Laisser la liste vide affichait
+           « aucune problématique — complétez les étapes précédentes », ce qui est faux. */
+        const probR = [];
+        const baisseR = PCr && PCr.act > 0 && PCr.median > 0 ? Math.max(0, PCr.act - PCr.median) : 0;
+        probR.push({ code: "recentre_retraite", priorite: "haute", famille: "Retraite", titre: "Préparer votre retraite",
+          constat: PCr && PCr.act > 0 && PCr.median > 0 ? `Revenus estimés à la retraite : environ ${eur(Math.round(PCr.median))}/mois, contre ${eur(PCr.act)} aujourd'hui.` : "Aucun dispositif retraite en place.",
+          consequence: baisseR > 0 ? `Une baisse d'environ ${eur(Math.round(baisseR))}/mois à compenser${ansAvant != null ? ` — et ${ansAvant} ans pour la préparer` : ""}.` : (ansAvant != null ? `${ansAvant} ans pour la préparer.` : ""),
+          enjeu: "Maintenir votre niveau de vie à la retraite",
+          preconisation: `Un PER et une assurance-vie alimentés chaque mois, dès maintenant${perPertinent ? ` — versements PER déductibles à votre TMI de ${pc(F.tmi)}` : ""}.` });
+        probR.push({ code: "recentre_delegation", priorite: "moyenne", famille: "Optimisation des charges", titre: "Assurance de votre prêt",
+          constat: projetRPsyn ? `Un crédit de ${eur(pRPsyn.capital)} sur ${pRPsyn.ans} ans pour votre résidence principale.` : "Un prêt immobilier en cours.",
+          consequence: "L'assurance emprunteur proposée par la banque est rarement la moins chère.",
+          enjeu: "Réduire le coût total de votre crédit",
+          preconisation: projetRPsyn ? "Faire étudier une délégation d'assurance emprunteur dès l'offre de prêt." : "Faire étudier une délégation d'assurance emprunteur — résiliable à tout moment (loi Lemoine)." });
+        problematiques.length = 0; probR.forEach(p => problematiques.push(p));
+        /* objectifs recommandés et préconisations */
+        const conseilsR = [];
+        if (projetRPsyn) conseilsR.push("Mener à bien l'acquisition de votre résidence principale : c'est la priorité");
+        conseilsR.push("Préparer votre retraite dès maintenant par un PER et une assurance-vie alimentés chaque mois");
+        conseilsR.push("Faire étudier la délégation de votre assurance de prêt");
+        const precosR = [];
+        precosR.push(per > 0 ? { titre: "Versements sur le PER existant", suite: perPertinent ? ` — déduction à votre TMI de ${pc(F.tmi)}` : "" }
+                             : { titre: "Ouverture d'un PER", suite: perPertinent ? ` — déduction des versements à votre TMI de ${pc(F.tmi)}` : "" });
+        precosR.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: " : allocation, frais et rendement" } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
+        precosR.push({ titre: "Délégation d'assurance emprunteur", suite: projetRPsyn ? " — à mettre en place dès l'offre de prêt de votre résidence principale" : " — sur votre prêt en cours (loi Lemoine)" });
+        for (let k = phrases.length - 1; k >= 0; k--) {
+          if (phrases[k].t === "Objectifs recommandés par le cabinet") phrases[k] = { ...phrases[k], list: conseilsR };
+          if (phrases[k].t === "Préconisations") phrases[k] = { ...phrases[k], list: precosR };
+        }
+        if (!phrases.some(p => p.t === "Objectifs recommandés par le cabinet")) phrases.push({ t: "Objectifs recommandés par le cabinet", c: "#0f766e", list: conseilsR, large: true });
+        if (!phrases.some(p => p.t === "Préconisations")) phrases.push({ t: "Préconisations", c: "#6d28d9", list: precosR, large: true });
+      }
+
+      /* ═══ 21/09/2026 (CGP) — LES INCOHÉRENCES DE SAISIE ═══
+         « Il faut que tu notes les incohérences, et mettes une alarme en disant que
+         cette information n'est pas compatible pour telle ou telle raison, dans un beau
+         pop-up raccord avec les autres. » La fenêtre s'ouvre en quittant l'étape des
+         objectifs ; elle lit cette liste. */
+      const incoherences = [];
+      {
+        const nfI = (n) => eur(Math.round(n || 0));
+        if ((d.objectifs || []).includes("locatif") && capLocMax < 80000) {
+          incoherences.push({ t: "Investissement locatif",
+            d: projetRPsyn
+              ? `Pas réalisable pour le moment : l'achat de la résidence principale mobilise toute la capacité d'emprunt (place restante pour du locatif : ${nfI(capLocMax)}). Le réaliser maintenant reviendrait à sacrifier le projet de résidence principale.`
+              : `Pas réalisable pour le moment : les crédits en cours mobilisent la capacité d'emprunt (place restante pour du locatif : ${nfI(capLocMax)}). Il pourra être envisagé une fois une partie des crédits remboursée.` });
+        }
+        const APPORT_BAS = { aucun: 0, "<10000": 0, "10000-30000": 10000, "30000-50000": 30000, "50000-100000": 50000, ">100000": 100000 };
+        const apBas = d.apportInitial === "libre" ? ncInt(d.apportInitialLibre) : (APPORT_BAS[d.apportInitial] || 0);
+        const epTot = epargne || 0;          /* S.epargneConstituee — S.epargne n'existe pas */
+        const resteEp = Math.max(0, epTot - apportRPsyn);
+        if (apBas > 0 && apBas > resteEp) {
+          incoherences.push({ t: "Apport initial mobilisable",
+            d: projetRPsyn
+              ? `Incompatible : après les ${nfI(apportRPsyn)} d'apport de la résidence principale, il ne resterait que ${nfI(resteEp)} d'épargne — et elle constitue l'épargne de précaution. Un apport de ${NC_APPORT_LIB[d.apportInitial] || nfI(apBas)} n'est pas mobilisable.`
+              : `Incompatible : l'épargne totale déclarée est de ${nfI(epTot)}, un apport de ${NC_APPORT_LIB[d.apportInitial] || nfI(apBas)} n'est pas mobilisable.` });
+        }
+      }
+
       // Tri par priorité : les sujets « haute » ouvrent l'entretien.
       const ordre = { haute: 0, moyenne: 1 };
       const rang = (x) => (ordre[x] === undefined ? 2 : ordre[x]);
@@ -5746,6 +5900,7 @@
 
       return {
         resume: phrases, forces, faiblesses, problematiques,
+        recentre, incoherences, epargneImmo, courtTermeApresRP: courtTermeM, apportRP: apportRPsyn,
         chiffresCles: {
           revenusMensuels: revFoyer, chargesMensuelles: chFoyer, tauxEndettement: taux,
           capaciteEmprunt20: S.cap20, capaciteEmpruntMax: capMax, capaciteLocativeMax: capLocMax, dureeEmpruntMax: dureeMax, epargne, patrimoineNet: S.patrimoineNet,
@@ -7918,6 +8073,11 @@
       // si elle n'est pas renseignée au moment de passer à la synthèse, une
       // fenêtre bloque le passage et pose la question.
       const [capGateOpen, setCapGateOpen] = useState(false);
+      /* 21/09/2026 (CGP) : fenêtre des incohérences de saisie, ouverte en quittant
+         l'étape « Objectifs ». `incoVu` retient la liste déjà montrée : on ne la
+         remontre pas tant qu'elle n'a pas changé. */
+      const [incoOpen, setIncoOpen] = useState(null);   // null | { liste, suite }
+      const incoVu = useRef("");
       // 29/08 (union libre) : quel concubin remplit le questionnaire de risque ("" ou "2")
       const [risquePers, setRisquePers] = useState("");
       // Synthèse en deux temps (doctrine commerciale du cabinet) :
@@ -8122,6 +8282,13 @@
           }
         }
         setManqueN(0);
+        /* 21/09/2026 : en quittant l'étape des objectifs vers l'avant, les incohérences
+           du dossier s'affichent — une seule fois pour une même liste. */
+        if (etape <= 6 && n > 6) {
+          const inc = (syn && syn.incoherences) || [];
+          const sig = JSON.stringify(inc.map(x => x.t + x.d));
+          if (inc.length && incoVu.current !== sig) { setIncoOpen({ liste: inc, suite: n, sig }); return; }
+        }
         if (n === 8 && !capRenseignee) { setCapGateOpen(true); return; }
         goEtapeRaw(n);
       };
@@ -8682,6 +8849,70 @@
          place, et NcProjection les reçoit tout rendus, en props. Rien n'est
          dupliqué : un seul corps, deux points d'appel.
          ═══════════════════════════════════════════════════════════════════ */
+      /* ═══ 21/09/2026 (CGP) — LE CONSEILLER CORRIGE LE DOCUMENT LUI-MÊME ═══
+         « Permets-moi aussi de pouvoir modifier toute cette partie : objectifs
+         recommandés par le cabinet, préconisations, questions du prochain rendez-vous. »
+         Même mécanique que les points forts et les axes (✎ corriger, ✕ masquer,
+         ↺ revenir au texte généré), plus « + Ajouter une ligne ». Tout est stocké
+         dans le dossier — d.docEdits (corrections et masquages) et d.docAjouts (lignes
+         ajoutées) — et le PDF reprend la version corrigée ; les boutons ne s'impriment
+         jamais (nc-syn-noprint, et retirés du clone d'impression).
+         CLÉ D'UNE LIGNE : le texte généré contient des chiffres qui bougent avec le
+         dossier (« actuellement à 2 % »). La clé est le début du texte, coupé au premier
+         chiffre : la correction reste attachée à sa ligne quand un montant change. Les
+         questions sont repérées par leur FAMILLE (une seule par famille). */
+      const docEd = d.docEdits || {};
+      const docAj = d.docAjouts || {};
+      const cleStable = (zone, txt) => zone + "::" + String(txt || "").split(/\d/)[0].trim().slice(0, 70);
+      const docTexte = (cle, defaut) => (docEd[cle] && docEd[cle].t) || defaut;
+      const docMasque = (cle) => !!(docEd[cle] && docEd[cle].hide);
+      const docCorrige = (cle) => !!(docEd[cle] && docEd[cle].t);
+      const majDocEd = (cle, patch) => set("docEdits", { ...(d.docEdits || {}), [cle]: { ...((d.docEdits || {})[cle] || {}), ...patch } });
+      const retablirDoc = (cle) => { const { [cle]: _x, ...reste } = d.docEdits || {}; set("docEdits", reste); };
+      const corrigerDoc = (cle, titre, valeur) => setEditOpen({ f: { t: titre }, valeur, onSave: (v) => majDocEd(cle, { t: v }) });
+      const ajouterDoc = (zone, titre) => setEditOpen({ f: { t: titre }, valeur: "", onSave: (v) => set("docAjouts", { ...(d.docAjouts || {}), [zone]: [...((d.docAjouts || {})[zone] || []), v] }) });
+      const corrigerAjout = (zone, i, valeur) => setEditOpen({ f: { t: "Ligne ajoutée" }, valeur, onSave: (v) => set("docAjouts", { ...(d.docAjouts || {}), [zone]: ((d.docAjouts || {})[zone] || []).map((x, k) => k === i ? v : x) }) });
+      const retirerAjout = (zone, i) => set("docAjouts", { ...(d.docAjouts || {}), [zone]: ((d.docAjouts || {})[zone] || []).filter((_x, k) => k !== i) });
+      const btnDoc = "w-[18px] h-[18px] rounded border border-stone-200 text-[10px] leading-none text-stone-400 hover:text-stone-900 hover:border-stone-500 bg-white";
+      /* ✎ ✕ ↺ d'une ligne générée */
+      const CtlDoc = ({ cle, titre, valeur }) => (
+        <span className="nc-syn-noprint inline-flex items-center gap-1 ml-2 align-middle flex-shrink-0" data-nc-doc-ctl="1">
+          {docCorrige(cle) && (
+            <span title="Texte corrigé à la main — il ne suit plus les mises à jour du moteur" className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wide" style={{ background: "#b8924e1a", color: "#8a6d34", fontFamily: "'Inter', sans-serif" }}>
+              texte personnalisé
+              <button type="button" title="Revenir au texte généré" className="hover:text-stone-900" onClick={() => retablirDoc(cle)}>↺</button>
+            </span>
+          )}
+          <button type="button" title="Corriger le texte" className={btnDoc} onClick={() => corrigerDoc(cle, titre, valeur)}>✎</button>
+          <button type="button" title="Masquer du document" className={btnDoc} onClick={() => majDocEd(cle, { hide: true })}>✕</button>
+        </span>
+      );
+      /* ✎ ✕ d'une ligne ajoutée */
+      const CtlAjout = ({ zone, i, valeur }) => (
+        <span className="nc-syn-noprint inline-flex items-center gap-1 ml-2 align-middle flex-shrink-0" data-nc-doc-ctl="1">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wide" style={{ background: "#0f766e14", color: "#0f766e", fontFamily: "'Inter', sans-serif" }}>ajoutée</span>
+          <button type="button" title="Corriger le texte" className={btnDoc} onClick={() => corrigerAjout(zone, i, valeur)}>✎</button>
+          <button type="button" title="Retirer cette ligne" className={btnDoc} onClick={() => retirerAjout(zone, i)}>✕</button>
+        </span>
+      );
+      /* masqués de la zone : un lien pour les faire revenir */
+      const RetablirZone = ({ zone }) => {
+        const cles = Object.keys(d.docEdits || {}).filter(k => k.indexOf(zone + "::") === 0 && (d.docEdits || {})[k].hide);
+        if (!cles.length) return null;
+        return (
+          <button type="button" className="nc-syn-noprint text-[10.5px] text-stone-400 underline hover:text-stone-800 mr-3"
+            onClick={() => { const r = { ...(d.docEdits || {}) }; cles.forEach(k => { const { hide, ...x } = r[k]; if (Object.keys(x).length) r[k] = x; else delete r[k]; }); set("docEdits", r); }}>
+            {cles.length} ligne{cles.length > 1 ? "s" : ""} masquée{cles.length > 1 ? "s" : ""} — tout réafficher
+          </button>
+        );
+      };
+      const AjouterLigne = ({ zone, lib }) => (
+        <div className="nc-syn-noprint mt-2.5 flex items-center" data-nc-doc-ajout="1">
+          <RetablirZone zone={zone} />
+          <button type="button" className="text-[11px] font-semibold text-stone-500 hover:text-stone-900" onClick={() => ajouterDoc(zone, lib)}>+ {lib}</button>
+        </div>
+      );
+
       const rendreObjectifsParticipation = ({ cartesCabinet = true, chapitre = "Objectifs et participation" } = {}) => {
         /* 15/09/2026 (CGP, seconde décision) : les MOYENS que le client consacre
            à ses objectifs (apport, mensualité) et le RAPPEL DE SES OBJECTIFS
@@ -8714,7 +8945,19 @@
           <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
             style={{ borderTop: `3px solid ${it.c || "#b8924e"}`, background: `linear-gradient(180deg, ${(it.c || "#b8924e")}0a, #ffffff 55%)`, boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
             <div className="text-[9.5px] uppercase tracking-wider font-bold mb-2.5" style={{ color: it.c || "#8a6d34" }}>{it.t}</div>
-            {(it.list || [it.d]).filter(Boolean).map((li, k) => (
+            {(() => {
+              /* 21/09/2026 : cartes du cabinet corrigeables (voir docEdits plus haut) */
+              const zone = it.t === "Objectifs recommandés par le cabinet" ? "obj" : it.t === "Préconisations" ? "preco" : null;
+              const lignes = (it.list || [it.d]).filter(Boolean).map(li => {
+                if (!zone) return { li };
+                const P0 = ncPrecoParts(li);
+                const cle = cleStable(zone, P0.plein);
+                if (docMasque(cle)) return null;
+                return { li: docCorrige(cle) ? docTexte(cle, P0.plein) : li, cle, plein: P0.plein };
+              }).filter(Boolean);
+              const ajouts = zone ? (docAj[zone] || []) : [];
+              return <>
+            {lignes.map((L0, k) => { const li = L0.li; return (
               <div key={k} className="flex gap-3 items-start mb-2.5 last:mb-0">
                 {(() => {
                   /* titre en GRAS, suite en graisse normale : une carte
@@ -8729,11 +8972,24 @@
                         <a href={P.href} target="_blank" rel="noopener noreferrer" className="inline-block align-middle ml-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold no-underline"
                           style={{ background: "rgba(109,40,217,0.08)", border: "1px solid rgba(109,40,217,0.35)", color: "#6d28d9", fontFamily: "'Inter', sans-serif" }}>{P.linkLabel}</a>
                       </> : null}
+                      {zone ? <CtlDoc cle={L0.cle} titre={it.t} valeur={P.plein} /> : null}
                     </span>
                   </>;
                 })()}
               </div>
+            ); })}
+            {ajouts.map((txt, i) => (
+              <div key={"aj" + i} className="flex gap-3 items-start mb-2.5 last:mb-0">
+                <NcPicto texte={txt} c={it.c || "#b8924e"} />
+                <span className="leading-snug text-[14px]" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
+                  <b style={{ fontWeight: 800 }}>{txt}</b>
+                  <CtlAjout zone={zone} i={i} valeur={txt} />
+                </span>
+              </div>
             ))}
+            {zone ? <AjouterLigne zone={zone} lib="Ajouter une ligne" /> : null}
+              </>;
+            })()}
             {it.sub ? <div className="text-[10px] text-stone-500 mt-1.5 leading-snug">{it.sub}</div> : null}
           </div>
         );
@@ -11690,7 +11946,9 @@
                                 { l: "Crédit envisagé", v: `${ans} ans à ${String(tx).replace('.', ',')} %` },
                                 ap > 0 ? { l: "Apport prévu", v: `${nfL(ap)} €` } : null,
                                 { l: "Budget d'acquisition", v: `${nfL(Math.round(cap + ap))} €` },
-                                { l: "Sortie totale de trésorerie", v: `${nfL(Math.round(M * nM + ap))} €` },
+                                /* 21/09/2026 (CGP) : « supprime, lorsqu'il y a un projet d'achat de RP,
+                                   la ligne "Sortie totale de trésorerie" — aucun intérêt ». Retirée du
+                                   document ; elle reste à l'écran de saisie. */
                               ].filter(Boolean);
                             })(),
                             d.rpProjetNote ? { l: "Projet", v: d.rpProjetNote } : null,
@@ -12426,7 +12684,7 @@
                               <NcDonut parts={enPct(arr)} libre={plaf} libreLib="Marge jusqu'à 35 %"
                                 libreAff={`${un(pcD(Math.max(0, plaf - arr.reduce((a2, b2) => a2 + b2.v, 0))))} %`}
                                 centre={taux != null ? `${un(taux * 100)} %` : "—"} centreSous="ENDETTEMENT"
-                                taille={(duoProj || duoFin) ? 96 : 120} />
+                                taille={(duoProj || duoFin) ? 96 : 120} vertical={!!(duoProj || duoFin)} />
                             );
                             /* RÈGLE CABINET conservée (29/08) : quand la situation CHANGE — projet
                                d'achat de résidence principale, ou crédits qui se terminent sous
@@ -12500,7 +12758,7 @@
                             const Camembert2 = ({ arr, centre, petit }) => (
                               <NcDonut parts={enEur(arr)} libre={envD} libreLib="Encore disponible"
                                 libreAff={`${nfMd(Math.max(0, envD - arr.reduce((a2, b2) => a2 + b2.v, 0)))} €`}
-                                centre={`${nfMd(centre)} €`} centreSous="DISPONIBLE" taille={petit ? 96 : 120} />
+                                centre={`${nfMd(centre)} €`} centreSous="DISPONIBLE" taille={petit ? 96 : 120} vertical={!!petit} />
                             );
                             /* RÈGLE CABINET (29/08) conservée : deux états côte à côte quand la
                                situation change — le dessin remplace les jauges, pas la règle. */
@@ -13014,7 +13272,7 @@
                             q: impot10 > 0
                               ? `Que vous évoque le chiffre de ${nfQ(impot10)} € ?`
                               : "Savez-vous quelle part de votre imposition peut être réorientée vers votre propre patrimoine, et par quel mécanisme ?" },
-                          { p: 4, fam: "retraite", re: /dispositif retraite|retraite de .* non préparée|retraite non préparée/i,
+                          { p: 4, fam: "retraite", re: /dispositif retraite|retraite de .* non préparée|retraite non préparée|préparer votre retraite/i,
                             q: (pension > 0 && revAuj > 0)
                               ? `${anneesRet > 0 ? `Dans ${anneesRet} ans, vous aurez ${ageRet} ans` : `À ${ageRet} ans`}, vos revenus passeront de ${nfQ(revAuj)} € à environ ${nfQ(Math.round(pension / 500) * 500)} €/mois. Comment comptez-vous compenser cette baisse ?`
                               : "Vos revenus baisseront au moment de votre retraite. Comment comptez-vous compenser cette baisse ?" },
@@ -13069,6 +13327,9 @@
                           if (vues.some(v => v.fam === x.fam)) return;   // une seule par famille
                           vues.push(x);
                         });
+                        /* 21/09/2026 (CGP) : dossier RECENTRÉ (capacité d'emprunt mobilisée) —
+                           « rien de plus » : seule la question retraite reste, puis la bonus. */
+                        if (syn.recentre) { for (let k = vues.length - 1; k >= 0; k--) if (vues[k].fam !== "retraite") vues.splice(k, 1); }
                         /* ═══ LA QUESTION BONUS — LE PLACEMENT DÉDUCTIBLE, AU TAUX DU CLIENT ═══
                            18/09/2026 (CGP) : « on intègre une question 6 en bonus ». Elle vient
                            APRÈS les cinq, et le taux annoncé EST LA TMI DU FOYER — 30, 41 ou 45 %
@@ -13078,16 +13339,29 @@
                            versement PER du revenu imposable — l'économie d'impôt vaut la TMI.) */
                         if (tmiQ >= 30) vues.push({ fam: "bonus", bonus: true,
                           q: `Connaissez-vous un placement qui vous permette d'obtenir l'équivalent d'un rendement de ${tmiQ} % garanti par l'État la première année ?` });
-                        if (!vues.length) return null;
+                        /* 21/09/2026 (CGP) : les questions sont CORRIGEABLES (✎ ✕ ↺, + Ajouter
+                           une question) et le bloc s'intitule « Les questions » — le CGP : « questions
+                           du prochain rdv, que tu peux modifier par "Les questions" ». Une question se
+                           repère par sa FAMILLE : son texte porte des montants qui bougent. */
+                        const vuesAff = vues
+                          .map(v => ({ ...v, cle: "q::" + v.fam }))
+                          .filter(v => !docMasque(v.cle))
+                          .map(v => ({ ...v, q: docTexte(v.cle, v.q) }))
+                          .concat((docAj.q || []).map((t, i) => ({ q: t, ajout: i })));
+                        if (!vuesAff.length && !Object.keys(d.docEdits || {}).some(k => k.indexOf("q::") === 0)) return null;
                         return (
                           <div className="rounded-2xl bg-white border p-5 mb-4" style={{ borderColor: "rgba(184,146,78,0.45)", borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-4" style={{ color: "#8a6d34" }}>Les questions du prochain rendez-vous</div>
-                            {vues.map((v, i) => (
-                              <div key={i} className="flex items-baseline gap-4" style={{ paddingTop: i === 0 ? 0 : 13, paddingBottom: i === vues.length - 1 ? 0 : 13, borderTop: i === 0 ? "none" : "1px solid rgba(10,9,8,0.07)" }}>
+                            <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-4" style={{ color: "#8a6d34" }}>Les questions</div>
+                            {vuesAff.map((v, i) => (
+                              <div key={i} className="flex items-baseline gap-4" style={{ paddingTop: i === 0 ? 0 : 13, paddingBottom: i === vuesAff.length - 1 ? 0 : 13, borderTop: i === 0 ? "none" : "1px solid rgba(10,9,8,0.07)" }}>
                                 <span className="tabular-nums flex-shrink-0" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 22, fontWeight: 700, color: "#d8bc86", lineHeight: 1, width: 26 }}>{i + 1}</span>
-                                <span className="flex-1 leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 600, color: "#1d2735" }}>{v.q}</span>
+                                <span className="flex-1 leading-snug" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15, fontWeight: 600, color: "#1d2735" }}>
+                                  {v.q}
+                                  {v.ajout != null ? <CtlAjout zone="q" i={v.ajout} valeur={v.q} /> : <CtlDoc cle={v.cle} titre="Question" valeur={v.q} />}
+                                </span>
                               </div>
                             ))}
+                            <AjouterLigne zone="q" lib="Ajouter une question" />
                           </div>
                         );
                       })()}
@@ -13752,6 +14026,33 @@
             })()}
 
             {/* — Garde-fou : capacité d'épargne non renseignée au passage vers la synthèse — */}
+            {incoOpen && (
+              <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" data-nc-inco="1" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
+                <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden" style={{ borderTop: "4px solid #b91c1c" }}>
+                  <div className="px-6 pt-5 pb-4">
+                    <div className="text-[11px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#b91c1c" }}>Attention — incohérence{incoOpen.liste.length > 1 ? "s" : ""} dans le dossier</div>
+                    <div className="text-[19px] font-bold leading-snug mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
+                      {incoOpen.liste.length > 1 ? "Ces informations ne sont pas compatibles avec le reste du dossier" : "Cette information n'est pas compatible avec le reste du dossier"}
+                    </div>
+                    {incoOpen.liste.map((x, i) => (
+                      <div key={i} className="rounded-xl px-4 py-3 mb-2" style={{ background: "#fef2f2", border: "1px solid #fecaca" }}>
+                        <div className="text-[13px] font-bold mb-0.5" style={{ color: "#991b1b" }}>{x.t}</div>
+                        <div className="text-[12.5px] leading-relaxed text-stone-700">{x.d}</div>
+                      </div>
+                    ))}
+                    <div className="text-[11.5px] text-stone-500 mt-2">Corrigez la saisie avec le client, ou continuez : la synthèse tiendra compte de l'ensemble du dossier.</div>
+                  </div>
+                  <div className="px-6 py-4 border-t border-stone-100 flex items-center justify-between gap-3" style={{ background: "#faf9f7" }}>
+                    <button type="button" onClick={() => { incoVu.current = incoOpen.sig; const n2 = incoOpen.suite; setIncoOpen(null); if (n2 === 8 && !capRenseignee) setCapGateOpen(true); else goEtapeRaw(n2); }}
+                      className="text-[11.5px] font-semibold text-stone-400 hover:text-stone-600 underline underline-offset-2 transition">Continuer quand même</button>
+                    <button type="button" onClick={() => setIncoOpen(null)}
+                      className="px-6 py-2.5 rounded-xl text-[13px] font-bold text-white shadow-sm transition hover:brightness-110" style={{ background: "#1d2735" }}>
+                      Corriger la saisie
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {capGateOpen && (
               <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
                 <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden" style={{ borderTop: "4px solid var(--nc-accent, #b45309)" }}>
@@ -13833,7 +14134,10 @@
                     <button
                       onClick={() => {
                         const nv = (editOpen.valeur || "").trim();
-                        if (nv) set("synthEdits", { ...(d.synthEdits || {}), [editOpen.f.t]: { ...((d.synthEdits || {})[editOpen.f.t] || {}), d: nv } });
+                        /* 21/09/2026 : une correction du document (cartes du cabinet, questions)
+                           apporte sa propre façon d'enregistrer ; sinon, point fort / axe. */
+                        if (nv && typeof editOpen.onSave === "function") editOpen.onSave(nv);
+                        else if (nv) set("synthEdits", { ...(d.synthEdits || {}), [editOpen.f.t]: { ...((d.synthEdits || {})[editOpen.f.t] || {}), d: nv } });
                         setEditOpen(null);
                       }}
                       className="px-5 py-2 rounded-lg text-[13px] font-bold text-white transition hover:brightness-110" style={{ background: "#1d2735" }}>Enregistrer</button>
