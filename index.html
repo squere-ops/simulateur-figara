@@ -1169,7 +1169,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v244 (21/09 : ANALYSE R2 — CE QUE LES GISEMENTS TROUVENT GROSSIT LE BUDGET, ET LE BANDEAU COLLANT ATTEND QU ON PARLE D ARGENT. (1) Le CGP : « lorsque l on va chercher de l epargne avec la renegociation de l assurance de pret ou les placements, cela ne vient pas s additionner a l epargne que le client souhaite mettre ; si le client souhaite mettre entre 300 et 500 €/mois et que l on a ete chercher 250 € de tresorerie supplementaire, il faut que son budget mensuel passe de 550 a 750 €/mois grace aux renegociations, et que cela se voie ». Seule la delegation d assurance entrait dans l enveloppe, et sur la seule borne HAUTE : la fourchette affichait « 300 a 750 ». Desormais les TROIS leviers coches — delegation, arbitrage, redirection — s additionnent (gainsMens) et montent les DEUX bornes (envBasTot = borne basse + gainsMens, ENV = borne haute + gainsMens). Les ecarts d interets sont calcules plus tot, avec les entrees des gisements, pour pouvoir entrer dans l enveloppe. Un bandeau vert « Votre nouveau budget mensuel » s affiche juste apres les gisements, des qu un levier est coche : la fourchette augmentee, la part de la poche, le montant trouve, et le detail levier par levier. Le bandeau des solutions dit la meme chose, et son item « Libere » devient « Trouve », tous leviers compris. MESURE (banc t_budget, etape 16/17) : fourchette declaree 500 a 1 000, delegation 37 € + arbitrage 360 € → 897 a 1 397 €/mois. (2) Le CGP : « lorsque l on arrive sur le document, je ne veux pas voir le bandeau de son epargne au tout debut, ca n a pas de sens ». Le bandeau collant enveloppe · employee · reste s affichait des l ouverture, par-dessus la page de garde. Il reste cache tant que la section « Ou trouver l epargne » n est pas atteinte (IntersectionObserver sur la section elle-meme — un temoin vide ajoute expres etait compte comme un bloc par le mode presentation). VERIFIE : 17 etapes au vert.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v245 (21/09 : QUATRE CLIENTS TYPES, VERSION DEMO SEULEMENT. Le CGP : « est-ce qu il est possible d enregistrer deux ou trois clients types afin que je ne doive pas systematiquement re-remplir tout de A a Z ? Trop fastidieux. Un celibataire, un pacse, un marie, un veuf. » Fiches validees le 21/09 : Thomas MARTIN (celibataire locataire, projet RP, credit auto), Julie et Nicolas LEROY (pacses sans testament, 2 enfants, RP a credit assuree 50/50), Philippe et Catherine DURAND (maries, TNS, 3 enfants, locatif assure 100 pct sur chaque tete, tresorerie dormante), Monique BERNARD (veuve de 71 ans, donation de moins de 15 ans). Un clic en tete de l etape 1 remplit tout l audit, sur les SEPT pages : chaque fiche repond a toutes les questions que l audit pose (adresse, pension alimentaire, revenus mobiliers, reductions, impot reel), sinon la regle cabinet du 29/08 — une question sans reponse, pas de page suivante — bloquait l acces a la synthese des la premiere page. Confirmation si une saisie est deja en cours. VERSION DEMO SEULEMENT : NC_DEMO lit le PREFIXE du projet Supabase de la demo, pour que le decompte des identifiants complets reste 1 1 0 0 ; les bancs forcent l affichage par window.__NC_FORCE_DEMO. CORRECTION DE LA FICHE DES DURAND : elle annoncait une TMI a 41 pct ; 147 600 € de revenus sur 4 parts tombent a 30 pct, le moteur le calcule, la TMI n est donc PAS forcee — un chiffre faux n entre pas dans un dossier, meme de demonstration. Banc t_clients_types, etape 17/18 : absents en production, les quatre se chargent, la synthese s ouvre et fait sortir ce pour quoi chaque fiche a ete batie.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v244 (21/09 : ANALYSE R2 — CE QUE LES GISEMENTS TROUVENT GROSSIT LE BUDGET, ET LE BANDEAU COLLANT ATTEND QU ON PARLE D ARGENT. (1) Le CGP : « lorsque l on va chercher de l epargne avec la renegociation de l assurance de pret ou les placements, cela ne vient pas s additionner a l epargne que le client souhaite mettre ; si le client souhaite mettre entre 300 et 500 €/mois et que l on a ete chercher 250 € de tresorerie supplementaire, il faut que son budget mensuel passe de 550 a 750 €/mois grace aux renegociations, et que cela se voie ». Seule la delegation d assurance entrait dans l enveloppe, et sur la seule borne HAUTE : la fourchette affichait « 300 a 750 ». Desormais les TROIS leviers coches — delegation, arbitrage, redirection — s additionnent (gainsMens) et montent les DEUX bornes (envBasTot = borne basse + gainsMens, ENV = borne haute + gainsMens). Les ecarts d interets sont calcules plus tot, avec les entrees des gisements, pour pouvoir entrer dans l enveloppe. Un bandeau vert « Votre nouveau budget mensuel » s affiche juste apres les gisements, des qu un levier est coche : la fourchette augmentee, la part de la poche, le montant trouve, et le detail levier par levier. Le bandeau des solutions dit la meme chose, et son item « Libere » devient « Trouve », tous leviers compris. MESURE (banc t_budget, etape 16/17) : fourchette declaree 500 a 1 000, delegation 37 € + arbitrage 360 € → 897 a 1 397 €/mois. (2) Le CGP : « lorsque l on arrive sur le document, je ne veux pas voir le bandeau de son epargne au tout debut, ca n a pas de sens ». Le bandeau collant enveloppe · employee · reste s affichait des l ouverture, par-dessus la page de garde. Il reste cache tant que la section « Ou trouver l epargne » n est pas atteinte (IntersectionObserver sur la section elle-meme — un temoin vide ajoute expres etait compte comme un bloc par le mode presentation). VERIFIE : 17 etapes au vert.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v243 (20/09 : L ANALYSE R2, ET DEUX CALCULS REMIS D APLOMB. (1) LES QUOTITES D ASSURANCE EMPRUNTEUR SONT ENFIN LUES. Le CGP : « au niveau des credits on informe systematiquement si le pret est assure a 100 pct sur chaque tete ou autre ; pourtant dans tes analyses posterieures tu reagis comme si tu n etais pas au courant ». Il avait raison : la quotite etait saisie sur la RP, sur chaque locatif, sur chaque autre bien et sur chaque credit conso, et un seul endroit la lisait — la liste des pieces a reclamer, pour dire qu on ne la connaissait pas. Trois branchements sont faits. a. ncCalcSuccession ne nette plus la dette dans le patrimoine des la saisie : chaque dette est une ligne, avec la part portee par chacun et la quotite assuree par tete. REGLE ARBITREE AVEC LE CGP : au deces, le pret assure sur la tete du defunt est SOLDE a hauteur de sa quotite — sa dette ne se deduit plus de son actif transmissible, en 50/50 la moitie s eteint. Mesure sur un couple, RP 400 000 detenue a 50/50, credit 200 000 : actif transmissible du client 58 500 en quotite inconnue, 108 500 en 50/50, 158 500 en 100 pct sur chaque tete. b. La problematique du deces du revenu principal annonce le capital reellement solde au lieu de renvoyer a « quotites a verifier ». c. Le curseur de quotite de la projection, qui valait 100 par defaut sans aucun lien avec le dossier, part desormais de la saisie. La formule prudente ne subsiste que si une quotite manque encore, et un banc de mesure (t_quotites, etape 15 sur 16) garde les quatre cas. (2) L ECONOMIE DES GISEMENTS, C EST L ECART D INTERETS. Le CGP : « les vraies economies sont le calcul des interets places a 1,7 pct vs 5,2 pct, le capital ne doit pas rentrer dans le calcul ». Les modules « arbitrage du capital place » et « redirection des versements » affichaient le CAPITAL supplementaire a l horizon divise par le nombre de mois — un gain compose sur vingt ans ramene a une moyenne, qui ne correspondait a aucun euro gagne dans le mois et qui grossissait avec la duree retenue. Ils affichent maintenant l ecart d interets de la premiere annee, ramene au mois : arbitrage = montant × (taux cabinet − taux actuel) ÷ 12 ; redirection = assiette non pas un capital mais CE QUI AURA ETE VERSE DANS L ANNEE (versement × 12), decision du CGP du 20/09. Le capital a l horizon garde sa place, en seconde ligne. (3) L ONGLET PROJECTION DEVIENT L ANALYSE R2. Renomme « Analyse R2 », il porte le document « Analyse et plan d action » et son propre nom de fichier. Sa page de garde est celle de l etude patrimoniale — bandeau photo, cadre dore, noms, « document prepare par » — et ne porte plus aucun chiffre. L ordre suit la demande du CGP : page de garde ; page 2 avec la baisse de revenus a la retraite, les objectifs exprimes et la participation mensuelle et l apport envisages ; l analyse du dossier (points forts et axes a travailler) ; un bandeau rappelant l objectif de participation ; ou trouver l epargne ; les solutions retenues, ouvertes par les preconisations de l audit ; le tableau avant / apres. Les deux blocs partages avec l etude — objectifs et participation, points forts et axes — sont hoistes en deux fonctions de rendu et passes en props : un seul corps, deux points d appel, aucun jeu de libelles a tenir a jour en double. L onglet « Simulation et plan d action » devient « Simulation ». VERIFIE : 16 etapes au vert, document R2 relu page par page.','color:#94a3b8');
         console.log('%cANCIEN BUILD v242 (19/09 : TROIS DEMANDES DU CGP. (1) UNE CARTE SEULE SUR SA LIGNE NE PREND PLUS TOUTE LA LARGEUR. Le CGP : « dans les blocs capacite d emprunt et financier, fais-les sur la moitie de la page et pas sur toute la largeur ». Les quatre compteurs des chiffres du dossier vivent dans un conteneur flex (.nc-duo) ou chaque carte valait flex: 1 1 calc(50% - 6px) — flex-GROW 1. Tant que les cartes vont par deux, personne ne le voit. Mais quand la pagination coupe la rangee entre la 3e et la 4e carte, la 3e se retrouve seule sur sa ligne et la 4e seule dans la rangee soeur : flex-grow les etire alors chacune sur TOUTE la largeur de la page — le donut a l extreme gauche, la legende a l extreme droite, c est exactement ce que le CGP a vu sur Capacite d emprunt et Le financier. flex-grow passe a 0 : une carte vaut une demi-page, seule ou non. MESURE : carte seule = 352 px sur 758 avec le correctif, 713 px sans. (2) INFO-RETRAITE.FR DEVIENT UNE PASTILLE ENCADREE. Le CGP : « des que tu parles d info-retraite, fais un encadre comme un bouton afin de le rendre plus visible ». Dans le bloc des pieces a reclamer, le nom du site est desormais une pastille inline-block — encre rouge, fond rose tres pale, filet rouge, coins arrondis — au lieu d un simple mot en gras rouge. inline-block et non un vrai bouton : le document part a l impression, la pastille doit couler dans la ligne sans casser la justification. (3) LES DEUX CARTES DU CABINET ENTRENT DANS L AUDIT. Le CGP : « dans l audit, inclure dans le chapitre objectifs et questions, juste apres les objectifs exprimes et la participation mensuelle, le tableau qui est dans le document simulation et plan d action page 5 : les objectifs recommandes par le cabinet et les preconisations, sans changer la suite de l audit ». Ces deux cartes larges etaient gardees pour le RDV 2 depuis le 15/09 ; le filtre synMode === preco disparait. Elles sortent maintenant dans les DEUX documents, a la meme place et sous la meme forme : juste sous la rangee Objectifs exprimes / Participation mensuelle. Rien d autre ne bouge — notes, questions et pieces a reclamer suivent dans l ordre inchange. Le banc de controle verifiait l ANCIENNE regle : son assertion est retournee, elle interdit desormais le filtre et exige la presence des deux cartes. VERIFIE : 15 etapes au vert, 7 pages mesurees sur A4 et Letter (97/93/84/99/91/79/100 pct), chaque page relue.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v241 (19/09 : LE TRIO PATRIMOINE NE QUITTE PLUS LES COMPTEURS. Le CGP : « sur la version imprimable de l audit, reduis un peu la taille des blocs des chiffres du dossier pour pouvoir mettre sur la meme page actif total / passif / patrimoine net ». Deux leviers, l un visuel, l autre structurel. (1) LES CARTES DE COMPTEUR MAIGRISSENT : camembert de 138 a 120 px (96 pour les jumeaux), interieur des cartes en py-2,5 au lieu de py-3, interligne de la legende a 2 px, titre rapproche. La garantie obtenue la veille tient toujours — le chiffre central est CALCULE sur la largeur utile du trou, il ne peut pas toucher l anneau quelle que soit la taille. (2) ET SURTOUT : « ACTIF TOTAL / PASSIF / PATRIMOINE NET » NE SE DETACHE PLUS de la rangee de compteurs qui le precede. Le trio porte data-nc-colle-precedent, et la pagination reporte alors le saut de page EN AMONT de cette rangee — exactement le mecanisme qui empeche depuis le 16/09 qu un bandeau de chapitre reste seul en bas d une page. C est structurel : quel que soit le dossier, le trio suit les compteurs. CE QUI N A PAS ETE FAIT, ET POURQUOI : mettre les QUATRE compteurs ET le trio sur une seule et meme page obligerait soit a reduire les cartes d un tiers (ce qui annulerait l agrandissement demande la veille), soit a deplacer le bloc entier sur sa propre page — et la page de la fiscalite retomberait alors sous 55 pct de remplissage, ce que le banc refuse depuis le 16/09. A arbitrer avec le CGP. CONTROLE : t_rdv1.js verifie la presence de la marque data-nc-colle-precedent sur le trio ; sans elle, il peut se retrouver seul en haut d une page.)','color:#94a3b8');
@@ -2262,6 +2263,144 @@
       synthEdits: {}, synthOrdreAxes: [],
       objectifsOrdre: [],
     };
+
+    /* ═══════════════════════════════════════════════════════════════════════════
+       21/09/2026 (CGP) — QUATRE CLIENTS TYPES, VERSION DÉMO SEULEMENT.
+       « Est-ce qu'il est possible d'enregistrer deux ou trois clients types afin
+       que je ne doive pas systématiquement re-remplir tout de A à Z ? Trop
+       fastidieux. Un célibataire, un pacsé, un marié, un veuf. »
+       Fiches validées par le CGP le 21/09/2026 (« parfait »). Chacune est bâtie
+       pour faire sortir des parties DIFFÉRENTES du document :
+         1. célibataire locataire avec projet RP, crédit auto ;
+         2. pacsés sans testament, deux jeunes enfants, RP à crédit assurée 50/50 ;
+         3. mariés, TNS à 41 %, trois enfants, locatif assuré 100 % sur chaque
+            tête, trésorerie dormante, écart de revenus ;
+         4. veuve de 71 ans, succession sans conjoint, donation de moins de 15 ans.
+       VERSION DÉMO SEULEMENT : NC_DEMO lit le projet Supabase. La branche demo
+       substitue l'identifiant du projet au moment du commit ; on n'écrit ICI que
+       son PRÉFIXE, pour que le décompte des deux identifiants complets reste
+       exactement « 1 1 0 0 » (contrôle de la branche demo). Les bancs forcent
+       l'affichage par window.__NC_FORCE_DEMO, posé avant le chargement de la page.
+       Un clic REMPLACE le dossier en cours par le client type (après
+       confirmation s'il y a déjà une saisie) ; tout reste ensuite modifiable.
+       ═══════════════════════════════════════════════════════════════════════════ */
+    const NC_DEMO = (typeof window !== "undefined" && window.__NC_FORCE_DEMO === true)
+      || SUPABASE_URL.indexOf("liudyjdd") !== -1;
+    const ncAnneeNaiss = (age) => String(new Date().getFullYear() - age);
+    const ncDateNaiss = (age, mmjj) => ncAnneeNaiss(age) + "-" + (mmjj || "03-15");
+    const ncSal = (montantMensuel, statut) => ({ poste: "", entreprise: "", statut: statut || "cadre", mode: "net", montant: String(montantMensuel), periode: "mois", nbMois: "12", variableQ: "non" });
+    const ncAvoir = (o) => ({ type: "", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "non", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "", ...o });
+    /* réponses communes aux quatre fiches : les questions que l'audit pose à tout le
+       monde et qu'une page laissée sans réponse bloquerait (règle cabinet du 29/08 :
+       une question sans réponse = pas de page suivante). */
+    const NC_CT_COMMUN = { adresseQ: "non", pensionQ: "non", mobiliersQ: "non", reductionsQ: "non", impotQ: "non" };
+    const NC_CLIENTS_TYPES = [
+      {
+        cle: "celib", lib: "Célibataire", sous: "Thomas MARTIN, 34 ans",
+        d: {
+          civilite: "M.", nom: "MARTIN", prenom: "Thomas", dateNaissance: ncDateNaiss(34, "05-12"),
+          situation: "celibataire", conjointQ: "non", enfantsQ: "non", enfants: [], donationsQ: "non",
+          activites: ["salarie"], actSalarie: ncSal(3800, "cadre"),
+          logement: "locataire", loyer: "950",
+          rpProjetQ: "oui", rpProjetHorizon: "2", rpProjetMensualite: "1200", rpProjetDuree: "25", rpProjetApport: "40000", rpProjetTaux: "3,6",
+          fonciersQ: "non", biensQ: "non",
+          creditsQ: "oui", credits: [{ id: 1, nature: "auto", mensualite: "250", crd: "9000", fin: String(new Date().getFullYear() + 3), finMois: "", assurQuotite: "" }],
+          avoirsQ: "oui", avoirs: [
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", titulaire: "client" }),
+            ncAvoir({ id: 3, type: "compte_courant", valeur: "8000", titulaire: "client" }),
+            ncAvoir({ id: 4, type: "pea", valeur: "15000", titulaire: "client" }),
+          ],
+          objectifs: ["locatif", "fiscalite"], objectifsOrdre: ["locatif", "fiscalite"],
+          capaciteEpargne: "300-500", apportInitial: "30000-50000",
+        },
+      },
+      {
+        cle: "pacse", lib: "Pacsés", sous: "Julie & Nicolas LEROY, 38 et 40 ans",
+        d: {
+          civilite: "Mme", nom: "LEROY", prenom: "Julie", dateNaissance: ncDateNaiss(38, "02-08"),
+          situation: "pacse", conjointQ: "oui", testamentQ: "non",
+          conjoint: { civilite: "M.", nom: "LEROY", prenom: "Nicolas", nomJeuneFille: "", dateNaissance: ncDateNaiss(40, "10-21"), nationalite: "francaise", nationaliteAutre: "" },
+          enfantsQ: "oui", enfants: [
+            { id: 1, prenom: "Léa", dateNaissance: ncDateNaiss(7, "06-02"), annee: ncAnneeNaiss(7), charge: "100", filiation: "commun", handicap: "non" },
+            { id: 2, prenom: "Hugo", dateNaissance: ncDateNaiss(4, "01-17"), annee: ncAnneeNaiss(4), charge: "100", filiation: "commun", handicap: "non" },
+          ],
+          donationsQ: "non",
+          activites: ["salarie"], actSalarie: ncSal(3200, "cadre"),
+          conjointRev: { activites: ["salarie"], actSalarie: ncSal(4100, "cadre"), actIndependant: { activite: "", n1: "", n2: "", n3: "" }, actChef: { societe: "", revenu: "", periode: "an" }, actFonctionnaire: { poste: "", revenu: "", periode: "an" }, actRetraite: { revenu: "", periode: "mois" }, actAutre: { precision: "", revenu: "", periode: "an" } },
+          logement: "proprietaire", rpValeur: "380000", rpCreditQ: "oui", rpCrd: "240000", rpMensualite: "1350", rpTaux: "3,2", rpDureeRestante: "19",
+          rpAssurQuotite: "50_50", rpAssurRenegociee: "non", rpDetenteur: "commun",
+          fonciersQ: "non", biensQ: "non", creditsQ: "non",
+          avoirsQ: "oui", avoirs: [
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12050", titulaire: "conjoint" }),
+            ncAvoir({ id: 3, type: "av", valeur: "25000", titulaire: "client" }),
+            ncAvoir({ id: 4, type: "epargne_salariale", valeur: "12000", titulaire: "conjoint" }),
+          ],
+          objectifs: ["prevoyance", "etudes", "retraite"], objectifsOrdre: ["prevoyance", "etudes", "retraite"],
+          capaciteEpargne: "300-500", apportInitial: "aucun",
+        },
+      },
+      {
+        cle: "marie", lib: "Mariés", sous: "Philippe & Catherine DURAND, 52 et 50 ans",
+        d: {
+          civilite: "M.", nom: "DURAND", prenom: "Philippe", dateNaissance: ncDateNaiss(52, "04-03"),
+          situation: "marie", regime: "communaute_acquets", conjointQ: "oui", ddvQ: "non",
+          conjoint: { civilite: "Mme", nom: "DURAND", prenom: "Catherine", nomJeuneFille: "", dateNaissance: ncDateNaiss(50, "09-27"), nationalite: "francaise", nationaliteAutre: "" },
+          enfantsQ: "oui", enfants: [
+            { id: 1, prenom: "Camille", dateNaissance: ncDateNaiss(22, "03-11"), annee: ncAnneeNaiss(22), charge: "100", filiation: "commun", handicap: "non" },
+            { id: 2, prenom: "Antoine", dateNaissance: ncDateNaiss(19, "07-30"), annee: ncAnneeNaiss(19), charge: "100", filiation: "commun", handicap: "non" },
+            { id: 3, prenom: "Chloé", dateNaissance: ncDateNaiss(15, "12-05"), annee: ncAnneeNaiss(15), charge: "100", filiation: "commun", handicap: "non" },
+          ],
+          donationsQ: "non",
+          activites: ["independant"], actIndependant: { activite: "Profession libérale", n1: "114000", n2: "114000", n3: "114000" },
+          conjointRev: { activites: ["salarie"], actSalarie: ncSal(2800, "noncadre"), actIndependant: { activite: "", n1: "", n2: "", n3: "" }, actChef: { societe: "", revenu: "", periode: "an" }, actFonctionnaire: { poste: "", revenu: "", periode: "an" }, actRetraite: { revenu: "", periode: "mois" }, actAutre: { precision: "", revenu: "", periode: "an" } },
+          logement: "proprietaire", rpValeur: "650000", rpCreditQ: "non", rpDetenteur: "commun",
+          fonciersQ: "oui", fonciersTypes: ["nue"], locatifs: [
+            { id: 1, nom: "Appartement locatif", type: "nue", valeur: "210000", loyer: "780", creditQ: "oui", crd: "95000", mensualite: "820", assurQuotite: "100_100", assurQ: "non", titulaire: "commun", regime: "reel_foncier", banque: "", gere: "", imposable: "", note: "" },
+          ],
+          biensQ: "non", creditsQ: "non",
+          avoirsQ: "oui", avoirs: [
+            ncAvoir({ id: 1, type: "per", valeur: "45000", titulaire: "client" }),
+            ncAvoir({ id: 2, type: "av", valeur: "120000", titulaire: "commun" }),
+            ncAvoir({ id: 3, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
+            ncAvoir({ id: 4, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "conjoint" }),
+            ncAvoir({ id: 5, type: "livrets", livretType: "csl", valeur: "39100", titulaire: "commun" }),
+            ncAvoir({ id: 6, type: "cto", valeur: "40000", titulaire: "commun" }),
+          ],
+          /* TMI NON forcée : la fiche validée annonçait 41 %, mais 147 600 € de revenus
+             sur 4 parts (couple + 3 enfants) tombent dans la tranche à 30 %. Le moteur la
+             calcule ; forcer 41 % aurait inscrit un chiffre faux dans le dossier. */
+          objectifs: ["retraite", "fiscalite", "transmettre"], objectifsOrdre: ["retraite", "fiscalite", "transmettre"],
+          capaciteEpargne: ">1000", apportInitial: "50000-100000",
+        },
+      },
+      {
+        cle: "veuf", lib: "Veuve", sous: "Monique BERNARD, 71 ans",
+        d: {
+          civilite: "Mme", nom: "BERNARD", prenom: "Monique", dateNaissance: ncDateNaiss(71, "11-02"),
+          situation: "veuf", conjointQ: "non",
+          enfantsQ: "oui", enfants: [
+            { id: 1, prenom: "Laurent", dateNaissance: ncDateNaiss(45, "02-19"), annee: ncAnneeNaiss(45), charge: "0", filiation: "commun", handicap: "non" },
+            { id: 2, prenom: "Sophie", dateNaissance: ncDateNaiss(42, "08-24"), annee: ncAnneeNaiss(42), charge: "0", filiation: "commun", handicap: "non" },
+          ],
+          donationsQ: "oui", donations: [{ id: 1, benef: "Laurent", annee: String(new Date().getFullYear() - 8), montant: "50000", note: "" }],
+          activites: ["retraite"], actRetraite: { revenu: "2400", periode: "mois" },
+          logement: "proprietaire", rpValeur: "320000", rpCreditQ: "non", rpDetenteur: "client",
+          fonciersQ: "non", biensQ: "non", creditsQ: "non",
+          avoirsQ: "oui", avoirs: [
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", titulaire: "client" }),
+            ncAvoir({ id: 3, type: "livrets", livretType: "csl", valeur: "105050", titulaire: "client" }),
+            ncAvoir({ id: 4, type: "compte_courant", valeur: "15000", titulaire: "client" }),
+            ncAvoir({ id: 5, type: "av", valeur: "180000", titulaire: "client", note: "versements effectués avant 70 ans" }),
+          ],
+          objectifs: ["transmettre", "perso"], objectifsOrdre: ["transmettre", "perso"],
+          objectifsDetail: { perso: { lignes: [{ id: 1, titre: "Revenus complémentaires", note: "", capital: "", mensuel: "", horizon: "" }] } },
+          capaciteEpargne: "300-500", apportInitial: ">100000",
+        },
+      },
+    ];
 
     // Migration des audits enregistrés avec les formats précédents.
     function migrateAudit(a) {
@@ -7694,6 +7833,24 @@
       const setList = (key, id, field, v) => setD(p => ({ ...p, [key]: p[key].map(x => x.id === id ? { ...x, [field]: v } : x) }));
       const addList = (key, item) => setD(p => ({ ...p, [key]: [...p[key], { id: (p[key].reduce((m,x)=>Math.max(m,x.id),0)) + 1, ...item }] }));
       const rmList = (key, id) => setD(p => ({ ...p, [key]: p[key].filter(x => x.id !== id) }));
+      /* 21/09/2026 — charger un client type (démo) : le dossier par défaut, puis le
+         client type par-dessus. objectifsDetail et conjointRev sont fusionnés CLÉ PAR
+         CLÉ : un client type qui ne décrit qu'un objectif ne doit pas effacer la
+         structure des autres. Confirmation si une saisie est déjà en cours. */
+      const chargerClientType = (ct) => {
+        const dejaSaisi = !!((d.nom || "").trim() || (d.prenom || "").trim() || (d.avoirs || []).length || (d.activites || []).length);
+        if (dejaSaisi && !window.confirm("Remplacer le dossier en cours par le client type « " + ct.lib + " » ? Ce qui a été saisi sera perdu.")) return;
+        const base = JSON.parse(JSON.stringify(AUDIT_DEFAUT));
+        const t = JSON.parse(JSON.stringify({ ...NC_CT_COMMUN, ...ct.d }));
+        const fusion = {
+          ...base, ...t,
+          objectifsDetail: { ...base.objectifsDetail, ...(t.objectifsDetail || {}) },
+          conjointRev: { ...base.conjointRev, ...(t.conjointRev || {}) },
+          conjoint: { ...base.conjoint, ...(t.conjoint || {}) },
+        };
+        setD(fusion);
+        setTouched(false);
+      };
       // Conteneur scrollable du corps du modal : remonté en haut à CHAQUE changement
       // d'étape (sinon on arrive sur la nouvelle étape au milieu de la page, là où
       // le scroll de l'étape précédente s'était arrêté).
@@ -9165,6 +9322,20 @@
               {/* ============ MODE AUDIT — ÉTAPE 1 : ÉTAT CIVIL ============ */}
               {niveau === "complet" && etape === 1 && (
                 <div>
+                  {NC_DEMO && (
+                    <div className="mb-5 rounded-xl border px-4 py-3" data-nc-clients-types="1" style={{ borderColor: "rgba(184,146,78,0.45)", background: "rgba(184,146,78,0.06)" }}>
+                      <div className="text-[10px] uppercase tracking-[0.18em] font-bold mb-2" style={{ color: "#8a6d34" }}>Remplir avec un client type <span className="normal-case tracking-normal font-semibold text-stone-400">· version démo</span></div>
+                      <div className="flex flex-wrap gap-2">
+                        {NC_CLIENTS_TYPES.map(ct => (
+                          <button key={ct.cle} type="button" data-nc-client-type={ct.cle} onClick={() => chargerClientType(ct)}
+                            className="text-left rounded-lg border bg-white px-3 py-2 hover:border-stone-500 transition" style={{ borderColor: "rgba(10,9,8,0.14)" }}>
+                            <div className="text-[12.5px] font-bold text-stone-800">{ct.lib}</div>
+                            <div className="text-[10.5px] text-stone-500">{ct.sous}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <L>Civilité</L>
                   <Chips opts={[{v:"M.",l:"M."},{v:"Mme",l:"Mme"}]} val={d.civilite} on={v => set("civilite", v)} />
                   <div className="grid grid-cols-2 gap-3 mt-1">
