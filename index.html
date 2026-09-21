@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v248 (21/09 : LE MOTEUR RAISONNE APRES L ACHAT DE LA RESIDENCE PRINCIPALE. Le CGP, sur le dossier MARTIN : « comment peux-tu dire capacite d emprunt disponible = 0 € dans les points forts ? tresorerie trop importante alors qu il va consacrer 40 000 € d apport a sa RP d ici un an ? epargne a zero alors qu il va rembourser 1 200 €/mois de credit, qui est une epargne immobiliere ? Il faut que tu te serves absolument des informations recueillies. » (1) Projection apres achat : l apport du projet RP sort du court terme avant tout jugement de tresorerie ; le capital rembourse du credit RP (decision du CGP : le capital, pas la mensualite entiere, et il augmente a chaque echeance) compte comme epargne mensuelle ; le point fort « capacite d emprunt » et les recommandations locatives lisent la place restante APRES le projet. (2) Document RECENTRE pour toute personne dont la capacite d emprunt est mobilisee (plus de place pour du locatif, projet RP ou credits en cours) : feliciter pour la residence principale, preparer la retraite par PER et assurance-vie, deleguer l assurance de pret — rien de plus, dans tout le document (points forts, axes, problematiques, objectifs du cabinet, preconisations, questions). (3) Fenetre des INCOHERENCES en quittant l etape Objectifs : objectif locatif sans capacite restante, apport declare superieur a l epargne restant apres l apport RP ; « Corriger la saisie » ou « Continuer quand meme ». Mesure Martin : 489 €/mois de capital rembourse, 17 950 € d epargne restant apres 40 000 € d apport. Banc t_recentre (etape 19/20).)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v249 (21/09 : DOSSIER MARTIN, SUITE. (1) « Sortie totale de tresorerie » retiree AUSSI de la carte « Cout global de l operation » a l ecran (second rappel du CGP : la v247 ne l avait retiree que du document). (2) Epargne : sous « Epargne constituee — total », une ligne « Apres le projet de residence principale » — 57 950 € → 17 950 €, barre avec la part d apport hachuree et un curseur sur ce qui reste (version compacte : la premiere faisait deborder le chapitre et laissait la page 3 au tiers). (3) Les chiffres du dossier : « Le financier » en deux camemberts, aujourd hui et apres le projet RP (apport sorti du financier, bien entre dans l immobilier : 100 % → 6 % pour Martin). (4) Regle cabinet : au-dessus de 25 % d endettement, un projet immobilier locatif est a valider avec les elements precis du dossier et le courtier en credit — sous la carte Capacite d emprunt et dans la preconisation locative. Banc t_recentre etendu (sections 4 et 5).)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v248 (21/09 : LE MOTEUR RAISONNE APRES L ACHAT DE LA RESIDENCE PRINCIPALE. Le CGP, sur le dossier MARTIN : « comment peux-tu dire capacite d emprunt disponible = 0 € dans les points forts ? tresorerie trop importante alors qu il va consacrer 40 000 € d apport a sa RP d ici un an ? epargne a zero alors qu il va rembourser 1 200 €/mois de credit, qui est une epargne immobiliere ? Il faut que tu te serves absolument des informations recueillies. » (1) Projection apres achat : l apport du projet RP sort du court terme avant tout jugement de tresorerie ; le capital rembourse du credit RP (decision du CGP : le capital, pas la mensualite entiere, et il augmente a chaque echeance) compte comme epargne mensuelle ; le point fort « capacite d emprunt » et les recommandations locatives lisent la place restante APRES le projet. (2) Document RECENTRE pour toute personne dont la capacite d emprunt est mobilisee (plus de place pour du locatif, projet RP ou credits en cours) : feliciter pour la residence principale, preparer la retraite par PER et assurance-vie, deleguer l assurance de pret — rien de plus, dans tout le document (points forts, axes, problematiques, objectifs du cabinet, preconisations, questions). (3) Fenetre des INCOHERENCES en quittant l etape Objectifs : objectif locatif sans capacite restante, apport declare superieur a l epargne restant apres l apport RP ; « Corriger la saisie » ou « Continuer quand meme ». Mesure Martin : 489 €/mois de capital rembourse, 17 950 € d epargne restant apres 40 000 € d apport. Banc t_recentre (etape 19/20).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v247 (21/09 : QUATRE DEMANDES DU CGP SUR L EXPORT DU DOSSIER MARTIN. (1) Souci d edition page 5 : deux camemberts JUMEAUX (aujourd hui / avec le projet RP) dans une carte d une demi-page laissaient a chaque legende quelques pixels — « Credit auto 1 » s ecrivait une lettre par ligne, la carte montait a 400 px, et l egaliseur etirait les deux cartes suivantes (Capacite d emprunt, Le financier) a la meme hauteur vide. NcDonut prend un parametre vertical : l anneau en haut, la legende dessous sur toute la largeur ; les jumeaux l emploient. (2) « Sortie totale de tresorerie » retiree du document quand il y a un projet d achat de RP ; elle reste a l ecran de saisie. (3) « contre 18 pct en moyenne pour les Francais, dont 9 pct en epargne financiere ». (4) Objectifs recommandes par le cabinet, Preconisations et questions CORRIGEABLES par le conseiller : ✎ corriger, ✕ masquer, ↺ revenir au texte genere, + ajouter une ligne ; stockes dans d.docEdits et d.docAjouts, repris a l impression, boutons jamais imprimes ni montres en presentation. Cle d une ligne = son debut coupe au premier chiffre (les montants bougent) ; cle d une question = sa famille. Le bloc s intitule « Les questions ». Bancs : t_doc_edits (etape 18/19), t_rp retourne (la ligne ne doit plus etre dans le document), t_shot_pres lit le document sans les boutons du conseiller.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v246 (21/09 : LES CLIENTS TYPES VISIBLES SUR LE POSTE DU CGP. Il ouvre index.html directement depuis son dossier (file://) : c est la version PRODUCTION, ou les boutons etaient caches, et il ne les trouvait pas. NC_DEMO est desormais vrai aussi quand la page est ouverte en file:// ; servi par figara.fr (https), le fichier ne les montre toujours pas. Banc t_clients_types : controle ajoute en file://.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v245 (21/09 : QUATRE CLIENTS TYPES, VERSION DEMO SEULEMENT. Le CGP : « est-ce qu il est possible d enregistrer deux ou trois clients types afin que je ne doive pas systematiquement re-remplir tout de A a Z ? Trop fastidieux. Un celibataire, un pacse, un marie, un veuf. » Fiches validees le 21/09 : Thomas MARTIN (celibataire locataire, projet RP, credit auto), Julie et Nicolas LEROY (pacses sans testament, 2 enfants, RP a credit assuree 50/50), Philippe et Catherine DURAND (maries, TNS, 3 enfants, locatif assure 100 pct sur chaque tete, tresorerie dormante), Monique BERNARD (veuve de 71 ans, donation de moins de 15 ans). Un clic en tete de l etape 1 remplit tout l audit, sur les SEPT pages : chaque fiche repond a toutes les questions que l audit pose (adresse, pension alimentaire, revenus mobiliers, reductions, impot reel), sinon la regle cabinet du 29/08 — une question sans reponse, pas de page suivante — bloquait l acces a la synthese des la premiere page. Confirmation si une saisie est deja en cours. VERSION DEMO SEULEMENT : NC_DEMO lit le PREFIXE du projet Supabase de la demo, pour que le decompte des identifiants complets reste 1 1 0 0 ; les bancs forcent l affichage par window.__NC_FORCE_DEMO. CORRECTION DE LA FICHE DES DURAND : elle annoncait une TMI a 41 pct ; 147 600 € de revenus sur 4 parts tombent a 30 pct, le moteur le calcule, la TMI n est donc PAS forcee — un chiffre faux n entre pas dans un dossier, meme de demonstration. Banc t_clients_types, etape 17/18 : absents en production, les quatre se chargent, la synthese s ouvre et fait sortir ce pour quoi chaque fiche a ete batie.)','color:#94a3b8');
@@ -5781,7 +5782,10 @@
       {
         const precos = [];
         precos.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: ` : vérifier qu'il correspond à votre profil de risque et que son rendement et sa gestion donnent satisfaction — sinon, arbitrage ou optimisation du contrat recommandé${age != null && age >= 65 ? " (versements avant l'anniversaire des 70 ans, art. 990 I CGI)" : ""}` } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
-        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" });
+        /* 21/09/2026 (CGP) : « au-dessus de 25 % d'endettement, projet immobilier locatif à
+           valider avec les éléments précis du dossier et le courtier en crédit ». */
+        const endetSup25 = (taux || 0) > 0.25;
+        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
         if (revC > 0 || revJ > 0) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
         // PER : TOUJOURS en dernier — et une SEULE mention dans toute la synthèse
         // quand le levier fiscal n'est pas réel (règle cabinet des 5 000 € à 30 %).
@@ -9862,7 +9866,9 @@
                                   <div>
                                     <L l={"Total remboursé sur " + ans + " ans"} v={totalRembourse} />
                                     <L l="dont coût du crédit" v={coutCredit} />
-                                    <L l="Sortie totale de trésorerie" v={coutGlobal} fort />
+                                    {/* 21/09/2026 (CGP, second rappel) : « je t'ai demandé de supprimer
+                                        "sortie totale de trésorerie" dans le coût global d'une opération
+                                        pour l'acquisition d'une RP ». Retirée de la carte aussi. */}
                                   </div>
                                 </div>
                                 <div className="text-[10.5px] mt-2.5 leading-snug" style={{ color: "#78716c", fontStyle: "italic" }}>
@@ -12332,6 +12338,46 @@
                                             <div className="text-[10px] text-stone-500 mt-1">{synth.ppMensuels > 0 ? `Alimenté de ${nfG(synth.ppMensuels)} €/mois` : "Aucun versement programmé"}</div>
                                           </div>
                                         </div>
+                                        {/* ═══ 21/09/2026 (CGP) — L'ÉPARGNE APRÈS LE PROJET RP ═══
+                                            « Sur un dossier tel que celui-ci, il serait bien au niveau de
+                                            l'épargne de mettre l'épargne telle que tu l'as mise, mais aussi
+                                            l'épargne après projet RP, et un curseur qui passe de 57 950 € à
+                                            17 950 €. » La barre vaut l'épargne d'aujourd'hui ; la part qui
+                                            part en apport est hachurée, le curseur se pose sur ce qui reste. */}
+                                        {(() => {
+                                          const pr = ncProjetRP(d);
+                                          const ap = pr.chiffre ? Math.min(total, pr.apport || 0) : 0;
+                                          if (!(ap > 0) || !(total > 0)) return null;
+                                          const reste = Math.max(0, total - ap);
+                                          const pReste = reste / total * 100;
+                                          return (
+                                            <div className="rounded-xl px-4 py-2.5 bg-white mt-3" data-nc-epargne-apres-rp="1" style={{ border: "1px solid rgba(184,146,78,0.45)", borderLeft: "3px solid #b8924e" }}>
+                                              {/* 21/09/2026 : version COMPACTE — une ligne, une barre, une légende. La
+                                                  première version (titre + gros chiffre + barre épaisse) faisait
+                                                  déborder le chapitre « Épargne » sur la page suivante et laissait la
+                                                  page 3 remplie au tiers. */}
+                                              <div className="flex items-baseline justify-between gap-2">
+                                                <span className="nc-ctitre">Après le projet de résidence principale</span>
+                                                <span className="num font-extrabold whitespace-nowrap" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 15 }}>
+                                                  <span style={{ color: "#a8a29e" }}>{nfG(total)} €</span>
+                                                  <span style={{ color: "#a8a29e", margin: "0 6px" }}>→</span>
+                                                  <span style={{ color: "#0f766e" }}>{nfG(reste)} €</span>
+                                                </span>
+                                              </div>
+                                              <div className="relative" style={{ height: 16, marginTop: 5 }}>
+                                                <div className="absolute left-0 right-0 flex rounded-full overflow-hidden" style={{ top: 4, height: 8, background: "#eeece8" }}>
+                                                  <div style={{ width: pReste + "%", background: "#0f766e" }} />
+                                                  <div style={{ width: (100 - pReste) + "%", background: "repeating-linear-gradient(135deg, #d8bc86 0 5px, #efe3c8 5px 10px)" }} />
+                                                </div>
+                                                <div className="absolute" style={{ left: `calc(${pReste}% - 1px)`, top: 0, width: 3, height: 16, background: "#1d2735", borderRadius: 2 }} />
+                                              </div>
+                                              <div className="flex justify-between text-[10px] font-bold" style={{ marginTop: 2 }}>
+                                                <span style={{ color: "#0f766e" }}>{nfG(reste)} € restent : votre épargne de précaution</span>
+                                                <span style={{ color: "#8a6d34" }}>{nfG(ap)} € d'apport</span>
+                                              </div>
+                                            </div>
+                                          );
+                                        })()}
                                       </>
                                     );
                                   })()}
@@ -12887,6 +12933,12 @@
                                     <div className="text-[9.5px] leading-snug" style={{ color: "#b45309" }}>Ces deux montants ne s'additionnent pas : c'est la même enveloppe d'endettement, selon l'usage du bien.</div>
                                   </>
                                 )}
+                                {/* 21/09/2026 (CGP) : « au-dessus de 25 % d'endettement, projet immobilier
+                                    locatif à valider avec les éléments précis du dossier et le courtier en
+                                    crédit ». L'endettement lu est celui du dossier, projet RP compris. */}
+                                {(synth.taux || 0) > 0.25 && capLoc > 0 ? (
+                                  <div className="text-[9.5px] leading-snug" data-nc-regle-25="1" style={{ color: "#b45309" }}>Au-dessus de 25 % d'endettement, un projet immobilier locatif est à valider avec les éléments précis du dossier et le courtier en crédit.</div>
+                                ) : null}
                                 {/* 29/08 (contrôle expert n°3) : en union libre, le montant global
                                     suppose un emprunt À DEUX — un emprunt individuel repose sur les
                                     seuls revenus de l'emprunteur. Capacités indicatives par personne. */}
@@ -12942,13 +12994,41 @@
                               poche financière et la poche immobilière, en euros dans la légende, et
                               la part du financier au centre. La phrase explicative est retirée : le
                               dessin la dit. */}
-                          <NcDonut
-                            parts={[
-                              { l: "Financier", v: Math.max(0, actifT - synth.actifImmo), c: coul, aff: `${nfI(Math.max(0, actifT - synth.actifImmo))} €` },
-                              { l: projRP ? "Immobilier (avant l'achat de la RP)" : "Immobilier", v: Math.max(0, synth.actifImmo), c: "#1d2735", aff: `${nfI(synth.actifImmo)} €` },
-                            ]}
-                            libre={false}
-                            centre={`${Math.round(partFin * 100)} %`} centreSous="FINANCIER" />
+                          {(() => {
+                            /* 21/09/2026 (CGP) : « dans les chiffres du dossier il faut aussi mettre
+                               le financier avant et après le projet RP ». Deux camemberts jumeaux,
+                               comme l'endettement et la mensualité : aujourd'hui, puis après l'achat —
+                               l'apport sort du financier, le bien entre dans l'immobilier. */
+                            const pr = ncProjetRP(d);
+                            const finAuj = Math.max(0, actifT - synth.actifImmo);
+                            const Camembert = ({ fin, immo, petit }) => {
+                              const tot = fin + immo;
+                              const pf = tot > 0 ? fin / tot : 0;
+                              const cc = pf < 0.25 ? "#b91c1c" : "#b45309";
+                              return <NcDonut
+                                parts={[
+                                  { l: "Financier", v: fin, c: cc, aff: `${nfI(fin)} €` },
+                                  { l: "Immobilier", v: immo, c: "#1d2735", aff: `${nfI(immo)} €` },
+                                ]}
+                                libre={false} taille={petit ? 96 : 120} vertical={!!petit}
+                                centre={`${Math.round(pf * 100)} %`} centreSous="FINANCIER" />;
+                            };
+                            if (!pr.chiffre) return <Camembert fin={finAuj} immo={Math.max(0, synth.actifImmo)} />;
+                            const finApres = Math.max(0, finAuj - (pr.apport || 0));
+                            const immoApres = Math.max(0, synth.actifImmo) + (pr.budget || 0);
+                            const T = ({ t, sub, c }) => (
+                              <div className="text-center mb-1.5">
+                                <div className="text-[10px] uppercase tracking-[0.14em] font-bold" style={{ color: c || "#1d2735" }}>{t}</div>
+                                <div className="text-[9.5px] text-stone-400">{sub}</div>
+                              </div>
+                            );
+                            return (
+                              <div className="grid grid-cols-2 gap-3">
+                                <div><T t="Aujourd'hui" sub="avant l'achat" /><Camembert fin={finAuj} immo={Math.max(0, synth.actifImmo)} petit /></div>
+                                <div><T t="Après le projet RP" c="#0f766e" sub={`apport ${nfI(pr.apport || 0)} € · bien ${nfI(pr.budget)} €`} /><Camembert fin={finApres} immo={immoApres} petit /></div>
+                              </div>
+                            );
+                          })()}
                         </div>
                       );
                     })()}
