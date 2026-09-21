@@ -1169,7 +1169,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v243 (20/09 : L ANALYSE R2, ET DEUX CALCULS REMIS D APLOMB. (1) LES QUOTITES D ASSURANCE EMPRUNTEUR SONT ENFIN LUES. Le CGP : « au niveau des credits on informe systematiquement si le pret est assure a 100 pct sur chaque tete ou autre ; pourtant dans tes analyses posterieures tu reagis comme si tu n etais pas au courant ». Il avait raison : la quotite etait saisie sur la RP, sur chaque locatif, sur chaque autre bien et sur chaque credit conso, et un seul endroit la lisait — la liste des pieces a reclamer, pour dire qu on ne la connaissait pas. Trois branchements sont faits. a. ncCalcSuccession ne nette plus la dette dans le patrimoine des la saisie : chaque dette est une ligne, avec la part portee par chacun et la quotite assuree par tete. REGLE ARBITREE AVEC LE CGP : au deces, le pret assure sur la tete du defunt est SOLDE a hauteur de sa quotite — sa dette ne se deduit plus de son actif transmissible, en 50/50 la moitie s eteint. Mesure sur un couple, RP 400 000 detenue a 50/50, credit 200 000 : actif transmissible du client 58 500 en quotite inconnue, 108 500 en 50/50, 158 500 en 100 pct sur chaque tete. b. La problematique du deces du revenu principal annonce le capital reellement solde au lieu de renvoyer a « quotites a verifier ». c. Le curseur de quotite de la projection, qui valait 100 par defaut sans aucun lien avec le dossier, part desormais de la saisie. La formule prudente ne subsiste que si une quotite manque encore, et un banc de mesure (t_quotites, etape 15 sur 16) garde les quatre cas. (2) L ECONOMIE DES GISEMENTS, C EST L ECART D INTERETS. Le CGP : « les vraies economies sont le calcul des interets places a 1,7 pct vs 5,2 pct, le capital ne doit pas rentrer dans le calcul ». Les modules « arbitrage du capital place » et « redirection des versements » affichaient le CAPITAL supplementaire a l horizon divise par le nombre de mois — un gain compose sur vingt ans ramene a une moyenne, qui ne correspondait a aucun euro gagne dans le mois et qui grossissait avec la duree retenue. Ils affichent maintenant l ecart d interets de la premiere annee, ramene au mois : arbitrage = montant × (taux cabinet − taux actuel) ÷ 12 ; redirection = assiette non pas un capital mais CE QUI AURA ETE VERSE DANS L ANNEE (versement × 12), decision du CGP du 20/09. Le capital a l horizon garde sa place, en seconde ligne. (3) L ONGLET PROJECTION DEVIENT L ANALYSE R2. Renomme « Analyse R2 », il porte le document « Analyse et plan d action » et son propre nom de fichier. Sa page de garde est celle de l etude patrimoniale — bandeau photo, cadre dore, noms, « document prepare par » — et ne porte plus aucun chiffre. L ordre suit la demande du CGP : page de garde ; page 2 avec la baisse de revenus a la retraite, les objectifs exprimes et la participation mensuelle et l apport envisages ; l analyse du dossier (points forts et axes a travailler) ; un bandeau rappelant l objectif de participation ; ou trouver l epargne ; les solutions retenues, ouvertes par les preconisations de l audit ; le tableau avant / apres. Les deux blocs partages avec l etude — objectifs et participation, points forts et axes — sont hoistes en deux fonctions de rendu et passes en props : un seul corps, deux points d appel, aucun jeu de libelles a tenir a jour en double. L onglet « Simulation et plan d action » devient « Simulation ». VERIFIE : 16 etapes au vert, document R2 relu page par page.','font-weight:bold;color:#047857');
+        console.log('%cBUILD v244 (21/09 : ANALYSE R2 — CE QUE LES GISEMENTS TROUVENT GROSSIT LE BUDGET, ET LE BANDEAU COLLANT ATTEND QU ON PARLE D ARGENT. (1) Le CGP : « lorsque l on va chercher de l epargne avec la renegociation de l assurance de pret ou les placements, cela ne vient pas s additionner a l epargne que le client souhaite mettre ; si le client souhaite mettre entre 300 et 500 €/mois et que l on a ete chercher 250 € de tresorerie supplementaire, il faut que son budget mensuel passe de 550 a 750 €/mois grace aux renegociations, et que cela se voie ». Seule la delegation d assurance entrait dans l enveloppe, et sur la seule borne HAUTE : la fourchette affichait « 300 a 750 ». Desormais les TROIS leviers coches — delegation, arbitrage, redirection — s additionnent (gainsMens) et montent les DEUX bornes (envBasTot = borne basse + gainsMens, ENV = borne haute + gainsMens). Les ecarts d interets sont calcules plus tot, avec les entrees des gisements, pour pouvoir entrer dans l enveloppe. Un bandeau vert « Votre nouveau budget mensuel » s affiche juste apres les gisements, des qu un levier est coche : la fourchette augmentee, la part de la poche, le montant trouve, et le detail levier par levier. Le bandeau des solutions dit la meme chose, et son item « Libere » devient « Trouve », tous leviers compris. MESURE (banc t_budget, etape 16/17) : fourchette declaree 500 a 1 000, delegation 37 € + arbitrage 360 € → 897 a 1 397 €/mois. (2) Le CGP : « lorsque l on arrive sur le document, je ne veux pas voir le bandeau de son epargne au tout debut, ca n a pas de sens ». Le bandeau collant enveloppe · employee · reste s affichait des l ouverture, par-dessus la page de garde. Il reste cache tant que la section « Ou trouver l epargne » n est pas atteinte (IntersectionObserver sur la section elle-meme — un temoin vide ajoute expres etait compte comme un bloc par le mode presentation). VERIFIE : 17 etapes au vert.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v243 (20/09 : L ANALYSE R2, ET DEUX CALCULS REMIS D APLOMB. (1) LES QUOTITES D ASSURANCE EMPRUNTEUR SONT ENFIN LUES. Le CGP : « au niveau des credits on informe systematiquement si le pret est assure a 100 pct sur chaque tete ou autre ; pourtant dans tes analyses posterieures tu reagis comme si tu n etais pas au courant ». Il avait raison : la quotite etait saisie sur la RP, sur chaque locatif, sur chaque autre bien et sur chaque credit conso, et un seul endroit la lisait — la liste des pieces a reclamer, pour dire qu on ne la connaissait pas. Trois branchements sont faits. a. ncCalcSuccession ne nette plus la dette dans le patrimoine des la saisie : chaque dette est une ligne, avec la part portee par chacun et la quotite assuree par tete. REGLE ARBITREE AVEC LE CGP : au deces, le pret assure sur la tete du defunt est SOLDE a hauteur de sa quotite — sa dette ne se deduit plus de son actif transmissible, en 50/50 la moitie s eteint. Mesure sur un couple, RP 400 000 detenue a 50/50, credit 200 000 : actif transmissible du client 58 500 en quotite inconnue, 108 500 en 50/50, 158 500 en 100 pct sur chaque tete. b. La problematique du deces du revenu principal annonce le capital reellement solde au lieu de renvoyer a « quotites a verifier ». c. Le curseur de quotite de la projection, qui valait 100 par defaut sans aucun lien avec le dossier, part desormais de la saisie. La formule prudente ne subsiste que si une quotite manque encore, et un banc de mesure (t_quotites, etape 15 sur 16) garde les quatre cas. (2) L ECONOMIE DES GISEMENTS, C EST L ECART D INTERETS. Le CGP : « les vraies economies sont le calcul des interets places a 1,7 pct vs 5,2 pct, le capital ne doit pas rentrer dans le calcul ». Les modules « arbitrage du capital place » et « redirection des versements » affichaient le CAPITAL supplementaire a l horizon divise par le nombre de mois — un gain compose sur vingt ans ramene a une moyenne, qui ne correspondait a aucun euro gagne dans le mois et qui grossissait avec la duree retenue. Ils affichent maintenant l ecart d interets de la premiere annee, ramene au mois : arbitrage = montant × (taux cabinet − taux actuel) ÷ 12 ; redirection = assiette non pas un capital mais CE QUI AURA ETE VERSE DANS L ANNEE (versement × 12), decision du CGP du 20/09. Le capital a l horizon garde sa place, en seconde ligne. (3) L ONGLET PROJECTION DEVIENT L ANALYSE R2. Renomme « Analyse R2 », il porte le document « Analyse et plan d action » et son propre nom de fichier. Sa page de garde est celle de l etude patrimoniale — bandeau photo, cadre dore, noms, « document prepare par » — et ne porte plus aucun chiffre. L ordre suit la demande du CGP : page de garde ; page 2 avec la baisse de revenus a la retraite, les objectifs exprimes et la participation mensuelle et l apport envisages ; l analyse du dossier (points forts et axes a travailler) ; un bandeau rappelant l objectif de participation ; ou trouver l epargne ; les solutions retenues, ouvertes par les preconisations de l audit ; le tableau avant / apres. Les deux blocs partages avec l etude — objectifs et participation, points forts et axes — sont hoistes en deux fonctions de rendu et passes en props : un seul corps, deux points d appel, aucun jeu de libelles a tenir a jour en double. L onglet « Simulation et plan d action » devient « Simulation ». VERIFIE : 16 etapes au vert, document R2 relu page par page.','color:#94a3b8');
         console.log('%cANCIEN BUILD v242 (19/09 : TROIS DEMANDES DU CGP. (1) UNE CARTE SEULE SUR SA LIGNE NE PREND PLUS TOUTE LA LARGEUR. Le CGP : « dans les blocs capacite d emprunt et financier, fais-les sur la moitie de la page et pas sur toute la largeur ». Les quatre compteurs des chiffres du dossier vivent dans un conteneur flex (.nc-duo) ou chaque carte valait flex: 1 1 calc(50% - 6px) — flex-GROW 1. Tant que les cartes vont par deux, personne ne le voit. Mais quand la pagination coupe la rangee entre la 3e et la 4e carte, la 3e se retrouve seule sur sa ligne et la 4e seule dans la rangee soeur : flex-grow les etire alors chacune sur TOUTE la largeur de la page — le donut a l extreme gauche, la legende a l extreme droite, c est exactement ce que le CGP a vu sur Capacite d emprunt et Le financier. flex-grow passe a 0 : une carte vaut une demi-page, seule ou non. MESURE : carte seule = 352 px sur 758 avec le correctif, 713 px sans. (2) INFO-RETRAITE.FR DEVIENT UNE PASTILLE ENCADREE. Le CGP : « des que tu parles d info-retraite, fais un encadre comme un bouton afin de le rendre plus visible ». Dans le bloc des pieces a reclamer, le nom du site est desormais une pastille inline-block — encre rouge, fond rose tres pale, filet rouge, coins arrondis — au lieu d un simple mot en gras rouge. inline-block et non un vrai bouton : le document part a l impression, la pastille doit couler dans la ligne sans casser la justification. (3) LES DEUX CARTES DU CABINET ENTRENT DANS L AUDIT. Le CGP : « dans l audit, inclure dans le chapitre objectifs et questions, juste apres les objectifs exprimes et la participation mensuelle, le tableau qui est dans le document simulation et plan d action page 5 : les objectifs recommandes par le cabinet et les preconisations, sans changer la suite de l audit ». Ces deux cartes larges etaient gardees pour le RDV 2 depuis le 15/09 ; le filtre synMode === preco disparait. Elles sortent maintenant dans les DEUX documents, a la meme place et sous la meme forme : juste sous la rangee Objectifs exprimes / Participation mensuelle. Rien d autre ne bouge — notes, questions et pieces a reclamer suivent dans l ordre inchange. Le banc de controle verifiait l ANCIENNE regle : son assertion est retournee, elle interdit desormais le filtre et exige la presence des deux cartes. VERIFIE : 15 etapes au vert, 7 pages mesurees sur A4 et Letter (97/93/84/99/91/79/100 pct), chaque page relue.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v241 (19/09 : LE TRIO PATRIMOINE NE QUITTE PLUS LES COMPTEURS. Le CGP : « sur la version imprimable de l audit, reduis un peu la taille des blocs des chiffres du dossier pour pouvoir mettre sur la meme page actif total / passif / patrimoine net ». Deux leviers, l un visuel, l autre structurel. (1) LES CARTES DE COMPTEUR MAIGRISSENT : camembert de 138 a 120 px (96 pour les jumeaux), interieur des cartes en py-2,5 au lieu de py-3, interligne de la legende a 2 px, titre rapproche. La garantie obtenue la veille tient toujours — le chiffre central est CALCULE sur la largeur utile du trou, il ne peut pas toucher l anneau quelle que soit la taille. (2) ET SURTOUT : « ACTIF TOTAL / PASSIF / PATRIMOINE NET » NE SE DETACHE PLUS de la rangee de compteurs qui le precede. Le trio porte data-nc-colle-precedent, et la pagination reporte alors le saut de page EN AMONT de cette rangee — exactement le mecanisme qui empeche depuis le 16/09 qu un bandeau de chapitre reste seul en bas d une page. C est structurel : quel que soit le dossier, le trio suit les compteurs. CE QUI N A PAS ETE FAIT, ET POURQUOI : mettre les QUATRE compteurs ET le trio sur une seule et meme page obligerait soit a reduire les cartes d un tiers (ce qui annulerait l agrandissement demande la veille), soit a deplacer le bloc entier sur sa propre page — et la page de la fiscalite retomberait alors sous 55 pct de remplissage, ce que le banc refuse depuis le 16/09. A arbitrer avec le CGP. CONTROLE : t_rdv1.js verifie la presence de la marque data-nc-colle-precedent sur le trio ; sans elle, il peut se retrouver seul en haut d une page.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v240 (18/09 : LA QUESTION BONUS REECRITE, ET LES DIAPOSITIVES REGROUPEES. (1) QUESTION 6, ecriture definitive du CGP : « Connaissez-vous un placement qui vous permette d obtenir l equivalent d un rendement de 45 pct garanti par l Etat la premiere annee ? ». Le taux se place AVANT « garanti par l Etat », et non apres. Il reste LA TMI DU FOYER — 30, 41 ou 45 selon le dossier. (2) MODE PRESENTATION : quatre blocs ne fabriquent plus leur propre diapositive, ils completent la precedente. « Mets sur la meme slide revenus et charges et logement, immobilier & credits. Il faut aussi que la slide 6 puisse aller avec la 5, idem pour la 8 et la 9, idem pour la 11 et la 12. » LOGEMENT, IMMOBILIER ET CREDITS rejoint REVENUS ET CHARGES ; VOTRE EPARGNE MENSUELLE ACTUELLE rejoint EPARGNE ; PATRIMOINE NET rejoint LES CHIFFRES DU DOSSIER ; LES QUESTIONS DU PROCHAIN RENDEZ-VOUS rejoignent la diapositive precedente. Le constat passe de douze a NEUF chapitres. Aucun bloc n est deplace ni duplique : il perd seulement son data-nc-chap et rejoint le chapitre precedent — c est la regle de construction du mode presentation depuis la v220, elle n a pas bouge. Consequence voulue quand des NOTES ont ete saisies : elles ouvrent la diapositive et les questions la completent, donc les notes restent juste au-dessus des questions, comme demande le matin meme. CONTROLE : t_presentation.js ne compte plus seulement les chapitres, il verifie leur LISTE titre par titre — les neuf attendus, dans l ordre.)','font-weight:bold;color:#047857');
@@ -6298,6 +6299,31 @@
         const precaOK = precaCible <= 0 || socle.courtTerme >= precaCible;
         const redBloque = G.red && G.versLivret && !precaOK;
         const redActif = G.red && !redBloque;
+        /* ═══ 20/09/2026 (CGP) — L'ÉCONOMIE MENSUELLE, C'EST L'ÉCART D'INTÉRÊTS ═══
+           « Les vraies économies sont le calcul des intérêts placés à 1,7 % vs 5,2 %,
+           le capital ne doit pas rentrer dans le calcul. »
+           Arbitrage : le capital dort à txArbAct au lieu de tMed → montant × écart.
+           Redirection : l'assiette est CE QUI AURA ÉTÉ VERSÉ DANS L'ANNÉE (versement × 12),
+           décision du CGP du 20/09. Par an, puis ÷ 12 pour le €/mois.
+           21/09/2026 : calculés ICI, et non plus près des cartes, parce qu'ils entrent
+           désormais dans l'enveloppe du client (voir ENV plus bas). */
+        const ecartArb = Math.max(0, tMed - txArbAct);
+        const ecartRed = Math.max(0, tMed - txVersAct);
+        const ecoArbAn = G.arb ? montArb * ecartArb : 0;
+        const ecoRedAn = redActif ? (versMens * 12) * ecartRed : 0;
+        const ecoArbAnPot = montArb > 0 ? montArb * ecartArb : 0;
+        const ecoRedAnPot = versMens > 0 ? (versMens * 12) * ecartRed : 0;
+        /* ═══ 21/09/2026 (CGP) — CE QUE LES GISEMENTS TROUVENT GROSSIT LE BUDGET ═══
+           « Lorsque l'on va chercher de l'épargne avec la renégociation de l'assurance de
+           prêt ou les placements, cela ne vient pas s'additionner à l'épargne que le
+           client souhaite mettre. Si le client souhaite mettre entre 300 et 500 €/mois
+           et que l'on a été chercher 250 € de trésorerie supplémentaire, il faut que son
+           budget mensuel passe de 550 à 750 €/mois grâce aux renégociations, et que
+           cela se voie. »
+           Seule la délégation d'assurance entrait dans l'enveloppe, et sur la seule borne
+           HAUTE : la fourchette affichait « 300 à 750 ». Désormais les TROIS leviers
+           cochés s'ajoutent, et aux DEUX bornes. */
+        const gainsMens = ecoAss + ecoArbAn / 12 + ecoRedAn / 12;
 
         /* leviers */
         const vPer = nb(L.vPer, 0), vAv = nb(L.vAv, 0);
@@ -6491,7 +6517,10 @@
         /* borne basse effective : sans fourchette (saisie manuelle ou repli sur
            l effort), il n y a rien a signaler — bas = haut */
         const envBasEff = ncInt(h.env) || !envDeclaree ? envPoche : envBasse;
-        const ENV = envPoche + ecoAss;
+        /* 21/09 : l'enveloppe = ce que le client met de sa poche + ce que les gisements
+           cochés ont trouvé. La borne basse suit : 300 à 500 + 250 = 550 à 750. */
+        const ENV = envPoche + gainsMens;
+        const envBasTot = envBasEff + gainsMens;
 
         const soldeAn = (y) => auMoinsUn ? (ENV - (L.per ? vPer - ecoM : 0) - (L.av ? vAv : 0) - (L.loc ? effAn(y) : 0)) * 12 : 0;
         let soldeMin = 1e12, anneeMin = 0;
@@ -6676,12 +6705,8 @@
            Les deux se lisent par an, puis divisés par douze pour le €/mois. Le capital
            supplémentaire à l'horizon (gainArbCap / gainRedCap) reste calculé : il garde
            sa place en seconde ligne, mais il ne se déguise plus en économie mensuelle. */
-        const ecartArb = Math.max(0, tMed - txArbAct);
-        const ecartRed = Math.max(0, tMed - txVersAct);
-        const ecoArbAn = G.arb ? montArb * ecartArb : 0;
-        const ecoRedAn = redActif ? (versMens * 12) * ecartRed : 0;
-        const ecoArbAnPot = montArb > 0 ? montArb * ecartArb : 0;
-        const ecoRedAnPot = versMens > 0 ? (versMens * 12) * ecartRed : 0;
+        /* (les écarts d'intérêts sont calculés plus haut, avec les entrées des
+           gisements : ils entrent dans l'enveloppe) */
         const mArb = ecoArbAn / 12;
         /* PART EXACTE DE LA REALLOCATION : la meme enveloppe capitalisee au taux des
            supports actuels, puis au taux retenu. On n attribue pas a l ecart de
@@ -6716,7 +6741,7 @@
           avRP, avLoc, avPla, avTot, avRevPla, avRevLoc, avRevTot,
           qRP: qRP * 100, qLoc: qLoc * 100, prevRPnow, prevLocNow, prevNewNow, prevTotalNow, prevNewFin,
           revPla, revLoc, revTot, capCree, capB, capH, coutReel: verse, gain: capCree - verse,
-          effort, effortBrut, ecoM, ecoImpot, ENV, envPoche, envDeclaree, envBasse, envBasEff, soldeMin, anneeMin, endet, auMoinsUn,
+          effort, effortBrut, ecoM, ecoImpot, ENV, envPoche, envDeclaree, envBasse, envBasEff, envBasTot, gainsMens, soldeMin, anneeMin, endet, auMoinsUn,
           ecoRegimeTot, ecoRegimeAn, coutNuTot, coutRegimeTot, succSans, succAvec,
           rsValH: socle.rsVal * Math.pow(1 + gImmo, H), locExistH: socle.locVal * Math.pow(1 + gImmo, H) - crdLoc(H),
           /* effLoc restait l effort BRUT (mensualite - loyer net) : il ignorait la
@@ -6850,6 +6875,27 @@
          Fonction de rendu (pas un composant) : rien à remonter, aucun champ dedans. */
       const barRefs = React.useRef([]);
       const [barVu, setBarVu] = React.useState(true);
+      /* ═══ 21/09/2026 (CGP) — LE BANDEAU COLLANT N'APPARAÎT QU'À PARTIR DU BUDGET ═══
+         « Lorsque l'on arrive sur le document je ne veux pas voir le bandeau de son
+         épargne au tout début, ça n'a pas de sens ! » Le bandeau enveloppe · employée ·
+         reste s'affichait dès l'ouverture, par-dessus la page de garde, les objectifs et
+         l'analyse du dossier — avant même qu'on ait parlé d'argent.
+         Le témoin est la section « Où trouver l'épargne » elle-même (un élément
+         vide ajouté exprès était compté comme un bloc par le mode présentation).
+         Tant qu'elle est plus bas que l'écran, le bandeau collant reste
+         caché ; dès qu'on l'atteint ou qu'on le dépasse, il apparaît et suit le
+         défilement comme avant. */
+      const seuilBarRef = React.useRef(null);
+      const [barPret, setBarPret] = React.useState(false);
+      React.useEffect(() => {
+        const el = seuilBarRef.current;
+        if (!el || typeof IntersectionObserver === "undefined") return;
+        const io = new IntersectionObserver(([e]) => {
+          setBarPret(e.isIntersecting || e.boundingClientRect.top < 0);
+        }, { threshold: 0 });
+        io.observe(el);
+        return () => io.disconnect();
+      }, []);
       React.useEffect(() => {
         if (typeof window === "undefined" || !window.IntersectionObserver) return;
         const els = barRefs.current.filter(Boolean);
@@ -6865,13 +6911,19 @@
       const manque = R.ENV - R.effort < -1;
       const barItems = [
         { l: "Enveloppe", v: eur(R.ENV) + "/mois", c: C.encre,
-          fourchette: R.envBasEff < R.envPoche ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasEff))) + " à " + eur(R.ENV) : null,
-          sous: R.ecoAss > 0 ? "épargne mensuelle disponible · " + eur(R.envPoche) + " de votre poche + " + eur(R.ecoAss) + " libérés" : "épargne mensuelle disponible · " + (ncInt(h.env) ? "montant retenu avec votre conseiller" : R.envDeclaree ? "fourchette indiquée lors de l'audit" : "ce que vous consacrez au projet") },
+          /* 21/09/2026 (CGP) : les gisements cochés s'ajoutent aux DEUX bornes
+             (300 à 500 + 250 = 550 à 750), et la sous-ligne dit d'où vient chaque euro. */
+          fourchette: R.envBasTot < R.ENV - 0.5 ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasTot))) + " à " + eur(R.ENV) : null,
+          sous: R.gainsMens > 0
+            ? "épargne mensuelle disponible · " + (R.envBasEff < R.envPoche ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasEff))) + " à " : "") + eur(R.envPoche) + " de votre poche + " + eur(R.gainsMens) + " trouvés par les gisements"
+            : "épargne mensuelle disponible · " + (ncInt(h.env) ? "montant retenu avec votre conseiller" : R.envDeclaree ? "fourchette indiquée lors de l'audit" : "ce que vous consacrez au projet") },
         { l: "Employée", v: eur(R.effort) + "/mois", c: C.vert,
           sous: "par les solutions cochées · " + (R.ecoM > 0 ? "nette des " + eur(R.ecoM) + " d'économie d'impôt" : "effort mensuel net") },
         { l: R.ENV - R.effort >= 0 ? "Reste" : "Manque", v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)) + "/mois", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c", fort: true,
           sous: R.ENV - R.effort >= 0 ? "à allouer · épargné et capitalisé tant que non employé" : "chaque mois · à trouver dans « Où trouver l'épargne »" },
-        R.mTreso > 0 ? { l: "Libéré", v: "+ " + eur(R.mTreso) + "/mois", c: C.vert, sous: "par les gisements retenus" } : null
+        /* 21/09 : l'item compte TOUS les gisements cochés (délégation, arbitrage,
+           redirection), plus la seule délégation. */
+        R.gainsMens > 0 ? { l: "Trouvé", v: "+ " + eur(R.gainsMens) + "/mois", c: C.vert, sous: "par les gisements retenus — déjà compris dans l'enveloppe" } : null
       ].filter(Boolean);
       const barre = (mode) => {
         const fixe = mode === "fixe", garde = mode === "garde";
@@ -6913,7 +6965,7 @@
           {/* 14/09 (CGP, « souci d'affichage ») : le bandeau flottait au milieu des cartes
               en les coupant. Il devient une BANDE pleine largeur, opaque, collée au bord
               haut de la zone de défilement (marges négatives = px-8 de la modale). */}
-          <div className="nc-syn-noprint" data-nc-pres-keep="1" style={{ position: "sticky", top: -20, zIndex: 30, height: 0, visibility: barVu ? "hidden" : "visible" }}>
+          <div className="nc-syn-noprint" data-nc-pres-keep="1" data-nc-bar-sticky="1" style={{ position: "sticky", top: -20, zIndex: 30, height: 0, visibility: (barVu || !barPret) ? "hidden" : "visible" }}>
             <div style={{ position: "absolute", left: -32, right: -32, top: 0 }}>{barre("sticky")}</div>
           </div>
           {/* ═══ PAGE DE GARDE (10/09/2026, decision F du CGP) ═══
@@ -7059,7 +7111,7 @@
             const mRend = mArb + mRed;
             const ass = G.ass && R.ecoAss > 0, rend = (mArb + mRed) > 0;
             return (
-          <div className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne">
+          <div ref={seuilBarRef} data-nc-bar-seuil="1" className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne">
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
             <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
               L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
@@ -7125,7 +7177,7 @@
               <div className="rounded-xl px-4 py-3 mt-3 flex flex-wrap items-baseline border" style={{ columnGap: 12, rowGap: 4, borderColor: C.vertBord, background: "linear-gradient(135deg,#ecfdf5,#ffffff)" }} data-nc-gisements-total="1">
                 <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 24, fontWeight: 800, color: C.vert, letterSpacing: "-0.02em" }}>{eur(Math.round((ass ? R.ecoAss : 0) + (rend ? mRend : 0)))}<span style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, fontWeight: 600, color: C.gris2, letterSpacing: 0 }}>/mois</span></span>
                 <span className="text-[12.5px] font-bold" style={{ color: C.encre }}>d'épargne à réorienter</span>
-                <span className="text-[10.5px]" style={{ color: C.gris2 }}>{[ass ? eur(Math.round(R.ecoAss)) + " libérés" : null, rend ? eur(mRend) + " de rendement en moyenne" : null].filter(Boolean).join(" + ")}</span>
+                <span className="text-[10.5px]" style={{ color: C.gris2 }}>{[ass ? eur(Math.round(R.ecoAss)) + " libérés" : null, rend ? eur(mRend) + " d'intérêts en plus" : null].filter(Boolean).join(" + ")}</span>
               </div>
             ) : null}
             {R.assSousSeuil ? <Alerte>Durée restante de <b>{Math.round(nb(G.dRest, 0))} ans</b> : en dessous de <b>12 ans</b>, l'économie cumulée ne justifie généralement pas la démarche de délégation.</Alerte> : null}
@@ -7134,6 +7186,36 @@
           </div>
             );
           })()}
+
+          {/* ═══ 21/09/2026 (CGP) — LE NOUVEAU BUDGET MENSUEL, APRÈS LES GISEMENTS ═══
+              « Si le client souhaite mettre entre 300 et 500 €/mois et que l'on a été
+              chercher 250 € de trésorerie supplémentaire, il faut que son budget mensuel
+              passe de 550 à 750 €/mois grâce aux renégociations, et que cela se voie. »
+              Le bandeau d'objectif (avant les gisements) dit ce que le client a annoncé ;
+              celui-ci, juste après, dit ce qu'il a DÉSORMAIS à consacrer à ses projets,
+              levier par levier. Il n'apparaît que si au moins un levier est coché. */}
+          {R.gainsMens > 0 ? (
+            <div className="rounded-2xl mb-4 border" data-nc-budget-final="1" style={{ borderColor: C.vertBord, borderTop: "4px solid " + C.vert, background: "linear-gradient(180deg, #ecfdf5, #ffffff 60%)", padding: "18px 24px 16px" }}>
+              <div className="text-[9.5px] uppercase tracking-[0.2em] font-bold" style={{ color: C.vert, marginBottom: 8 }}>Votre nouveau budget mensuel</div>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 28, fontWeight: 800, color: C.vert }}>
+                  {R.envBasTot < R.ENV - 0.5 ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasTot))) + " à " + eur(R.ENV) : eur(R.ENV)}
+                </span>
+                <span className="text-[12px] font-bold" style={{ color: C.gris2 }}>/mois à consacrer à vos projets</span>
+              </div>
+              <div className="text-[12.5px]" style={{ color: C.encre, marginTop: 8, lineHeight: 1.6 }}>
+                <b>{R.envBasEff < R.envPoche ? ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(R.envBasEff))) + " à " + eur(R.envPoche) : eur(R.envPoche)}</b> de votre poche
+                {" + "}<b style={{ color: C.vert }}>{eur(R.gainsMens)}</b> trouvés sans rien demander de plus à votre budget.
+              </div>
+              <div className="text-[11px]" style={{ color: C.gris2, marginTop: 4, lineHeight: 1.55 }}>
+                {[
+                  R.ecoAss > 0 ? "délégation d'assurance emprunteur " + eur(Math.round(R.ecoAss)) : null,
+                  R.mArb > 0 ? "arbitrage du capital placé " + eur(Math.round(R.mArb)) : null,
+                  R.mRed > 0 ? "redirection des versements " + eur(Math.round(R.mRed)) : null,
+                ].filter(Boolean).join(" · ")}
+              </div>
+            </div>
+          ) : null}
 
           {/* ═══ 11/09/2026 (CGP) — ORDRE : page de garde → LES SOLUTIONS RETENUES (avec le
               bandeau enveloppe · employée · reste EN FIXE, imprimé, en grand) → OÙ TROUVER
@@ -7178,11 +7260,11 @@
               </div>
             ) : null}
             <div style={{ marginTop: 12 }}>{barre("fixe")}</div>
-            {!manque && R.envBasEff < R.envPoche && R.effort > R.envBasEff + 1 ? (
+            {!manque && R.envBasTot < R.ENV - 0.5 && R.effort > R.envBasTot + 1 ? (
               /* la fourchette est respectee, mais on sollicite le HAUT de ce que le
                  client a annonce : le dire, sans alarmer. */
               <div className="mt-2 text-[11px] font-semibold" style={{ color: "#8a6d34" }}>
-                Les solutions cochées mobilisent {eur(R.effort)}/mois : au-delà des {eur(R.envBasEff)} du bas de votre fourchette, dans la limite des {eur(R.ENV)} annoncés.
+                Les solutions cochées mobilisent {eur(R.effort)}/mois : au-delà des {eur(R.envBasTot)} du bas de votre budget, dans la limite des {eur(R.ENV)} disponibles.
               </div>
             ) : null}
             <div className="text-[11.5px] mb-4" style={{ color: C.gris2, marginTop: 12 }}>Cochez, décochez, ajustez : tout se recalcule immédiatement.</div>
