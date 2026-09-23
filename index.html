@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v251 (23/09 : UN FOYER RETRAITE NE PREPARE PLUS SA RETRAITE. Le CGP, sur le document de Monique BERNARD (veuve, 70 ans, retraitee, 2 400 €/mois de pension, 335 000 € d epargne dont 155 000 € a court terme) : « il est impossible que tu raisonnes ainsi » — le document lui demandait d AUGMENTER SON EPARGNE MENSUELLE (0 pct contre 18 pct), de COMPENSER 1 080 € DE BAISSE DE REVENUS A LA RETRAITE (elle y est), de VERSER AVANT 70 ANS (elle les a) et d OUVRIR UN PER. Nouveau drapeau foyerRetraite dans ncSynthese (client retraite, et conjoint retraite s il y en a un) : (1) plus de problematique « retraite non preparee », plus d objectif « augmenter votre epargne mensuelle » ni « pension estimee / pallier la baisse », plus de preconisation info-retraite.fr ni PER (aucune des trois branches), plus de pieces « estimation de retraite » et « contrats d epargne retraite », plus de question « vos revenus baisseront a la retraite » ni « epargne mensuelle sur quinze ans » (drapeau skip). (2) A la place, si 50 000 € ou plus dorment a court terme sans projet de RP : objectif « Reorienter vos N € de liquidites vers un contrat d assurance-vie a la fiscalite plus confortable qu un livret classique » et preconisation « Souscription d un nouveau contrat d assurance-vie » (art. 757 B CGI apres 70 ans). (3) « L article 990 I est valable jusqu a 70 ans » : fenetre fermee a 70 ans revolus (age < 70, plus « il reste 1 an » a 70 ans), mention retiree de l audit du contrat existant, question 990 I plus posee a 70 ans. Banc t_retraite.js, etape 22/22.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v252 (23/09 : FOYER RETRAITE, SUITE — reponses du CGP. (1) « Importance des versements programmes » (histogramme a 20 ans) : « aucun interet » pour un retraite, retire (le chapitre « Objectifs et questions » reste). (2) Case « Participation mensuelle envisagee » : retiree pour un foyer retraite (les autres tuiles de la carte restent). (3) A 70 ans : compteur « Capacite d emprunt » et ligne « Investissement locatif » masques dans « Les chiffres du dossier » ; plus d objectif « utiliser votre capacite d endettement » ni de preconisation locative (plusDe70 / emprunt70). (4) Nouvelle valeur « Aucune » pour la capacite d epargne (les deux saisies), libelle « aucune epargne mensuelle » ; la fiche demo « Veuve » la declare — « oui, aucune, c est mieux ». Banc t_retraite.js etendu.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v251 (23/09 : UN FOYER RETRAITE NE PREPARE PLUS SA RETRAITE. Le CGP, sur le document de Monique BERNARD (veuve, 70 ans, retraitee, 2 400 €/mois de pension, 335 000 € d epargne dont 155 000 € a court terme) : « il est impossible que tu raisonnes ainsi » — le document lui demandait d AUGMENTER SON EPARGNE MENSUELLE (0 pct contre 18 pct), de COMPENSER 1 080 € DE BAISSE DE REVENUS A LA RETRAITE (elle y est), de VERSER AVANT 70 ANS (elle les a) et d OUVRIR UN PER. Nouveau drapeau foyerRetraite dans ncSynthese (client retraite, et conjoint retraite s il y en a un) : (1) plus de problematique « retraite non preparee », plus d objectif « augmenter votre epargne mensuelle » ni « pension estimee / pallier la baisse », plus de preconisation info-retraite.fr ni PER (aucune des trois branches), plus de pieces « estimation de retraite » et « contrats d epargne retraite », plus de question « vos revenus baisseront a la retraite » ni « epargne mensuelle sur quinze ans » (drapeau skip). (2) A la place, si 50 000 € ou plus dorment a court terme sans projet de RP : objectif « Reorienter vos N € de liquidites vers un contrat d assurance-vie a la fiscalite plus confortable qu un livret classique » et preconisation « Souscription d un nouveau contrat d assurance-vie » (art. 757 B CGI apres 70 ans). (3) « L article 990 I est valable jusqu a 70 ans » : fenetre fermee a 70 ans revolus (age < 70, plus « il reste 1 an » a 70 ans), mention retiree de l audit du contrat existant, question 990 I plus posee a 70 ans. Banc t_retraite.js, etape 22/22.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v250 (23/09 : PAS D ASSURANCE-VIE NI DE PER « COMMUN » HORS COMMUNAUTE. Le CGP : « lors d un mariage sous le regime de la separation, PACS, union libre (tout sauf la communaute) il n est pas possible de faire un contrat d assurance-vie en commun ; ce choix ne doit donc pas etre possible sur l audit patrimonial » — meme regle pour le PER. (1) Etape Patrimoine, « A qui appartient cet avoir ? » : pour une assurance-vie ou un PER, hors communaute d acquets et communaute universelle, seuls Monsieur et Madame sont proposes ; « Commun / joint » et « Indivision » restent pour les autres avoirs. (2) Un dossier existant qui porte encore une AV ou un PER « commun » hors communaute N EST PAS corrige d office (« ne rien forcer ») : la fenetre des incoherences (v248) porte l ALERTE CRITIQUE redigee par le CGP — montant du contrat, regime, requalification en donation indirecte et blocage au deces, contrat a scinder en deux contrats individuels. (3) Clients types inchanges : la fiche « Maries » est en communaute, son AV commune est conforme. Banc t_av_commune.js, etape 21/21 de verif.sh.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v249 (21/09 : DOSSIER MARTIN, SUITE. (1) « Sortie totale de tresorerie » retiree AUSSI de la carte « Cout global de l operation » a l ecran (second rappel du CGP : la v247 ne l avait retiree que du document). (2) Epargne : sous « Epargne constituee — total », une ligne « Apres le projet de residence principale » — 57 950 € → 17 950 €, barre avec la part d apport hachuree et un curseur sur ce qui reste (version compacte : la premiere faisait deborder le chapitre et laissait la page 3 au tiers). (3) Les chiffres du dossier : « Le financier » en deux camemberts, aujourd hui et apres le projet RP (apport sorti du financier, bien entre dans l immobilier : 100 % → 6 % pour Martin). (4) Regle cabinet : au-dessus de 25 % d endettement, un projet immobilier locatif est a valider avec les elements precis du dossier et le courtier en credit — sous la carte Capacite d emprunt et dans la preconisation locative. Banc t_recentre etendu (sections 4 et 5).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v248 (21/09 : LE MOTEUR RAISONNE APRES L ACHAT DE LA RESIDENCE PRINCIPALE. Le CGP, sur le dossier MARTIN : « comment peux-tu dire capacite d emprunt disponible = 0 € dans les points forts ? tresorerie trop importante alors qu il va consacrer 40 000 € d apport a sa RP d ici un an ? epargne a zero alors qu il va rembourser 1 200 €/mois de credit, qui est une epargne immobiliere ? Il faut que tu te serves absolument des informations recueillies. » (1) Projection apres achat : l apport du projet RP sort du court terme avant tout jugement de tresorerie ; le capital rembourse du credit RP (decision du CGP : le capital, pas la mensualite entiere, et il augmente a chaque echeance) compte comme epargne mensuelle ; le point fort « capacite d emprunt » et les recommandations locatives lisent la place restante APRES le projet. (2) Document RECENTRE pour toute personne dont la capacite d emprunt est mobilisee (plus de place pour du locatif, projet RP ou credits en cours) : feliciter pour la residence principale, preparer la retraite par PER et assurance-vie, deleguer l assurance de pret — rien de plus, dans tout le document (points forts, axes, problematiques, objectifs du cabinet, preconisations, questions). (3) Fenetre des INCOHERENCES en quittant l etape Objectifs : objectif locatif sans capacite restante, apport declare superieur a l epargne restant apres l apport RP ; « Corriger la saisie » ou « Continuer quand meme ». Mesure Martin : 489 €/mois de capital rembourse, 17 950 € d epargne restant apres 40 000 € d apport. Banc t_recentre (etape 19/20).)','color:#94a3b8');
@@ -2410,7 +2411,7 @@
           ],
           objectifs: ["transmettre", "perso"], objectifsOrdre: ["transmettre", "perso"],
           objectifsDetail: { perso: { lignes: [{ id: 1, titre: "Revenus complémentaires", note: "", capital: "", mensuel: "", horizon: "" }] } },
-          capaciteEpargne: "300-500", apportInitial: ">100000",
+          capaciteEpargne: "aucune", apportInitial: ">100000",
         },
       },
     ];
@@ -5769,7 +5770,9 @@
           conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
         }
         // 2. Capacité d'endettement disponible non utilisée (même seuil que le point fort).
-        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
+        /* 23/09/2026 (CGP) : à 70 ans, plus d'objectif ni de préconisation d'emprunt. */
+        const emprunt70 = age != null && age >= 70;
+        if (!emprunt70 && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
           conseils.push("Utiliser votre capacité d'endettement pour préparer votre retraite et protéger vos héritiers");
         }
         // 3. Baisse de revenus au passage à la retraite (taux de remplacement cabinet).
@@ -5806,7 +5809,7 @@
         /* 21/09/2026 (CGP) : « au-dessus de 25 % d'endettement, projet immobilier locatif à
            valider avec les éléments précis du dossier et le courtier en crédit ». */
         const endetSup25 = (taux || 0) > 0.25;
-        if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
+        if (!(age != null && age >= 70) && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
         if (!foyerRetraite && (revC > 0 || revJ > 0)) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
         // PER : TOUJOURS en dernier — et une SEULE mention dans toute la synthèse
         // quand le levier fiscal n'est pas réel (règle cabinet des 5 000 € à 30 %).
@@ -7180,7 +7183,7 @@
       const civLui = d.civilite === "Mme" ? "Monsieur" : "Madame";
       /* ——— rappel de ce que le client a annonce vouloir consacrer au projet ——— */
       const engagement = React.useMemo(() => {
-        const CAP = { "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
+        const CAP = { "aucune": "aucune épargne mensuelle", "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
         const nfE = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
         const cap = d.capaciteEpargne === "libre" ? nfE(ncInt(d.capaciteEpargneLibre)) + " €/mois"
           : (CAP[d.capaciteEpargne] || "");
@@ -8868,6 +8871,11 @@
       const nomOk = d.nom.trim().length > 0;
       const prenomOk = d.prenom.trim().length > 0;
       const ageClient = ncAgeDate(d.dateNaissance);
+      /* 23/09/2026 (CGP, dossier BERNARD) : pour un foyer retraité, ni graphique des versements
+         programmés ni case « participation mensuelle » (« aucun intérêt ») ; à 70 ans, plus de
+         compteur de capacité d'emprunt ni d'investissement locatif (« masque »). */
+      const foyerRetraiteS = (d.activites || []).includes("retraite") && (!(["marie", "pacse", "union_libre"].includes(d.situation) && d.conjointQ === "oui") || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
+      const plusDe70 = ageClient != null && ageClient >= 70;
       const aDesEnfants = d.enfantsQ === "oui" && d.enfants.length > 0;
       const obj = (v) => (d.objectifs || []).includes(v);
       const objDef = (v) => NC_OBJECTIFS.find(x => x.v === v) || NC_OBJECTIFS[0];
@@ -9049,17 +9057,19 @@
         );
         const participation = (() => {
           const nfE = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
-          const CAP_LIB = { "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
+          const CAP_LIB = { "aucune": "aucune épargne mensuelle", "<100": "moins de 100 €/mois", "100-300": "100 à 300 €/mois", "300-500": "300 à 500 €/mois", "500-1000": "500 à 1 000 €/mois", ">1000": "plus de 1 000 €/mois" };
           const HOR_LIB = { "<5": "moins de 5 ans", "5-10": "5 à 10 ans", "10-15": "10 à 15 ans", ">15": "plus de 15 ans" };
           const lignes = [];
           // 03/09 : la précision ("fourchette indiquée" / "montant précis indiqué")
           // ressort désormais en SOUS-LIGNE séparée (l.sub), et non plus concaténée
           // dans le même texte que le nombre — sinon son retour à la ligne dépend
           // de la longueur du nombre et les tuiles voisines se désalignent.
-          const capTxt = (code, libre) => code === "libre" ? { v: `${nfE(ncInt(libre))} €/mois`, sub: "montant précis indiqué" } : { v: CAP_LIB[code] || code, sub: "fourchette indiquée" };
+          const capTxt = (code, libre) => code === "libre" ? { v: `${nfE(ncInt(libre))} €/mois`, sub: "montant précis indiqué" } : { v: CAP_LIB[code] || code, sub: code === "aucune" ? null : "fourchette indiquée" };
           // Réflexion patrimoniale séparée (28/08) : une tuile PAR personne
           // (ex. Monsieur 500 €/mois, Madame 200 €/mois) — jamais fusionnées.
-          if (d.reflexionPatrimoine === "separee" && (d.capaciteEpargne || d.capaciteEpargneConjoint)) {
+          if (foyerRetraiteS) {
+            /* 23/09/2026 (CGP) : un retraité n'a pas de participation mensuelle à afficher */
+          } else if (d.reflexionPatrimoine === "separee" && (d.capaciteEpargne || d.capaciteEpargneConjoint)) {
             const civMoi2 = d.civilite === "Mme" ? "Madame" : "Monsieur";
             const civLui2 = d.civilite === "Mme" ? "Monsieur" : "Madame";
             if (d.capaciteEpargne) { const c = capTxt(d.capaciteEpargne, d.capaciteEpargneLibre); lignes.push({ t: `Participation de ${civMoi2}`, d: c.v, sub: c.sub }); }
@@ -9078,7 +9088,7 @@
           return (
             <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
               style={{ borderTop: "3px solid #0f766e", background: "linear-gradient(180deg, #0f766e0a, #ffffff 55%)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>Participation mensuelle & apport envisagés</div>
+              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>{foyerRetraiteS ? "Apport mobilisable" : "Participation mensuelle & apport envisagés"}</div>
               <div className="grid grid-cols-2 gap-2.5">
                 {lignes.map((l, i) => (
                   <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
@@ -11464,7 +11474,7 @@
                     const patSepares = enCouple && d.conjointQ === "oui" && (unionLibre || pacse || (marie && d.regime === "separation"));
                     const separee = patSepares && d.reflexionPatrimoine === "separee";
                     const civ6 = d.civilite === "Mme" ? { moi: "Madame", lui: "Monsieur" } : { moi: "Monsieur", lui: "Madame" };
-                    const CAPOPTS = [{v:"<100",l:"< 100 €"},{v:"100-300",l:"100 – 300 €"},{v:"300-500",l:"300 – 500 €"},{v:"500-1000",l:"500 – 1 000 €"},{v:">1000",l:"> 1 000 €"},{v:"libre",l:"Montant précis"}];
+                    const CAPOPTS = [{v:"aucune",l:"Aucune"},{v:"<100",l:"< 100 €"},{v:"100-300",l:"100 – 300 €"},{v:"300-500",l:"300 – 500 €"},{v:"500-1000",l:"500 – 1 000 €"},{v:">1000",l:"> 1 000 €"},{v:"libre",l:"Montant précis"}];
                     return (
                       <>
                         {patSepares && (
@@ -12904,7 +12914,9 @@
                       );
                     })()}
                     {/* ——— 3. Capacité d'emprunt : barres comparatives RP / locatif (pleine largeur) ——— */}
-                    {(() => {
+                    {/* 23/09/2026 (CGP, dossier BERNARD) : à 70 ans, plus de compteur de capacité
+                        d'emprunt ni d'investissement locatif — « masque, aucun intérêt ». */}
+                    {!plusDe70 && (() => {
                       const ageEmp = ncAgeDate(d.dateNaissance);
                       const duree = ageEmp == null ? 25 : (ageEmp + 25 <= 75 ? 25 : ageEmp + 20 <= 75 ? 20 : Math.max(5, 75 - ageEmp));
                       const tauxEmp = duree >= 25 ? 0.04 : 0.039;
@@ -13160,6 +13172,9 @@
                         const DUREES = [15, 20];
                         const ref = lignes.find(x => x.fort) || lignes[lignes.length - 1];
                         const ecart = ncpCap(0, ref.m, 0.05, 20) - ncpCap(0, ref.m, 0.017, 20);
+                        /* 23/09/2026 (CGP) : le graphique n'a « aucun intérêt » pour un foyer
+                           retraité — le chapitre reste, l'histogramme part. */
+                        if (foyerRetraiteS) return <NcChapitre titre="Objectifs et questions" />;
                         return (
                           <><NcChapitre titre="Objectifs et questions" />
                           <div className="rounded-2xl bg-white border border-stone-200 p-4 mb-4" style={{ borderTop: "3px solid #b8924e", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
@@ -14210,7 +14225,7 @@
                     </div>
                     <div className="text-[12px] text-stone-500 mb-4">Toutes les préconisations de l'étude se calent sur ce montant — sans lui, la synthèse tourne à vide.</div>
                     <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                      <Chips opts={[{v:"<100",l:"< 100 €"},{v:"100-300",l:"100 – 300 €"},{v:"300-500",l:"300 – 500 €"},{v:"500-1000",l:"500 – 1 000 €"},{v:">1000",l:"> 1 000 €"},{v:"libre",l:"Montant précis"}]} val={d.capaciteEpargne} on={v => set("capaciteEpargne", v)} />
+                      <Chips opts={[{v:"aucune",l:"Aucune"},{v:"<100",l:"< 100 €"},{v:"100-300",l:"100 – 300 €"},{v:"300-500",l:"300 – 500 €"},{v:"500-1000",l:"500 – 1 000 €"},{v:">1000",l:"> 1 000 €"},{v:"libre",l:"Montant précis"}]} val={d.capaciteEpargne} on={v => set("capaciteEpargne", v)} />
                       {d.capaciteEpargne === "libre" && <div className="w-36"><Eur v={d.capaciteEpargneLibre} on={v => set("capaciteEpargneLibre", v)} unit="€/mois" /></div>}
                     </div>
                     {/* RÈGLE CABINET (29/08) : demander AUSSI l'apport initial mobilisable —
