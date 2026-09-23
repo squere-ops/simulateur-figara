@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v255 (23/09 : LES QUESTIONS — retours du CGP sur le dossier DURAND. (1) Question de la tresorerie qui dort, tournure dictee : « Vous conservez N € sur des livrets et des comptes courants : savez-vous comment ils sont taxes en cas de succession ? » (plus de « rapporte peu… comment comptez-vous la reorganiser »). (2) Question « rendement » SUPPRIMEE : elle disait « vos 205 000 € places au taux des livrets » alors que ces 205 000 € sont des placements long terme — « cette question n a pas de sens, il vaut mieux cinq questions pertinentes qu une sixieme stupide ». Ne pas la reintroduire. Banc t_questions_durand.js.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v257 (23/09 : LA SORTIE D UN ENFANT DU FOYER FISCAL PILOTE LE DOCUMENT. Le CGP, sur l age de sortie saisi en v254 : « il faut que ca indique que Camille quittera le foyer en 2029 et que ca fasse une projection de l impot et de la TMI en ce sens ». (1) Etat civil : la ligne de l enfant porte « — quittera le foyer fiscal en AAAA ». (2) Fiscalite : encart « Evolution du foyer fiscal » — la phrase, puis un tableau Aujourd hui / Apres le depart de X (annee) : parts, TMI, impot estime, ecart par an ; ncCalcFisc relance sans l enfant (et sans ceux partis avant lui), a revenus et legislation constants ; TMI en rouge si elle monte. Banc t_sortie_foyer.js etendu.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v256 (23/09 : CLIENTS TYPES REFAITS ET REMPLIS EN TOTALITE. Le CGP : « peux-tu en refaire d autres / les remplacer, et remplir la totalite des champs ? » — remplaces ; fiche celibataire PROPRE ; questionnaire de risque NON rempli (profil reporte d un questionnaire du cabinet, SRI saisi). Julien FAURE (celibataire locataire, projet RP), Claire et Maxime ROUSSEL (pacses, fonctionnaire + cadre, deux enfants), Olivier et Isabelle LAMBERT (maries en communaute, architecte liberal, trois enfants dont Manon 22 ans, locatif, residence secondaire), Jacqueline MOREAU (veuve, 74 ans, retraitee, 151 450 € de liquidites). Identite, coordonnees, banques, revenus detailles, credits, placements (etablissement, objectif, gestion, rendement, satisfaction), objectifs detailles, budget, notes : tout ce qui a un sens pour la situation est rempli. Corrige au passage : enfants majeurs « charge 0 » (valeur inexistante) -> « non a charge » ; rpDetenteur « commun » -> « 5050 » ; horizon de projet RP « 2 » -> « <1 ». (2) « Creer un objectif » s affiche sous le titre saisi (« Aider ses petits-enfants »). (3) Encart « a la limite de la tranche superieure » : plus de conseil PER pour un foyer retraite. Bancs mis a jour : t_clients_types (completude + aucune incoherence), t_recentre (fiche propre, incoherences testees sur le moteur), t_retraite, t_questions_durand, t_sortie_foyer.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v255 (23/09 : LES QUESTIONS — retours du CGP sur le dossier DURAND. (1) Question de la tresorerie qui dort, tournure dictee : « Vous conservez N € sur des livrets et des comptes courants : savez-vous comment ils sont taxes en cas de succession ? » (plus de « rapporte peu… comment comptez-vous la reorganiser »). (2) Question « rendement » SUPPRIMEE : elle disait « vos 205 000 € places au taux des livrets » alors que ces 205 000 € sont des placements long terme — « cette question n a pas de sens, il vaut mieux cinq questions pertinentes qu une sixieme stupide ». Ne pas la reintroduire. Banc t_questions_durand.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v254 (23/09 : SORTIE DU FOYER FISCAL D UN ENFANT DE PLUS DE 20 ANS. Le CGP : « des que l enfant a plus de 20 ans, ouvre-moi un onglet ou je puisse rentrer l age prevu de depart et de sortie du foyer fiscal ». Etape Famille : sous la carte d un enfant de 21 ans ou plus encore a charge (100 pct, garde alternee, majeur rattache), un bandeau ambre « X a N ans — sortie prevue du foyer fiscal a [__] ans, soit en AAAA ». Champ e.sortieFoyerAge (deux chiffres), annee deduite de l age ; alerte si l age saisi est deja atteint. Donnee capturee seulement : aucun usage moteur pour l instant (question posee au CGP : parts fiscales apres la sortie ? projection ?). Banc t_sortie_foyer.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v253 (23/09 : UN PER N EST JAMAIS COMMUN, MEME EN COMMUNAUTE. Reponse du CGP a la question laissee ouverte en v250 : « oui ». Un plan d epargne retraite n a qu un seul titulaire quel que soit le regime matrimonial. (1) ncSynthese : un PER « commun » ou « indivis » chez un couple en communaute d acquets ou universelle leve l ALERTE CRITIQUE (« PER commun en communaute », contrat a rattacher a Monsieur ou Madame, second PER si les deux cotisent) — hors communaute, l alerte de la v250 reste. (2) Saisie, communaute universelle : le selecteur du PER ne propose plus « Epargne commune », seulement propre Monsieur / propre Madame. Banc t_av_commune.js etendu.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v252 (23/09 : FOYER RETRAITE, SUITE — reponses du CGP. (1) « Importance des versements programmes » (histogramme a 20 ans) : « aucun interet » pour un retraite, retire (le chapitre « Objectifs et questions » reste). (2) Case « Participation mensuelle envisagee » : retiree pour un foyer retraite (les autres tuiles de la carte restent). (3) A 70 ans : compteur « Capacite d emprunt » et ligne « Investissement locatif » masques dans « Les chiffres du dossier » ; plus d objectif « utiliser votre capacite d endettement » ni de preconisation locative (plusDe70 / emprunt70). (4) Nouvelle valeur « Aucune » pour la capacite d epargne (les deux saisies), libelle « aucune epargne mensuelle » ; la fiche demo « Veuve » la declare — « oui, aucune, c est mieux ». Banc t_retraite.js etendu.)','color:#94a3b8');
@@ -2310,111 +2312,213 @@
     /* réponses communes aux quatre fiches : les questions que l'audit pose à tout le
        monde et qu'une page laissée sans réponse bloquerait (règle cabinet du 29/08 :
        une question sans réponse = pas de page suivante). */
-    const NC_CT_COMMUN = { adresseQ: "non", pensionQ: "non", mobiliersQ: "non", reductionsQ: "non", impotQ: "non" };
+    /* ═══ CLIENTS TYPES — refaits le 23/09/2026 (v256) ═══
+       Le CGP : « peux-tu en refaire d'autres / les remplacer, et remplir la totalité des
+       champs ? » — fiches remplacées, fiche célibataire PROPRE (plus d'incohérence
+       volontaire), questionnaire de risque NON rempli (profil reporté d'un questionnaire
+       du cabinet). Les champs sans objet pour la situation (conjoint d'un célibataire,
+       IFI non redevable…) restent vides ou à « non ». Personnes et coordonnées fictives. */
+    const ncSalF = (o) => ({ poste: "", entreprise: "", statut: "cadre", mode: "net", montant: "", periode: "mois", nbMois: "12", variableQ: "non", variableMode: "en_plus", variableBrutNet: "net", variablePeriode: "an", variableN1: "", variableN2: "", ...o });
+    const ncRevVide = () => ({ actSalarie: ncSalF({ statut: "" }), actIndependant: { activite: "", n1: "", n2: "", n3: "", prevQ: "", prevAssureur: "" }, actChef: { societe: "", revenu: "", periode: "an", prevQ: "" }, actFonctionnaire: { poste: "", revenu: "", periode: "mois" }, actRetraite: { revenu: "", periode: "mois" }, actAutre: { precision: "", revenu: "", periode: "an" } });
+    const ncAnFin = (ans, mois) => String(new Date().getFullYear() + ans) + "-" + mois;
+    const NC_CT_COMMUN = { adresseQ: "oui", ppe: "non", ppeConj: "non", nationalite: "francaise", pensionQ: "non", impotQ: "non", ifi: "non", tmiManuel: false,
+      risqueMode: "externe", risqueExterneNote: "Questionnaire de connaissance et d'expérience du cabinet, signé lors du premier rendez-vous" };
     const NC_CLIENTS_TYPES = [
       {
-        cle: "celib", lib: "Célibataire", sous: "Thomas MARTIN, 34 ans",
+        cle: "celib", lib: "Célibataire", sous: "Julien FAURE, 33 ans",
         d: {
-          civilite: "M.", nom: "MARTIN", prenom: "Thomas", dateNaissance: ncDateNaiss(34, "05-12"),
-          situation: "celibataire", conjointQ: "non", enfantsQ: "non", enfants: [], donationsQ: "non",
-          activites: ["salarie"], actSalarie: ncSal(3800, "cadre"),
-          logement: "locataire", loyer: "950",
-          rpProjetQ: "oui", rpProjetHorizon: "2", rpProjetMensualite: "1200", rpProjetDuree: "25", rpProjetApport: "40000", rpProjetTaux: "3,6",
-          fonciersQ: "non", biensQ: "non",
-          creditsQ: "oui", credits: [{ id: 1, nature: "auto", mensualite: "250", crd: "9000", fin: String(new Date().getFullYear() + 3), finMois: "", assurQuotite: "" }],
-          avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
-            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", titulaire: "client" }),
-            ncAvoir({ id: 3, type: "compte_courant", valeur: "8000", titulaire: "client" }),
-            ncAvoir({ id: 4, type: "pea", valeur: "15000", titulaire: "client" }),
+          civilite: "M.", nom: "FAURE", prenom: "Julien", nomNaissance: "FAURE", dateNaissance: ncDateNaiss(33, "04-17"),
+          tel: "06 41 27 58 90", email: "julien.faure@exemple.fr",
+          adresse: "12 rue des Tanneurs", codePostal: "69007", ville: "Lyon",
+          banquePrincipale: "Crédit Mutuel",
+          situation: "celibataire", conjointQ: "non", testamentQ: "non",
+          enfantsQ: "non", enfants: [], donationsQ: "non", donations: [],
+          activites: ["salarie"],
+          actSalarie: ncSalF({ poste: "Ingénieur d'études", entreprise: "Groupe Altéa", statut: "cadre", montant: "3900", nbMois: "13" }),
+          mobiliersQ: "non",
+          fonciersQ: "non", locatifs: [],
+          reductionsQ: "non",
+          logement: "locataire", loyer: "980",
+          rpProjetQ: "oui", rpProjetHorizon: "<1", rpProjetMensualite: "1250", rpProjetDuree: "25", rpProjetApport: "45000", rpProjetTaux: "3,5",
+          rpProjetNote: "Appartement T3 à Lyon 7e, compromis visé au printemps ; accord de principe de la banque sur 25 ans.",
+          depensesMens: "2300",
+          biensQ: "non", biens: [],
+          creditsQ: "oui", credits: [
+            { id: 1, nature: "auto", naturePrecision: "Véhicule personnel", banque: "Crédit Mutuel", mensualite: "260", crd: "11000", fin: String(new Date().getFullYear() + 4), finMois: ncAnFin(4, "06"), assurQuotite: "100_client" },
           ],
-          objectifs: ["locatif", "fiscalite"], objectifsOrdre: ["locatif", "fiscalite"],
-          capaciteEpargne: "300-500", apportInitial: "30000-50000",
+          avoirsQ: "oui", avoirs: [
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "Crédit Mutuel", titulaire: "client", objectif: "projet", gestion: "lui", rendement: "1,7", note: "Réservé à l'apport de la résidence principale" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", etablissement: "Crédit Mutuel", titulaire: "client", objectif: "projet", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 3, type: "compte_courant", valeur: "6500", etablissement: "Crédit Mutuel", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "0" }),
+            ncAvoir({ id: 4, type: "pea", valeur: "18000", etablissement: "Boursorama", titulaire: "client", ppQ: "oui", pp: "150", objectif: "rendement", contentQ: "oui", gestion: "lui", profil: "dynamique", rendement: "5,5", note: "ETF monde, versements programmés depuis 2022" }),
+          ],
+          objectifs: ["retraite", "fiscalite"], objectifsOrdre: ["retraite", "fiscalite"], objectifPrio: "retraite",
+          objectifsDetail: {
+            retraite: { age: "64", pension: "", pensionNsp: "oui", revenu: "900", ageConj: "", pensionConj: "", revenuConj: "" },
+            fiscalite: { note: "Souhaite réduire son impôt dès la première année d'épargne retraite", capital: "", mensuel: "150" },
+          },
+          capaciteEpargne: "300-500", epargnePrecaution: "10000", horizon: ">15", apportInitial: "<10000",
+          notes: "Priorité à l'achat de la résidence principale ; épargne retraite à mettre en place une fois l'acquisition signée.",
+          notesConseiller: "Client recommandé par un confrère. Revoir la délégation d'assurance au moment de l'offre de prêt.",
+          risqueExterneProfil: "Dynamique", risqueExterneSri: "5",
         },
       },
       {
-        cle: "pacse", lib: "Pacsés", sous: "Julie & Nicolas LEROY, 38 et 40 ans",
+        cle: "pacse", lib: "Pacsés", sous: "Claire & Maxime ROUSSEL, 36 et 38 ans",
         d: {
-          civilite: "Mme", nom: "LEROY", prenom: "Julie", dateNaissance: ncDateNaiss(38, "02-08"),
-          situation: "pacse", conjointQ: "oui", testamentQ: "non",
-          conjoint: { civilite: "M.", nom: "LEROY", prenom: "Nicolas", nomJeuneFille: "", dateNaissance: ncDateNaiss(40, "10-21"), nationalite: "francaise", nationaliteAutre: "" },
+          civilite: "Mme", nom: "ROUSSEL", prenom: "Claire", nomNaissance: "DUMONT", dateNaissance: ncDateNaiss(36, "02-09"),
+          tel: "06 72 18 44 03", email: "claire.roussel@exemple.fr",
+          adresse: "8 allée des Tilleuls", codePostal: "44300", ville: "Nantes",
+          banquePrincipale: "Banque Populaire", banquePrincipaleConjoint: "Société Générale",
+          situation: "pacse", regime: "separation", conjointQ: "oui", testamentQ: "non",
+          conjoint: { civilite: "M.", nom: "ROUSSEL", prenom: "Maxime", nomJeuneFille: "", dateNaissance: ncDateNaiss(38, "06-21"), nationalite: "francaise", nationaliteAutre: "", tel: "06 58 90 12 36", email: "maxime.roussel@exemple.fr" },
           enfantsQ: "oui", enfants: [
-            { id: 1, prenom: "Léa", dateNaissance: ncDateNaiss(7, "06-02"), annee: ncAnneeNaiss(7), charge: "100", filiation: "commun", handicap: "non" },
-            { id: 2, prenom: "Hugo", dateNaissance: ncDateNaiss(4, "01-17"), annee: ncAnneeNaiss(4), charge: "100", filiation: "commun", handicap: "non" },
+            { id: 1, prenom: "Jade", dateNaissance: ncDateNaiss(6, "05-03"), annee: ncAnneeNaiss(6), charge: "100", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
+            { id: 2, prenom: "Noé", dateNaissance: ncDateNaiss(3, "01-28"), annee: ncAnneeNaiss(3), charge: "100", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
           ],
-          donationsQ: "non",
-          activites: ["salarie"], actSalarie: ncSal(3200, "cadre"),
-          conjointRev: { activites: ["salarie"], actSalarie: ncSal(4100, "cadre"), actIndependant: { activite: "", n1: "", n2: "", n3: "" }, actChef: { societe: "", revenu: "", periode: "an" }, actFonctionnaire: { poste: "", revenu: "", periode: "an" }, actRetraite: { revenu: "", periode: "mois" }, actAutre: { precision: "", revenu: "", periode: "an" } },
-          logement: "proprietaire", rpValeur: "380000", rpCreditQ: "oui", rpCrd: "240000", rpMensualite: "1350", rpTaux: "3,2", rpDureeRestante: "19",
-          rpAssurQuotite: "50_50", rpAssurRenegociee: "non", rpDetenteur: "commun",
-          fonciersQ: "non", biensQ: "non", creditsQ: "non",
+          donationsQ: "non", donations: [],
+          activites: ["fonctionnaire"],
+          actFonctionnaire: { poste: "Infirmière — CHU de Nantes", revenu: "2650", periode: "mois" },
+          conjointRev: { ...ncRevVide(), activites: ["salarie"], actSalarie: ncSalF({ poste: "Responsable commercial", entreprise: "Océane Distribution", statut: "cadre", montant: "4300", nbMois: "13", variableQ: "oui", variableMode: "en_plus", variableBrutNet: "net", variablePeriode: "an", variableN1: "6000", variableN2: "5200" }) },
+          rattachementEnfants: "conjoint",
+          mobiliersQ: "non",
+          fonciersQ: "non", locatifs: [],
+          reductionsQ: "oui", reductionsLignes: [
+            { id: 1, type: "emploi_domicile", montant: "3200", periode: "an", dureeType: "recurrent", duree: "", note: "Garde des enfants à domicile (crédit d'impôt 50 %)" },
+          ],
+          logement: "proprietaire", rpValeur: "385000", rpDetenteur: "5050",
+          rpCreditQ: "oui", rpBanque: "Banque Populaire", rpCrd: "236000", rpMensualite: "1340", rpTaux: "3,1", rpDureeRestante: "19",
+          rpAssurQuotite: "50_50", rpAssurRenegociee: "non", rpAssurAssureur: "Contrat groupe de la banque", rpAssurCotisation: "62", rpAssurNote: "Jamais renégociée depuis la signature",
+          depensesMens: "4600",
+          biensQ: "non", biens: [],
+          creditsQ: "oui", credits: [
+            { id: 1, nature: "conso", naturePrecision: "Travaux de cuisine", banque: "Société Générale", mensualite: "180", crd: "6200", fin: String(new Date().getFullYear() + 3), finMois: ncAnFin(3, "03"), assurQuotite: "100_conjoint" },
+          ],
           avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
-            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12050", titulaire: "conjoint" }),
-            ncAvoir({ id: 3, type: "av", valeur: "25000", titulaire: "client" }),
-            ncAvoir({ id: 4, type: "epargne_salariale", valeur: "12000", titulaire: "conjoint" }),
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "18400", etablissement: "Banque Populaire", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", etablissement: "Société Générale", titulaire: "conjoint", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 3, type: "compte_courant", valeur: "5200", etablissement: "Banque Populaire", titulaire: "commun", objectif: "aucun", gestion: "lui", rendement: "0", note: "Compte joint des dépenses du foyer" }),
+            ncAvoir({ id: 4, type: "av", valeur: "32000", etablissement: "Banque Populaire", titulaire: "client", ppQ: "oui", pp: "100", objectif: "projet", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,1", note: "Ouvert à la naissance de Jade — 90 % fonds euros" }),
+            ncAvoir({ id: 5, type: "epargne_salariale", valeur: "14500", etablissement: "Amundi (PEE)", titulaire: "conjoint", objectif: "rendement", contentQ: "oui", gestion: "agent", profil: "equilibre", rendement: "3,8", note: "Intéressement placé chaque année" }),
           ],
-          objectifs: ["prevoyance", "etudes", "retraite"], objectifsOrdre: ["prevoyance", "etudes", "retraite"],
-          capaciteEpargne: "300-500", apportInitial: "aucun",
+          objectifs: ["etudes", "prevoyance", "retraite"], objectifsOrdre: ["etudes", "prevoyance", "retraite"], objectifPrio: "etudes",
+          objectifsDetail: {
+            etudes: { horizon: "", budget: "", lignes: [
+              { id: 1, enfantId: 1, nom: "Jade", horizon: "12", budget: "40000" },
+              { id: 2, enfantId: 2, nom: "Noé", horizon: "15", budget: "40000" },
+            ] },
+            prevoyance: { fumeur: "non", travailManuel: "non", travailRisque: "non", couvertureQ: "non", note: "Aucune prévoyance individuelle ; Claire relève de la protection statutaire de la fonction publique hospitalière." },
+            retraite: { age: "64", pension: "", pensionNsp: "oui", revenu: "600", ageConj: "64", pensionConj: "", pensionConjNsp: "oui", revenuConj: "800" },
+          },
+          reflexionPatrimoine: "commune",
+          capaciteEpargne: "500-1000", epargnePrecaution: "15000", horizon: "10-15", apportInitial: "<10000",
+          notes: "Couple pacsé sans testament : la protection du partenaire survivant est à aborder en priorité.",
+          notesConseiller: "Rencontrés via l'école des enfants. Maxime est le plus impliqué sur les sujets financiers.",
+          risqueExterneProfil: "Équilibré", risqueExterneSri: "4",
+          risqueMode2: "externe", risqueExterneProfil2: "Dynamique", risqueExterneSri2: "5", risqueExterneNote2: "Questionnaire du cabinet, même rendez-vous",
         },
       },
       {
-        cle: "marie", lib: "Mariés", sous: "Philippe & Catherine DURAND, 52 et 50 ans",
+        cle: "marie", lib: "Mariés", sous: "Olivier & Isabelle LAMBERT, 53 et 51 ans",
         d: {
-          civilite: "M.", nom: "DURAND", prenom: "Philippe", dateNaissance: ncDateNaiss(52, "04-03"),
-          situation: "marie", regime: "communaute_acquets", conjointQ: "oui", ddvQ: "non",
-          conjoint: { civilite: "Mme", nom: "DURAND", prenom: "Catherine", nomJeuneFille: "", dateNaissance: ncDateNaiss(50, "09-27"), nationalite: "francaise", nationaliteAutre: "" },
+          civilite: "M.", nom: "LAMBERT", prenom: "Olivier", nomNaissance: "LAMBERT", dateNaissance: ncDateNaiss(53, "03-06"),
+          tel: "06 33 81 25 47", email: "olivier.lambert@exemple.fr",
+          adresse: "27 avenue Carnot", codePostal: "33200", ville: "Bordeaux",
+          banquePrincipale: "LCL", banquePrincipaleConjoint: "LCL",
+          situation: "marie", regime: "communaute_acquets", conjointQ: "oui", ddvQ: "non", testamentQ: "non", ddvAncienneQ: "non",
+          conjoint: { civilite: "Mme", nom: "LAMBERT", prenom: "Isabelle", nomJeuneFille: "GARNIER", dateNaissance: ncDateNaiss(51, "07-15"), nationalite: "francaise", nationaliteAutre: "", tel: "06 47 12 90 58", email: "isabelle.lambert@exemple.fr" },
           enfantsQ: "oui", enfants: [
-            { id: 1, prenom: "Camille", dateNaissance: ncDateNaiss(22, "03-11"), annee: ncAnneeNaiss(22), charge: "100", filiation: "commun", handicap: "non" },
-            { id: 2, prenom: "Antoine", dateNaissance: ncDateNaiss(19, "07-30"), annee: ncAnneeNaiss(19), charge: "100", filiation: "commun", handicap: "non" },
-            { id: 3, prenom: "Chloé", dateNaissance: ncDateNaiss(15, "12-05"), annee: ncAnneeNaiss(15), charge: "100", filiation: "commun", handicap: "non" },
+            { id: 1, prenom: "Manon", dateNaissance: ncDateNaiss(22, "03-14"), annee: ncAnneeNaiss(22), charge: "100", filiation: "commun", handicap: "non", sortieFoyerAge: "24" },
+            { id: 2, prenom: "Hugo", dateNaissance: ncDateNaiss(19, "06-02"), annee: ncAnneeNaiss(19), charge: "100", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
+            { id: 3, prenom: "Lina", dateNaissance: ncDateNaiss(15, "01-20"), annee: ncAnneeNaiss(15), charge: "100", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
           ],
-          donationsQ: "non",
-          activites: ["independant"], actIndependant: { activite: "Profession libérale", n1: "114000", n2: "114000", n3: "114000" },
-          conjointRev: { activites: ["salarie"], actSalarie: ncSal(2800, "noncadre"), actIndependant: { activite: "", n1: "", n2: "", n3: "" }, actChef: { societe: "", revenu: "", periode: "an" }, actFonctionnaire: { poste: "", revenu: "", periode: "an" }, actRetraite: { revenu: "", periode: "mois" }, actAutre: { precision: "", revenu: "", periode: "an" } },
-          logement: "proprietaire", rpValeur: "650000", rpCreditQ: "non", rpDetenteur: "commun",
-          fonciersQ: "oui", fonciersTypes: ["nue"], locatifs: [
-            { id: 1, nom: "Appartement locatif", type: "nue", valeur: "210000", loyer: "780", creditQ: "oui", crd: "95000", mensualite: "820", assurQuotite: "100_100", assurQ: "non", titulaire: "commun", regime: "reel_foncier", banque: "", gere: "", imposable: "", note: "" },
+          donationsQ: "oui", donations: [
+            { id: 1, benef: "Manon", annee: String(new Date().getFullYear() - 5), montant: "20000", note: "Don manuel déclaré (formulaire 2735) pour son installation étudiante" },
           ],
-          biensQ: "non", creditsQ: "non",
+          activites: ["independant"],
+          actIndependant: { activite: "Architecte libéral (BNC)", n1: "118000", n2: "112000", n3: "105000", prevQ: "oui", prevAssureur: "Contrat Madelin — AXA" },
+          conjointRev: { ...ncRevVide(), activites: ["salarie"], actSalarie: ncSalF({ poste: "Assistante de direction", entreprise: "Clinique Saint-Augustin", statut: "noncadre", montant: "2700", nbMois: "13" }) },
+          mobiliersQ: "oui", mobiliersExceptionnel: "non", mobiliersN1: "1200", mobiliersN2: "1100", mobiliersN3: "950", mobiliersNote: "Dividendes du compte-titres",
+          fonciersQ: "oui", fonciersTypes: ["nue"], meubleGere: "", fonciersNote: "Studio loué à un étudiant",
+          locatifs: [
+            { id: 1, nom: "Studio — Lille centre", type: "nue", gere: "gere", titulaire: "commun", loyer: "690", valeur: "165000", regime: "reel_foncier", imposable: "",
+              creditQ: "oui", banque: "LCL", mensualite: "740", crd: "78000", assurQuotite: "100_100", assurQ: "non", assurAssureur: "Contrat groupe LCL", assurCotisation: "28", assurNote: "", note: "Acquis en 2016, gestion confiée à une agence (7 %)" },
+          ],
+          reductionsQ: "oui", reductionsLignes: [
+            { id: 1, type: "emploi_domicile", montant: "3600", periode: "an", dureeType: "recurrent", duree: "", note: "Ménage et jardin" },
+            { id: 2, type: "dons", montant: "800", periode: "an", dureeType: "recurrent", duree: "", note: "Dons aux œuvres" },
+          ],
+          logement: "proprietaire", rpValeur: "620000", rpDetenteur: "5050", rpCreditQ: "non",
+          depensesMens: "7200",
+          biensQ: "oui", biens: [
+            { id: 1, type: "rs", nom: "Maison — Arcachon", detention: "pp", titulaire: "commun", valeur: "380000", indivPart: "", indivAvec: "", enLocationQ: "non", loyer: "", creditQ: "non", banque: "", mensualite: "", crd: "",
+              assurQuotite: "", assurQ: "", assurAssureur: "", assurCotisation: "", assurNote: "", venteQ: "non", venteDelai: "", note: "Maison de famille, résidence secondaire" },
+          ],
+          creditsQ: "non", credits: [],
           avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "per", valeur: "45000", titulaire: "client" }),
-            ncAvoir({ id: 2, type: "av", valeur: "120000", titulaire: "commun" }),
-            ncAvoir({ id: 3, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
-            ncAvoir({ id: 4, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "conjoint" }),
-            ncAvoir({ id: 5, type: "livrets", livretType: "csl", valeur: "39100", titulaire: "commun" }),
-            ncAvoir({ id: 6, type: "cto", valeur: "40000", titulaire: "commun" }),
+            ncAvoir({ id: 1, type: "per", valeur: "52000", etablissement: "AXA", titulaire: "client", origine: "union", ppQ: "oui", pp: "300", objectif: "retraite", contentQ: "non", gestion: "agent", profil: "equilibre", rendement: "3,1", note: "PER individuel, ex-Madelin transféré" }),
+            ncAvoir({ id: 2, type: "av", valeur: "135000", etablissement: "LCL", titulaire: "commun", origine: "union", ppQ: "non", objectif: "transmission", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,3", note: "Clause bénéficiaire standard" }),
+            ncAvoir({ id: 3, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "client", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 4, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "conjoint", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 5, type: "livrets", livretType: "csl", valeur: "41000", etablissement: "LCL", titulaire: "commun", origine: "union", objectif: "aucun", gestion: "lui", rendement: "1,0" }),
+            ncAvoir({ id: 6, type: "compte_courant", valeur: "8000", etablissement: "LCL", titulaire: "commun", origine: "union", objectif: "aucun", gestion: "lui", rendement: "0" }),
+            ncAvoir({ id: 7, type: "cto", valeur: "48000", etablissement: "LCL", titulaire: "commun", origine: "union", objectif: "rendement", contentQ: "oui", gestion: "banque", profil: "dynamique", rendement: "4,0" }),
           ],
-          /* TMI NON forcée : la fiche validée annonçait 41 %, mais 147 600 € de revenus
-             sur 4 parts (couple + 3 enfants) tombent dans la tranche à 30 %. Le moteur la
-             calcule ; forcer 41 % aurait inscrit un chiffre faux dans le dossier. */
-          objectifs: ["retraite", "fiscalite", "transmettre"], objectifsOrdre: ["retraite", "fiscalite", "transmettre"],
-          capaciteEpargne: ">1000", apportInitial: "50000-100000",
+          objectifs: ["retraite", "fiscalite", "transmettre"], objectifsOrdre: ["retraite", "fiscalite", "transmettre"], objectifPrio: "retraite",
+          objectifsDetail: {
+            retraite: { age: "64", pension: "3900", pensionNsp: "", revenu: "1500", ageConj: "62", pensionConj: "1600", pensionConjNsp: "", revenuConj: "500" },
+            fiscalite: { note: "Revenus libéraux en hausse ; souhaite lisser l'impôt jusqu'à la retraite", capital: "", mensuel: "500" },
+            transmettre: { note: "Équilibrer entre les trois enfants ; la maison d'Arcachon doit rester dans la famille" },
+          },
+          reflexionPatrimoine: "commune",
+          capaciteEpargne: ">1000", epargnePrecaution: "30000", horizon: "10-15", apportInitial: "50000-100000",
+          notes: "Aucune donation au dernier vivant ; Olivier est TNS, prévoyance à auditer.",
+          notesConseiller: "Dossier transmis par l'expert-comptable du cabinet d'architecture.",
+          risqueExterneProfil: "Équilibré", risqueExterneSri: "4",
+          risqueMode2: "externe", risqueExterneProfil2: "Prudent", risqueExterneSri2: "3", risqueExterneNote2: "Questionnaire du cabinet, même rendez-vous",
         },
       },
       {
-        cle: "veuf", lib: "Veuve", sous: "Monique BERNARD, 71 ans",
+        cle: "veuf", lib: "Veuve", sous: "Jacqueline MOREAU, 74 ans",
         d: {
-          civilite: "Mme", nom: "BERNARD", prenom: "Monique", dateNaissance: ncDateNaiss(71, "11-02"),
-          situation: "veuf", conjointQ: "non",
+          civilite: "Mme", nom: "MOREAU", prenom: "Jacqueline", nomNaissance: "PERRIN", dateNaissance: ncDateNaiss(74, "02-11"),
+          tel: "06 85 20 71 39", email: "jacqueline.moreau@exemple.fr",
+          adresse: "5 place du Marché", codePostal: "37000", ville: "Tours",
+          banquePrincipale: "Caisse d'Épargne",
+          situation: "veuf", conjointQ: "non", testamentQ: "oui",
           enfantsQ: "oui", enfants: [
-            { id: 1, prenom: "Laurent", dateNaissance: ncDateNaiss(45, "02-19"), annee: ncAnneeNaiss(45), charge: "0", filiation: "commun", handicap: "non" },
-            { id: 2, prenom: "Sophie", dateNaissance: ncDateNaiss(42, "08-24"), annee: ncAnneeNaiss(42), charge: "0", filiation: "commun", handicap: "non" },
+            { id: 1, prenom: "Pierre", dateNaissance: ncDateNaiss(49, "05-19"), annee: ncAnneeNaiss(49), charge: "non", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
+            { id: 2, prenom: "Anne", dateNaissance: ncDateNaiss(46, "08-04"), annee: ncAnneeNaiss(46), charge: "non", filiation: "commun", handicap: "non", sortieFoyerAge: "" },
           ],
-          donationsQ: "oui", donations: [{ id: 1, benef: "Laurent", annee: String(new Date().getFullYear() - 8), montant: "50000", note: "" }],
-          activites: ["retraite"], actRetraite: { revenu: "2400", periode: "mois" },
-          logement: "proprietaire", rpValeur: "320000", rpCreditQ: "non", rpDetenteur: "client",
-          fonciersQ: "non", biensQ: "non", creditsQ: "non",
+          donationsQ: "oui", donations: [
+            { id: 1, benef: "Pierre", annee: String(new Date().getFullYear() - 9), montant: "60000", note: "Donation notariée pour l'achat de sa résidence principale" },
+          ],
+          activites: ["retraite"], actRetraite: { revenu: "2650", periode: "mois" },
+          mobiliersQ: "non",
+          fonciersQ: "non", locatifs: [],
+          reductionsQ: "oui", reductionsLignes: [
+            { id: 1, type: "dons", montant: "600", periode: "an", dureeType: "recurrent", duree: "", note: "Dons aux œuvres" },
+          ],
+          logement: "proprietaire", rpValeur: "350000", rpDetenteur: "client", rpCreditQ: "non",
+          depensesMens: "2100",
+          biensQ: "non", biens: [],
+          creditsQ: "non", credits: [],
           avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", titulaire: "client" }),
-            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", titulaire: "client" }),
-            ncAvoir({ id: 3, type: "livrets", livretType: "csl", valeur: "105050", titulaire: "client" }),
-            ncAvoir({ id: 4, type: "compte_courant", valeur: "15000", titulaire: "client" }),
-            ncAvoir({ id: 5, type: "av", valeur: "180000", titulaire: "client", note: "versements effectués avant 70 ans" }),
+            ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
+            ncAvoir({ id: 3, type: "livrets", livretType: "csl", valeur: "98000", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "aucun", gestion: "lui", rendement: "1,0", note: "Capital reçu au décès de son époux, jamais réinvesti" }),
+            ncAvoir({ id: 4, type: "compte_courant", valeur: "18500", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "aucun", gestion: "lui", rendement: "0" }),
+            ncAvoir({ id: 5, type: "av", valeur: "165000", etablissement: "CNP (Caisse d'Épargne)", titulaire: "client", ppQ: "non", objectif: "transmission", contentQ: "oui", gestion: "banque", profil: "prudent", rendement: "2,2", note: "Versements effectués avant 70 ans, bénéficiaires : ses deux enfants" }),
           ],
-          objectifs: ["transmettre", "perso"], objectifsOrdre: ["transmettre", "perso"],
-          objectifsDetail: { perso: { lignes: [{ id: 1, titre: "Revenus complémentaires", note: "", capital: "", mensuel: "", horizon: "" }] } },
-          capaciteEpargne: "aucune", apportInitial: ">100000",
+          objectifs: ["transmettre", "perso"], objectifsOrdre: ["transmettre", "perso"], objectifPrio: "transmettre",
+          objectifsDetail: {
+            transmettre: { note: "Rééquilibrer entre Pierre et Anne : Pierre a déjà reçu 60 000 €" },
+            perso: { lignes: [{ id: 1, titre: "Aider ses petits-enfants", note: "Financer une partie des études des quatre petits-enfants", capital: "40000", mensuel: "", horizon: "5" }] },
+          },
+          capaciteEpargne: "aucune", epargnePrecaution: "25000", horizon: "5-10", apportInitial: ">100000",
+          notes: "Aucun projet identifié pour les liquidités ; souhaite garder de quoi faire face à une entrée en résidence seniors.",
+          notesConseiller: "Venue sur recommandation de sa fille Anne, présente au rendez-vous.",
+          risqueExterneProfil: "Prudent", risqueExterneSri: "2",
         },
       },
     ];
@@ -5755,7 +5859,11 @@
         const libs = objectifs.map(v => { const o = NC_OBJECTIFS.find(x => x.v === v); return o ? o.l : v; });
         // 29/08 : les objectifs ressortent dans l'ORDRE DE PRIORITÉ classé par le client.
         const ordreSyn = [...(d.objectifsOrdre || []).filter(v => objectifs.includes(v)), ...objectifs.filter(v => !(d.objectifsOrdre || []).includes(v))];
-        const libsNum = ordreSyn.map((v, iN) => { const o = NC_OBJECTIFS.find(x => x.v === v); return `${libs.length > 1 ? `${iN + 1}. ` : ""}${o ? o.l : v}`; });
+        /* 23/09/2026 : un objectif « Créer un objectif » s'affiche sous le TITRE saisi par le
+           conseiller (« Aider ses petits-enfants »), jamais sous le libellé du bouton. */
+        const persoTitres = ((((d.objectifsDetail || {}).perso || {}).lignes) || []).map(x => (x.titre || "").trim()).filter(Boolean);
+        const libObj = (v, o) => v === "perso" && persoTitres.length ? persoTitres.join(" · ") : (o ? o.l : v);
+        const libsNum = ordreSyn.map((v, iN) => { const o = NC_OBJECTIFS.find(x => x.v === v); return `${libs.length > 1 ? `${iN + 1}. ` : ""}${libObj(v, o)}`; });
         phrases.push({ t: libs.length > 1 ? "Objectifs exprimés" : "Objectif exprimé", c: "#b8924e", list: libsNum, sub: libs.length > 1 ? "classés par ordre de priorité avec le client" : "", large: true });
       }
       // Objectifs recommandés par le cabinet : formulés en langage client, chiffrés,
@@ -11916,7 +12024,11 @@
                                affiché à côté : c'est lui qu'on lit en rendez-vous. */
                             const neLeE = neLe(e.dateNaissance);
                             const dateE = neLeE !== "non renseignée" ? neLeE : null;
-                            return `${ncCapNom(e.prenom || "") || "Enfant"}${dateE ? ` — ${dateE}` : ""}${ageE != null ? `${dateE ? ", " : ", "}${ageE} ans` : ""} — ${fil}`;
+                            /* 23/09/2026 (CGP) : « il faut que ça indique que Camille quittera le foyer
+                               en 2029 » — l'âge prévu de sortie saisi à l'étape Famille (v254). */
+                            const sortE = ncInt(e.sortieFoyerAge);
+                            const quitte = (e.charge !== "non" && ageE != null && sortE > ageE) ? ` — quittera le foyer fiscal en ${new Date().getFullYear() + (sortE - ageE)}` : "";
+                            return `${ncCapNom(e.prenom || "") || "Enfant"}${dateE ? ` — ${dateE}` : ""}${ageE != null ? `${dateE ? ", " : ", "}${ageE} ans` : ""} — ${fil}${quitte}`;
                           });
                           const adresse = (d.adresseQ === "oui" && (d.adresse || d.ville))
                             ? [d.adresse, [d.codePostal, d.ville].filter(Boolean).join(" ")].filter(Boolean)
@@ -12740,13 +12852,69 @@
                                     <div className="mt-3 rounded-xl px-3.5 py-3 border" style={{ borderColor: "#f59e0b", background: "#fffbeb" }}>
                                       <div className="text-[9.5px] uppercase tracking-wider font-bold mb-1" style={{ color: "#b45309" }}>À la limite de la tranche supérieure</div>
                                       <div className="text-[11.5px] leading-snug text-stone-700">
-                                        Le quotient familial du foyer ({nf7(qf7)} €/part) est à moins de 5 % du seuil des <b>{Math.round(tSup7 * 100)} %</b> ({nf7(t7.max)} €/part). Environ <b>{nf7(marge7)} €</b> de revenu imposable supplémentaire par an suffisent à l'atteindre : chaque euro au-delà serait alors imposé à <b>{Math.round(tSup7 * 100)} %</b> au lieu de {Math.round(t7.taux * 100)} % aujourd'hui. Concrètement, une augmentation de 1 000 € coûterait ≈ <b>{nf7(1000 * tSup7)} €</b> d'impôt, contre ≈ {nf7(1000 * t7.taux)} € actuellement. Seuls les euros au-delà du seuil sont concernés — et un versement PER, déductible du revenu imposable, éloigne ce seuil.
+                                        Le quotient familial du foyer ({nf7(qf7)} €/part) est à moins de 5 % du seuil des <b>{Math.round(tSup7 * 100)} %</b> ({nf7(t7.max)} €/part). Environ <b>{nf7(marge7)} €</b> de revenu imposable supplémentaire par an suffisent à l'atteindre : chaque euro au-delà serait alors imposé à <b>{Math.round(tSup7 * 100)} %</b> au lieu de {Math.round(t7.taux * 100)} % aujourd'hui. Concrètement, une augmentation de 1 000 € coûterait ≈ <b>{nf7(1000 * tSup7)} €</b> d'impôt, contre ≈ {nf7(1000 * t7.taux)} € actuellement. Seuls les euros au-delà du seuil sont concernés{foyerRetraiteS ? "." : " — et un versement PER, déductible du revenu imposable, éloigne ce seuil."}
                                       </div>
                                     </div>
                                   );
                                 }
                               }
                               return null;
+                            })()}
+                            {/* ═══ 23/09/2026 (CGP) — SORTIE D'UN ENFANT DU FOYER FISCAL ═══
+                                « Il faut que ça indique que Camille quittera le foyer en 2029 et que ça
+                                fasse une projection de l'impôt et de la TMI en ce sens. » Pour chaque
+                                enfant dont l'âge de sortie est saisi, le moteur fiscal est relancé SANS
+                                cet enfant (et sans ceux partis avant lui) : parts, TMI, impôt — à
+                                revenus et législation constants. */}
+                            {(() => {
+                              const anC = new Date().getFullYear();
+                              const departs = (d.enfants || []).map(e => {
+                                const ag = ncAgeDate(e.dateNaissance) != null ? ncAgeDate(e.dateNaissance) : ncAgeEnfant(e);
+                                const so = ncInt(e.sortieFoyerAge);
+                                return (e.charge !== "non" && ag != null && so > ag) ? { id: e.id, prenom: ncCapNom(e.prenom || "") || "Enfant", age: so, an: anC + (so - ag) } : null;
+                              }).filter(Boolean).sort((a, b) => a.an - b.an || a.id - b.id);
+                              if (!departs.length) return null;
+                              const partis = new Set();
+                              const etapes = departs.map(x => {
+                                partis.add(x.id);
+                                const dS = { ...d, enfants: (d.enfants || []).map(e => partis.has(e.id) ? { ...e, charge: "non" } : e) };
+                                let f = null; try { f = ncCalcFisc(dS, anRef); } catch (e) { f = null; }
+                                return { ...x, f };
+                              }).filter(x => x.f);
+                              if (!etapes.length) return null;
+                              const pc7 = (t) => Math.round((t || 0) * 100) + " %";
+                              const pt7 = (p) => String(Math.round((p || 0) * 100) / 100).replace(".", ",");
+                              const lignes = [{ l: "Aujourd'hui", f: fisc7, an: anC }].concat(etapes.map(x => ({ l: `Après le départ de ${x.prenom}`, f: x.f, an: x.an })));
+                              return (
+                                <div className="mt-3 rounded-xl px-3.5 py-3 border" data-nc-sortie-foyer-fisc="1" style={{ borderColor: "rgba(109,40,217,0.35)", background: "#6d28d908" }}>
+                                  <div className="text-[9.5px] uppercase tracking-wider font-bold mb-1.5" style={{ color: "#6d28d9" }}>Évolution du foyer fiscal</div>
+                                  <div className="text-[11.5px] leading-snug text-stone-700 mb-2">
+                                    {etapes.map((x, i) => <span key={x.id}>{i > 0 ? " " : ""}<b>{x.prenom}</b> quittera le foyer fiscal en <b>{x.an}</b> (à {x.age} ans).</span>)}
+                                  </div>
+                                  <table className="w-full text-[11px]" style={{ borderCollapse: "collapse" }}>
+                                    <thead>
+                                      <tr className="text-[9px] uppercase tracking-wider text-stone-400">
+                                        <th className="text-left font-bold py-1">Situation</th><th className="text-right font-bold py-1">Parts</th><th className="text-right font-bold py-1">TMI</th><th className="text-right font-bold py-1">Impôt estimé</th><th className="text-right font-bold py-1">Écart / an</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {lignes.map((r, i) => {
+                                        const ec = i === 0 ? null : Math.round((r.f.impotNet || 0) - (fisc7.impotNet || 0));
+                                        return (
+                                          <tr key={i} style={{ borderTop: "1px solid rgba(10,9,8,0.08)" }}>
+                                            <td className="py-1 text-stone-700">{r.l}{i > 0 ? <span className="text-stone-400"> — {r.an}</span> : null}</td>
+                                            <td className="py-1 text-right num">{pt7(r.f.parts)}</td>
+                                            <td className="py-1 text-right num font-bold" style={{ color: i > 0 && r.f.tmi > fisc7.tmi ? "#b91c1c" : "#1d2735" }}>{pc7(r.f.tmi)}</td>
+                                            <td className="py-1 text-right num font-bold">{nf7(r.f.impotNet)} €</td>
+                                            <td className="py-1 text-right num" style={{ color: ec > 0 ? "#b91c1c" : "#44403c" }}>{ec == null ? "—" : `${ec > 0 ? "+ " : ec < 0 ? "− " : ""}${nf7(Math.abs(ec))} €`}</td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                  <div className="mt-1.5 text-[9.5px] text-stone-400">À revenus et législation constants — seule la composition du foyer change.</div>
+                                </div>
+                              );
                             })()}
                             <div className="mt-2 text-[9.5px] text-stone-400">Sur 10 ans à situation constante : ≈ <b className="text-stone-600">{nf7(fisc7.impotNet * 10)} €</b> d'impôt — un capital qui peut, pour partie, être orienté autrement. Un passage à la retraite dans l'intervalle réduirait ce montant.</div>
                           </div>
