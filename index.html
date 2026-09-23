@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v250 (23/09 : PAS D ASSURANCE-VIE NI DE PER « COMMUN » HORS COMMUNAUTE. Le CGP : « lors d un mariage sous le regime de la separation, PACS, union libre (tout sauf la communaute) il n est pas possible de faire un contrat d assurance-vie en commun ; ce choix ne doit donc pas etre possible sur l audit patrimonial » — meme regle pour le PER. (1) Etape Patrimoine, « A qui appartient cet avoir ? » : pour une assurance-vie ou un PER, hors communaute d acquets et communaute universelle, seuls Monsieur et Madame sont proposes ; « Commun / joint » et « Indivision » restent pour les autres avoirs. (2) Un dossier existant qui porte encore une AV ou un PER « commun » hors communaute N EST PAS corrige d office (« ne rien forcer ») : la fenetre des incoherences (v248) porte l ALERTE CRITIQUE redigee par le CGP — montant du contrat, regime, requalification en donation indirecte et blocage au deces, contrat a scinder en deux contrats individuels. (3) Clients types inchanges : la fiche « Maries » est en communaute, son AV commune est conforme. Banc t_av_commune.js, etape 21/21 de verif.sh.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v251 (23/09 : UN FOYER RETRAITE NE PREPARE PLUS SA RETRAITE. Le CGP, sur le document de Monique BERNARD (veuve, 70 ans, retraitee, 2 400 €/mois de pension, 335 000 € d epargne dont 155 000 € a court terme) : « il est impossible que tu raisonnes ainsi » — le document lui demandait d AUGMENTER SON EPARGNE MENSUELLE (0 pct contre 18 pct), de COMPENSER 1 080 € DE BAISSE DE REVENUS A LA RETRAITE (elle y est), de VERSER AVANT 70 ANS (elle les a) et d OUVRIR UN PER. Nouveau drapeau foyerRetraite dans ncSynthese (client retraite, et conjoint retraite s il y en a un) : (1) plus de problematique « retraite non preparee », plus d objectif « augmenter votre epargne mensuelle » ni « pension estimee / pallier la baisse », plus de preconisation info-retraite.fr ni PER (aucune des trois branches), plus de pieces « estimation de retraite » et « contrats d epargne retraite », plus de question « vos revenus baisseront a la retraite » ni « epargne mensuelle sur quinze ans » (drapeau skip). (2) A la place, si 50 000 € ou plus dorment a court terme sans projet de RP : objectif « Reorienter vos N € de liquidites vers un contrat d assurance-vie a la fiscalite plus confortable qu un livret classique » et preconisation « Souscription d un nouveau contrat d assurance-vie » (art. 757 B CGI apres 70 ans). (3) « L article 990 I est valable jusqu a 70 ans » : fenetre fermee a 70 ans revolus (age < 70, plus « il reste 1 an » a 70 ans), mention retiree de l audit du contrat existant, question 990 I plus posee a 70 ans. Banc t_retraite.js, etape 22/22.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v250 (23/09 : PAS D ASSURANCE-VIE NI DE PER « COMMUN » HORS COMMUNAUTE. Le CGP : « lors d un mariage sous le regime de la separation, PACS, union libre (tout sauf la communaute) il n est pas possible de faire un contrat d assurance-vie en commun ; ce choix ne doit donc pas etre possible sur l audit patrimonial » — meme regle pour le PER. (1) Etape Patrimoine, « A qui appartient cet avoir ? » : pour une assurance-vie ou un PER, hors communaute d acquets et communaute universelle, seuls Monsieur et Madame sont proposes ; « Commun / joint » et « Indivision » restent pour les autres avoirs. (2) Un dossier existant qui porte encore une AV ou un PER « commun » hors communaute N EST PAS corrige d office (« ne rien forcer ») : la fenetre des incoherences (v248) porte l ALERTE CRITIQUE redigee par le CGP — montant du contrat, regime, requalification en donation indirecte et blocage au deces, contrat a scinder en deux contrats individuels. (3) Clients types inchanges : la fiche « Maries » est en communaute, son AV commune est conforme. Banc t_av_commune.js, etape 21/21 de verif.sh.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v249 (21/09 : DOSSIER MARTIN, SUITE. (1) « Sortie totale de tresorerie » retiree AUSSI de la carte « Cout global de l operation » a l ecran (second rappel du CGP : la v247 ne l avait retiree que du document). (2) Epargne : sous « Epargne constituee — total », une ligne « Apres le projet de residence principale » — 57 950 € → 17 950 €, barre avec la part d apport hachuree et un curseur sur ce qui reste (version compacte : la premiere faisait deborder le chapitre et laissait la page 3 au tiers). (3) Les chiffres du dossier : « Le financier » en deux camemberts, aujourd hui et apres le projet RP (apport sorti du financier, bien entre dans l immobilier : 100 % → 6 % pour Martin). (4) Regle cabinet : au-dessus de 25 % d endettement, un projet immobilier locatif est a valider avec les elements precis du dossier et le courtier en credit — sous la carte Capacite d emprunt et dans la preconisation locative. Banc t_recentre etendu (sections 4 et 5).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v248 (21/09 : LE MOTEUR RAISONNE APRES L ACHAT DE LA RESIDENCE PRINCIPALE. Le CGP, sur le dossier MARTIN : « comment peux-tu dire capacite d emprunt disponible = 0 € dans les points forts ? tresorerie trop importante alors qu il va consacrer 40 000 € d apport a sa RP d ici un an ? epargne a zero alors qu il va rembourser 1 200 €/mois de credit, qui est une epargne immobiliere ? Il faut que tu te serves absolument des informations recueillies. » (1) Projection apres achat : l apport du projet RP sort du court terme avant tout jugement de tresorerie ; le capital rembourse du credit RP (decision du CGP : le capital, pas la mensualite entiere, et il augmente a chaque echeance) compte comme epargne mensuelle ; le point fort « capacite d emprunt » et les recommandations locatives lisent la place restante APRES le projet. (2) Document RECENTRE pour toute personne dont la capacite d emprunt est mobilisee (plus de place pour du locatif, projet RP ou credits en cours) : feliciter pour la residence principale, preparer la retraite par PER et assurance-vie, deleguer l assurance de pret — rien de plus, dans tout le document (points forts, axes, problematiques, objectifs du cabinet, preconisations, questions). (3) Fenetre des INCOHERENCES en quittant l etape Objectifs : objectif locatif sans capacite restante, apport declare superieur a l epargne restant apres l apport RP ; « Corriger la saisie » ou « Continuer quand meme ». Mesure Martin : 489 €/mois de capital rembourse, 17 950 € d epargne restant apres 40 000 € d apport. Banc t_recentre (etape 19/20).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v247 (21/09 : QUATRE DEMANDES DU CGP SUR L EXPORT DU DOSSIER MARTIN. (1) Souci d edition page 5 : deux camemberts JUMEAUX (aujourd hui / avec le projet RP) dans une carte d une demi-page laissaient a chaque legende quelques pixels — « Credit auto 1 » s ecrivait une lettre par ligne, la carte montait a 400 px, et l egaliseur etirait les deux cartes suivantes (Capacite d emprunt, Le financier) a la meme hauteur vide. NcDonut prend un parametre vertical : l anneau en haut, la legende dessous sur toute la largeur ; les jumeaux l emploient. (2) « Sortie totale de tresorerie » retiree du document quand il y a un projet d achat de RP ; elle reste a l ecran de saisie. (3) « contre 18 pct en moyenne pour les Francais, dont 9 pct en epargne financiere ». (4) Objectifs recommandes par le cabinet, Preconisations et questions CORRIGEABLES par le conseiller : ✎ corriger, ✕ masquer, ↺ revenir au texte genere, + ajouter une ligne ; stockes dans d.docEdits et d.docAjouts, repris a l impression, boutons jamais imprimes ni montres en presentation. Cle d une ligne = son debut coupe au premier chiffre (les montants bougent) ; cle d une question = sa famille. Le bloc s intitule « Les questions ». Bancs : t_doc_edits (etape 18/19), t_rp retourne (la ligne ne doit plus etre dans le document), t_shot_pres lit le document sans les boutons du conseiller.)','color:#94a3b8');
@@ -4559,6 +4560,17 @@
       const divorce = d.situation === "divorce";
       const recomposee = enCouple && (d.enfants || []).some(e => e.filiation && e.filiation !== "commun");
       const age = ncAgeDate(d.dateNaissance);
+      /* 23/09/2026 (CGP, dossier BERNARD — veuve de 70 ans, retraitée, 2 400 €/mois de
+         pension, 335 000 € d'épargne dont 155 000 € à court terme) : « il est impossible que
+         tu raisonnes ainsi ». Le document lui demandait d'AUGMENTER SON ÉPARGNE MENSUELLE, de
+         COMPENSER LA BAISSE DE REVENUS À LA RETRAITE (elle y est), de VERSER AVANT 70 ANS (elle
+         les a) et d'OUVRIR UN PER. Un foyer retraité ne prépare plus sa retraite : ses revenus
+         sont acquis, il n'épargne plus mensuellement, il n'a plus de levier PER. La seule
+         question qui vaille : pourquoi autant de liquidités sans projet — et les placer sur
+         une assurance-vie, à la fiscalité plus confortable qu'un livret classique. */
+      const retraiteC = (d.activites || []).includes("retraite");
+      const retraiteJ = d.conjointQ === "oui" && (((d.conjointRev || {}).activites) || []).includes("retraite");
+      const foyerRetraite = retraiteC && (!enCouple || retraiteJ);
       // Capacité d'emprunt de référence : TOUJOURS la durée maximale autorisée par la
       // règle des 75 ans (25 ans si possible, sinon 20, sinon 75 − âge). Une seule
       // durée dans toute la synthèse — cohérence entre chiffres du dossier et analyse.
@@ -4854,7 +4866,7 @@
          estimation par taux de remplacement sinon — plus jamais deux chiffres */
       const PF = ncPensionFoyer(d, { revenuClient: revC, revenuConjoint: revJ });
       const pensionEst = ncInt(odRet.pension) + (d.conjointQ === "oui" ? ncInt(odRet.pensionConj) : 0);
-      if ((age != null && age >= 40 && per === 0) || (aObj("retraite") && per === 0)) {
+      if (!foyerRetraite && ((age != null && age >= 40 && per === 0) || (aObj("retraite") && per === 0))) {
         const revAct = revC + revJ;
         const pensionProj = pensionEst > 0 ? pensionEst : Math.round(PF.median > 0 ? PF.median : revAct * 0.55);
         const perteRet = Math.max(0, revAct - pensionProj);
@@ -5188,11 +5200,14 @@
       // ———————————————————————————————————————————————
       // 16. TRANSMISSION APRÈS 70 ANS
       // ———————————————————————————————————————————————
-      if (age != null && age >= 66 && age < 71 && S.patrimoineNet >= 200000) {
+      /* 23/09/2026 (CGP) : « l'article 990 I du CGI est valable jusqu'à 70 ans ». À 70 ans
+         révolus la fenêtre est fermée — le document disait à une cliente de 70 ans « il reste
+         1 an ». Borne : age < 70. */
+      if (age != null && age >= 66 && age < 70 && S.patrimoineNet >= 200000) {
         pb({
           code: "fenetre_990i", priorite: "haute", famille: "Transmission",
           titre: `Fenêtre fiscale à ne pas manquer : les versements avant 70 ans`,
-          constat: `À ${age} ans, avec ${eur(S.patrimoineNet)} de patrimoine net, il reste ${71 - age} an${71 - age > 1 ? "s" : ""} pour verser sur assurance-vie `
+          constat: `À ${age} ans, avec ${eur(S.patrimoineNet)} de patrimoine net, il reste ${70 - age} an${70 - age > 1 ? "s" : ""} pour verser sur assurance-vie `
             + `sous le régime le plus favorable.`,
           consequence: `Les versements effectués avant 70 ans bénéficient d'un abattement de 152 500 € par bénéficiaire (art. 990 I CGI). `
             + `Après 70 ans, l'abattement tombe à 30 500 € global, tous bénéficiaires confondus (art. 757 B CGI) — la différence peut représenter `
@@ -5748,7 +5763,7 @@
            immobilière — il entre dans l'effort d'épargne. */
         const effortM = (S.ppMensuels || 0) + epargneImmo;
         const pctEffort = revFoyer > 0 ? effortM / revFoyer : null;
-        if (pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
+        if (!foyerRetraite && pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
           /* 21/09/2026 (CGP) : « rajoute 9 % en financier sur 18 % au total ». Même
              repère que le bloc « Votre épargne mensuelle actuelle » (INSEE). */
           conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
@@ -5764,13 +5779,18 @@
           const PC = ncPensionFoyer(d, { revenuClient: revC, revenuConjoint: revJ });
           const pensionB = PC.bas, pensionH = PC.haut, actifs = PC.act;
           const baisse = actifs - pensionH;
-          if (actifs > 0 && baisse > 300) {
+          if (!foyerRetraite && actifs > 0 && baisse > 300) {
             conseils.push(PC.reel
               ? `Pension de retraite relevée sur info-retraite.fr : ${eur(Math.round(PC.median))}/mois — la création de revenus complémentaires pour pallier cette baisse est vivement recommandée`
               : Math.round(pensionB) !== Math.round(pensionH)
               ? `Pension de retraite estimée autour de ${eur(Math.round(PC.median))}/mois (TNS : régime de base plafonné au PASS, à fiabiliser par le relevé de carrière info-retraite.fr) — la création de revenus complémentaires pour pallier cette baisse est vivement recommandée`
               : `Pension de retraite estimée autour de ${eur(Math.round(pensionH))}/mois — la création de revenus complémentaires pour pallier cette baisse est vivement recommandée`);
           }
+        }
+        /* 23/09/2026 (CGP) — foyer retraité avec des liquidités importantes et aucun projet :
+           l'objectif du cabinet est de les réorienter vers l'assurance-vie. */
+        if (foyerRetraite && courtTermeM >= 50000 && !projetRPsyn) {
+          conseils.push(`Réorienter vos ${eur(courtTermeM)} de liquidités, sans projet identifié, vers un contrat d'assurance-vie à la fiscalité plus confortable qu'un livret classique`);
         }
         // Complément éventuel par les enjeux des problématiques hautes (sans doublonner).
         if (conseils.length < 3) {
@@ -5782,15 +5802,21 @@
       // Préconisations : les solutions du cabinet, distinctes des objectifs.
       {
         const precos = [];
-        precos.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: ` : vérifier qu'il correspond à votre profil de risque et que son rendement et sa gestion donnent satisfaction — sinon, arbitrage ou optimisation du contrat recommandé${age != null && age >= 65 ? " (versements avant l'anniversaire des 70 ans, art. 990 I CGI)" : ""}` } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
+        precos.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: ` : vérifier qu'il correspond à votre profil de risque et que son rendement et sa gestion donnent satisfaction — sinon, arbitrage ou optimisation du contrat recommandé${age != null && age >= 65 && age < 70 ? " (versements avant l'anniversaire des 70 ans, art. 990 I CGI)" : ""}` } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
         /* 21/09/2026 (CGP) : « au-dessus de 25 % d'endettement, projet immobilier locatif à
            valider avec les éléments précis du dossier et le courtier en crédit ». */
         const endetSup25 = (taux || 0) > 0.25;
         if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
-        if (revC > 0 || revJ > 0) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
+        if (!foyerRetraite && (revC > 0 || revJ > 0)) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
         // PER : TOUJOURS en dernier — et une SEULE mention dans toute la synthèse
         // quand le levier fiscal n'est pas réel (règle cabinet des 5 000 € à 30 %).
-        if (perPertinent) {
+        if (foyerRetraite) {
+          /* 23/09/2026 (CGP) : aucun PER à un retraité. À la place, si des liquidités dorment
+             sans projet : un NOUVEAU contrat d'assurance-vie. Après 70 ans, les versements
+             relèvent de l'art. 757 B CGI (abattement de 30 500 € sur les primes, produits
+             exonérés de droits) et les rachats gardent l'abattement annuel après huit ans. */
+          if (courtTermeM >= 50000 && !projetRPsyn) precos.push({ titre: "Souscription d'un nouveau contrat d'assurance-vie", suite: ` pour y placer l'essentiel de vos ${eur(courtTermeM)} de liquidités sans projet identifié — fiscalité des retraits plus confortable qu'un livret classique, et capital transmis hors succession dans la limite de l'art. 757 B CGI pour les versements après 70 ans` });
+        } else if (perPertinent) {
           precos.push(per > 0 ? { titre: "Versements sur le PER existant", suite: ` — déduction à votre TMI de ${pc(F.tmi)}` } : { titre: "L'ouverture d'un PER est vivement conseillée", suite: ` — déduction des versements à votre TMI de ${pc(F.tmi)}` });
         } else if (F.tmi === 0.30) {
           precos.push({ titre: "Et seulement pour finir : ouverture d'un PER (plan d'épargne retraite)", suite: " dès que 5 000 € de vos revenus auront basculé dans une tranche à 30 %, afin de profiter pleinement du levier fiscal" });
@@ -13287,7 +13313,12 @@
                         })();
                         /* Abattement de l'article 990 I du CGI : 152 500 € PAR BÉNÉFICIAIRE sur les
                            capitaux décès d'assurance-vie alimentés avant 70 ans, hors succession. */
-                        const abatt990 = nbEnf > 0 ? nbEnf * 152500 : 0;
+                        /* 23/09/2026 (CGP, dossier BERNARD) : « l'article 990 I est valable jusqu'à
+                           70 ans » — à 70 ans révolus la question n'a plus d'objet. Et un foyer
+                           retraité ne se voit poser ni la question de la baisse de revenus à la
+                           retraite (il y est), ni celle de l'épargne mensuelle sur quinze ans. */
+                        const foyerRetraiteQ = (d.activites || []).includes("retraite") && (!enCouple || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
+                        const abatt990 = (nbEnf > 0 && (ageClient == null || ageClient < 70)) ? nbEnf * 152500 : 0;
                         /* Capital financier placé à long terme, et ce qu'il devient d'ici 65 ans
                            selon qu'il travaille au taux des livrets (1,7 %) ou à l'hypothèse
                            centrale du cabinet (5 %). Mêmes taux que le tableau des versements
@@ -13381,7 +13412,7 @@
                             q: impot10 > 0
                               ? `Que vous évoque le chiffre de ${nfQ(impot10)} € ?`
                               : "Savez-vous quelle part de votre imposition peut être réorientée vers votre propre patrimoine, et par quel mécanisme ?" },
-                          { p: 4, fam: "retraite", re: /dispositif retraite|retraite de .* non préparée|retraite non préparée|préparer votre retraite/i,
+                          { p: 4, fam: "retraite", skip: foyerRetraiteQ, re: /dispositif retraite|retraite de .* non préparée|retraite non préparée|préparer votre retraite/i,
                             q: (pension > 0 && revAuj > 0)
                               ? `${anneesRet > 0 ? `Dans ${anneesRet} ans, vous aurez ${ageRet} ans` : `À ${ageRet} ans`}, vos revenus passeront de ${nfQ(revAuj)} € à environ ${nfQ(Math.round(pension / 500) * 500)} €/mois. Comment comptez-vous compenser cette baisse ?`
                               : "Vos revenus baisseront au moment de votre retraite. Comment comptez-vous compenser cette baisse ?" },
@@ -13403,7 +13434,7 @@
                             q: "Comment comptez-vous financer les études de vos enfants ?" },
                           { p: 9, fam: "epargne", re: /performance de l'épargne inconnue/i,
                             q: "Connaissez-vous le rendement net de vos contrats actuels, une fois les frais déduits ?" },
-                          { p: 10, fam: "versements", re: /versements programmés|absence totale d'épargne mensuelle/i,
+                          { p: 10, fam: "versements", skip: foyerRetraiteQ, re: /versements programmés|absence totale d'épargne mensuelle/i,
                             q: "Comment comptez-vous faire travailler votre épargne mensuelle sur les quinze prochaines années ?" },
                           { p: 11, fam: "credits", re: /assurance de prêt/i,
                             q: "Votre assurance de prêt n'a jamais été renégociée. Quelle économie pensez-vous pouvoir en obtenir, à garanties équivalentes ?" },
@@ -13422,7 +13453,9 @@
                         (syn.faiblesses || []).forEach(f => {
                           const t = f && f.t ? String(f.t) : "";
                           if (!t) return;
-                          const m = QUESTIONS.find(x => x.re.test(t));
+                          /* `skip` (23/09/2026) : la question existe mais ne se pose pas à CE foyer
+                             (retraité) — elle n'est appelée par aucune faiblesse. */
+                          const m = QUESTIONS.find(x => !x.skip && x.re.test(t));
                           if (!m) return;                        // aucune question écrite : on n'en invente pas
                           if (trouvees.indexOf(m) === -1) trouvees.push(m);
                         });
@@ -13504,7 +13537,10 @@
                           }}>info-retraite.fr</b>
                         );
                         const Clic = ({ children }) => <b style={{ color: "#0369a1" }}>{children}</b>;
-                        const devoirs = [
+                        /* 23/09/2026 (CGP) : un foyer retraité n'a ni estimation de retraite à
+                           télécharger ni contrats d'épargne retraite à relever — sa pension est acquise. */
+                        const foyerRetraiteD = (d.activites || []).includes("retraite") && (!enCouple || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
+                        const devoirs = foyerRetraiteD ? [] : [
                           { t: "Votre estimation de retraite", d: <>Connectez-vous à votre compte sur {SITE}, puis téléchargez votre estimation de retraite (montant estimé de vos pensions).</> },
                           { t: "Vos contrats d'épargne retraite", d: <>Également sur le site {SITE}, cliquez sur <Clic>« Mon épargne retraite »</Clic> puis <Clic>« Voir mes contrats »</Clic>. Faites une copie d'écran ou téléchargez le document.</> },
                         ];
@@ -13607,7 +13643,9 @@
                               );
                             })}
                             <div style={{ fontSize: 13, marginTop: 14, paddingTop: 12, lineHeight: 1.5, borderTop: "1px solid rgba(10,9,8,0.08)", color: "#44403c" }}>
-                              {surMesure > 0
+                              {foyerRetraiteD
+                                ? "Ces documents nous permettent de recenser vos contrats existants et de préparer, pour le prochain rendez-vous, les simulations qui vous concernent."
+                                : surMesure > 0
                                 ? "Ces documents nous permettent de chiffrer précisément vos revenus à la retraite et de préparer, pour le prochain rendez-vous, les simulations qui vous concernent."
                                 : "Ces deux documents nous permettent de chiffrer précisément vos revenus à la retraite et de recenser vos contrats existants."}
                             </div>
