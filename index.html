@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v264 (28/09 : CE QUE VOTRE CAPITAL PEUT VOUS VERSER — maquette C retenue par le CGP. Dans Analyse R2, apres « A N ans, votre situation » : on fixe l age jusqu auquel les placements financiers doivent durer (80 et 90 ans), le tableau donne le retrait mensuel constant possible, capital consomme au terme, a 2 / 5 / 7 pct nets. Deux tableaux : « Sans rien changer » (R.avPla) et « Avec les preconisations » (R.natPla). Besoin de reference = baisse de revenus estimee a la retraite, modifiable a l ecran (champ non imprime), cases cochees quand le retrait couvre le besoin, phrase de lecture par colonne. Tous les dossiers. Mention « hypotheses dynamiques, non garanties ». Moteur : ncCapRetrait (annuite) et ncCapDuree (inverse). Reponses du CGP consignees dans le journal des questions. Banc t_cap_verser (32) : 32/32.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.) (9) Age sous la date de naissance + alerte 990 I des 65 ans (demande du CGP du 28/09) : « Client : 67 ans », encart ambre « Tournant des 70 ans - art. 990 I » avec la date du 70e anniversaire, encart rouge art. 757 B apres 70 ans. Bancs t_brichet (28) et t_age_990 (29).','color:#94a3b8');
         console.log('%cANCIEN BUILD v260 (28/09 : ORIGINE DES BIENS, PLUS-VALUE, PROJET DE VENTE, ANNEE D OUVERTURE. Le CGP : « lorsque je remplis de l immobilier, il faudrait que je puisse indiquer de quand date l achat ou la donation ou l heritage, si proprietaire seul ou indivision, si plus-value latente, le prix initial — et si projet de vente ou non ; si projet de vente cela doit creer une opportunite de placement » ; « sur les placements type assurance-vie et PER, l annee d ouverture du contrat ». (1) RP, locatifs, autres biens : achat / donation / heritage, annee, prix (ou valeur declaree a l acte), plus-value latente affichee a la saisie et au document ; detention seul / indivision = quote-part (v258, et detention des autres biens). (2) Projet de vente (RP et locatif ; deja present pour les autres biens) : produit net = part detenue - capital restant du - impot de plus-value (ncPvImmo : forfaits 7,5 pct et 15 pct, abattements pour duree de detention IR/PS, 19 pct + 17,2 pct, surtaxe au-dela de 50 000 € ; RP exoneree) — choix du CGP. Preconisation « Replacer le produit de la vente de … » en tete ; question « Savez-vous deja ou placer les N € … » si vente a moins d un an. (3) AV et PER : annee d ouverture (carte du placement), pastille « ouvert en AAAA · plus de 8 ans » au document. Bancs t_origine_immo.js.)','color:#94a3b8');
@@ -3546,6 +3547,12 @@
     };
     /* libellés des questions complémentaires (pop-up « entretien »), pour le document */
     const NC_ENT_LIB = { epargneMensuelle: "Augmenter l'épargne mensuelle", emprunt: "Recourir à l'emprunt", liquidites: "Faire travailler les liquidités", vente: "Replacer le produit de la vente", defisc: "Réduire l'impôt (PER, défiscalisation)", transmission: "Anticiper la transmission" };
+    /* 28/09/2026 (CGP, maquette C retenue) : retrait mensuel constant que peut verser un
+       capital C place a r pendant n annees, capital consomme jusqu au terme (annuite). r = 0 : C / n.
+       ncCapDuree : duree en annees pendant laquelle C verse W par mois a r (Infinity si les
+       interets couvrent le retrait). */
+    const ncCapRetrait = (C, annees, r) => { const n = Math.max(1, Math.round(annees * 12)), m = r / 12; if (!(C > 0)) return 0; if (m <= 0) return C / n; return C * m / (1 - Math.pow(1 + m, -n)); };
+    const ncCapDuree = (C, W, r) => { const m = r / 12; if (!(C > 0) || !(W > 0)) return 0; if (m <= 0) return C / W / 12; const x = 1 - C * m / W; if (x <= 0) return Infinity; return -Math.log(x) / Math.log(1 + m) / 12; };
     const NC_VENTE_ANS = { "<1": 1, "1-3": 2, "3-5": 4, ">5": 6 };
     const NC_VENTE_LIB = { "<1": "d'ici un an", "1-3": "d'ici un à trois ans", "3-5": "d'ici trois à cinq ans", ">5": "au-delà de cinq ans" };
     const NC_ORIGINE_LIB = { achat: "achat", donation: "donation", succession: "héritage" };
@@ -6966,6 +6973,9 @@
       const sl = (k, v) => setL(p => ({ ...p, [k]: v }));
 
       /* ——— GISEMENTS ——— */
+      /* 28/09/2026 (CGP) : retrait de reference du bloc « Ce que votre capital peut vous verser » —
+         calcule par le simulateur (baisse de revenus a la retraite), modifiable a l ecran. */
+      const [retraitCap, setRetraitCap] = React.useState("");
       const [G, setG] = React.useState({
         ass: false, capIni: String(socle.rpCrd || 0), dRest: String(socle.rpDur || 0), txAss: "0,34", txDel: "0,12",
         arb: false, montArb: String(socle.avVie || 0), txArbAct: "2,5",
@@ -8255,6 +8265,72 @@
               Projection non contractuelle. Rente calculée au taux mensuel équivalent du rendement retenu, capital préservé. Revenus locatifs nets de charges et de vacance.
             </div>
           </div>
+
+          {/* ═══ 28/09/2026 (CGP, maquette C retenue) — CE QUE VOTRE CAPITAL PEUT VOUS VERSER ═══
+              Lecture inverse : on fixe l'âge jusqu'auquel le capital doit durer (80 et 90 ans), le
+              tableau donne le retrait mensuel constant possible, à 2 / 5 / 7 % nets. Deux colonnes
+              de capital : « sans rien changer » (R.avPla) et « avec les préconisations » (R.natPla).
+              Retrait de référence = baisse de revenus à la retraite calculée, modifiable à l'écran.
+              Tous les dossiers. Hypothèses dynamiques, non garanties (mention sous le tableau). */}
+          {(() => {
+            const capA = Math.round(R.avPla || 0), capB = Math.round(R.natPla || 0);
+            if (!(capA > 0) && !(capB > 0)) return null;
+            const a0 = R.ageFin;
+            const ages = a0 < 79 ? [80, 90] : [a0 + 10, a0 + 20];
+            const taux = [0.02, 0.05, 0.07];
+            const besoinAuto = Math.round((intro && intro.baisse) || 0);
+            const besoin = retraitCap === "" ? besoinAuto : Math.max(0, nb(retraitCap, 0));
+            const pct = (r) => String(Math.round(r * 100)) + " %";
+            const okA = (C) => taux.findIndex(r => ncCapRetrait(C, ages[1] - a0, r) >= besoin);
+            const phrase = (lib, C) => { const k = okA(C); return besoin > 0 && C > 0 ? (k < 0 ? `${lib} : le besoin de ${eur(besoin)}/mois n'est pas couvert jusqu'à ${ages[1]} ans, même à 7 %` : `${lib} : ${eur(besoin)}/mois couverts jusqu'à ${ages[1]} ans à partir de ${pct(taux[k])} net`) : null; };
+            const Tab = ({ titre, C, fort }) => (
+              <div className="flex-1 min-w-[280px]">
+                <div className="text-[10px] uppercase tracking-[0.16em] font-bold mb-1.5" style={{ color: fort ? NCP_C.vert : NCP_C.gris2 }}>{titre} <span className="tabular-nums normal-case tracking-normal" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 14, color: NCP_C.encre, marginLeft: 6 }}>{eur(C)}</span></div>
+                <table className="w-full text-[11.5px]" style={{ borderCollapse: "collapse" }} data-nc-cap-table={fort ? "apres" : "avant"}>
+                  <thead><tr style={{ background: "#fafaf9" }}>
+                    <th className="text-left px-2 py-1.5" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.14em", textTransform: "uppercase", color: NCP_C.gris, fontWeight: 700 }}>Rendement net</th>
+                    {ages.map(a => <th key={a} className="text-right px-2 py-1.5" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.14em", textTransform: "uppercase", color: NCP_C.gris, fontWeight: 700 }}>Jusqu'à {a} ans<div style={{ fontSize: "6.5pt", color: NCP_C.gris3, letterSpacing: "0.08em" }}>{a - a0} ans</div></th>)}
+                  </tr></thead>
+                  <tbody>
+                    {taux.map((r, i) => (
+                      <tr key={r} style={{ background: i % 2 ? "#fafaf9" : "#fff", borderTop: "1px solid " + NCP_C.bord }}>
+                        <td className="px-2 py-1.5 font-bold" style={{ color: NCP_C.encre }}>{pct(r)}</td>
+                        {ages.map((a, j) => { const v = C > 0 ? ncCapRetrait(C, a - a0, r) : 0; const couvre = besoin > 0 && v >= besoin; return (
+                          <td key={a} className="px-2 py-1.5 text-right tabular-nums" style={{ fontWeight: j === 1 ? 800 : 500, color: couvre ? NCP_C.vert : NCP_C.encre, fontFamily: j === 1 ? "'Lora','Playfair Display',serif" : undefined, fontSize: j === 1 ? 13 : undefined }}>{C > 0 ? eur(v) + "/mois" : "—"}{couvre ? " ✓" : ""}</td>); })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+            return (
+              <div className="rounded-2xl bg-white p-6 mb-4 border nc-print-avoid" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Ce que votre capital peut vous verser" data-nc-cap-verser="1">
+                <div className="nc-ctitre mb-1">Ce que votre capital peut vous verser<span className="sfx">à partir de {a0} ans</span></div>
+                <div className="text-[11.5px] mb-3" style={{ color: C.gris2, marginTop: 7 }}>
+                  On fixe l'âge jusqu'auquel vos placements financiers doivent durer ; le tableau donne le retrait mensuel constant possible, capital consommé au terme, selon le rendement net obtenu.
+                  {besoin > 0 ? <span> Votre besoin de référence : <b style={{ color: C.encre }}>{eur(besoin)}/mois</b>{retraitCap === "" && besoinAuto > 0 ? " (baisse de revenus estimée à la retraite)" : ""} — les cases qui le couvrent sont cochées.</span> : null}
+                </div>
+                <div className="nc-syn-noprint flex items-center gap-2 mb-3 text-[11px]" style={{ color: C.gris }}>
+                  <span className="font-bold">Retrait de référence (€/mois)</span>
+                  <input type="text" inputMode="numeric" value={retraitCap} placeholder={String(besoinAuto || "")} onChange={e => setRetraitCap(e.target.value)} data-nc-cap-retrait="1"
+                    className="w-24 px-2 py-1 text-[12px] bg-stone-50 border border-stone-200 rounded-md focus:outline-none focus:border-stone-900 tabular-nums" />
+                  {retraitCap !== "" ? <button type="button" onClick={() => setRetraitCap("")} className="underline underline-offset-2 text-stone-500 hover:text-stone-900">revenir à l'estimation du simulateur</button> : <span className="italic" style={{ color: C.gris3 }}>calculé par le simulateur — modifiable</span>}
+                </div>
+                <div className="flex flex-wrap gap-5">
+                  <Tab titre="Sans rien changer" C={capA} fort={false} />
+                  <Tab titre="Avec les préconisations" C={capB} fort={true} />
+                </div>
+                {besoin > 0 ? (
+                  <div className="text-[11.5px] mt-3" style={{ color: C.gris, lineHeight: 1.6 }} data-nc-cap-lecture="1">
+                    {[phrase("Sans rien changer", capA), phrase("Avec les préconisations", capB)].filter(Boolean).map((t, i) => <div key={i}>{t}.</div>)}
+                  </div>
+                ) : null}
+                <div className="italic" style={{ fontSize: 9.5, color: C.gris3, marginTop: 12, lineHeight: 1.55 }}>
+                  Hypothèses dynamiques, non garanties : rendements nets de frais et de fiscalité, retrait constant non indexé sur l'inflation, capital consommé jusqu'à l'âge indiqué. Les performances passées ne préjugent pas des performances futures ; un rendement de 7 % suppose une allocation exposée aux marchés et une durée longue.
+                </div>
+              </div>
+            );
+          })()}
 
           <details className="rounded-2xl bg-white border overflow-hidden" data-nc-chap="Hypothèses et situation de départ" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }}>
             <summary className="cursor-pointer px-6 py-5 select-none" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9pt", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 800, color: C.encre }}>
@@ -18727,6 +18803,49 @@
     }
 
 
+    /* ═══ 28/09/2026 — ET SI VOUS CONSOMMIEZ LE CAPITAL ? ═══
+       Le CGP a apprécié un tableau « rendement net hypothétique × retrait mensuel → durée du
+       capital » et demandé de l'intégrer à la simulation : sous la rente à vie (capital
+       préservé), pour répondre à l'autre question — combien de temps le capital tient-il si on
+       le consomme. Choix validés : lignes 0 / 2 / 3 %, trois retraits liés au dossier (la rente
+       préservée × 1,5 / × 2 / × 3 — à défaut de rente, le capital sur 25 / 20 / 15 ans), retrait
+       constant (pas de revalorisation). Durée par `distributionYears` (taux mensuel équivalent). */
+    const ncArrondi10 = (x) => Math.max(10, Math.round(x / 10) * 10);
+    const ncRetraitsAuto = (capital, rdt) => {
+      const rm = rdt > 0 ? capital * (Math.pow(1 + rdt, 1 / 12) - 1) : 0;
+      if (rm >= 20) return [1.5, 2, 3].map(k => ncArrondi10(rm * k));
+      return [25, 20, 15].map(n => ncArrondi10(capital / (n * 12)));
+    };
+    const ncDureeLib = (ans) => !isFinite(ans) ? "à vie" : ans > 60 ? "plus de 60 ans" : `${String(Math.round(ans * 10) / 10).replace(".", ",")} ans`;
+    function NcCapitalDuree({ capital, rdt, titre }) {
+      const retraits = ncRetraitsAuto(capital, rdt);
+      const taux = [0, 0.02, 0.03];
+      const fmt = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n));
+      return (
+        <div className="mt-4 bg-white border border-stone-200 rounded-2xl p-5 shadow-sm" data-nc-capital-duree="1">
+          <div className="text-[12px] uppercase tracking-widest font-extrabold text-stone-900 mb-1">{titre || "Et si vous consommiez le capital ?"}</div>
+          <div className="text-[11px] text-stone-500 mb-3">Capital de {fmt(capital)} € au terme. Combien de temps tient-il si vous en retirez chaque mois un montant fixe, selon le rendement net obtenu sur le capital restant ?</div>
+          <table className="w-full text-[12.5px]" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
+            <thead>
+              <tr style={{ background: "#1d2735", color: "#fff" }}>
+                <th className="text-left px-3 py-2 rounded-tl-lg font-bold" style={{ fontFamily: "'Lora','Playfair Display',serif" }}>Rendement net hypothétique</th>
+                {retraits.map((r, i) => <th key={i} className={`text-right px-3 py-2 font-bold ${i === retraits.length - 1 ? "rounded-tr-lg" : ""}`} style={{ fontFamily: "'Lora','Playfair Display',serif" }}>Retrait de {fmt(r)} €/mois</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {taux.map((t, k) => (
+                <tr key={k} style={{ background: k % 2 ? "#f1f5f9" : "#fff" }}>
+                  <td className="px-3 py-2 font-bold text-stone-900" style={{ borderBottom: "1px solid #e2e8f0" }}>{Math.round(t * 100)} %</td>
+                  {retraits.map((r, i) => <td key={i} className="num px-3 py-2 text-right font-bold text-stone-900" style={{ borderBottom: "1px solid #e2e8f0" }} data-nc-duree={`${k}-${i}`}>{ncDureeLib(distributionYears(capital, t, r))}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="text-[10px] text-stone-400 mt-2">Retrait constant, non revalorisé de l'inflation ; rendement net de frais et de fiscalité appliqué chaque mois au capital restant. « À vie » : le retrait ne dépasse pas les intérêts du capital.</div>
+        </div>
+      );
+    }
+
     function SectionTitle({ children, textPrimary, sectionBg, dividerColor, accent }) {
       return (
         <div className={`${sectionBg} border-y ${dividerColor} px-5 py-3 text-center relative`}>
@@ -19593,6 +19712,11 @@
               </div>
             </div>
           </div>
+
+          {/* 28/09/2026 (CGP) : « j'aime beaucoup cela » — tableau « durée du capital selon le retrait
+              mensuel » (rendement 0 / 2 / 3 %, trois retraits liés au dossier, retrait constant). Sous
+              la rente à vie capital préservé, pleine largeur. */}
+          {inputs.produit !== "capi" && sim.proj.capitalFin > 0 && <NcCapitalDuree capital={sim.proj.capitalFin} rdt={sim.rdt} />}
 
           {/* MULTI-PROJET — détail par produit (PER vs AV), pleine largeur sous la grille */}
           {inputs.produit === "multi" && (
