@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.) (9) Age sous la date de naissance + alerte 990 I des 65 ans (demande du CGP du 28/09) : « Client : 67 ans », encart ambre « Tournant des 70 ans - art. 990 I » avec la date du 70e anniversaire, encart rouge art. 757 B apres 70 ans. Bancs t_brichet (28) et t_age_990 (29).','color:#94a3b8');
         console.log('%cANCIEN BUILD v260 (28/09 : ORIGINE DES BIENS, PLUS-VALUE, PROJET DE VENTE, ANNEE D OUVERTURE. Le CGP : « lorsque je remplis de l immobilier, il faudrait que je puisse indiquer de quand date l achat ou la donation ou l heritage, si proprietaire seul ou indivision, si plus-value latente, le prix initial — et si projet de vente ou non ; si projet de vente cela doit creer une opportunite de placement » ; « sur les placements type assurance-vie et PER, l annee d ouverture du contrat ». (1) RP, locatifs, autres biens : achat / donation / heritage, annee, prix (ou valeur declaree a l acte), plus-value latente affichee a la saisie et au document ; detention seul / indivision = quote-part (v258, et detention des autres biens). (2) Projet de vente (RP et locatif ; deja present pour les autres biens) : produit net = part detenue - capital restant du - impot de plus-value (ncPvImmo : forfaits 7,5 pct et 15 pct, abattements pour duree de detention IR/PS, 19 pct + 17,2 pct, surtaxe au-dela de 50 000 € ; RP exoneree) — choix du CGP. Preconisation « Replacer le produit de la vente de … » en tete ; question « Savez-vous deja ou placer les N € … » si vente a moins d un an. (3) AV et PER : annee d ouverture (carte du placement), pastille « ouvert en AAAA · plus de 8 ans » au document. Bancs t_origine_immo.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v259 (28/09 : PATRIMOINE AVANT FISCALITE. Le CGP, en remplissant l audit d une cliente retraitee qui percoit aussi des revenus fonciers : « les infos sur les revenus fonciers interviennent bien plus tard et apres l impot ; il faudrait dans la logique que je puisse les renseigner avant d arriver a la synthese de son impot ». Le locatif reste saisi a UN SEUL endroit (Patrimoine, decision du 31/08) : l ordre des etapes change, choix valide par le CGP — 1 Etat civil, 2 Famille, 3 Activite et revenus, 4 PATRIMOINE ET EPARGNE, 5 FISCALITE, 6 Objectifs, 7 Profil de risque, 8 Synthese. Les deux blocs sont inchanges, seuls leurs numeros s echangent (NC_ETAPES et les deux gardes etape === 4 / 5). Banc t_ordre_etapes.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v258 (28/09 : QUOTE-PART DE DETENTION DE L IMMOBILIER. Le CGP : « lorsque je renseigne un bien immobilier, il faut que je puisse renseigner le % de detention ; j ai une femme pacsee, conjoint non renseigne, qui detient 5 pct de la maison, et je ne peux pas le saisir ». Residence principale et biens locatifs : question « Quelle part du bien detenez-vous ? » — 100 pct / une quote-part (pct + « en indivision avec… »), posee MEME sans conjoint renseigne (la repartition Monsieur/Madame, elle, reste reservee au couple). La valeur retenue au patrimoine (actif, patrimoine net, repartition, succession, projection) est la part detenue (ncRpValeur, ncLocValeur, meme regle que les « autres biens » en indivision) ; capital restant du, loyer et mensualite restent ceux declares pour SA part. Document : « valeur estimee 320 000 € · quote-part detenue 5 pct (16 000 €), en indivision avec … ». Banc t_quote_part.js.)','color:#94a3b8');
@@ -3110,17 +3111,30 @@
     };
     // Contenu révélé conditionnellement : défile automatiquement dans le champ
     // de vision à l'apparition (sinon les questions débloquées restent sous le pli).
-    const NcReveal = ({ children, last }) => {
+    /* 28/09/2026 (CGP) : « si je mets 2 logements, il m'ouvre en décalage la page et je suis
+       obligé de remonter ». `last` descendait vers la DERNIÈRE ligne : juste pour « + Ajouter »,
+       faux quand plusieurs lignes apparaissent d'un coup (compteur 1…8). On descend maintenant
+       vers la PREMIÈRE ligne nouvelle — le compte précédent est mémorisé par `name`. */
+    const NcReveal = ({ children, last, name }) => {
       const ref = useRef(null);
       useEffect(() => {
         const t = setTimeout(() => {
           if (!ref.current) return;
+          let cible = null;
+          if (last && name) {
+            const n = ref.current.children.length;
+            const mem = (window.__ncRevealN = window.__ncRevealN || {});
+            const prev = mem[name] == null ? 0 : mem[name];
+            mem[name] = n;
+            if (n <= prev) return; /* suppression : on ne bouge pas */
+            cible = ref.current.children[Math.min(prev, n - 1)] || null;
+          }
           // Pas d'auto-scroll si on vient de changer d'étape : la page doit rester EN HAUT
           // (les blocs déjà renseignés se re-montent tous en même temps et se disputeraient le scroll).
           try { if (window.__ncStepTs && Date.now() - window.__ncStepTs < 900) return; } catch (e) {}
           // Pour une liste (last), on descend vers la DERNIÈRE ligne (celle qu'on vient d'ajouter),
           // pas vers le haut de la liste.
-          const el = (last && ref.current.lastElementChild) ? ref.current.lastElementChild : ref.current;
+          const el = cible || ((last && ref.current.lastElementChild) ? ref.current.lastElementChild : ref.current);
           const scroller = el.closest('.overflow-y-auto');
           if (scroller) {
             // Remonte le contenu débloqué au premier quart de la fenêtre : bien visible sans scroller.
@@ -3518,7 +3532,16 @@
       aIR = Math.min(100, aIR); aPS = Math.min(100, Math.round(aPS * 100) / 100);
       const pvIR = pvBrute * (1 - aIR / 100), pvPS = pvBrute * (1 - aPS / 100);
       const ir = pvIR * 0.19, ps = pvPS * 0.172, sur = ncSurtaxePV(pvIR);
-      return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false };
+      /* 28/09/2026 (CGP, note « règles plus-value immobilière ») : deux horloges distinctes —
+         IR exonéré après 22 ans RÉVOLUS, prélèvements sociaux après 30 ans RÉVOLUS (9 %/an de
+         la 23e à la 30e). Entre 22 et 30 ans, il ne reste QUE le social. Le moteur ne connaît
+         que ANNÉE (pas la date) : à la frontière (22e ou 30e année), la date exacte de acte
+         décide — bord le signale, le document le dit. (Pas apostrophe ici : regen_helpers.) */
+      const etat = duree >= 30 ? "exonérée d'impôt et de prélèvements sociaux (30 ans révolus)"
+        : duree >= 22 ? `exonérée d'impôt (22 ans révolus) — prélèvements sociaux 17,2 % sur ${Math.round(100 - aPS)} % de la plus-value`
+        : duree > 5 ? `abattements ${aIR} % (impôt) et ${String(aPS).replace(".", ",")} % (prélèvements sociaux)` : "sans abattement (moins de 6 ans)";
+      const bord = duree === 22 || duree === 30 || duree === 21 || duree === 29;
+      return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false, etat, bord };
     };
     const NC_VENTE_ANS = { "<1": 1, "1-3": 2, "3-5": 4, ">5": 6 };
     const NC_VENTE_LIB = { "<1": "d'ici un an", "1-3": "d'ici un à trois ans", "3-5": "d'ici trois à cinq ans", ">5": "au-delà de cinq ans" };
@@ -3546,8 +3569,8 @@
       const nf = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
       const r = [];
       if (x.origine || ncInt(x.annee) > 0) r.push({ l: "Origine", v: `${NC_ORIGINE_LIB[x.origine] || "entrée"}${ncInt(x.annee) > 0 ? ` en ${ncInt(x.annee)}` : ""}${ncInt(x.prix) > 0 ? ` — ${x.origine === "achat" || !x.origine ? "prix" : "valeur déclarée"} ${nf(ncInt(x.prix) * x.quote)} €${x.quote < 1 ? " (part détenue)" : ""}` : ""}` });
-      if (x.pvAuj) r.push({ l: "Plus-value latente", v: `${x.pvAuj.latente >= 0 ? "" : "moins-value "}${nf(Math.abs(x.pvAuj.latente))} €${x.rp ? " — exonérée (résidence principale)" : ` — détention ${x.pvAuj.duree} ans`}` });
-      if (x.vente) r.push({ l: "Projet de vente", v: `${x.delaiLib}${x.net != null ? ` — produit net estimé ${nf(x.net)} €${x.pv && x.pv.impot > 0 ? ` (après ${nf(x.pv.impot)} € d'impôt de plus-value${x.crd > 0 ? " et le capital restant dû" : ""})` : x.crd > 0 ? " (après le capital restant dû)" : ""}` : ""}` });
+      if (x.pvAuj) r.push({ l: "Plus-value latente", v: `${x.pvAuj.latente >= 0 ? "" : "moins-value "}${nf(Math.abs(x.pvAuj.latente))} €${x.rp ? " — exonérée (résidence principale)" : ` — détention ${x.pvAuj.duree} ans : ${x.pvAuj.etat}${x.pvAuj.bord ? " — années révolues à la date de l'acte : date exacte à vérifier" : ""}`}` });
+      if (x.vente) r.push({ l: "Projet de vente", v: `${x.delaiLib}${x.net != null ? ` — produit net estimé ${nf(x.net)} €${x.pv && x.pv.impot > 0 ? ` (après ${nf(x.pv.impot)} € ${x.pv.ir > 0 ? "d'impôt de plus-value" : "de prélèvements sociaux sur la plus-value, l'impôt étant exonéré au-delà de 22 ans"}${x.crd > 0 ? " et le capital restant dû" : ""})` : x.crd > 0 ? " (après le capital restant dû)" : ""}` : ""}` });
       return r;
     };
     const ncMens = (montant, periode) => { const m = ncInt(montant); return periode === "an" ? m / 12 : m; };
@@ -6079,7 +6102,7 @@
            crédit et d'impôt de plus-value (choix validé). En tête des préconisations. */
         ncBiensImmo(d).filter(x => x.vente && x.net > 0).reverse().forEach(x => precos.unshift({
           titre: `Replacer le produit de la vente ${x.rp ? "de la résidence principale" : `de « ${x.nom} »`}`,
-          suite: ` : ≈ ${eur(x.net)} nets ${x.delaiLib}${x.pv && x.pv.impot > 0 ? `, après ${eur(x.pv.impot)} d'impôt de plus-value` : x.rp ? " (résidence principale : plus-value exonérée)" : ""}${x.crd > 0 ? " et le remboursement du capital restant dû" : ""} — à orienter selon vos objectifs`,
+          suite: ` : ≈ ${eur(x.net)} nets ${x.delaiLib}${x.pv && x.pv.impot > 0 ? `, après ${eur(x.pv.impot)} ${x.pv.ir > 0 ? "d'impôt de plus-value" : "de prélèvements sociaux (impôt exonéré au-delà de 22 ans)"}${x.pv.bord ? " — à recalculer sur la date exacte de l'acte" : ""}` : x.rp ? " (résidence principale : plus-value exonérée)" : x.pv && x.pv.duree >= 30 ? " (plus de 30 ans : plus-value exonérée d'impôt et de prélèvements sociaux)" : ""}${x.crd > 0 ? " et le remboursement du capital restant dû" : ""} — à orienter selon vos objectifs`,
         }));
         if (precos.length) phrases.push({ t: "Préconisations", c: "#6d28d9", list: precos, large: true });
       }
@@ -10375,7 +10398,7 @@
                         }}>{n}</Chip>
                       ))}
                     </div>
-                    <NcReveal key={d.enfants.length} last>
+                    <NcReveal key={d.enfants.length} last name="enfants">
                     {d.enfants.map((e, i) => (
                       <div key={e.id} className="mb-2 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2.5">
                         <div className="flex items-center gap-2 mb-2">
@@ -10499,7 +10522,7 @@
                       100 000 € et les tranches basses ; indispensable pour simuler la
                       transmission en synthèse. */}
                   <Q q="Des donations ont-elles déjà été réalisées ?" sub="Donations aux enfants ou à des tiers — le rappel fiscal des 15 ans (art. 784 CGI) consomme l'abattement de 100 000 € par enfant." val={d.donationsQ} on={v => { set("donationsQ", v); if (v === "oui" && (d.donations || []).length === 0) addList("donations", { benef: "", annee: "", montant: "", note: "" }); if (v === "non") set("donations", []); }}>
-                    <NcReveal key={(d.donations || []).length} last>
+                    <NcReveal key={(d.donations || []).length} last name="donations">
                     {(d.donations || []).map((dn, iDn) => {
                       const anDn = parseInt(dn.annee, 10);
                       const rec15 = isFinite(anDn) && (new Date().getFullYear() - anDn) < 15;
@@ -11079,7 +11102,7 @@
                       ))}
                     </div>
                     <div className="text-[10px] text-stone-400 mb-2">Pour chaque logement : nu ou meublé — et si meublé, géré ou non géré.</div>
-                    <NcReveal key={d.locatifs.length} last>
+                    <NcReveal key={d.locatifs.length} last name="locatifs">
                     {d.locatifs.map((l, i) => (
                       <div key={l.id} className="mb-2 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2.5">
                         <div className="flex items-center gap-2 mb-2">
@@ -11230,7 +11253,7 @@
                   </Q>
                   <div className="text-[11px] text-stone-400 mb-1">Les biens locatifs déclarés ci-dessus sont repris automatiquement — ne les ressaisissez pas ici.</div>
                   <Q q="Possédez-vous d'autres biens immobiliers (secondaire, terrain, hors locatifs déjà déclarés) ?" val={d.biensQ} on={v => { set("biensQ", v); if (v === "oui" && d.biens.length === 0) addList("biens", { type: "rs", nom: "", valeur: "", crd: "", enLocationQ: "", loyer: "", creditQ: "", mensualite: "", venteQ: "", venteDelai: "", note: "" }); }}>
-                    <NcReveal key={d.biens.length} last>
+                    <NcReveal key={d.biens.length} last name="biens">
                     {d.biens.map((b, i) => (
                       <div key={b.id} className="mb-2 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2.5">
                         <div className="flex items-center gap-2 mb-2">
@@ -11373,7 +11396,7 @@
                   </Q>
 
                   <Q q="Avez-vous d'autres crédits en cours (consommation, auto…) ?" val={d.creditsQ} on={v => { set("creditsQ", v); if (v === "oui" && d.credits.length === 0) addList("credits", { nature: "conso", mensualite: "", crd: "", fin: "" }); }}>
-                    <NcReveal key={d.credits.length} last>
+                    <NcReveal key={d.credits.length} last name="credits">
                     {d.credits.map(c => (
                       <div key={c.id} className="mb-2 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2.5">
                         <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
@@ -11397,7 +11420,7 @@
                       className="w-full border-2 border-dashed border-stone-300 hover:border-stone-900 rounded-lg px-3 py-2 text-[12px] font-bold text-stone-600 hover:text-stone-900 transition flex items-center justify-center gap-1.5"><I.plus/> Ajouter un crédit</button>
                   </Q>
                   <Q q="Avez-vous de l'épargne ou des placements ?" val={d.avoirsQ} on={v => { set("avoirsQ", v); if (v === "oui" && d.avoirs.length === 0) addList("avoirs", { type: "", valeur: "", etablissement: "", precision: "", titulaire: "", origine: "", ppQ: "", pp: "", objectif: "", contentQ: "", gestion: "", profil: "", note: "" }); }}>
-                    <NcReveal key={d.avoirs.length} last>
+                    <NcReveal key={d.avoirs.length} last name="avoirs">
                     {d.avoirs.map((a, i) => {
                       const T = NC_TYPES_AVOIR.find(x => x.v === a.type) || NC_TYPES_AVOIR[0];
                       const estLivret = a.type === "livrets";
