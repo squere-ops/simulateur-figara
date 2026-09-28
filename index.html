@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.) (9) Age sous la date de naissance + alerte 990 I des 65 ans (demande du CGP du 28/09) : « Client : 67 ans », encart ambre « Tournant des 70 ans - art. 990 I » avec la date du 70e anniversaire, encart rouge art. 757 B apres 70 ans. Bancs t_brichet (28) et t_age_990 (29).','color:#94a3b8');
         console.log('%cANCIEN BUILD v260 (28/09 : ORIGINE DES BIENS, PLUS-VALUE, PROJET DE VENTE, ANNEE D OUVERTURE. Le CGP : « lorsque je remplis de l immobilier, il faudrait que je puisse indiquer de quand date l achat ou la donation ou l heritage, si proprietaire seul ou indivision, si plus-value latente, le prix initial — et si projet de vente ou non ; si projet de vente cela doit creer une opportunite de placement » ; « sur les placements type assurance-vie et PER, l annee d ouverture du contrat ». (1) RP, locatifs, autres biens : achat / donation / heritage, annee, prix (ou valeur declaree a l acte), plus-value latente affichee a la saisie et au document ; detention seul / indivision = quote-part (v258, et detention des autres biens). (2) Projet de vente (RP et locatif ; deja present pour les autres biens) : produit net = part detenue - capital restant du - impot de plus-value (ncPvImmo : forfaits 7,5 pct et 15 pct, abattements pour duree de detention IR/PS, 19 pct + 17,2 pct, surtaxe au-dela de 50 000 € ; RP exoneree) — choix du CGP. Preconisation « Replacer le produit de la vente de … » en tete ; question « Savez-vous deja ou placer les N € … » si vente a moins d un an. (3) AV et PER : annee d ouverture (carte du placement), pastille « ouvert en AAAA · plus de 8 ans » au document. Bancs t_origine_immo.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v259 (28/09 : PATRIMOINE AVANT FISCALITE. Le CGP, en remplissant l audit d une cliente retraitee qui percoit aussi des revenus fonciers : « les infos sur les revenus fonciers interviennent bien plus tard et apres l impot ; il faudrait dans la logique que je puisse les renseigner avant d arriver a la synthese de son impot ». Le locatif reste saisi a UN SEUL endroit (Patrimoine, decision du 31/08) : l ordre des etapes change, choix valide par le CGP — 1 Etat civil, 2 Famille, 3 Activite et revenus, 4 PATRIMOINE ET EPARGNE, 5 FISCALITE, 6 Objectifs, 7 Profil de risque, 8 Synthese. Les deux blocs sont inchanges, seuls leurs numeros s echangent (NC_ETAPES et les deux gardes etape === 4 / 5). Banc t_ordre_etapes.js.)','color:#94a3b8');
@@ -2283,7 +2284,7 @@
       risqueMode2: "", risqueExterneProfil2: "", risqueExterneSri2: "", risqueExterneNote2: "",
       synthEdits: {}, synthOrdreAxes: [],
       /* 28/09/2026 (CGP) : réponses du pop-up « entretien » — epargneMensuelle et emprunt, valeurs oui / non (pas d apostrophe ici : regen_helpers.js coupe sur les guillemets) */
-      entretien: {},
+      entretien: {}, entretienNotes: {},
       objectifsOrdre: [],
     };
 
@@ -3543,6 +3544,8 @@
       const bord = duree === 22 || duree === 30 || duree === 21 || duree === 29;
       return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false, etat, bord };
     };
+    /* libellés des questions complémentaires (pop-up « entretien »), pour le document */
+    const NC_ENT_LIB = { epargneMensuelle: "Augmenter l'épargne mensuelle", emprunt: "Recourir à l'emprunt", liquidites: "Faire travailler les liquidités", vente: "Replacer le produit de la vente", defisc: "Réduire l'impôt (PER, défiscalisation)", transmission: "Anticiper la transmission" };
     const NC_VENTE_ANS = { "<1": 1, "1-3": 2, "3-5": 4, ">5": 6 };
     const NC_VENTE_LIB = { "<1": "d'ici un an", "1-3": "d'ici un à trois ans", "3-5": "d'ici trois à cinq ans", ">5": "au-delà de cinq ans" };
     const NC_ORIGINE_LIB = { achat: "achat", donation: "donation", succession: "héritage" };
@@ -4832,6 +4835,14 @@
       const ENT = d.entretien || {};
       const veutEpargner = ENT.epargneMensuelle !== "non";
       const veutEmprunter = ENT.emprunt !== "non";
+      /* 28/09/2026 (CGP) : « questions complémentaires — n'hésite pas à demander plus de choses
+         pour être certain de partir dans la bonne direction ». Deux sujets de plus : les liquidités
+         importantes (les faire travailler ?) et le produit d'une vente (des préconisations pour le
+         replacer ?). Sans réponse, le document se tait sur le sujet. */
+      const veutPlacer = ENT.liquidites !== "non";
+      const veutReplacer = ENT.vente !== "non";
+      const veutDefisc = ENT.defisc !== "non";           /* PER / défiscalisation */
+      const veutTransmettre = ENT.transmission === "oui"; /* additif : ne s'ajoute que sur « oui » */
       // Capacité d'emprunt de référence : TOUJOURS la durée maximale autorisée par la
       // règle des 75 ans (25 ans si possible, sinon 20, sinon 75 − âge). Une seule
       // durée dans toute la synthèse — cohérence entre chiffres du dossier et analyse.
@@ -4862,7 +4873,7 @@
       // taxés dans la tranche à 30 %. Une TMI « à 30 % » sur quelques euros ne suffit pas.
       const qfSyn = ((F.ir || {}).qf) || 0;
       const dans30 = F.tmi > 0.30 ? 999999 : (F.tmi === 0.30 ? Math.max(0, Math.round((qfSyn - 29579) * (F.parts || 1))) : 0);
-      const perPertinent = dans30 >= 5000;
+      const perPertinent = dans30 >= 5000 && veutDefisc;
       const ageJ = ncAgeDate(cj.dateNaissance);
       const enfants = (d.enfantsQ === "oui" ? (d.enfants || []) : []).filter(e => e.charge !== "non");
       const nbEnf = enfants.length;
@@ -5089,7 +5100,7 @@
       // ———————————————————————————————————————————————
       // 4. LIQUIDITÉS DORMANTES
       // ———————————————————————————————————————————————
-      if (surDoteM) {
+      if (surDoteM && veutPlacer) {
         const dormant = Math.round(courtTermeM - cibleHautM);
         const perteInflation = Math.round(dormant * 0.015);
         pb({
@@ -6057,9 +6068,11 @@
         }
         /* 23/09/2026 (CGP) — foyer retraité avec des liquidités importantes et aucun projet :
            l'objectif du cabinet est de les réorienter vers l'assurance-vie. */
-        if (foyerRetraite && courtTermeM >= 50000 && !projetRPsyn) {
+        if (foyerRetraite && veutPlacer && courtTermeM >= 50000 && !projetRPsyn) {
           conseils.push(`Réorienter vos ${eur(courtTermeM)} de liquidités, sans projet identifié, vers un contrat d'assurance-vie à la fiscalité plus confortable qu'un livret classique`);
         }
+        /* 28/09/2026 (CGP) : transmission anticipée — uniquement si le conseiller a répondu « oui ». */
+        if (veutTransmettre) conseils.push(`Anticiper la transmission de votre patrimoine (${eur(S.patrimoineNet)} net) : donation avec abattement de 100 000 € par enfant et par parent tous les quinze ans, démembrement de propriété`);
         // Complément éventuel par les enjeux des problématiques hautes (sans doublonner).
         if (conseils.length < 3) {
           problematiques.filter(p => p.priorite === "haute").map(p => p.enjeu || p.titre).filter(Boolean)
@@ -6090,9 +6103,11 @@
              sans projet : un NOUVEAU contrat d'assurance-vie. Après 70 ans, les versements
              relèvent de l'art. 757 B CGI (abattement de 30 500 € sur les primes, produits
              exonérés de droits) et les rachats gardent l'abattement annuel après huit ans. */
-          if (courtTermeM >= 50000 && !projetRPsyn) precos.push({ titre: "Souscription d'un nouveau contrat d'assurance-vie", suite: ` pour y placer l'essentiel de vos ${eur(courtTermeM)} de liquidités sans projet identifié — fiscalité des retraits plus confortable qu'un livret classique, et capital transmis hors succession dans la limite de l'art. 757 B CGI pour les versements après 70 ans` });
+          if (veutPlacer && courtTermeM >= 50000 && !projetRPsyn) precos.push({ titre: "Souscription d'un nouveau contrat d'assurance-vie", suite: ` pour y placer l'essentiel de vos ${eur(courtTermeM)} de liquidités sans projet identifié — fiscalité des retraits plus confortable qu'un livret classique, et capital transmis hors succession dans la limite de l'art. 757 B CGI pour les versements après 70 ans` });
         } else if (perPertinent) {
           precos.push(per > 0 ? { titre: "Versements sur le PER existant", suite: ` — déduction à votre TMI de ${pc(F.tmi)}` } : { titre: "L'ouverture d'un PER est vivement conseillée", suite: ` — déduction des versements à votre TMI de ${pc(F.tmi)}` });
+        } else if (!veutDefisc) {
+          /* le client ne cherche pas à réduire son impôt : aucune préconisation PER */
         } else if (F.tmi === 0.30) {
           precos.push({ titre: "Et seulement pour finir : ouverture d'un PER (plan d'épargne retraite)", suite: " dès que 5 000 € de vos revenus auront basculé dans une tranche à 30 %, afin de profiter pleinement du levier fiscal" });
         } else {
@@ -6100,10 +6115,11 @@
         }
         /* 28/09/2026 (CGP) : un projet de vente crée une OPPORTUNITÉ DE PLACEMENT — montant net de
            crédit et d'impôt de plus-value (choix validé). En tête des préconisations. */
-        ncBiensImmo(d).filter(x => x.vente && x.net > 0).reverse().forEach(x => precos.unshift({
+        if (veutReplacer) ncBiensImmo(d).filter(x => x.vente && x.net > 0).reverse().forEach(x => precos.unshift({
           titre: `Replacer le produit de la vente ${x.rp ? "de la résidence principale" : `de « ${x.nom} »`}`,
           suite: ` : ≈ ${eur(x.net)} nets ${x.delaiLib}${x.pv && x.pv.impot > 0 ? `, après ${eur(x.pv.impot)} ${x.pv.ir > 0 ? "d'impôt de plus-value" : "de prélèvements sociaux (impôt exonéré au-delà de 22 ans)"}${x.pv.bord ? " — à recalculer sur la date exacte de l'acte" : ""}` : x.rp ? " (résidence principale : plus-value exonérée)" : x.pv && x.pv.duree >= 30 ? " (plus de 30 ans : plus-value exonérée d'impôt et de prélèvements sociaux)" : ""}${x.crd > 0 ? " et le remboursement du capital restant dû" : ""} — à orienter selon vos objectifs`,
         }));
+        if (veutTransmettre) precos.push({ titre: "Étude d'une donation-partage ou d'une donation en nue-propriété", suite: " — abattement de 100 000 € par enfant et par parent renouvelable tous les quinze ans, usufruit conservé sur le bien donné" });
         if (precos.length) phrases.push({ t: "Préconisations", c: "#6d28d9", list: precos, large: true });
       }
 
@@ -6164,10 +6180,10 @@
         /* objectifs recommandés et préconisations */
         const conseilsR = [];
         if (projetRPsyn) conseilsR.push("Mener à bien l'acquisition de votre résidence principale : c'est la priorité");
-        conseilsR.push("Préparer votre retraite dès maintenant par un PER et une assurance-vie alimentés chaque mois");
+        conseilsR.push(veutDefisc ? "Préparer votre retraite dès maintenant par un PER et une assurance-vie alimentés chaque mois" : "Préparer votre retraite dès maintenant par une assurance-vie alimentée chaque mois");
         conseilsR.push("Faire étudier la délégation de votre assurance de prêt");
         const precosR = [];
-        precosR.push(per > 0 ? { titre: "Versements sur le PER existant", suite: perPertinent ? ` — déduction à votre TMI de ${pc(F.tmi)}` : "" }
+        if (veutDefisc) precosR.push(per > 0 ? { titre: "Versements sur le PER existant", suite: perPertinent ? ` — déduction à votre TMI de ${pc(F.tmi)}` : "" }
                              : { titre: "Ouverture d'un PER", suite: perPertinent ? ` — déduction des versements à votre TMI de ${pc(F.tmi)}` : "" });
         precosR.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: " : allocation, frais et rendement" } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
         precosR.push({ titre: "Délégation d'assurance emprunteur", suite: projetRPsyn ? " — à mettre en place dès l'offre de prêt de votre résidence principale" : " — sur votre prêt en cours (loi Lemoine)" });
@@ -6252,19 +6268,32 @@
            d'avance (PER + AV + délégation) — pas de question d'épargne à poser. */
         if (!foyerRetraite && !recentre && pctE != null && pctE < NC_EPARGNE_MOYENNE_FR && ENT.epargneMensuelle == null)
           entretien.push({ cle: "epargneMensuelle", q: `${qui} souhaite-t-${enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il"} augmenter son épargne mensuelle ?`,
-            aide: `Épargne actuelle : ${effM > 0 ? pc(pctE) : "0 %"} des revenus (moyenne des Français : 18 %). Sans réponse positive, le document ne demandera pas d'épargner davantage.` });
+            aide: `Épargne actuelle : ${effM > 0 ? pc(pctE) : "0 %"} des revenus (moyenne des Français : 18 %). Sur « non », le document ne demandera pas d'épargner davantage.` });
+        const elle = enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il";
+        if (courtTermeM >= 50000 && !projetRPsyn && ENT.liquidites == null)
+          entretien.push({ cle: "liquidites", q: `${qui} souhaite-t-${elle} faire travailler ses ${eur(courtTermeM)} de liquidités ?`,
+            aide: `Livrets et comptes courants sans projet identifié. Sur « non », le document ne proposera ni réorientation vers l'assurance-vie, ni question sur la trésorerie, ni constat de liquidités dormantes.` });
+        {
+          const v = ncBiensImmo(d).filter(x => x.vente && x.net > 0);
+          if (v.length && ENT.vente == null)
+            entretien.push({ cle: "vente", q: `${qui} attend-${elle} des préconisations pour replacer le produit de la vente ${v.length > 1 ? "des biens" : (v[0].rp ? "de la résidence principale" : `de « ${v[0].nom} »`)} (≈ ${eur(v.reduce((t, x) => t + x.net, 0))} nets) ?`,
+              aide: `Le produit est estimé net de crédit et d'impôt de plus-value. Sur « non », le document ne parlera pas du replacement de cette somme.` });
+        }
+        if (!foyerRetraite && dans30 >= 5000 && ENT.defisc == null)
+          entretien.push({ cle: "defisc", q: `${qui} souhaite-t-${elle} réduire son impôt (PER, dispositifs de défiscalisation) ?`,
+            aide: `TMI ${pc(F.tmi)}, ${eur(dans30)} de revenus dans cette tranche. Sur « non », aucune préconisation PER.` });
+        const nbEnf = (d.enfants || []).filter(e => (e.prenom || "").trim() || e.annee || e.dateNaissance).length;
+        if (nbEnf > 0 && S.patrimoineNet >= 300000 && ((age != null && age >= 55) || retraiteC) && ENT.transmission == null)
+          entretien.push({ cle: "transmission", q: `${qui} souhaite-t-${elle} anticiper la transmission de son patrimoine (donation, démembrement) ?`,
+            aide: `${eur(S.patrimoineNet)} de patrimoine net, ${nbEnf} enfant${nbEnf > 1 ? "s" : ""}. Sur « oui », le document ajoute un objectif et une préconisation de donation ; sinon rien.` });
         const senior = (age != null && age >= 60) || retraiteC;
         if (senior && !(age != null && age >= 70) && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000) && ENT.emprunt == null)
           entretien.push({ cle: "emprunt", q: `${qui} envisage-t-${enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il"} de recourir à l'emprunt ?`,
-            aide: `Capacité d'emprunt calculée : ${eur(capMax)} sur ${dureeMax} ans${retraiteC ? ", à la retraite" : `, à ${age} ans`}. Sans réponse positive, le document ne parlera ni de capacité d'endettement ni d'investissement locatif à crédit.` });
+            aide: `Capacité d'emprunt calculée : ${eur(capMax)} sur ${dureeMax} ans${retraiteC ? ", à la retraite" : `, à ${age} ans`}. Sur « non », le document ne parlera ni de capacité d'endettement ni d'investissement locatif à crédit.` });
       }
-      /* Tant qu'une question de l'entretien est SANS réponse, le document se comporte comme si
-         la réponse était « non » : il ne pousse rien qu'il n'a pas le droit de pousser. Seconde
-         passe avec ces réponses provisoires, la liste des questions restant celle-ci. */
-      if (entretien.length && !d.__ncEntretienPasse2) {
-        const prov = { ...ENT }; entretien.forEach(x => { if (prov[x.cle] == null) prov[x.cle] = "non"; });
-        return { ...ncSynthese({ ...d, entretien: prov, __ncEntretienPasse2: true }), entretien };
-      }
+      /* 28/09/2026 (CGP, réponse explicite) : SANS réponse, le document garde le comportement
+         d'avant (il pousse) — seul un « non » le fait taire. Le pop-up, lui, exige une réponse
+         avant la synthèse ; un dossier ancien n'est donc pas modifié. */
       return {
         resume: phrases, forces, faiblesses, problematiques, entretien,
         recentre, incoherences, epargneImmo, courtTermeApresRP: courtTermeM, apportRP: apportRPsyn,
@@ -9405,6 +9434,12 @@
           if (ncInt(odL.apport) > 0) lignes.push({ t: "Apport envisagé (projet locatif)", d: `${nfE(ncInt(odL.apport))} €${ncInt(odL.budget) > 0 ? ` pour un budget d'environ ${nfE(ncInt(odL.budget))} €` : ""}.` });
           if (d.horizon) lignes.push({ t: "Horizon de placement", d: HOR_LIB[d.horizon] || d.horizon });
           if ((d.notes || "").trim()) lignes.push({ t: "Notes d'entretien", d: (d.notes || "").trim() });
+          /* 28/09/2026 (CGP) : les réponses aux questions complémentaires, avec leur note */
+          {
+            const E = d.entretien || {}, N = d.entretienNotes || {};
+            const rep = Object.keys(NC_ENT_LIB).filter(k => E[k] === "oui" || E[k] === "non").map(k => `${NC_ENT_LIB[k]} : ${E[k]}${(N[k] || "").trim() ? ` — ${N[k].trim()}` : ""}`);
+            if (rep.length) lignes.push({ t: "Questions complémentaires", d: rep.join(" · ") });
+          }
           if (!lignes.length) return null;
           return (
             <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
@@ -9412,9 +9447,9 @@
               <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>{foyerRetraiteS ? "Apport mobilisable" : "Participation mensuelle & apport envisagés"}</div>
               <div className="grid grid-cols-2 gap-2.5">
                 {lignes.map((l, i) => (
-                  <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
+                  <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" || l.t === "Questions complémentaires" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
                     <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{l.t}</div>
-                    <div className={l.t === "Notes d'entretien" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
+                    <div className={l.t === "Notes d'entretien" || l.t === "Questions complémentaires" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
                     {/* 03/09 : ligne dédiée, toujours à la même position sous le nombre —
                         ne dépend plus du retour à la ligne du texte du dessus (cf. tuile
                         voisine, dont le nombre peut être plus court ou plus long). */}
@@ -11072,6 +11107,17 @@
                   <Q q="Souhaitez-vous corriger avec l'impôt réellement payé (avis d'imposition) ?" val={d.impotQ || ""} on={v => set("impotQ", v)}>
                     <div className="grid grid-cols-2 gap-3">
                       <div><div className="text-[11.5px] font-bold text-stone-700 mb-1">Impôt réel payé</div><Eur v={d.impotNet} on={v => set("impotNet", v)} unit="€/an" /></div>
+                      {/* 28/09/2026 (CGP) : « dans l'onglet souhaitez-vous corriger l'impôt, peux-tu me proposer
+                          de modifier la TMI ? » — la TMI de l'avis se corrige ici, au même endroit que l'impôt. */}
+                      <div data-nc-tmi-corr="1">
+                        <div className="text-[11.5px] font-bold text-stone-700 mb-1">TMI de l'avis d'imposition</div>
+                        <Chips opts={[{v:0,l:"0 %"},{v:0.11,l:"11 %"},{v:0.30,l:"30 %"},{v:0.41,l:"41 %"},{v:0.45,l:"45 %"}]} val={d.tmi} on={v => { set("tmi", v); set("tmiManuel", true); }} />
+                        <div className="text-[10px] text-stone-400 mt-1">
+                          {ir ? (d.tmiManuel && d.tmi !== ir.tmi
+                            ? <span>Simulateur : {(ir.tmi * 100).toFixed(0)} % — <button type="button" onClick={() => { set("tmi", ir.tmi); set("tmiManuel", false); }} className="font-bold underline underline-offset-2 text-stone-500 hover:text-stone-900 transition">revenir à la TMI calculée</button></span>
+                            : <span>TMI calculée par le simulateur : {(ir.tmi * 100).toFixed(0)} % — cliquez pour la corriger d'après l'avis.</span>) : "D'après l'avis d'imposition."}
+                        </div>
+                      </div>
                     </div>
                   </Q>
                   <Q q="Êtes-vous redevable de l'IFI ?" val={d.ifi} on={v => set("ifi", v)}>
@@ -13916,9 +13962,9 @@
                           /* 28/09/2026 (CGP) : vente à moins d'un an → opportunité de placement,
                              posée en question (choix validé : préconisation + question). */
                           ...ncBiensImmo(d).filter(x => x.vente && x.venteDelai === "<1" && x.net > 0).slice(0, 1).map(x => ({
-                            p: 1, fam: "vente", cond: true, re: /jamais/,
+                            p: 1, fam: "vente", cond: true, skip: (d.entretien || {}).vente === "non", re: /jamais/,
                             q: `Savez-vous déjà où placer les ${nfQ(x.net)} € de la vente ${x.rp ? "de votre résidence principale" : `de « ${x.nom} »`} ?` })),
-                          { p: 1, fam: "tresorerie", cond: courtTQ >= 50000 && !projetRPQ, re: /jamais/,
+                          { p: 1, fam: "tresorerie", cond: courtTQ >= 50000 && !projetRPQ, skip: (d.entretien || {}).liquidites === "non", re: /jamais/,
                             /* 23/09/2026 (CGP, dossier DURAND) : tournure dictée — « savez-vous comment
                                sont taxés les livrets et/ou comptes courants en cas de succession ? ».
                                Le chiffre du client reste en tête de phrase (règle du 17/09). */
@@ -14733,17 +14779,21 @@
             )}
             {entOpen && (
               <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" data-nc-entretien="1" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
-                <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden" style={{ borderTop: "4px solid #0f766e" }}>
-                  <div className="px-6 pt-5 pb-4">
+                <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col" style={{ borderTop: "4px solid #0f766e", maxHeight: "92vh" }}>
+                  <div className="px-6 pt-5 pb-4 overflow-y-auto">
                     <div className="text-[11px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#0f766e" }}>Entretien — {entOpen.liste.length > 1 ? "quelques questions" : "une question"} avant la synthèse</div>
                     <div className="text-[19px] font-bold leading-snug mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
-                      Le document ne doit dire que ce qui a du sens pour ce client
+                      Questions complémentaires
                     </div>
                     {entOpen.liste.map((x, i) => (
                       <div key={x.cle} className="rounded-xl px-4 py-3 mb-2" style={{ background: "#0f766e0a", border: "1px solid #0f766e33" }}>
                         <div className="text-[13px] font-bold mb-1" style={{ color: "#1d2735" }}>{x.q}</div>
                         <div className="text-[11.5px] leading-relaxed text-stone-600 mb-2">{x.aide}</div>
                         <Chips opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }]} val={(d.entretien || {})[x.cle] || ""} on={v => set("entretien", { ...(d.entretien || {}), [x.cle]: v })} />
+                        {/* 28/09/2026 (CGP) : note libre par question, reprise dans le document */}
+                        <input type="text" value={(d.entretienNotes || {})[x.cle] || ""} placeholder="Précision (facultatif), reprise dans le document"
+                          onChange={ev => set("entretienNotes", { ...(d.entretienNotes || {}), [x.cle]: ev.target.value })}
+                          className="mt-2 w-full px-2.5 py-1.5 text-[12px] bg-white border border-stone-200 rounded-md focus:outline-none focus:border-stone-900" />
                       </div>
                     ))}
                     <div className="text-[11.5px] text-stone-500 mt-2">Les réponses sont conservées dans le dossier et relues à chaque synthèse.</div>
