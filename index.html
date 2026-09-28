@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v259 (28/09 : PATRIMOINE AVANT FISCALITE. Le CGP, en remplissant l audit d une cliente retraitee qui percoit aussi des revenus fonciers : « les infos sur les revenus fonciers interviennent bien plus tard et apres l impot ; il faudrait dans la logique que je puisse les renseigner avant d arriver a la synthese de son impot ». Le locatif reste saisi a UN SEUL endroit (Patrimoine, decision du 31/08) : l ordre des etapes change, choix valide par le CGP — 1 Etat civil, 2 Famille, 3 Activite et revenus, 4 PATRIMOINE ET EPARGNE, 5 FISCALITE, 6 Objectifs, 7 Profil de risque, 8 Synthese. Les deux blocs sont inchanges, seuls leurs numeros s echangent (NC_ETAPES et les deux gardes etape === 4 / 5). Banc t_ordre_etapes.js.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v260 (28/09 : ORIGINE DES BIENS, PLUS-VALUE, PROJET DE VENTE, ANNEE D OUVERTURE. Le CGP : « lorsque je remplis de l immobilier, il faudrait que je puisse indiquer de quand date l achat ou la donation ou l heritage, si proprietaire seul ou indivision, si plus-value latente, le prix initial — et si projet de vente ou non ; si projet de vente cela doit creer une opportunite de placement » ; « sur les placements type assurance-vie et PER, l annee d ouverture du contrat ». (1) RP, locatifs, autres biens : achat / donation / heritage, annee, prix (ou valeur declaree a l acte), plus-value latente affichee a la saisie et au document ; detention seul / indivision = quote-part (v258, et detention des autres biens). (2) Projet de vente (RP et locatif ; deja present pour les autres biens) : produit net = part detenue - capital restant du - impot de plus-value (ncPvImmo : forfaits 7,5 pct et 15 pct, abattements pour duree de detention IR/PS, 19 pct + 17,2 pct, surtaxe au-dela de 50 000 € ; RP exoneree) — choix du CGP. Preconisation « Replacer le produit de la vente de … » en tete ; question « Savez-vous deja ou placer les N € … » si vente a moins d un an. (3) AV et PER : annee d ouverture (carte du placement), pastille « ouvert en AAAA · plus de 8 ans » au document. Bancs t_origine_immo.js.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v259 (28/09 : PATRIMOINE AVANT FISCALITE. Le CGP, en remplissant l audit d une cliente retraitee qui percoit aussi des revenus fonciers : « les infos sur les revenus fonciers interviennent bien plus tard et apres l impot ; il faudrait dans la logique que je puisse les renseigner avant d arriver a la synthese de son impot ». Le locatif reste saisi a UN SEUL endroit (Patrimoine, decision du 31/08) : l ordre des etapes change, choix valide par le CGP — 1 Etat civil, 2 Famille, 3 Activite et revenus, 4 PATRIMOINE ET EPARGNE, 5 FISCALITE, 6 Objectifs, 7 Profil de risque, 8 Synthese. Les deux blocs sont inchanges, seuls leurs numeros s echangent (NC_ETAPES et les deux gardes etape === 4 / 5). Banc t_ordre_etapes.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v258 (28/09 : QUOTE-PART DE DETENTION DE L IMMOBILIER. Le CGP : « lorsque je renseigne un bien immobilier, il faut que je puisse renseigner le % de detention ; j ai une femme pacsee, conjoint non renseigne, qui detient 5 pct de la maison, et je ne peux pas le saisir ». Residence principale et biens locatifs : question « Quelle part du bien detenez-vous ? » — 100 pct / une quote-part (pct + « en indivision avec… »), posee MEME sans conjoint renseigne (la repartition Monsieur/Madame, elle, reste reservee au couple). La valeur retenue au patrimoine (actif, patrimoine net, repartition, succession, projection) est la part detenue (ncRpValeur, ncLocValeur, meme regle que les « autres biens » en indivision) ; capital restant du, loyer et mensualite restent ceux declares pour SA part. Document : « valeur estimee 320 000 € · quote-part detenue 5 pct (16 000 €), en indivision avec … ». Banc t_quote_part.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v257 (23/09 : LA SORTIE D UN ENFANT DU FOYER FISCAL PILOTE LE DOCUMENT. Le CGP, sur l age de sortie saisi en v254 : « il faut que ca indique que Camille quittera le foyer en 2029 et que ca fasse une projection de l impot et de la TMI en ce sens ». (1) Etat civil : la ligne de l enfant porte « — quittera le foyer fiscal en AAAA ». (2) Fiscalite : encart « Evolution du foyer fiscal » — la phrase, puis un tableau Aujourd hui / Apres le depart de X (annee) : parts, TMI, impot estime, ecart par an ; ncCalcFisc relance sans l enfant (et sans ceux partis avant lui), a revenus et legislation constants ; TMI en rouge si elle monte. Banc t_sortie_foyer.js etendu.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v256 (23/09 : CLIENTS TYPES REFAITS ET REMPLIS EN TOTALITE. Le CGP : « peux-tu en refaire d autres / les remplacer, et remplir la totalite des champs ? » — remplaces ; fiche celibataire PROPRE ; questionnaire de risque NON rempli (profil reporte d un questionnaire du cabinet, SRI saisi). Julien FAURE (celibataire locataire, projet RP), Claire et Maxime ROUSSEL (pacses, fonctionnaire + cadre, deux enfants), Olivier et Isabelle LAMBERT (maries en communaute, architecte liberal, trois enfants dont Manon 22 ans, locatif, residence secondaire), Jacqueline MOREAU (veuve, 74 ans, retraitee, 151 450 € de liquidites). Identite, coordonnees, banques, revenus detailles, credits, placements (etablissement, objectif, gestion, rendement, satisfaction), objectifs detailles, budget, notes : tout ce qui a un sens pour la situation est rempli. Corrige au passage : enfants majeurs « charge 0 » (valeur inexistante) -> « non a charge » ; rpDetenteur « commun » -> « 5050 » ; horizon de projet RP « 2 » -> « <1 ». (2) « Creer un objectif » s affiche sous le titre saisi (« Aider ses petits-enfants »). (3) Encart « a la limite de la tranche superieure » : plus de conseil PER pour un foyer retraite. Bancs mis a jour : t_clients_types (completude + aucune incoherence), t_recentre (fiche propre, incoherences testees sur le moteur), t_retraite, t_questions_durand, t_sortie_foyer.)','color:#94a3b8');
@@ -2248,6 +2250,7 @@
       rpProjetDuree: "", rpProjetApport: "", rpProjetTaux: "", rpProjetNote: "",
       rpValeur: "", rpCreditQ: "", rpBanque: "", rpCrd: "", rpMensualite: "", rpTaux: "", rpDureeRestante: "", rpAssurRenegociee: "",
       rpDetenteur: "", rpPartClient: "", rpDetentionQ: "", rpQuotePart: "", rpIndivAvec: "",
+      rpOrigine: "", rpAnneeEntree: "", rpPrixInitial: "", rpVenteQ: "", rpVenteDelai: "",
       /* depenses courantes MENSUELLES du foyer — surcharge du train de vie estime
          (revenus nets moins epargne). Base de la cible de precaution. */
       depensesMens: "",
@@ -2278,6 +2281,8 @@
       risqueQ2: "", risque2: { q1: [], q2: [], q3: [], q4: [], q5: [], q6: [], q7: [], q8: [], q9: [], q10: [], q11: [], q12: [], q13: [] },
       risqueMode2: "", risqueExterneProfil2: "", risqueExterneSri2: "", risqueExterneNote2: "",
       synthEdits: {}, synthOrdreAxes: [],
+      /* 28/09/2026 (CGP) : réponses du pop-up « entretien » — epargneMensuelle et emprunt, valeurs oui / non (pas d apostrophe ici : regen_helpers.js coupe sur les guillemets) */
+      entretien: {},
       objectifsOrdre: [],
     };
 
@@ -2388,7 +2393,7 @@
           reductionsQ: "oui", reductionsLignes: [
             { id: 1, type: "emploi_domicile", montant: "3200", periode: "an", dureeType: "recurrent", duree: "", note: "Garde des enfants à domicile (crédit d'impôt 50 %)" },
           ],
-          logement: "proprietaire", rpValeur: "385000", rpDetenteur: "5050",
+          logement: "proprietaire", rpValeur: "385000", rpDetenteur: "5050", rpDetentionQ: "totale", rpOrigine: "achat", rpAnneeEntree: String(new Date().getFullYear() - 7), rpPrixInitial: "340000", rpVenteQ: "non",
           rpCreditQ: "oui", rpBanque: "Banque Populaire", rpCrd: "236000", rpMensualite: "1340", rpTaux: "3,1", rpDureeRestante: "19",
           rpAssurQuotite: "50_50", rpAssurRenegociee: "non", rpAssurAssureur: "Contrat groupe de la banque", rpAssurCotisation: "62", rpAssurNote: "Jamais renégociée depuis la signature",
           depensesMens: "4600",
@@ -2400,7 +2405,7 @@
             ncAvoir({ id: 1, type: "livrets", livretType: "livret_a", valeur: "18400", etablissement: "Banque Populaire", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", etablissement: "Société Générale", titulaire: "conjoint", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 3, type: "compte_courant", valeur: "5200", etablissement: "Banque Populaire", titulaire: "commun", objectif: "aucun", gestion: "lui", rendement: "0", note: "Compte joint des dépenses du foyer" }),
-            ncAvoir({ id: 4, type: "av", valeur: "32000", etablissement: "Banque Populaire", titulaire: "client", ppQ: "oui", pp: "100", objectif: "projet", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,1", note: "Ouvert à la naissance de Jade — 90 % fonds euros" }),
+            ncAvoir({ id: 4, type: "av", valeur: "32000", anneeOuverture: String(new Date().getFullYear() - 6), etablissement: "Banque Populaire", titulaire: "client", ppQ: "oui", pp: "100", objectif: "projet", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,1", note: "Ouvert à la naissance de Jade — 90 % fonds euros" }),
             ncAvoir({ id: 5, type: "epargne_salariale", valeur: "14500", etablissement: "Amundi (PEE)", titulaire: "conjoint", objectif: "rendement", contentQ: "oui", gestion: "agent", profil: "equilibre", rendement: "3,8", note: "Intéressement placé chaque année" }),
           ],
           objectifs: ["etudes", "prevoyance", "retraite"], objectifsOrdre: ["etudes", "prevoyance", "retraite"], objectifPrio: "etudes",
@@ -2444,22 +2449,23 @@
           fonciersQ: "oui", fonciersTypes: ["nue"], meubleGere: "", fonciersNote: "Studio loué à un étudiant",
           locatifs: [
             { id: 1, nom: "Studio — Lille centre", type: "nue", gere: "gere", titulaire: "commun", loyer: "690", valeur: "165000", regime: "reel_foncier", imposable: "",
+              detentionQ: "totale", origine: "achat", anneeEntree: "2016", prixInitial: "128000", venteQ: "oui", venteDelai: "1-3",
               creditQ: "oui", banque: "LCL", mensualite: "740", crd: "78000", assurQuotite: "100_100", assurQ: "non", assurAssureur: "Contrat groupe LCL", assurCotisation: "28", assurNote: "", note: "Acquis en 2016, gestion confiée à une agence (7 %)" },
           ],
           reductionsQ: "oui", reductionsLignes: [
             { id: 1, type: "emploi_domicile", montant: "3600", periode: "an", dureeType: "recurrent", duree: "", note: "Ménage et jardin" },
             { id: 2, type: "dons", montant: "800", periode: "an", dureeType: "recurrent", duree: "", note: "Dons aux œuvres" },
           ],
-          logement: "proprietaire", rpValeur: "620000", rpDetenteur: "5050", rpCreditQ: "non",
+          logement: "proprietaire", rpValeur: "620000", rpDetenteur: "5050", rpCreditQ: "non", rpDetentionQ: "totale", rpOrigine: "achat", rpAnneeEntree: "2005", rpPrixInitial: "380000", rpVenteQ: "non",
           depensesMens: "7200",
           biensQ: "oui", biens: [
-            { id: 1, type: "rs", nom: "Maison — Arcachon", detention: "pp", titulaire: "commun", valeur: "380000", indivPart: "", indivAvec: "", enLocationQ: "non", loyer: "", creditQ: "non", banque: "", mensualite: "", crd: "",
+            { id: 1, type: "rs", nom: "Maison — Arcachon", detention: "pp", titulaire: "commun", valeur: "380000", origine: "succession", anneeEntree: "2009", prixInitial: "210000", indivPart: "", indivAvec: "", enLocationQ: "non", loyer: "", creditQ: "non", banque: "", mensualite: "", crd: "",
               assurQuotite: "", assurQ: "", assurAssureur: "", assurCotisation: "", assurNote: "", venteQ: "non", venteDelai: "", note: "Maison de famille, résidence secondaire" },
           ],
           creditsQ: "non", credits: [],
           avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "per", valeur: "52000", etablissement: "AXA", titulaire: "client", origine: "union", ppQ: "oui", pp: "300", objectif: "retraite", contentQ: "non", gestion: "agent", profil: "equilibre", rendement: "3,1", note: "PER individuel, ex-Madelin transféré" }),
-            ncAvoir({ id: 2, type: "av", valeur: "135000", etablissement: "LCL", titulaire: "commun", origine: "union", ppQ: "non", objectif: "transmission", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,3", note: "Clause bénéficiaire standard" }),
+            ncAvoir({ id: 1, type: "per", valeur: "52000", anneeOuverture: "2014", etablissement: "AXA", titulaire: "client", origine: "union", ppQ: "oui", pp: "300", objectif: "retraite", contentQ: "non", gestion: "agent", profil: "equilibre", rendement: "3,1", note: "PER individuel, ex-Madelin transféré" }),
+            ncAvoir({ id: 2, type: "av", valeur: "135000", anneeOuverture: "2008", etablissement: "LCL", titulaire: "commun", origine: "union", ppQ: "non", objectif: "transmission", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,3", note: "Clause bénéficiaire standard" }),
             ncAvoir({ id: 3, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "client", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 4, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "conjoint", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 5, type: "livrets", livretType: "csl", valeur: "41000", etablissement: "LCL", titulaire: "commun", origine: "union", objectif: "aucun", gestion: "lui", rendement: "1,0" }),
@@ -2501,7 +2507,7 @@
           reductionsQ: "oui", reductionsLignes: [
             { id: 1, type: "dons", montant: "600", periode: "an", dureeType: "recurrent", duree: "", note: "Dons aux œuvres" },
           ],
-          logement: "proprietaire", rpValeur: "350000", rpDetenteur: "client", rpCreditQ: "non",
+          logement: "proprietaire", rpValeur: "350000", rpDetenteur: "client", rpCreditQ: "non", rpDetentionQ: "totale", rpOrigine: "achat", rpAnneeEntree: "1986", rpPrixInitial: "95000", rpVenteQ: "non",
           depensesMens: "2100",
           biensQ: "non", biens: [],
           creditsQ: "non", credits: [],
@@ -2510,7 +2516,7 @@
             ncAvoir({ id: 2, type: "livrets", livretType: "ldds", valeur: "12000", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 3, type: "livrets", livretType: "csl", valeur: "98000", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "aucun", gestion: "lui", rendement: "1,0", note: "Capital reçu au décès de son époux, jamais réinvesti" }),
             ncAvoir({ id: 4, type: "compte_courant", valeur: "18500", etablissement: "Caisse d'Épargne", titulaire: "client", objectif: "aucun", gestion: "lui", rendement: "0" }),
-            ncAvoir({ id: 5, type: "av", valeur: "165000", etablissement: "CNP (Caisse d'Épargne)", titulaire: "client", ppQ: "non", objectif: "transmission", contentQ: "oui", gestion: "banque", profil: "prudent", rendement: "2,2", note: "Versements effectués avant 70 ans, bénéficiaires : ses deux enfants" }),
+            ncAvoir({ id: 5, type: "av", valeur: "165000", anneeOuverture: "1998", etablissement: "CNP (Caisse d'Épargne)", titulaire: "client", ppQ: "non", objectif: "transmission", contentQ: "oui", gestion: "banque", profil: "prudent", rendement: "2,2", note: "Versements effectués avant 70 ans, bénéficiaires : ses deux enfants" }),
           ],
           objectifs: ["transmettre", "perso"], objectifsOrdre: ["transmettre", "perso"], objectifPrio: "transmettre",
           objectifsDetail: {
@@ -2959,16 +2965,17 @@
     // Smiley d'un placement (28/08) : vert souriant = satisfait, gris neutre = sans
     // avis, rouge triste = non satisfait — en SVG (les emojis systèmes ne sortent
     // pas de façon fiable dans les PDF).
+    /* 28/09/2026 (CGP) : « je n'aime pas du tout tes petits icônes, ils sont moches ». Le
+       smiley devient une pastille sobre : coche verte (satisfait), croix rouge (non satisfait),
+       anneau gris (sans avis). */
     const NcSmiley = ({ etat }) => {
       const C = etat === "oui" ? "#0f766e" : etat === "non" ? "#b91c1c" : "#a8a29e";
       return (
-        <svg viewBox="0 0 20 20" width="15" height="15" style={{ display: "inline-block", verticalAlign: "-3px" }} aria-hidden="true">
-          <circle cx="10" cy="10" r="8.2" fill={etat === "oui" ? "#0f766e14" : etat === "non" ? "#b91c1c12" : "#a8a29e14"} stroke={C} strokeWidth="1.5" />
-          <circle cx="7" cy="7.8" r="1.1" fill={C} />
-          <circle cx="13" cy="7.8" r="1.1" fill={C} />
-          {etat === "oui" ? <path d="M6.3 12.2 Q10 15.4 13.7 12.2" fill="none" stroke={C} strokeWidth="1.5" strokeLinecap="round" />
-            : etat === "non" ? <path d="M6.3 14.4 Q10 11.4 13.7 14.4" fill="none" stroke={C} strokeWidth="1.5" strokeLinecap="round" />
-            : <line x1="6.6" y1="13.4" x2="13.4" y2="13.4" stroke={C} strokeWidth="1.5" strokeLinecap="round" />}
+        <svg viewBox="0 0 20 20" width="14" height="14" style={{ display: "inline-block", verticalAlign: "-2px" }} aria-hidden="true" data-nc-pastille={etat || "nsp"}>
+          <circle cx="10" cy="10" r="8.5" fill={etat === "oui" ? "#0f766e" : etat === "non" ? "#b91c1c" : "none"} stroke={C} strokeWidth={etat ? 0 : 1.4} opacity={etat ? 0.9 : 0.7} />
+          {etat === "oui" ? <path d="M6 10.2 L8.8 13 L14 7.6" fill="none" stroke="#ffffff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+            : etat === "non" ? <path d="M7 7 L13 13 M13 7 L7 13" fill="none" stroke="#ffffff" strokeWidth="1.9" strokeLinecap="round" />
+            : null}
         </svg>
       );
     };
@@ -3343,6 +3350,30 @@
     const NcAge = ({ a }) => a == null ? null : (
       <span className="num text-[12px] font-bold text-teal-700 whitespace-nowrap flex-shrink-0">{a} an{a > 1 ? "s" : ""}</span>
     );
+    /* 28/09/2026 (CGP) : « quand je remplis la date de naissance, ça me donne l'âge de M. et/ou
+       Mme, et une alerte à partir de 65 ans sur le tournant avant / après 70 ans (art. 990 I CGI) ».
+       Sous chaque date de naissance : l'âge en clair, et dès 65 ans l'encart d'alerte. */
+    const NcAgeAlerte = ({ date, qui }) => {
+      const a = ncAgeDate(date);
+      if (a == null) return null;
+      const dn = new Date(date); const d70 = new Date(dn.getFullYear() + 70, dn.getMonth(), dn.getDate());
+      const jours = Math.round((d70 - new Date()) / 86400000);
+      const dateFr = d70.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      const alerte = a >= 65;
+      return (
+        <div className="mt-1.5" data-nc-age={qui} data-nc-alerte-990={alerte ? (a >= 70 ? "apres" : "avant") : "non"}>
+          <div className="num text-[12.5px] font-bold" style={{ color: "#0f766e" }}>{qui === "conjoint" ? "Conjoint" : "Client"} : {a} an{a > 1 ? "s" : ""}</div>
+          {alerte && (
+            <div className="mt-1 rounded-lg px-3 py-2 text-[11.5px] leading-snug" style={{ background: a >= 70 ? "#fef2f2" : "#fffbeb", border: `1px solid ${a >= 70 ? "#fecaca" : "#fde68a"}`, color: "#1d2735" }}>
+              <div className="font-bold mb-0.5" style={{ color: a >= 70 ? "#b91c1c" : "#b45309" }}>{a >= 70 ? "70 ans passés — art. 757 B du CGI" : `Tournant des 70 ans — art. 990 I du CGI (${jours > 0 ? `dans ${jours >= 365 ? Math.floor(jours / 365) + " an" + (jours >= 730 ? "s" : "") + " et " + Math.round((jours % 365) / 30) + " mois" : Math.round(jours / 30) + " mois"}, le ${dateFr}` : "imminent"})`}</div>
+              {a >= 70
+                ? "Les versements effectués depuis le 70e anniversaire relèvent de l'art. 757 B : abattement global de 30 500 € pour l'ensemble des bénéficiaires, gains exonérés. Les versements antérieurs conservent le régime de l'art. 990 I (152 500 € par bénéficiaire)."
+                : "Les versements sur assurance-vie effectués AVANT le 70e anniversaire bénéficient de l'abattement de 152 500 € par bénéficiaire (art. 990 I). Après 70 ans, les nouveaux versements ne profitent que d'un abattement global de 30 500 € (art. 757 B) : les versements à venir sont à programmer avant cette date."}
+            </div>
+          )}
+        </div>
+      );
+    };
 
     // ============================================================
     // MATRICE D'ENDETTEMENT — règles bancaires appliquées à l'audit.
@@ -3446,6 +3477,79 @@
     const ncQuote = (detQ, pct) => detQ === "partielle" && ncInt(pct) > 0 ? Math.min(99, Math.max(1, ncInt(pct))) / 100 : 1;
     const ncRpValeur = (d) => Math.round(ncInt(d && d.rpValeur) * ncQuote(d && d.rpDetentionQ, d && d.rpQuotePart));
     const ncLocValeur = (l) => Math.round(ncInt(l && l.valeur) * ncQuote(l && l.detentionQ, l && l.quotePart));
+    /* 28/09/2026 (CGP) : « lorsque je remplis de l'immobilier, il faudrait que je puisse indiquer
+       de quand date l'achat ou la donation ou l'héritage, si propriétaire seul ou indivision, si
+       plus-value latente, le prix initial — et si projet de vente : cela doit créer une
+       opportunité de placement ». Montant de l'opportunité validé : NET DE CRÉDIT ET D'IMPÔT.
+       Plus-value des particuliers (art. 150 U s. CGI) : prix de revient = prix initial + frais
+       d'acquisition forfaitaires 7,5 % (achat seulement) + travaux forfaitaires 15 % au-delà de
+       5 ans de détention ; abattements pour durée de détention — IR 6 %/an de la 6e à la 21e
+       année puis 4 % la 22e (exonération à 22 ans), PS 1,65 %/an de la 6e à la 21e, 1,60 % la
+       22e, 9 %/an de la 23e à la 30e (exonération à 30 ans) ; IR 19 %, PS 17,2 % (taux maintenu
+       en 2026 pour les plus-values immobilières), surtaxe au-delà de 50 000 € de plus-value
+       imposable (art. 1609 nonies G, avec lissage). Résidence principale : exonérée.
+       Durée comptée en années civiles (seule l'année d'entrée est saisie). */
+    const ncSurtaxePV = (pv) => {
+      if (pv <= 50000) return 0;
+      if (pv <= 60000) return Math.max(0, pv * 0.02 - (60000 - pv) / 20);
+      if (pv <= 100000) return pv * 0.02;
+      if (pv <= 110000) return pv * 0.03 - (110000 - pv) / 10;
+      if (pv <= 150000) return pv * 0.03;
+      if (pv <= 160000) return pv * 0.04 - (160000 - pv) * 0.15;
+      if (pv <= 200000) return pv * 0.04;
+      if (pv <= 210000) return pv * 0.05 - (210000 - pv) * 0.20;
+      if (pv <= 250000) return pv * 0.05;
+      if (pv <= 260000) return pv * 0.06 - (260000 - pv) * 0.25;
+      return pv * 0.06;
+    };
+    const ncPvImmo = ({ valeur, prix, annee, origine, anVente, rp }) => {
+      const v = Math.round(valeur || 0), pI = Math.round(prix || 0), a0 = ncInt(annee);
+      if (!(v > 0) || !(pI > 0) || !(a0 > 1900)) return null;
+      const duree = Math.max(0, (anVente || new Date().getFullYear()) - a0);
+      const latente = v - pI;
+      if (rp) return { duree, latente, pvBrute: Math.max(0, latente), impot: 0, rp: true };
+      const frais = origine === "achat" ? pI * 0.075 : 0;
+      const travaux = duree > 5 ? pI * 0.15 : 0;
+      const pvBrute = Math.max(0, v - pI - frais - travaux);
+      let aIR = 0, aPS = 0;
+      for (let y = 6; y <= duree; y++) {
+        if (y <= 21) { aIR += 6; aPS += 1.65; } else if (y === 22) { aIR += 4; aPS += 1.60; } else if (y <= 30) aPS += 9;
+      }
+      aIR = Math.min(100, aIR); aPS = Math.min(100, Math.round(aPS * 100) / 100);
+      const pvIR = pvBrute * (1 - aIR / 100), pvPS = pvBrute * (1 - aPS / 100);
+      const ir = pvIR * 0.19, ps = pvPS * 0.172, sur = ncSurtaxePV(pvIR);
+      return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false };
+    };
+    const NC_VENTE_ANS = { "<1": 1, "1-3": 2, "3-5": 4, ">5": 6 };
+    const NC_VENTE_LIB = { "<1": "d'ici un an", "1-3": "d'ici un à trois ans", "3-5": "d'ici trois à cinq ans", ">5": "au-delà de cinq ans" };
+    const NC_ORIGINE_LIB = { achat: "achat", donation: "donation", succession: "héritage" };
+    /* Tous les biens du dossier avec leur origine et, s'il y a un projet de vente, le produit net. */
+    const ncBiensImmo = (d) => {
+      const an = new Date().getFullYear(), out = [];
+      const pousse = (x) => {
+        const quote = x.quote == null ? 1 : x.quote;
+        const vente = x.venteQ === "oui";
+        const anV = vente ? an + (NC_VENTE_ANS[x.venteDelai] || 1) : an;
+        const pv = ncPvImmo({ valeur: x.valeurPart, prix: ncInt(x.prix) * quote, annee: x.annee, origine: x.origine, anVente: anV, rp: x.rp });
+        const pvAuj = ncPvImmo({ valeur: x.valeurPart, prix: ncInt(x.prix) * quote, annee: x.annee, origine: x.origine, anVente: an, rp: x.rp });
+        const net = vente ? Math.max(0, Math.round(x.valeurPart - x.crd - (pv ? pv.impot : 0))) : null;
+        out.push({ ...x, quote, vente, anVente: anV, delaiLib: NC_VENTE_LIB[x.venteDelai] || "", pv, pvAuj, net });
+      };
+      if (d.logement === "proprietaire") pousse({ cle: "rp", nom: "résidence principale", rp: true, valeurPart: ncRpValeur(d), quote: ncQuote(d.rpDetentionQ, d.rpQuotePart), crd: d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0, origine: d.rpOrigine, annee: d.rpAnneeEntree, prix: d.rpPrixInitial, venteQ: d.rpVenteQ, venteDelai: d.rpVenteDelai });
+      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach((l, i) => pousse({ cle: "loc" + l.id, nom: (l.nom || "").trim() || `bien locatif ${i + 1}`, rp: false, valeurPart: ncLocValeur(l), quote: ncQuote(l.detentionQ, l.quotePart), crd: l.creditQ === "oui" ? ncInt(l.crd) : 0, origine: l.origine, annee: l.anneeEntree, prix: l.prixInitial, venteQ: l.venteQ, venteDelai: l.venteDelai }));
+      (d.biensQ === "oui" ? (d.biens || []) : []).forEach((b, i) => pousse({ cle: "bien" + b.id, nom: (b.nom || "").trim() || `bien ${i + 1}`, rp: false, valeurPart: ncBienValeur(b), quote: b.detention === "indivision" && ncInt(b.indivPart) > 0 ? Math.min(99, Math.max(1, ncInt(b.indivPart))) / 100 : 1, crd: b.creditQ === "oui" ? ncInt(b.crd) : 0, origine: b.origine, annee: b.anneeEntree, prix: b.prixInitial, venteQ: b.venteQ, venteDelai: b.venteDelai }));
+      return out;
+    };
+    /* lignes « libellé / valeur » du document pour un bien */
+    const ncRowsOrigine = (x) => {
+      if (!x) return [];
+      const nf = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
+      const r = [];
+      if (x.origine || ncInt(x.annee) > 0) r.push({ l: "Origine", v: `${NC_ORIGINE_LIB[x.origine] || "entrée"}${ncInt(x.annee) > 0 ? ` en ${ncInt(x.annee)}` : ""}${ncInt(x.prix) > 0 ? ` — ${x.origine === "achat" || !x.origine ? "prix" : "valeur déclarée"} ${nf(ncInt(x.prix) * x.quote)} €${x.quote < 1 ? " (part détenue)" : ""}` : ""}` });
+      if (x.pvAuj) r.push({ l: "Plus-value latente", v: `${x.pvAuj.latente >= 0 ? "" : "moins-value "}${nf(Math.abs(x.pvAuj.latente))} €${x.rp ? " — exonérée (résidence principale)" : ` — détention ${x.pvAuj.duree} ans`}` });
+      if (x.vente) r.push({ l: "Projet de vente", v: `${x.delaiLib}${x.net != null ? ` — produit net estimé ${nf(x.net)} €${x.pv && x.pv.impot > 0 ? ` (après ${nf(x.pv.impot)} € d'impôt de plus-value${x.crd > 0 ? " et le capital restant dû" : ""})` : x.crd > 0 ? " (après le capital restant dû)" : ""}` : ""}` });
+      return r;
+    };
     const ncMens = (montant, periode) => { const m = ncInt(montant); return periode === "an" ? m / 12 : m; };
     /* 10/09/2026 — REPARTITION DU PATRIMOINE NET PAR PERSONNE : UNE SEULE fonction.
        Le point fort « Patrimoine net significatif » ne ventilait que la RP et les
@@ -3537,7 +3641,11 @@
       const revenus = []; const charges = [];
       // meta = { qui: "client" | "conjoint" | "foyer", cat: "activite" | "patrimoine" | "pension" }
       // La ventilation par personne alimente la synthèse (disparité de revenus, scénario décès).
-      const push = (arr, label, mensuel, regle, meta) => { if (mensuel > 0.5) arr.push({ label, mensuel: Math.round(mensuel), regle: regle || null, qui: (meta && meta.qui) || "foyer", cat: (meta && meta.cat) || "patrimoine" }); };
+      /* 28/09/2026 (CGP, dossier BRICHET) : « Loyers encaissés × 75 % — surtout il ne faut pas du
+         tout mettre cela ici. C'est en coulisse pour toi. Cela constitue ses revenus. » Le
+         document affiche le loyer PERÇU (brut) ; la retenue bancaire de 75 % ne sert qu'au calcul
+         de la capacité d'emprunt — `mensuel` reste la valeur retenue, `brut` la valeur montrée. */
+      const push = (arr, label, mensuel, regle, meta) => { if (mensuel > 0.5) arr.push({ label, mensuel: Math.round(mensuel), brut: Math.round((meta && meta.brut) || mensuel), labelDoc: (meta && meta.labelDoc) || label, regle: regle || null, regleDoc: meta && "regleDoc" in meta ? meta.regleDoc : (regle || null), qui: (meta && meta.qui) || "foyer", cat: (meta && meta.cat) || "patrimoine" }); };
       // — Revenus d'activité (client puis conjoint, mêmes règles) —
       const calcPersonne = (pd, sfx, qui) => {
         const A = { qui, cat: "activite" };
@@ -3610,9 +3718,9 @@
       }
       // — Loyers (fonciers + autres biens en location) : 75 % —
       const loyersLoc = (d.locatifs || []).reduce((s, l) => s + ncInt(l.loyer), 0);
-      if (loyersLoc) push(revenus, "Loyers encaissés × 75 %", loyersLoc * 0.75, "règle bancaire 75 %");
+      if (loyersLoc) push(revenus, "Loyers encaissés × 75 %", loyersLoc * 0.75, "règle bancaire 75 %", { brut: loyersLoc, labelDoc: "Loyers encaissés", regleDoc: null });
       const loyersBiens = (d.biens || []).filter(b => b.enLocationQ === "oui").reduce((s, b) => s + ncInt(b.loyer), 0);
-      if (loyersBiens) push(revenus, "Autres loyers × 75 %", loyersBiens * 0.75, "règle bancaire 75 %");
+      if (loyersBiens) push(revenus, "Autres loyers × 75 %", loyersBiens * 0.75, "règle bancaire 75 %", { brut: loyersBiens, labelDoc: "Autres loyers encaissés", regleDoc: null });
       // — Pensions alimentaires —
       // RÈGLE CABINET (31/08/2026, dossier Que Syl) : la pension VERSÉE ne se met JAMAIS
       // en charges — elle DIMINUE les revenus retenus (ligne négative côté revenus).
@@ -4689,7 +4797,18 @@
          une assurance-vie, à la fiscalité plus confortable qu'un livret classique. */
       const retraiteC = (d.activites || []).includes("retraite");
       const retraiteJ = d.conjointQ === "oui" && (((d.conjointRev || {}).activites) || []).includes("retraite");
-      const foyerRetraite = retraiteC && (!enCouple || retraiteJ);
+      /* 28/09/2026 (dossier BRICHET, pacsée retraitée SANS conjoint renseigné) : le document lui
+         demandait encore d'augmenter son épargne, d'ouvrir un PER, de créer son espace
+         info-retraite… parce que « enCouple » (situation) ne regarde pas si le conjoint est
+         renseigné. Un conjoint non renseigné = un foyer d'une seule personne. */
+      const conjointRens = enCouple && d.conjointQ === "oui";
+      const foyerRetraite = retraiteC && (!conjointRens || retraiteJ);
+      /* 28/09/2026 (CGP) : « quand tu as des doutes, n'hésite pas à faire une interview rapide dans
+         un pop-up afin d'indiquer des choses qui ont du sens ». Les réponses vivent dans
+         d.entretien ; les questions à poser sont listées dans S.entretien (voir plus bas). */
+      const ENT = d.entretien || {};
+      const veutEpargner = ENT.epargneMensuelle !== "non";
+      const veutEmprunter = ENT.emprunt !== "non";
       // Capacité d'emprunt de référence : TOUJOURS la durée maximale autorisée par la
       // règle des 75 ans (25 ans si possible, sinon 20, sinon 75 − âge). Une seule
       // durée dans toute la synthèse — cohérence entre chiffres du dossier et analyse.
@@ -5153,7 +5272,8 @@
           consequence: `${unionLibre ? "Le concubin" : "Le partenaire pacsé"} n'a aucune vocation successorale légale : au décès, il ne recueille rien `
             + `et ${unionLibre ? "serait taxé à 60 % après un abattement de 1 594 € sur tout legs" : "devrait quitter le logement si le bien revient aux héritiers réservataires"}. `
             + `Le patrimoine du foyer, ${eur(S.patrimoineNet)} net, reviendrait intégralement aux héritiers légaux.`,
-          enjeu: "Donner une existence juridique au survivant",
+          /* 28/09/2026 (CGP) : « donner une existence juridique au survivant — incompréhensible ». */
+          enjeu: unionLibre ? "Protéger votre concubin en cas de décès : testament et assurance-vie" : "Protéger votre partenaire de PACS en cas de décès : testament et assurance-vie",
           preconisation: `Rédiger un testament (olographe ou authentique) au profit du partenaire, dans la limite de la quotité disponible en présence d'enfants, `
             + `et adosser une assurance-vie désignant le partenaire — capital versé hors succession (art. 990 I CGI)`
             + `${unionLibre ? ", seule voie efficace face aux 60 % de droits" : ", le partenaire pacsé étant lui exonéré de droits"}.`,
@@ -5415,7 +5535,7 @@
       /* 21/09/2026 : avec un projet RP chiffré, c'est la place qui RESTE pour du locatif
          qu'annonce ce point fort — sous le seuil, il ne sort pas (« capacité d'emprunt
          disponible ≈ 0 € » présenté comme un point fort). */
-      if (capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
+      if (veutEmprunter && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
         const pRP = ncProjetRP(d);
         const pucesCap = [];
         if (pRP.chiffre) {
@@ -5706,7 +5826,7 @@
       // 29/08 (contrôle expert n°3) : en union libre, le levier de crédit AGGRAVE le
       // problème du concubin non protégé s'il vient avant la protection (au décès,
       // l'enfant hérite du bien ET de la dette, le concubin de rien) — l'axe le dit.
-      if (taux != null && taux < 0.25 && capMax >= 100000) faiblesses.push({ t: "Capacité d'endettement non utilisée",
+      if (veutEmprunter && taux != null && taux < 0.25 && capMax >= 100000) faiblesses.push({ t: "Capacité d'endettement non utilisée",
         /* 02/09 : la phrase portait six idees a la file, en petits caracteres.
            Elle s ecrit desormais en PUCES.
            Et elle ne dicte plus l ordre des operations au client : on ne connait
@@ -5886,7 +6006,7 @@
            immobilière — il entre dans l'effort d'épargne. */
         const effortM = (S.ppMensuels || 0) + epargneImmo;
         const pctEffort = revFoyer > 0 ? effortM / revFoyer : null;
-        if (!foyerRetraite && pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
+        if (!foyerRetraite && veutEpargner && pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
           /* 21/09/2026 (CGP) : « rajoute 9 % en financier sur 18 % au total ». Même
              repère que le bloc « Votre épargne mensuelle actuelle » (INSEE). */
           conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
@@ -5894,8 +6014,8 @@
         // 2. Capacité d'endettement disponible non utilisée (même seuil que le point fort).
         /* 23/09/2026 (CGP) : à 70 ans, plus d'objectif ni de préconisation d'emprunt. */
         const emprunt70 = age != null && age >= 70;
-        if (!emprunt70 && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
-          conseils.push("Utiliser votre capacité d'endettement pour préparer votre retraite et protéger vos héritiers");
+        if (!emprunt70 && veutEmprunter && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) {
+          conseils.push(foyerRetraite ? "Utiliser votre capacité d'endettement pour protéger vos héritiers et compléter vos revenus" : "Utiliser votre capacité d'endettement pour préparer votre retraite et protéger vos héritiers");
         }
         // 3. Baisse de revenus au passage à la retraite (taux de remplacement cabinet).
         {
@@ -5927,11 +6047,18 @@
       // Préconisations : les solutions du cabinet, distinctes des objectifs.
       {
         const precos = [];
-        precos.push(avVie > 0 ? { titre: "Audit du contrat d'assurance-vie existant", suite: ` : vérifier qu'il correspond à votre profil de risque et que son rendement et sa gestion donnent satisfaction — sinon, arbitrage ou optimisation du contrat recommandé${age != null && age >= 65 && age < 70 ? " (versements avant l'anniversaire des 70 ans, art. 990 I CGI)" : ""}` } : { titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
+        /* 28/09/2026 (CGP, dossier BRICHET) : « ce qu'il faut, c'est auditer ses contrats
+           d'assurance-vie et PER existants pour voir ce qu'il faut garder ou non. À noter que
+           les PER sont transférables alors que l'assurance-vie non. » */
+        const nbAV = av.filter(a => a.type === "av" && ncInt(a.valeur) > 0).length, nbPER = av.filter(a => a.type === "per" && ncInt(a.valeur) > 0).length;
+        if (nbAV > 0 || nbPER > 0) {
+          const quoi = [nbAV > 0 ? `${nbAV > 1 ? "vos contrats" : "votre contrat"} d'assurance-vie` : null, nbPER > 0 ? `${nbPER > 1 ? "vos PER" : "votre PER"}` : null].filter(Boolean).join(" et ");
+          precos.push({ titre: `Audit de ${quoi}`, suite: ` : rendement, frais, allocation et gestion — pour décider ce qui est conservé, arbitré${nbPER > 0 ? " ou transféré (un PER se transfère vers un autre PER ; une assurance-vie ne se transfère pas)" : ""}${age != null && age >= 65 && age < 70 ? ". Versements avant l'anniversaire des 70 ans (art. 990 I CGI)" : ""}` });
+        } else precos.push({ titre: "Ouverture d'un contrat d'assurance-vie", suite: "" });
         /* 21/09/2026 (CGP) : « au-dessus de 25 % d'endettement, projet immobilier locatif à
            valider avec les éléments précis du dossier et le courtier en crédit ». */
         const endetSup25 = (taux || 0) > 0.25;
-        if (!(age != null && age >= 70) && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite" + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
+        if (!(age != null && age >= 70) && veutEmprunter && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000)) precos.push({ titre: "Réalisation d'un investissement immobilier locatif", suite: (foyerRetraite ? ", financé à crédit, afin de protéger les héritiers et de compléter vos revenus" : ", financé à crédit, afin de protéger les héritiers et préparer des revenus futurs à la retraite") + (endetSup25 ? " — au-delà de 25 % d'endettement, projet à valider avec les éléments précis du dossier et le courtier en crédit" : "") });
         if (!foyerRetraite && (revC > 0 || revJ > 0)) precos.push({ titre: "Création de votre espace personnel sur info-retraite.fr", suite: " pour obtenir l'estimation officielle de votre pension", href: "https://www.info-retraite.fr", linkLabel: "Ouvrir info-retraite.fr ↗" });
         // PER : TOUJOURS en dernier — et une SEULE mention dans toute la synthèse
         // quand le levier fiscal n'est pas réel (règle cabinet des 5 000 € à 30 %).
@@ -5948,6 +6075,12 @@
         } else {
           precos.push({ titre: "L'ouverture d'un PER est vivement conseillée", suite: " à partir du moment où votre TMI passe à 30 %" });
         }
+        /* 28/09/2026 (CGP) : un projet de vente crée une OPPORTUNITÉ DE PLACEMENT — montant net de
+           crédit et d'impôt de plus-value (choix validé). En tête des préconisations. */
+        ncBiensImmo(d).filter(x => x.vente && x.net > 0).reverse().forEach(x => precos.unshift({
+          titre: `Replacer le produit de la vente ${x.rp ? "de la résidence principale" : `de « ${x.nom} »`}`,
+          suite: ` : ≈ ${eur(x.net)} nets ${x.delaiLib}${x.pv && x.pv.impot > 0 ? `, après ${eur(x.pv.impot)} d'impôt de plus-value` : x.rp ? " (résidence principale : plus-value exonérée)" : ""}${x.crd > 0 ? " et le remboursement du capital restant dû" : ""} — à orienter selon vos objectifs`,
+        }));
         if (precos.length) phrases.push({ t: "Préconisations", c: "#6d28d9", list: precos, large: true });
       }
 
@@ -6087,8 +6220,30 @@
       const rang = (x) => (ordre[x] === undefined ? 2 : ordre[x]);
       problematiques.sort((a, b) => rang(a.priorite) - rang(b.priorite));
 
+      /* ═══ L'ENTRETIEN — ce que le moteur ne peut pas décider seul ═══ */
+      const entretien = [];
+      {
+        const effM = (S.ppMensuels || 0) + epargneImmo, pctE = revFoyer > 0 ? effM / revFoyer : null;
+        const qui = enCouple && d.conjointQ === "oui" ? "Le foyer" : (d.civilite === "Mme" ? "Madame" : "Monsieur");
+        /* dossier recentré (projet RP / crédits, capacité < 80 000 €) : les objectifs sont fixés
+           d'avance (PER + AV + délégation) — pas de question d'épargne à poser. */
+        if (!foyerRetraite && !recentre && pctE != null && pctE < NC_EPARGNE_MOYENNE_FR && ENT.epargneMensuelle == null)
+          entretien.push({ cle: "epargneMensuelle", q: `${qui} souhaite-t-${enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il"} augmenter son épargne mensuelle ?`,
+            aide: `Épargne actuelle : ${effM > 0 ? pc(pctE) : "0 %"} des revenus (moyenne des Français : 18 %). Sans réponse positive, le document ne demandera pas d'épargner davantage.` });
+        const senior = (age != null && age >= 60) || retraiteC;
+        if (senior && !(age != null && age >= 70) && capMax >= 80000 && (!projetRPsyn || capLocMax >= 80000) && ENT.emprunt == null)
+          entretien.push({ cle: "emprunt", q: `${qui} envisage-t-${enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il"} de recourir à l'emprunt ?`,
+            aide: `Capacité d'emprunt calculée : ${eur(capMax)} sur ${dureeMax} ans${retraiteC ? ", à la retraite" : `, à ${age} ans`}. Sans réponse positive, le document ne parlera ni de capacité d'endettement ni d'investissement locatif à crédit.` });
+      }
+      /* Tant qu'une question de l'entretien est SANS réponse, le document se comporte comme si
+         la réponse était « non » : il ne pousse rien qu'il n'a pas le droit de pousser. Seconde
+         passe avec ces réponses provisoires, la liste des questions restant celle-ci. */
+      if (entretien.length && !d.__ncEntretienPasse2) {
+        const prov = { ...ENT }; entretien.forEach(x => { if (prov[x.cle] == null) prov[x.cle] = "non"; });
+        return { ...ncSynthese({ ...d, entretien: prov, __ncEntretienPasse2: true }), entretien };
+      }
       return {
-        resume: phrases, forces, faiblesses, problematiques,
+        resume: phrases, forces, faiblesses, problematiques, entretien,
         recentre, incoherences, epargneImmo, courtTermeApresRP: courtTermeM, apportRP: apportRPsyn,
         chiffresCles: {
           revenusMensuels: revFoyer, chargesMensuelles: chFoyer, tauxEndettement: taux,
@@ -8272,6 +8427,8 @@
          remontre pas tant qu'elle n'a pas changé. */
       const [incoOpen, setIncoOpen] = useState(null);   // null | { liste, suite }
       const incoVu = useRef("");
+      /* 28/09/2026 (CGP) : l'entretien — pop-up de questions au conseiller quand le moteur doute */
+      const [entOpen, setEntOpen] = useState(null);     // null | { liste, suite }
       // 29/08 (union libre) : quel concubin remplit le questionnaire de risque ("" ou "2")
       const [risquePers, setRisquePers] = useState("");
       // Synthèse en deux temps (doctrine commerciale du cabinet) :
@@ -8482,6 +8639,10 @@
           const inc = (syn && syn.incoherences) || [];
           const sig = JSON.stringify(inc.map(x => x.t + x.d));
           if (inc.length && incoVu.current !== sig) { setIncoOpen({ liste: inc, suite: n, sig }); return; }
+        }
+        if (etape <= 6 && n > 6) {
+          const ent = (syn && syn.entretien) || [];
+          if (ent.length) { setEntOpen({ liste: ent, suite: n }); return; }
         }
         if (n === 8 && !capRenseignee) { setCapGateOpen(true); return; }
         goEtapeRaw(n);
@@ -9817,6 +9978,7 @@
                       <L>Date de naissance du client {ageClient != null && <span className="normal-case"><NcAge a={ageClient} /></span>}</L>
                       <input type="date" value={d.dateNaissance} max={NC_NAISSANCE_MAX} min="1920-01-01" onChange={e => set("dateNaissance", e.target.value)}
                         className="num w-full px-3 py-2 text-[13px] bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900" />
+                      <NcAgeAlerte date={d.dateNaissance} qui="client" />
                     </div>
                     <div>
                       <L>Nom de naissance</L>
@@ -9942,6 +10104,7 @@
                             <div className="text-[11.5px] font-bold text-stone-700 mb-1">Date de naissance du conjoint {ncAgeDate((d.conjoint||{}).dateNaissance) != null && <NcAge a={ncAgeDate((d.conjoint||{}).dateNaissance)} />}</div>
                             <input type="date" value={(d.conjoint||{}).dateNaissance || ""} max={NC_NAISSANCE_MAX} min="1920-01-01" onChange={e => setAct("conjoint", "dateNaissance", e.target.value)}
                               className="num w-full px-3 py-2 text-[13px] bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-stone-900" />
+                            <NcAgeAlerte date={(d.conjoint||{}).dateNaissance} qui="conjoint" />
                           </div>
                         </div>
                         {/* 10/09/2026 — demande du CGP : téléphone et email du conjoint aussi. */}
@@ -10101,6 +10264,27 @@
                           </div>
                         {/* Détention de la RP (28/08) : 100 % Monsieur, 100 % Madame, 50/50 ou
                             répartition libre — reprise dans la valorisation par personne. */}
+
+                          {/* 28/09/2026 (CGP) : origine du bien, date, prix initial → plus-value latente */}
+                          <div className="mb-2 rounded-lg border border-stone-200 px-3 py-2" data-nc-origine-immo="rp">
+                            <div className="text-[11.5px] font-bold text-stone-700 mb-1">Comment ce bien est-il entré dans le patrimoine ?</div>
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                              <Chips opts={[{ v: "achat", l: "Achat" }, { v: "donation", l: "Donation" }, { v: "succession", l: "Héritage" }]} val={d.rpOrigine || ""} on={v => set("rpOrigine", v)} />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <div className="w-28"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">En quelle année ?</div><Txt v={d.rpAnneeEntree || ""} on={v => set("rpAnneeEntree", v.replace(/[^\d]/g, "").slice(0, 4))} ph="2012" /></div>
+                              <div className="w-44"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">{d.rpOrigine === "achat" || !d.rpOrigine ? "Prix d'achat du bien" : "Valeur déclarée à l'acte"}</div><Eur v={d.rpPrixInitial || ""} on={v => set("rpPrixInitial", v)} ph="0" /></div>
+                              {ncInt(d.rpValeur) && ncInt(d.rpPrixInitial) > 0 && ncInt(d.rpAnneeEntree) > 1900 && (() => {
+                                const lat = ncInt(d.rpValeur) - ncInt(d.rpPrixInitial);
+                                return <span className="num text-[11px] font-bold" style={{ color: lat >= 0 ? "#0f766e" : "#b91c1c" }}>{lat >= 0 ? "plus-value latente" : "moins-value latente"} ≈ {new Intl.NumberFormat('fr-FR').format(Math.abs(lat))} €{" — exonérée (résidence principale)"}</span>;
+                              })()}
+                            </div>
+                          </div>
+                          <div className="mb-2 flex items-center gap-3 flex-wrap" data-nc-vente-immo="rp">
+                            <span className="text-[11.5px] font-bold text-stone-700">Projet de vente ?</span>
+                            <OuiNon val={d.rpVenteQ || ""} on={v => set("rpVenteQ", v)} />
+                            {d.rpVenteQ === "oui" && <Chips opts={[{v:"<1",l:"< 1 an"},{v:"1-3",l:"1 – 3 ans"},{v:"3-5",l:"3 – 5 ans"},{v:">5",l:"> 5 ans"}]} val={d.rpVenteDelai || ""} on={v => set("rpVenteDelai", v)} />}
+                          </div>
                         {enCouple && d.conjointQ === "oui" && (() => {
                           const moiRP = d.civilite === "Mme" ? "Madame" : "Monsieur";
                           const luiRP = d.civilite === "Mme" ? "Monsieur" : "Madame";
@@ -10907,7 +11091,9 @@
                         <div className="flex flex-wrap items-end gap-x-4 gap-y-2 mb-2">
                           <div>
                             <div className="text-[11.5px] font-bold text-stone-700 mb-1">Location {!l.type && <span className="text-red-500 font-semibold">à préciser</span>}</div>
-                            <Chips opts={[{v:"nue",l:"Nue"},{v:"meublee",l:"Meublée"}]} val={l.type} on={v => setList("locatifs", l.id, "type", v)} />
+                            {/* 28/09/2026 (CGP) : « rajoute immobilier commercial également » — bail commercial,
+                                revenus fonciers (même régime fiscal que la location nue). */}
+                            <Chips opts={[{v:"nue",l:"Nue"},{v:"meublee",l:"Meublée"},{v:"commerciale",l:"Commerciale"}]} val={l.type} on={v => setList("locatifs", l.id, "type", v)} />
                           </div>
                           {l.type === "meublee" && (
                             <div>
@@ -10938,6 +11124,27 @@
                                 </>
                               )}
                             </div>
+                          </div>
+
+                          {/* 28/09/2026 (CGP) : origine du bien, date, prix initial → plus-value latente */}
+                          <div className="mb-2 rounded-lg border border-stone-200 px-3 py-2" data-nc-origine-immo="loc">
+                            <div className="text-[11.5px] font-bold text-stone-700 mb-1">Comment ce bien est-il entré dans le patrimoine ?</div>
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                              <Chips opts={[{ v: "achat", l: "Achat" }, { v: "donation", l: "Donation" }, { v: "succession", l: "Héritage" }]} val={l.origine || ""} on={v => setList("locatifs", l.id, "origine", v)} />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <div className="w-28"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">En quelle année ?</div><Txt v={l.anneeEntree || ""} on={v => setList("locatifs", l.id, "anneeEntree", v.replace(/[^\d]/g, "").slice(0, 4))} ph="2012" /></div>
+                              <div className="w-44"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">{l.origine === "achat" || !l.origine ? "Prix d'achat du bien" : "Valeur déclarée à l'acte"}</div><Eur v={l.prixInitial || ""} on={v => setList("locatifs", l.id, "prixInitial", v)} ph="0" /></div>
+                              {ncInt(l.valeur) && ncInt(l.prixInitial) > 0 && ncInt(l.anneeEntree) > 1900 && (() => {
+                                const lat = ncInt(l.valeur) - ncInt(l.prixInitial);
+                                return <span className="num text-[11px] font-bold" style={{ color: lat >= 0 ? "#0f766e" : "#b91c1c" }}>{lat >= 0 ? "plus-value latente" : "moins-value latente"} ≈ {new Intl.NumberFormat('fr-FR').format(Math.abs(lat))} €{` — détenu depuis ${Math.max(0, new Date().getFullYear() - ncInt(l.anneeEntree))} ans`}</span>;
+                              })()}
+                            </div>
+                          </div>
+                          <div className="mb-2 flex items-center gap-3 flex-wrap" data-nc-vente-immo="loc">
+                            <span className="text-[11.5px] font-bold text-stone-700">Projet de vente ?</span>
+                            <OuiNon val={l.venteQ || ""} on={v => setList("locatifs", l.id, "venteQ", v)} />
+                            {l.venteQ === "oui" && <Chips opts={[{v:"<1",l:"< 1 an"},{v:"1-3",l:"1 – 3 ans"},{v:"3-5",l:"3 – 5 ans"},{v:">5",l:"> 5 ans"}]} val={l.venteDelai || ""} on={v => setList("locatifs", l.id, "venteDelai", v)} />}
                           </div>
                         {/* L'essentiel du bien s'arrête ici — régime fiscal, crédit, assurance et notes
                             passent derrière « + Détails » (repliés tant que rien n'y est renseigné). */}
@@ -11034,7 +11241,7 @@
                         </div>
                         <div className="mb-2">
                           <div className="flex flex-wrap gap-3">
-                            <div className="w-64"><Select opts={[{v:"rs",l:"Résidence secondaire"},{v:"locatif",l:"Locatif"},{v:"terrain",l:"Terrain"},{v:"parts_sci",l:"Parts SCI/SCPI"},{v:"autre",l:"Autre"}]} val={b.type} on={v => setList("biens", b.id, "type", v)} /></div>
+                            <div className="w-64"><Select opts={[{v:"rs",l:"Résidence secondaire"},{v:"locatif",l:"Locatif"},{v:"commercial",l:"Immobilier commercial"},{v:"terrain",l:"Terrain"},{v:"parts_sci",l:"Parts SCI/SCPI"},{v:"autre",l:"Autre"}]} val={b.type} on={v => setList("biens", b.id, "type", v)} /></div>
                             <div className="w-64"><Select opts={[
                               { v: "pp", l: "Pleine propriété" },
                               { v: "usufruit", l: "Usufruit (démembré)" },
@@ -11125,6 +11332,22 @@
                           )}
                           </NcReveal>
                         )}
+
+                          {/* 28/09/2026 (CGP) : origine du bien, date, prix initial → plus-value latente */}
+                          <div className="mb-2 rounded-lg border border-stone-200 px-3 py-2" data-nc-origine-immo="bien">
+                            <div className="text-[11.5px] font-bold text-stone-700 mb-1">Comment ce bien est-il entré dans le patrimoine ?</div>
+                            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                              <Chips opts={[{ v: "achat", l: "Achat" }, { v: "donation", l: "Donation" }, { v: "succession", l: "Héritage" }]} val={b.origine || ""} on={v => setList("biens", b.id, "origine", v)} />
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <div className="w-28"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">En quelle année ?</div><Txt v={b.anneeEntree || ""} on={v => setList("biens", b.id, "anneeEntree", v.replace(/[^\d]/g, "").slice(0, 4))} ph="2012" /></div>
+                              <div className="w-44"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">{b.origine === "achat" || !b.origine ? "Prix d'achat du bien" : "Valeur déclarée à l'acte"}</div><Eur v={b.prixInitial || ""} on={v => setList("biens", b.id, "prixInitial", v)} ph="0" /></div>
+                              {ncInt(b.valeur) && ncInt(b.prixInitial) > 0 && ncInt(b.anneeEntree) > 1900 && (() => {
+                                const lat = ncInt(b.valeur) - ncInt(b.prixInitial);
+                                return <span className="num text-[11px] font-bold" style={{ color: lat >= 0 ? "#0f766e" : "#b91c1c" }}>{lat >= 0 ? "plus-value latente" : "moins-value latente"} ≈ {new Intl.NumberFormat('fr-FR').format(Math.abs(lat))} €{` — détenu depuis ${Math.max(0, new Date().getFullYear() - ncInt(b.anneeEntree))} ans`}</span>;
+                              })()}
+                            </div>
+                          </div>
                         <div className="mt-2 flex items-center gap-4 flex-wrap">
                           <span className="text-[12px] font-semibold text-stone-700">Objectif de vente ?</span>
                           <OuiNon val={b.venteQ || ""} on={v => setList("biens", b.id, "venteQ", v)} />
@@ -11250,6 +11473,15 @@
                               </div>
                             </div>
                           </SousSection>
+                          {/* 28/09/2026 (CGP) : année d'ouverture des contrats d'assurance-vie et de PER */}
+                          {(a.type === "av" || a.type === "per") && (
+                            <SousSection t="Année d'ouverture du contrat">
+                              <div className="flex items-center gap-3" data-nc-annee-ouverture="1">
+                                <div className="w-28"><Txt v={a.anneeOuverture || ""} on={v => setList("avoirs", a.id, "anneeOuverture", v.replace(/[^\d]/g, "").slice(0, 4))} ph="2012" /></div>
+                                {ncInt(a.anneeOuverture) > 1900 && <span className="num text-[11px] font-bold text-teal-700">{a.type === "av" ? (new Date().getFullYear() - ncInt(a.anneeOuverture) >= 8 ? "plus de 8 ans : fiscalité des rachats allégée" : `8 ans atteints en ${ncInt(a.anneeOuverture) + 8}`) : `ouvert depuis ${new Date().getFullYear() - ncInt(a.anneeOuverture)} ans`}</span>}
+                              </div>
+                            </SousSection>
+                          )}
 
                           {/* 3 — Détention. Le mode de saisie suit le régime matrimonial :
                               communauté d'acquêts → seule l'origine des fonds compte (art. 1402 C. civ.) ;
@@ -12144,7 +12376,7 @@
                                 <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
                                 {synth.revenus.length === 0
                                   ? <div style={{ fontSize: 13, color: "#a8a29e", paddingTop: 9 }}>Aucun revenu renseigné.</div>
-                                  : synth.revenus.map((r, i) => <Ligne key={i} l={r.label} r={r.regle} v={r.mensuel} neg={r.mensuel < 0} />)}
+                                  : synth.revenus.map((r, i) => <Ligne key={i} l={r.labelDoc || r.label} r={"regleDoc" in r ? r.regleDoc : r.regle} v={r.brut != null ? r.brut : r.mensuel} neg={r.mensuel < 0} />)}
                               </div>
                               <div>
                                 <div style={{ borderTop: "1.5px solid #1d2735", marginBottom: 2 }}></div>
@@ -12157,7 +12389,7 @@
                             <div className="grid gap-8" style={{ gridTemplateColumns: "repeat(2, minmax(0,1fr))", marginTop: 18 }}>
                               <div className="flex items-baseline justify-between gap-3">
                                 <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total des revenus du foyer</span>
-                                <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(synth.totalRevenus)} €</span>
+                                <span className="num tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 30, fontWeight: 700, color: "#1d2735", letterSpacing: "0.02em" }}>{nfR(synth.revenus.reduce((t, r) => t + (r.brut != null ? r.brut : r.mensuel), 0))} €</span>
                               </div>
                               <div className="flex items-baseline justify-between gap-3">
                                 <span className="text-[9.5px] uppercase tracking-[0.16em] font-bold" style={{ color: "#78716c" }}>Total des charges du foyer</span>
@@ -12178,7 +12410,8 @@
                           const detRP = d.rpDetenteur === "client" ? `100 % ${civRP.moi}` : d.rpDetenteur === "conjoint" ? `100 % ${civRP.lui}`
                             : d.rpDetenteur === "5050" ? "50 / 50" : d.rpDetenteur === "libre" ? `${Math.min(100, Math.max(0, ncInt(d.rpPartClient)))} % ${civRP.moi} – ${Math.max(0, 100 - Math.min(100, Math.max(0, ncInt(d.rpPartClient))))} % ${civRP.lui}` : null;
                           const rowDetRP = enCouple && d.conjointQ === "oui" && detRP ? [{ l: "Appartient à", v: detRP }] : [];
-                          const rowsRP = rowDetRP.concat(d.rpCreditQ === "oui" ? [
+                          const biensO = ncBiensImmo(d);
+                          const rowsRP = rowDetRP.concat(ncRowsOrigine(biensO.find(x => x.cle === "rp"))).concat(d.rpCreditQ === "oui" ? [
                             ncInt(d.rpCrd) > 0 ? { l: "Capital restant dû", v: `${nfL(ncInt(d.rpCrd))} €` } : null,
                             ncInt(d.rpMensualite) > 0 ? { l: "Mensualité", v: `${nfL(ncInt(d.rpMensualite))} €/mois` } : null,
                             d.rpTaux ? { l: "Taux", v: `${d.rpTaux} %` } : null,
@@ -12231,7 +12464,7 @@
                         // Document de travail : TOUTES les informations saisies doivent ressortir.
                         const locs = (d.fonciersQ === "oui" ? (d.locatifs || []) : []);
                         if (locs.length) {
-                          const TYPE_LOC = { nue: "location nue", meublee: "location meublée" };
+                          const TYPE_LOC = { nue: "location nue", meublee: "location meublée", commerciale: "location commerciale (bail commercial)" };
                           // RÈGLE CABINET (29/08, dossier Polo — locatif de Brest) : pour un couple,
                           // le RATTACHEMENT s'affiche pour TOUS les biens — titulaire déclaré, ou
                           // « à préciser » s'il manque, jamais une ligne muette.
@@ -12247,6 +12480,7 @@
                               l.creditQ === "oui" && l.banque ? { l: "Banque du crédit", v: l.banque } : null,
                               l.creditQ === "oui" && l.assurQ === "non" ? { l: "Assurance de prêt", v: `jamais renégociée${(l.assurAssureur || "").trim() ? ` (${l.assurAssureur.trim()})` : ""}` } : null,
                               (l.imposable != null && String(l.imposable).trim() !== "" && String(l.imposable).trim() !== "-") ? { l: "Résultat imposable", v: `${nfL(ncInt(l.imposable))} €/an` } : null,
+                              ...ncRowsOrigine(ncBiensImmo(d).find(x => x.cle === "loc" + l.id)),
                               (l.note || "").trim() ? { l: "Note", v: l.note.trim() } : null,
                             ].filter(Boolean),
                           })) });
@@ -12255,7 +12489,7 @@
                         if (autresBiens.length) {
                           const DET_LIB = { pp: "pleine propriété", nue_propriete: "NUE-PROPRIÉTÉ (valeur de la part)", usufruit: "USUFRUIT (valeur de la part)" };
                           // Indivision : quote-part affichée partout, valeur totale rappelée.
-                          const TYPE_B = { rs: "RS", locatif: "locatif", terrain: "terrain", parts_sci: "parts SCI/SCPI", autre: "autre bien" };
+                          const TYPE_B = { rs: "RS", locatif: "locatif", commercial: "immobilier commercial", terrain: "terrain", parts_sci: "parts SCI/SCPI", autre: "autre bien" };
                           const civB = d.civilite === "Mme" ? { client: "Madame", conjoint: "Monsieur" } : { client: "Monsieur", conjoint: "Madame" };
                           const TIT_B = { client: civB.client, conjoint: civB.conjoint, commun: "Commun / indivision" };
                           lignes.push({ t: "Autres biens", items: autresBiens.map(b => ({
@@ -12263,6 +12497,7 @@
                             rows: [
                               enCouple && d.conjointQ === "oui" ? { l: "Appartient à", v: TIT_B[ncTit(b.titulaire)] || "à préciser" } : (TIT_B[ncTit(b.titulaire)] ? { l: "Appartient à", v: TIT_B[ncTit(b.titulaire)] } : null),
                               b.detention === "indivision" ? { l: "Détention", v: `INDIVISION — quote-part ${ncInt(b.indivPart) > 0 ? ncInt(b.indivPart) + " %" : "à préciser"}${(b.indivAvec || "").trim() ? `, avec ${b.indivAvec.trim()}` : ""} — seule la quote-part est comptée au bilan` } : DET_LIB[b.detention] ? { l: "Détention", v: DET_LIB[b.detention] } : null,
+                              ...ncRowsOrigine(ncBiensImmo(d).find(x => x.cle === "bien" + b.id)),
                             ].filter(Boolean),
                           })) });
                         }
@@ -12390,6 +12625,11 @@
                                 const b = [];
                                 if (x._fiscal) b.push({ txt: `déclaré en fiscalité${ncInt(x.pp) > 0 ? ` — ${new Intl.NumberFormat('fr-FR').format(ncInt(x.pp))} €/mois versés` : ""}`, bg: "#efe9fb", fg: "#6d28d9", bd: "#6d28d955" });
                                 if ((x.etablissement || "").trim()) b.push({ txt: x.etablissement.trim().toUpperCase(), bg: "#faf4e8", fg: "#8a6d34", bd: "#b8924e66" });
+                                /* 28/09/2026 (CGP) : année d'ouverture des contrats d'assurance-vie et de PER */
+                                if ((x.type === "av" || x.type === "per") && ncInt(x.anneeOuverture) > 1900) {
+                                  const agC = new Date().getFullYear() - ncInt(x.anneeOuverture);
+                                  b.push({ txt: `ouvert en ${ncInt(x.anneeOuverture)}${x.type === "av" ? (agC >= 8 ? " · plus de 8 ans" : ` · 8 ans en ${ncInt(x.anneeOuverture) + 8}`) : ""}`, bg: "#eef2ff", fg: "#3730a3", bd: "#3730a355" });
+                                }
                                 if (GEST_COURT[x.gestion]) b.push({ txt: GEST_COURT[x.gestion], bg: "#f5f5f4", fg: "#57534e", bd: "#d6d3d1" });
                                 if (PROF_C[x.profil]) b.push({ txt: PROF[x.profil] || x.profil, bg: PROF_C[x.profil][0], fg: PROF_C[x.profil][1], bd: PROF_C[x.profil][2] });
                                 if (x.rendement) b.push({ txt: `rendement constaté ${x.rendement} %`, bg: "#e6f2ef", fg: "#0f766e", bd: "#0f766e55" });
@@ -13579,7 +13819,7 @@
                            70 ans » — à 70 ans révolus la question n'a plus d'objet. Et un foyer
                            retraité ne se voit poser ni la question de la baisse de revenus à la
                            retraite (il y est), ni celle de l'épargne mensuelle sur quinze ans. */
-                        const foyerRetraiteQ = (d.activites || []).includes("retraite") && (!enCouple || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
+                        const foyerRetraiteQ = (d.activites || []).includes("retraite") && (!(enCouple && d.conjointQ === "oui") || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
                         const abatt990 = (nbEnf > 0 && (ageClient == null || ageClient < 70)) ? nbEnf * 152500 : 0;
                         /* Capital financier placé à long terme, et ce qu'il devient d'ici 65 ans
                            selon qu'il travaille au taux des livrets (1,7 %) ou à l'hypothèse
@@ -13650,6 +13890,11 @@
                              principale ». Trois conditions réunies : une trésorerie importante, un
                              rendement de livret, et aucune destination annoncée. C'est la question
                              qui passe devant toutes les autres (p : 1). */
+                          /* 28/09/2026 (CGP) : vente à moins d'un an → opportunité de placement,
+                             posée en question (choix validé : préconisation + question). */
+                          ...ncBiensImmo(d).filter(x => x.vente && x.venteDelai === "<1" && x.net > 0).slice(0, 1).map(x => ({
+                            p: 1, fam: "vente", cond: true, re: /jamais/,
+                            q: `Savez-vous déjà où placer les ${nfQ(x.net)} € de la vente ${x.rp ? "de votre résidence principale" : `de « ${x.nom} »`} ?` })),
                           { p: 1, fam: "tresorerie", cond: courtTQ >= 50000 && !projetRPQ, re: /jamais/,
                             /* 23/09/2026 (CGP, dossier DURAND) : tournure dictée — « savez-vous comment
                                sont taxés les livrets et/ou comptes courants en cas de succession ? ».
@@ -13685,7 +13930,7 @@
                              d'environ 300 k€, dans quoi l'investiriez-vous ? ». Le montant est
                              ARRONDI aux 50 000 € : un chiffre au franc près appellerait une
                              discussion sur le calcul, alors que la question porte sur l'emploi. */
-                          { p: 5, fam: "levier", re: /capacité d'endettement/i,
+                          { p: 5, fam: "levier", skip: (d.entretien || {}).emprunt === "non", re: /capacité d'endettement/i,
                             q: `Si la banque vous faisait un prêt d'environ ${nfQ(Math.max(50000, Math.round(capEmp / 50000) * 50000))} €, dans quoi l'investiriez-vous ?` },
                           { p: 6, fam: "epargne", re: /épargne long terme|épargne insuffisante/i,
                             q: courtTQ > 0
@@ -13802,7 +14047,7 @@
                         const Clic = ({ children }) => <b style={{ color: "#0369a1" }}>{children}</b>;
                         /* 23/09/2026 (CGP) : un foyer retraité n'a ni estimation de retraite à
                            télécharger ni contrats d'épargne retraite à relever — sa pension est acquise. */
-                        const foyerRetraiteD = (d.activites || []).includes("retraite") && (!enCouple || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
+                        const foyerRetraiteD = (d.activites || []).includes("retraite") && (!(enCouple && d.conjointQ === "oui") || ((((d.conjointRev || {}).activites) || []).includes("retraite")));
                         const devoirs = foyerRetraiteD ? [] : [
                           { t: "Votre estimation de retraite", d: <>Connectez-vous à votre compte sur {SITE}, puis téléchargez votre estimation de retraite (montant estimé de vos pensions).</> },
                           { t: "Vos contrats d'épargne retraite", d: <>Également sur le site {SITE}, cliquez sur <Clic>« Mon épargne retraite »</Clic> puis <Clic>« Voir mes contrats »</Clic>. Faites une copie d'écran ou téléchargez le document.</> },
@@ -14453,11 +14698,38 @@
                     <div className="text-[11.5px] text-stone-500 mt-2">Corrigez la saisie avec le client, ou continuez : la synthèse tiendra compte de l'ensemble du dossier.</div>
                   </div>
                   <div className="px-6 py-4 border-t border-stone-100 flex items-center justify-between gap-3" style={{ background: "#faf9f7" }}>
-                    <button type="button" onClick={() => { incoVu.current = incoOpen.sig; const n2 = incoOpen.suite; setIncoOpen(null); if (n2 === 8 && !capRenseignee) setCapGateOpen(true); else goEtapeRaw(n2); }}
+                    <button type="button" onClick={() => { incoVu.current = incoOpen.sig; const n2 = incoOpen.suite; setIncoOpen(null); const ent = (syn && syn.entretien) || []; if (ent.length) setEntOpen({ liste: ent, suite: n2 }); else if (n2 === 8 && !capRenseignee) setCapGateOpen(true); else goEtapeRaw(n2); }}
                       className="text-[11.5px] font-semibold text-stone-400 hover:text-stone-600 underline underline-offset-2 transition">Continuer quand même</button>
                     <button type="button" onClick={() => setIncoOpen(null)}
                       className="px-6 py-2.5 rounded-xl text-[13px] font-bold text-white shadow-sm transition hover:brightness-110" style={{ background: "#1d2735" }}>
                       Corriger la saisie
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {entOpen && (
+              <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" data-nc-entretien="1" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
+                <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden" style={{ borderTop: "4px solid #0f766e" }}>
+                  <div className="px-6 pt-5 pb-4">
+                    <div className="text-[11px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#0f766e" }}>Entretien — {entOpen.liste.length > 1 ? "quelques questions" : "une question"} avant la synthèse</div>
+                    <div className="text-[19px] font-bold leading-snug mb-3" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>
+                      Le document ne doit dire que ce qui a du sens pour ce client
+                    </div>
+                    {entOpen.liste.map((x, i) => (
+                      <div key={x.cle} className="rounded-xl px-4 py-3 mb-2" style={{ background: "#0f766e0a", border: "1px solid #0f766e33" }}>
+                        <div className="text-[13px] font-bold mb-1" style={{ color: "#1d2735" }}>{x.q}</div>
+                        <div className="text-[11.5px] leading-relaxed text-stone-600 mb-2">{x.aide}</div>
+                        <Chips opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }]} val={(d.entretien || {})[x.cle] || ""} on={v => set("entretien", { ...(d.entretien || {}), [x.cle]: v })} />
+                      </div>
+                    ))}
+                    <div className="text-[11.5px] text-stone-500 mt-2">Les réponses sont conservées dans le dossier et relues à chaque synthèse.</div>
+                  </div>
+                  <div className="px-6 py-4 border-t border-stone-100 flex items-center justify-end gap-3" style={{ background: "#faf9f7" }}>
+                    <button type="button" disabled={entOpen.liste.some(x => !(d.entretien || {})[x.cle])}
+                      onClick={() => { const n2 = entOpen.suite; setEntOpen(null); if (n2 === 8 && !capRenseignee) setCapGateOpen(true); else goEtapeRaw(n2); }}
+                      className="px-6 py-2.5 rounded-xl text-[13px] font-bold text-white shadow-sm transition hover:brightness-110 disabled:opacity-40" style={{ background: "#0f766e" }}>
+                      Continuer
                     </button>
                   </div>
                 </div>
