@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v257 (23/09 : LA SORTIE D UN ENFANT DU FOYER FISCAL PILOTE LE DOCUMENT. Le CGP, sur l age de sortie saisi en v254 : « il faut que ca indique que Camille quittera le foyer en 2029 et que ca fasse une projection de l impot et de la TMI en ce sens ». (1) Etat civil : la ligne de l enfant porte « — quittera le foyer fiscal en AAAA ». (2) Fiscalite : encart « Evolution du foyer fiscal » — la phrase, puis un tableau Aujourd hui / Apres le depart de X (annee) : parts, TMI, impot estime, ecart par an ; ncCalcFisc relance sans l enfant (et sans ceux partis avant lui), a revenus et legislation constants ; TMI en rouge si elle monte. Banc t_sortie_foyer.js etendu.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v258 (28/09 : QUOTE-PART DE DETENTION DE L IMMOBILIER. Le CGP : « lorsque je renseigne un bien immobilier, il faut que je puisse renseigner le % de detention ; j ai une femme pacsee, conjoint non renseigne, qui detient 5 pct de la maison, et je ne peux pas le saisir ». Residence principale et biens locatifs : question « Quelle part du bien detenez-vous ? » — 100 pct / une quote-part (pct + « en indivision avec… »), posee MEME sans conjoint renseigne (la repartition Monsieur/Madame, elle, reste reservee au couple). La valeur retenue au patrimoine (actif, patrimoine net, repartition, succession, projection) est la part detenue (ncRpValeur, ncLocValeur, meme regle que les « autres biens » en indivision) ; capital restant du, loyer et mensualite restent ceux declares pour SA part. Document : « valeur estimee 320 000 € · quote-part detenue 5 pct (16 000 €), en indivision avec … ». Banc t_quote_part.js.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v257 (23/09 : LA SORTIE D UN ENFANT DU FOYER FISCAL PILOTE LE DOCUMENT. Le CGP, sur l age de sortie saisi en v254 : « il faut que ca indique que Camille quittera le foyer en 2029 et que ca fasse une projection de l impot et de la TMI en ce sens ». (1) Etat civil : la ligne de l enfant porte « — quittera le foyer fiscal en AAAA ». (2) Fiscalite : encart « Evolution du foyer fiscal » — la phrase, puis un tableau Aujourd hui / Apres le depart de X (annee) : parts, TMI, impot estime, ecart par an ; ncCalcFisc relance sans l enfant (et sans ceux partis avant lui), a revenus et legislation constants ; TMI en rouge si elle monte. Banc t_sortie_foyer.js etendu.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v256 (23/09 : CLIENTS TYPES REFAITS ET REMPLIS EN TOTALITE. Le CGP : « peux-tu en refaire d autres / les remplacer, et remplir la totalite des champs ? » — remplaces ; fiche celibataire PROPRE ; questionnaire de risque NON rempli (profil reporte d un questionnaire du cabinet, SRI saisi). Julien FAURE (celibataire locataire, projet RP), Claire et Maxime ROUSSEL (pacses, fonctionnaire + cadre, deux enfants), Olivier et Isabelle LAMBERT (maries en communaute, architecte liberal, trois enfants dont Manon 22 ans, locatif, residence secondaire), Jacqueline MOREAU (veuve, 74 ans, retraitee, 151 450 € de liquidites). Identite, coordonnees, banques, revenus detailles, credits, placements (etablissement, objectif, gestion, rendement, satisfaction), objectifs detailles, budget, notes : tout ce qui a un sens pour la situation est rempli. Corrige au passage : enfants majeurs « charge 0 » (valeur inexistante) -> « non a charge » ; rpDetenteur « commun » -> « 5050 » ; horizon de projet RP « 2 » -> « <1 ». (2) « Creer un objectif » s affiche sous le titre saisi (« Aider ses petits-enfants »). (3) Encart « a la limite de la tranche superieure » : plus de conseil PER pour un foyer retraite. Bancs mis a jour : t_clients_types (completude + aucune incoherence), t_recentre (fiche propre, incoherences testees sur le moteur), t_retraite, t_questions_durand, t_sortie_foyer.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v255 (23/09 : LES QUESTIONS — retours du CGP sur le dossier DURAND. (1) Question de la tresorerie qui dort, tournure dictee : « Vous conservez N € sur des livrets et des comptes courants : savez-vous comment ils sont taxes en cas de succession ? » (plus de « rapporte peu… comment comptez-vous la reorganiser »). (2) Question « rendement » SUPPRIMEE : elle disait « vos 205 000 € places au taux des livrets » alors que ces 205 000 € sont des placements long terme — « cette question n a pas de sens, il vaut mieux cinq questions pertinentes qu une sixieme stupide ». Ne pas la reintroduire. Banc t_questions_durand.js.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v254 (23/09 : SORTIE DU FOYER FISCAL D UN ENFANT DE PLUS DE 20 ANS. Le CGP : « des que l enfant a plus de 20 ans, ouvre-moi un onglet ou je puisse rentrer l age prevu de depart et de sortie du foyer fiscal ». Etape Famille : sous la carte d un enfant de 21 ans ou plus encore a charge (100 pct, garde alternee, majeur rattache), un bandeau ambre « X a N ans — sortie prevue du foyer fiscal a [__] ans, soit en AAAA ». Champ e.sortieFoyerAge (deux chiffres), annee deduite de l age ; alerte si l age saisi est deja atteint. Donnee capturee seulement : aucun usage moteur pour l instant (question posee au CGP : parts fiscales apres la sortie ? projection ?). Banc t_sortie_foyer.js.)','color:#94a3b8');
@@ -2245,7 +2246,7 @@
       rpProjetQ: "", rpProjetHorizon: "", rpProjetMensualite: "",
       rpProjetDuree: "", rpProjetApport: "", rpProjetTaux: "", rpProjetNote: "",
       rpValeur: "", rpCreditQ: "", rpBanque: "", rpCrd: "", rpMensualite: "", rpTaux: "", rpDureeRestante: "", rpAssurRenegociee: "",
-      rpDetenteur: "", rpPartClient: "",
+      rpDetenteur: "", rpPartClient: "", rpDetentionQ: "", rpQuotePart: "", rpIndivAvec: "",
       /* depenses courantes MENSUELLES du foyer — surcharge du train de vie estime
          (revenus nets moins epargne). Base de la cible de precaution. */
       depensesMens: "",
@@ -3435,6 +3436,15 @@
       }
       return v;
     };
+    /* 28/09/2026 (CGP) : « lorsque je renseigne un bien immobilier, il faut que je puisse
+       renseigner le % de détention — une femme pacsée, conjoint non renseigné, détient 5 %
+       de la maison et je ne peux pas le saisir ». Résidence principale et biens locatifs
+       reçoivent la même quote-part que les « autres biens » (indivision, v1xx) : la
+       VALEUR retenue au patrimoine est la part détenue par le foyer ; le capital restant
+       dû, le loyer et la mensualité restent ceux que le client déclare pour SA part. */
+    const ncQuote = (detQ, pct) => detQ === "partielle" && ncInt(pct) > 0 ? Math.min(99, Math.max(1, ncInt(pct))) / 100 : 1;
+    const ncRpValeur = (d) => Math.round(ncInt(d && d.rpValeur) * ncQuote(d && d.rpDetentionQ, d && d.rpQuotePart));
+    const ncLocValeur = (l) => Math.round(ncInt(l && l.valeur) * ncQuote(l && l.detentionQ, l && l.quotePart));
     const ncMens = (montant, periode) => { const m = ncInt(montant); return periode === "an" ? m / 12 : m; };
     /* 10/09/2026 — REPARTITION DU PATRIMOINE NET PAR PERSONNE : UNE SEULE fonction.
        Le point fort « Patrimoine net significatif » ne ventilait que la RP et les
@@ -3510,13 +3520,13 @@
         : d.rpDetenteur === "libre" ? Math.min(100, Math.max(0, ncInt(d.rpPartClient))) / 100 : 0.5;
       let c = 0, j = 0, commun = 0;
       if (d.logement === "proprietaire") {
-        const v = ncInt(d.rpValeur) - (d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0);
+        const v = ncRpValeur(d) - (d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0);
         c += v * pRP; j += v * (1 - pRP);
         if (d.rpDetenteur !== "client" && d.rpDetenteur !== "conjoint" && d.rpDetenteur !== "libre") commun += v;
       }
       const ventile = (v, t) => { if (t === "client") c += v; else if (t === "conjoint") j += v; else { c += v / 2; j += v / 2; commun += v; } };
       (d.biensQ === "oui" ? (d.biens || []) : []).forEach(b => ventile(ncBienValeur(b) - ncInt(b.crd), ncTit(b.titulaire)));
-      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventile(ncInt(l.valeur) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire)));
+      (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => ventile(ncLocValeur(l) - (l.creditQ === "oui" ? ncInt(l.crd) : 0), ncTit(l.titulaire)));
       (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => ventile(ncInt(a.valeur), a.titulaire));
       if (d.reductionsPer && !(d.avoirs || []).some(a => a.type === "per" && ncInt(a.valeur) > 0)) ventile(ncInt(d.reductionsPer.valeur), d.reductionsPer.titulaire || "client");
       (d.creditsQ === "oui" ? (d.credits || []) : []).forEach(cr => ventile(-ncInt(cr.crd), null));
@@ -3672,8 +3682,8 @@
       const ppPerFisc = d.reductionsPer && d.reductionsPer.ppQ === "oui" && !(d.avoirs || []).some(a => a.type === "per" && a.ppQ === "oui") ? ncInt(d.reductionsPer.pp) : 0;
       const ppMensuels = (d.avoirs || []).filter(a => a.ppQ === "oui").reduce((s, a) => s + ncInt(a.pp), 0) + ppPerFisc;
       // — Patrimoine net : actif (immobilier + épargne) − passif (capitaux restant dus) —
-      const actifImmo = ncInt(d.rpValeur)
-        + (d.locatifs || []).reduce((s, l) => s + ncInt(l.valeur), 0)
+      const actifImmo = ncRpValeur(d)
+        + (d.locatifs || []).reduce((s, l) => s + ncLocValeur(l), 0)
         + (d.biens || []).reduce((s, b) => s + ncBienValeur(b), 0);
       const passif = (d.logement === "proprietaire" && d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0)
         + (d.locatifs || []).reduce((s, l) => s + (l.creditQ === "oui" ? ncInt(l.crd) : 0), 0)
@@ -3802,7 +3812,7 @@
         // (art. 764 bis) porte sur la VALEUR VÉNALE de la RP — le capital restant dû
         // se déduit ENSUITE pour son montant intégral (art. 768). L'ancienne version
         // abattait 20 % de la valeur nette de dette : assiette surestimée.
-        const brutRP = ncInt(d.rpValeur);
+        const brutRP = ncRpValeur(d);
         const crdRP = d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0;
         rpPart.client = brutRP * (enCoupleS ? pRPs : 1); rpPart.conjoint = enCoupleS ? brutRP * (1 - pRPs) : 0;
         rpCrdPart.client = crdRP * (enCoupleS ? pRPs : 1); rpCrdPart.conjoint = enCoupleS ? crdRP * (1 - pRPs) : 0;
@@ -3819,7 +3829,7 @@
         poserDette(ncInt(b.crd), b.titulaire, b.creditQ === "oui" ? b.assurQuotite : "");
       });
       (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach(l => {
-        ventS(ncInt(l.valeur), ncTit(l.titulaire), pat);
+        ventS(ncLocValeur(l), ncTit(l.titulaire), pat);
         if (l.creditQ === "oui") poserDette(ncInt(l.crd), l.titulaire, l.assurQuotite);
       });
       (d.avoirsQ === "oui" ? (d.avoirs || []) : []).forEach(a => {
@@ -5424,19 +5434,19 @@
       // RÈGLE CABINET (28/08) : trop de précaution n'est JAMAIS un point fort — le point
       // fort ne s'affiche que si le court terme est DANS la cible du profil.
       if (chFoyer > 0 && cibleBasM > 0 && courtTermeM >= cibleBasM && !surDoteM) forces.push({ t: "Épargne de précaution constituée", d: `${eur(courtTermeM)} d'épargne disponible en court terme.` });
-      if (proprio && d.rpCreditQ !== "oui") forces.push({ t: `Résidence principale payée${age != null ? ` à ${age} ans` : ""}`, d: `${eur(ncInt(d.rpValeur))} d'actif net, sans aucun crédit`,
+      if (proprio && d.rpCreditQ !== "oui") forces.push({ t: `Résidence principale payée${age != null ? ` à ${age} ans` : ""}`, d: `${eur(ncRpValeur(d))} d'actif net, sans aucun crédit`,
         puces: [age != null && age <= 55 ? "Position rare à cet âge" : "Position solide", "À prolonger par l'immobilier locatif"] });
       if (proprio && d.rpCreditQ === "oui") {
         // RÈGLE CABINET (28/08) : un CRD de 10 % ou de 90 % de la valeur, 2 ans ou
         // 15 ans restants — ce n'est pas du tout pareil : le constat le dit.
-        const ratioCrd = ncInt(d.rpValeur) > 0 ? ncInt(d.rpCrd) / ncInt(d.rpValeur) : null;
+        const ratioCrd = ncRpValeur(d) > 0 ? ncInt(d.rpCrd) / ncRpValeur(d) : null;
         const dRPp = parseFloat(String(d.rpDureeRestante || "").replace(",", "."));
         const pucesRP = [`Capital restant dû : ${eur(ncInt(d.rpCrd))}${ratioCrd != null ? ` (${pc(ratioCrd)} de la valeur)` : ""}`];
         if (isFinite(dRPp) && dRPp > 0) pucesRP.push(`Durée restante : ${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""}`);
         if (ratioCrd != null && ratioCrd <= 0.25) pucesRP.push("Bien presque intégralement acquis");
         else if (ratioCrd != null && ratioCrd >= 0.75) pucesRP.push("Acquisition engagée : le capital se construit");
         pucesRP.push("Le socle patrimonial est posé");
-        forces.push({ t: "Propriétaire de la résidence principale", d: `${eur(ncInt(d.rpValeur))} de valeur estimée`, puces: pucesRP });
+        forces.push({ t: "Propriétaire de la résidence principale", d: ncQuote(d.rpDetentionQ, d.rpQuotePart) < 1 ? `${eur(ncRpValeur(d))} — ${Math.round(ncQuote(d.rpDetentionQ, d.rpQuotePart) * 100)} % d'un bien estimé ${eur(ncInt(d.rpValeur))}` : `${eur(ncInt(d.rpValeur))} de valeur estimée`, puces: pucesRP });
       }
       if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place", puces: ["Le survivant choisira son option au moment du décès (art. 1094-1 C. civ.)"] });
       if ((pacse || unionLibre) && d.testamentQ === "oui") forces.push({ t: "Testament rédigé", d: `Le ${unionLibre ? "concubin" : "partenaire"} est désigné`, puces: ["Vocation successorale qu'il n'aurait pas légalement"] });
@@ -6671,7 +6681,7 @@
         const autresFin = parType("pea") + parType("cto") + parType("epargne_salariale") + parType("autre");
         const ppMens = av.filter(a => a.ppQ === "oui").reduce((s, a) => s + ncInt(a.pp), 0)
           + ((d.reductionsPer && d.reductionsPer.ppQ === "oui") ? ncInt(d.reductionsPer.pp) : 0);
-        const locVal = (d.locatifs || []).reduce((s, l) => s + ncInt(l.valeur), 0)
+        const locVal = (d.locatifs || []).reduce((s, l) => s + ncLocValeur(l), 0)
           + (d.biens || []).filter(b => b.type === "locatif" || b.enLocationQ === "oui").reduce((s, b) => s + ncBienValeur(b), 0);
         const locLoyer = (d.locatifs || []).reduce((s, l) => s + ncInt(l.loyer), 0)
           + (d.biens || []).filter(b => b.enLocationQ === "oui").reduce((s, b) => s + ncInt(b.loyer), 0);
@@ -6695,7 +6705,7 @@
           const iP = pTx / 12, nP = Math.round(pAns * 12);
           projBudget = Math.round((iP === 0 ? pM * nP : pM * (1 - Math.pow(1 + iP, -nP)) / iP) + pAp);
         }
-        const rpVal = proprio ? ncInt(d.rpValeur) : projBudget;
+        const rpVal = proprio ? ncRpValeur(d) : projBudget;
         const rpCrd = proprio ? (d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0) : Math.max(0, projBudget - pAp);
         const rpMens = proprio ? (d.rpCreditQ === "oui" ? ncInt(d.rpMensualite) : 0) : pM;
         const rpTx = proprio ? nb(d.rpTaux, 3.6) / 100 : pTx;
@@ -7135,7 +7145,7 @@
               const ep = epargneAvant(H); if (ep > 0) avoirsH.push({ id: 9006, type: "livrets", valeur: String(Math.round(ep)), titulaire: titNouveau });
             }
             const biensH = (d.biensQ === "oui" ? (d.biens || []) : []).map(b => ({ ...b, valeur: String(Math.round(ncInt(b.valeur) * gI)), crd: "0" }));
-            const locH = (d.fonciersQ === "oui" ? (d.locatifs || []) : []).map(l => ({ ...l, valeur: String(Math.round(ncInt(l.valeur) * gI)), creditQ: "non", crd: "0" }));
+            const locH = (d.fonciersQ === "oui" ? (d.locatifs || []) : []).map(l => ({ ...l, valeur: String(Math.round(ncLocValeur(l) * gI)), detentionQ: "", quotePart: "", creditQ: "non", crd: "0" }));
             if (apres && L.loc) locH.push({ id: 9007, nom: "bien locatif projeté", valeur: String(Math.round(pB * gI)), titulaire: titNouveau, creditQ: "non", crd: "0", loyer: String(Math.round(loy)) });
             const rpH = rpVal0 > 0 ? Math.round(rpVal0 * gI) : 0;
             const dH = { ...d, avoirsQ: avoirsH.length ? "oui" : "non", avoirs: avoirsH, biensQ: biensH.length ? "oui" : "non", biens: biensH,
@@ -10068,6 +10078,21 @@
                         <div className="grid grid-cols-2 gap-2 mb-1">
                           <div><div className="text-[11.5px] font-bold text-stone-700 mb-1">Valeur estimée du bien</div><Slider v={d.rpValeur} on={v => set("rpValeur", v)} min={200000} max={1500000} step={10000} libreVisible /></div>
                         </div>
+                        {/* 28/09/2026 (CGP) : quote-part de détention — toujours posée, même sans
+                            conjoint renseigné (pacsée détenant 5 % de la maison). */}
+                          <div className="mb-2" data-nc-quote-part="1">
+                            <div className="text-[11.5px] font-bold text-stone-700 mb-1">Quelle part du bien détenez-vous ?</div>
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <Chips opts={[{ v: "totale", l: "100 % du bien" }, { v: "partielle", l: "Une quote-part" }]} val={d.rpDetentionQ || "totale"} on={v => set("rpDetentionQ", v)} />
+                              {d.rpDetentionQ === "partielle" && (
+                                <>
+                                  <div className="w-24"><Eur v={d.rpQuotePart} on={v => set("rpQuotePart", v)} unit="%" ph="5" /></div>
+                                  <div className="w-56"><Txt v={d.rpIndivAvec || ""} on={v => set("rpIndivAvec", v)} ph="En indivision avec… (famille, ex-conjoint)" /></div>
+                                  {ncInt(d.rpQuotePart) > 0 && ncInt(d.rpValeur) > 0 && <span className="num text-[11px] font-bold text-teal-700">soit {new Intl.NumberFormat('fr-FR').format(Math.round(ncInt(d.rpValeur) * ncQuote("partielle", d.rpQuotePart)))} € retenus au patrimoine</span>}
+                                </>
+                              )}
+                            </div>
+                          </div>
                         {/* Détention de la RP (28/08) : 100 % Monsieur, 100 % Madame, 50/50 ou
                             répartition libre — reprise dans la valorisation par personne. */}
                         {enCouple && d.conjointQ === "oui" && (() => {
@@ -10895,6 +10920,19 @@
                           <div className="w-56"><div className="text-[11.5px] font-bold text-stone-700 mb-1">Loyer encaissé</div><EurQuick v={l.loyer} on={v => setList("locatifs", l.id, "loyer", v)} unit="€/mois" presets={[500, 700, 900, 1200, 1500]} /></div>
                           <div className="w-56"><div className="text-[11.5px] font-bold text-stone-700 mb-1">Valeur estimée</div><Slider v={l.valeur || ""} on={v => setList("locatifs", l.id, "valeur", v)} min={200000} max={1500000} step={10000} libreVisible /></div>
                         </div>
+                          <div className="mb-2" data-nc-quote-part="1">
+                            <div className="text-[11.5px] font-bold text-stone-700 mb-1">Quelle part du bien détenez-vous ?</div>
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              <Chips opts={[{ v: "totale", l: "100 % du bien" }, { v: "partielle", l: "Une quote-part" }]} val={l.detentionQ || "totale"} on={v => setList("locatifs", l.id, "detentionQ", v)} />
+                              {l.detentionQ === "partielle" && (
+                                <>
+                                  <div className="w-24"><Eur v={l.quotePart} on={v => setList("locatifs", l.id, "quotePart", v)} unit="%" ph="5" /></div>
+                                  <div className="w-56"><Txt v={l.indivAvec || ""} on={v => setList("locatifs", l.id, "indivAvec", v)} ph="En indivision avec… (famille, ex-conjoint)" /></div>
+                                  {ncInt(l.quotePart) > 0 && ncInt(l.valeur) > 0 && <span className="num text-[11px] font-bold text-teal-700">soit {new Intl.NumberFormat('fr-FR').format(Math.round(ncInt(l.valeur) * ncQuote("partielle", l.quotePart)))} € retenus au patrimoine</span>}
+                                </>
+                              )}
+                            </div>
+                          </div>
                         {/* L'essentiel du bien s'arrête ici — régime fiscal, crédit, assurance et notes
                             passent derrière « + Détails » (repliés tant que rien n'y est renseigné). */}
                         <Details label="+ Détails (régime fiscal, crédit, note…)" filled={!!(l.regime || l.creditQ === "oui" || (l.imposable != null && String(l.imposable).trim() !== "") || l.note)}>
@@ -12144,7 +12182,7 @@
                           // 28/08 : plus de « · crédit en cours » collé à la valeur (confusion avec
                           // le capital restant dû juste dessous) — le titre porte la VALEUR ESTIMÉE,
                           // les détails du crédit vivent dans les paires libellé/valeur.
-                          lignes.push({ t: "Résidence principale", items: [{ d: `Propriétaire — valeur estimée : ${nfL(ncInt(d.rpValeur))} €${d.rpCreditQ === "oui" ? "" : " · sans crédit"}`, rows: rowsRP }] });
+                          lignes.push({ t: "Résidence principale", items: [{ d: `Propriétaire — valeur estimée : ${nfL(ncInt(d.rpValeur))} €${ncQuote(d.rpDetentionQ, d.rpQuotePart) < 1 ? ` · quote-part détenue ${Math.round(ncQuote(d.rpDetentionQ, d.rpQuotePart) * 100)} % (${nfL(ncRpValeur(d))} €)${(d.rpIndivAvec || "").trim() ? `, en indivision avec ${d.rpIndivAvec.trim()}` : ""}` : ""}${d.rpCreditQ === "oui" ? "" : " · sans crédit"}`, rows: rowsRP }] });
                         } else if (d.logement === "locataire") {
                           const rowsLoc = d.rpProjetQ === "oui" ? [
                             { l: "Projet d'achat RP", v: "oui" },
@@ -12194,7 +12232,7 @@
                           const civLoc = d.civilite === "Mme" ? { client: "Madame", conjoint: "Monsieur" } : { client: "Monsieur", conjoint: "Madame" };
                           const TIT_LOC = { client: civLoc.client, conjoint: civLoc.conjoint, commun: "Commun / indivision" };
                           lignes.push({ t: "Immobilier locatif", items: locs.map((l, iL) => ({
-                            d: `${(l.nom || "").trim() ? `« ${l.nom.trim()} »` : `Bien locatif ${iL + 1}`}${TYPE_LOC[l.type] ? ` · ${TYPE_LOC[l.type]}${l.type === "meublee" && l.gere === "gere" ? " gérée" : ""}` : ""} — ${nfL(ncInt(l.valeur))} €`,
+                            d: `${(l.nom || "").trim() ? `« ${l.nom.trim()} »` : `Bien locatif ${iL + 1}`}${TYPE_LOC[l.type] ? ` · ${TYPE_LOC[l.type]}${l.type === "meublee" && l.gere === "gere" ? " gérée" : ""}` : ""} — ${nfL(ncInt(l.valeur))} €${ncQuote(l.detentionQ, l.quotePart) < 1 ? ` · quote-part détenue ${Math.round(ncQuote(l.detentionQ, l.quotePart) * 100)} % (${nfL(ncLocValeur(l))} €)${(l.indivAvec || "").trim() ? `, en indivision avec ${l.indivAvec.trim()}` : ""}` : ""}`,
                             rows: [
                               enCouple && d.conjointQ === "oui" ? { l: "Appartient à", v: TIT_LOC[ncTit(l.titulaire)] || "à préciser" } : null,
                               ncInt(l.loyer) > 0 ? { l: "Loyer perçu", v: `${nfL(ncInt(l.loyer))} €/mois` } : null,
