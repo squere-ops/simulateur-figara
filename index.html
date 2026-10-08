@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v264 (28/09 : CE QUE VOTRE CAPITAL PEUT VOUS VERSER — maquette C retenue par le CGP. Dans Analyse R2, apres « A N ans, votre situation » : on fixe l age jusqu auquel les placements financiers doivent durer (80 et 90 ans), le tableau donne le retrait mensuel constant possible, capital consomme au terme, a 2 / 5 / 7 pct nets. Deux tableaux : « Sans rien changer » (R.avPla) et « Avec les preconisations » (R.natPla). Besoin de reference = baisse de revenus estimee a la retraite, modifiable a l ecran (champ non imprime), cases cochees quand le retrait couvre le besoin, phrase de lecture par colonne. Tous les dossiers. Mention « hypotheses dynamiques, non garanties ». Moteur : ncCapRetrait (annuite) et ncCapDuree (inverse). Reponses du CGP consignees dans le journal des questions. Banc t_cap_verser (32) : 32/32.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v265 (30/09 : PLUS AUCUN DIALOGUE NATIF DU NAVIGATEUR. Le CGP : « pourquoi je vois encore ces fenetres moches ? je t ai demande de tout uniformiser ». Il restait une confirmation native (remplacer le dossier en cours par un client type) et une alerte native (logo > 2 Mo). Le premier passe par une fenetre du simulateur (data-nc-confirm : titre, texte, Annuler / Remplacer), le second par un message rouge en ligne sous le bouton. Garde-fou dans verif.sh : zero confirm / alert / prompt dans le fichier. Banc t_clients_types verifie la fenetre entre deux clients types. 32/32.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v264 (28/09 : CE QUE VOTRE CAPITAL PEUT VOUS VERSER — maquette C retenue par le CGP. Dans Analyse R2, apres « A N ans, votre situation » : on fixe l age jusqu auquel les placements financiers doivent durer (80 et 90 ans), le tableau donne le retrait mensuel constant possible, capital consomme au terme, a 2 / 5 / 7 pct nets. Deux tableaux : « Sans rien changer » (R.avPla) et « Avec les preconisations » (R.natPla). Besoin de reference = baisse de revenus estimee a la retraite, modifiable a l ecran (champ non imprime), cases cochees quand le retrait couvre le besoin, phrase de lecture par colonne. Tous les dossiers. Mention « hypotheses dynamiques, non garanties ». Moteur : ncCapRetrait (annuite) et ncCapDuree (inverse). Reponses du CGP consignees dans le journal des questions. Banc t_cap_verser (32) : 32/32.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v261 (28/09 : DOSSIER BRICHET — LE DOCUMENT NE DIT QUE CE QUI A DU SENS. Marine BRICHET, 61 ans, retraitee, pacsee SANS conjoint renseigne, un locatif. Le document lui demandait d augmenter son epargne, d utiliser sa capacite d emprunt, d ouvrir un PER, de creer son espace info-retraite, de « donner une existence juridique au survivant » (« incomprehensible »), et affichait « Loyers encaisses x 75 pct — regle bancaire ». (1) CAUSE : « enCouple » ne regardait pas si le conjoint etait renseigne — un pacse seul n etait pas un foyer retraite. Corrige (conjointRens) dans le moteur, les questions et les pieces. (2) LOYERS : le document montre le loyer PERCU (labelDoc/brut), la retenue bancaire de 75 pct reste en coulisse (capacite d emprunt). (3) L ENTRETIEN : quand le moteur doute, un pop-up pose la question au conseiller avant la synthese — « souhaite-t-il augmenter son epargne mensuelle ? » (epargne sous 18 pct, hors retraite), « envisage-t-il de recourir a l emprunt ? » (60 ans ou plus, ou retraite, avec capacite). Reponses dans d.entretien ; « non » retire objectif, point fort, faiblesse, preconisation et question correspondants. (4) Audit des contrats : « Audit de vos contrats d assurance-vie et PER : … conserve, arbitre ou transfere (un PER se transfere, une assurance-vie non) ». (5) Enjeu reecrit : « Proteger votre partenaire de PACS en cas de deces : testament et assurance-vie ». (6) Immobilier commercial (locatif « Commerciale », autres biens « Immobilier commercial »). (7) Pastilles sobres a la place des smileys dans « Vos placements ». Banc t_brichet.js.) (9) Age sous la date de naissance + alerte 990 I des 65 ans (demande du CGP du 28/09) : « Client : 67 ans », encart ambre « Tournant des 70 ans - art. 990 I » avec la date du 70e anniversaire, encart rouge art. 757 B apres 70 ans. Bancs t_brichet (28) et t_age_990 (29).','color:#94a3b8');
@@ -8476,7 +8477,9 @@
          structure des autres. Confirmation si une saisie est déjà en cours. */
       const chargerClientType = (ct) => {
         const dejaSaisi = !!((d.nom || "").trim() || (d.prenom || "").trim() || (d.avoirs || []).length || (d.activites || []).length);
-        if (dejaSaisi && !window.confirm("Remplacer le dossier en cours par le client type « " + ct.lib + " » ? Ce qui a été saisi sera perdu.")) return;
+        /* 30/09/2026 (CGP) : « pourquoi je vois encore ces fenêtres moches ? je t'ai demandé de tout
+           uniformiser » — plus de dialogue natif du navigateur : fenêtre du simulateur (data-nc-confirm). */
+        if (dejaSaisi && !ct.__confirme) { setConfirmOpen({ titre: "Remplacer le dossier en cours ?", texte: `Le dossier en cours sera remplacé par le client type « ${ct.lib} ». Ce qui a été saisi sera perdu.`, ok: "Remplacer", onOk: () => chargerClientType({ ...ct, __confirme: true }) }); return; }
         const base = JSON.parse(JSON.stringify(AUDIT_DEFAUT));
         const t = JSON.parse(JSON.stringify({ ...NC_CT_COMMUN, ...ct.d }));
         const fusion = {
@@ -8550,6 +8553,8 @@
       // si elle n'est pas renseignée au moment de passer à la synthèse, une
       // fenêtre bloque le passage et pose la question.
       const [capGateOpen, setCapGateOpen] = useState(false);
+      /* 30/09/2026 : fenêtre de confirmation uniforme { titre, texte, ok, onOk } — remplace le dialogue natif */
+      const [confirmOpen, setConfirmOpen] = useState(null);
       /* 21/09/2026 (CGP) : fenêtre des incohérences de saisie, ouverte en quittant
          l'étape « Objectifs ». `incoVu` retient la liste déjà montrée : on ne la
          remontre pas tant qu'elle n'a pas changé. */
@@ -14853,6 +14858,21 @@
                 </div>
               </div>
             )}
+            {confirmOpen && (
+              <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" data-nc-confirm="1" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
+                <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden" style={{ borderTop: "4px solid #b45309" }}>
+                  <div className="px-6 pt-5 pb-4">
+                    <div className="text-[11px] uppercase tracking-[0.18em] font-bold mb-1" style={{ color: "#b45309" }}>Confirmation</div>
+                    <div className="text-[19px] font-bold leading-snug mb-2" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{confirmOpen.titre}</div>
+                    <div className="text-[12.5px] leading-relaxed text-stone-600">{confirmOpen.texte}</div>
+                  </div>
+                  <div className="px-6 py-4 border-t border-stone-100 flex items-center justify-end gap-3" style={{ background: "#faf9f7" }}>
+                    <button type="button" onClick={() => setConfirmOpen(null)} className="px-4 py-2.5 rounded-xl text-[13px] font-semibold text-stone-600 border border-stone-300 hover:border-stone-900 hover:text-stone-900 transition bg-white">Annuler</button>
+                    <button type="button" onClick={() => { const f = confirmOpen.onOk; setConfirmOpen(null); if (f) f(); }} className="px-6 py-2.5 rounded-xl text-[13px] font-bold text-white shadow-sm transition hover:brightness-110" style={{ background: "#b45309" }}>{confirmOpen.ok || "Confirmer"}</button>
+                  </div>
+                </div>
+              </div>
+            )}
             {entOpen && (
               <div className="fixed inset-0 z-[70] flex items-center justify-center p-4" data-nc-entretien="1" style={{ background: "rgba(29,39,53,0.55)", backdropFilter: "blur(2px)" }}>
                 <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col" style={{ borderTop: "4px solid #0f766e", maxHeight: "92vh" }}>
@@ -15085,6 +15105,7 @@
       const [search, setSearch] = useState("");
       const [open, setOpen] = useState(false);
       const [newClientOpen, setNewClientOpen] = useState(false);
+      const [logoErr, setLogoErr] = useState("");
       const [modalNiveau, setModalNiveau] = useState(null);
       const allClients = clients || CLIENTS_EXISTANTS;
       const filtered = allClients.filter(c => {
@@ -15293,13 +15314,15 @@
                     onChange={e => {
                       const file = e.target.files && e.target.files[0];
                       if (!file) return;
-                      if (file.size > 2 * 1024 * 1024) { alert("Le logo doit faire moins de 2 Mo."); return; }
+                      if (file.size > 2 * 1024 * 1024) { setLogoErr("Le logo doit faire moins de 2 Mo."); e.target.value = ""; return; }
+                      setLogoErr("");
                       const reader = new FileReader();
                       reader.onload = () => upd("cabinetLogo", reader.result);
                       reader.readAsDataURL(file);
                       e.target.value = "";
                     }} />
                 </label>
+                {logoErr ? <span className="text-[11.5px] font-semibold text-red-600" data-nc-logo-err="1">{logoErr}</span> : null}
               </div>
               <p className="mt-1.5 text-[11px] text-stone-400">PNG, JPG, SVG ou WebP — utilisé dans la présentation et le PDF client.</p>
             </div>
