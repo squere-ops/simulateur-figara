@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v265 (30/09 : PLUS AUCUN DIALOGUE NATIF DU NAVIGATEUR. Le CGP : « pourquoi je vois encore ces fenetres moches ? je t ai demande de tout uniformiser ». Il restait une confirmation native (remplacer le dossier en cours par un client type) et une alerte native (logo > 2 Mo). Le premier passe par une fenetre du simulateur (data-nc-confirm : titre, texte, Annuler / Remplacer), le second par un message rouge en ligne sous le bouton. Garde-fou dans verif.sh : zero confirm / alert / prompt dans le fichier. Banc t_clients_types verifie la fenetre entre deux clients types. 32/32.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v266 (08/10 : PLUSIEURS BANQUES, TRAVAUX SUR LA RP, FRAIS D ENTREE, PASTILLES A DEUX TONS, POINTS FORTS ALLEGES. (1) Etat civil : « + Ajouter une banque » (banquesAutres), ecrites a l etat civil du document « Banques : LCL, Boursorama ». (2) RP : « Travaux realises » a cote du prix d achat ; latente = valeur − prix − travaux ; regle 150 VB : travaux reels retenus s ils depassent le forfait 15 pct (plus de 5 ans), jamais les deux ; document « prix 380 000 € + 45 000 € de travaux ». (3) Fiche du placement, sous le rendement constate : « Connaissez-vous le montant des frais d entree payes a l origine ? » oui (taux) / non / ne sait pas, point a releve, pastille au document. (4) Pastilles « Vos placements — etat des lieux » : maquette A retenue par le CGP — cle en gris capitales, valeur en couleur (CHEZ | AXA, RENDEMENT | inconnu, FRAIS D ENTREE | 3 pct, SATISFAIT | non). (5) Points forts (Analyse R2) : plus aucune puce sous « Endettement maitrise », « Le socle patrimonial est pose » supprime, tournure dictee « Auditer votre contrat : allocation et performances des supports — un contrat ouvert n est en rien une garantie de qualite ». Banc t_v266 (33) : 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v265 (30/09 : PLUS AUCUN DIALOGUE NATIF DU NAVIGATEUR. Le CGP : « pourquoi je vois encore ces fenetres moches ? je t ai demande de tout uniformiser ». Il restait une confirmation native (remplacer le dossier en cours par un client type) et une alerte native (logo > 2 Mo). Le premier passe par une fenetre du simulateur (data-nc-confirm : titre, texte, Annuler / Remplacer), le second par un message rouge en ligne sous le bouton. Garde-fou dans verif.sh : zero confirm / alert / prompt dans le fichier. Banc t_clients_types verifie la fenetre entre deux clients types. 32/32.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v264 (28/09 : CE QUE VOTRE CAPITAL PEUT VOUS VERSER — maquette C retenue par le CGP. Dans Analyse R2, apres « A N ans, votre situation » : on fixe l age jusqu auquel les placements financiers doivent durer (80 et 90 ans), le tableau donne le retrait mensuel constant possible, capital consomme au terme, a 2 / 5 / 7 pct nets. Deux tableaux : « Sans rien changer » (R.avPla) et « Avec les preconisations » (R.natPla). Besoin de reference = baisse de revenus estimee a la retraite, modifiable a l ecran (champ non imprime), cases cochees quand le retrait couvre le besoin, phrase de lecture par colonne. Tous les dossiers. Mention « hypotheses dynamiques, non garanties ». Moteur : ncCapRetrait (annuite) et ncCapDuree (inverse). Reponses du CGP consignees dans le journal des questions. Banc t_cap_verser (32) : 32/32.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v262 (28/09 : LE DEFILEMENT DESCEND SUR LA PREMIERE LIGNE NOUVELLE, JAMAIS SUR LA DERNIERE. Le CGP : « combien de logements : si je mets 2, il m ouvre en decalage la page et je suis oblige de remonter ». NcReveal « last » visait la derniere ligne (bon pour + Ajouter, faux pour un compteur) : Bien 1 se retrouvait 386 px au-dessus du pli. Corrige partout (locatifs, enfants, donations, autres biens, credits, placements) : le compte precedent est memorise par nom, on descend sur la premiere ligne apparue, et une suppression ne fait plus bouger la page. Rappel du CGP inscrit dans les skills : residence principale = exoneration totale de plus-value. Note du CGP « regles plus-value immobiliere » integree : deux horloges (IR 22 ans revolus, prelevements sociaux 30 ans revolus), le document ecrit l etat fiscal de la latente et signale la frontiere ou la date exacte de l acte decide. Banc t_reveal_scroll (30) : 30/30.)','color:#94a3b8');
@@ -2214,6 +2215,8 @@
       civilite: "M.", nomNaissance: "", dateNaissance: "", nationalite: "francaise", nationaliteAutre: "",
       adresseQ: "", adresse: "", codePostal: "", ville: "", ppe: "non", ppeConj: "non",
       banquePrincipale: "", banquePrincipaleConjoint: "",
+      /* 08/10/2026 (CGP) : « possibilité de renseigner plusieurs banques clients » */
+      banquesAutres: [],
       situation: "", regime: "", regimeAutre: "",
       ddvQ: "", testamentQ: "", ddvAncienneQ: "",
       divorcePrestationQ: "", divorceLiquidationQ: "", divorceTestamentQ: "", divorceClauseAvQ: "",
@@ -2254,7 +2257,7 @@
       rpProjetDuree: "", rpProjetApport: "", rpProjetTaux: "", rpProjetNote: "",
       rpValeur: "", rpCreditQ: "", rpBanque: "", rpCrd: "", rpMensualite: "", rpTaux: "", rpDureeRestante: "", rpAssurRenegociee: "",
       rpDetenteur: "", rpPartClient: "", rpDetentionQ: "", rpQuotePart: "", rpIndivAvec: "",
-      rpOrigine: "", rpAnneeEntree: "", rpPrixInitial: "", rpVenteQ: "", rpVenteDelai: "",
+      rpOrigine: "", rpAnneeEntree: "", rpPrixInitial: "", rpTravaux: "", rpVenteQ: "", rpVenteDelai: "",
       /* depenses courantes MENSUELLES du foyer — surcharge du train de vie estime
          (revenus nets moins epargne). Base de la cible de precaution. */
       depensesMens: "",
@@ -2435,7 +2438,7 @@
           civilite: "M.", nom: "LAMBERT", prenom: "Olivier", nomNaissance: "LAMBERT", dateNaissance: ncDateNaiss(53, "03-06"),
           tel: "06 33 81 25 47", email: "olivier.lambert@exemple.fr",
           adresse: "27 avenue Carnot", codePostal: "33200", ville: "Bordeaux",
-          banquePrincipale: "LCL", banquePrincipaleConjoint: "LCL",
+          banquePrincipale: "LCL", banquePrincipaleConjoint: "LCL", banquesAutres: ["Boursorama"],
           situation: "marie", regime: "communaute_acquets", conjointQ: "oui", ddvQ: "non", testamentQ: "non", ddvAncienneQ: "non",
           conjoint: { civilite: "Mme", nom: "LAMBERT", prenom: "Isabelle", nomJeuneFille: "GARNIER", dateNaissance: ncDateNaiss(51, "07-15"), nationalite: "francaise", nationaliteAutre: "", tel: "06 47 12 90 58", email: "isabelle.lambert@exemple.fr" },
           enfantsQ: "oui", enfants: [
@@ -2460,7 +2463,7 @@
             { id: 1, type: "emploi_domicile", montant: "3600", periode: "an", dureeType: "recurrent", duree: "", note: "Ménage et jardin" },
             { id: 2, type: "dons", montant: "800", periode: "an", dureeType: "recurrent", duree: "", note: "Dons aux œuvres" },
           ],
-          logement: "proprietaire", rpValeur: "620000", rpDetenteur: "5050", rpCreditQ: "non", rpDetentionQ: "totale", rpOrigine: "achat", rpAnneeEntree: "2005", rpPrixInitial: "380000", rpVenteQ: "non",
+          logement: "proprietaire", rpValeur: "620000", rpDetenteur: "5050", rpCreditQ: "non", rpDetentionQ: "totale", rpOrigine: "achat", rpAnneeEntree: "2005", rpPrixInitial: "380000", rpTravaux: "45000", rpVenteQ: "non",
           depensesMens: "7200",
           biensQ: "oui", biens: [
             { id: 1, type: "rs", nom: "Maison — Arcachon", detention: "pp", titulaire: "commun", valeur: "380000", origine: "succession", anneeEntree: "2009", prixInitial: "210000", indivPart: "", indivAvec: "", enLocationQ: "non", loyer: "", creditQ: "non", banque: "", mensualite: "", crd: "",
@@ -2468,8 +2471,8 @@
           ],
           creditsQ: "non", credits: [],
           avoirsQ: "oui", avoirs: [
-            ncAvoir({ id: 1, type: "per", valeur: "52000", anneeOuverture: "2014", etablissement: "AXA", titulaire: "client", origine: "union", ppQ: "oui", pp: "300", objectif: "retraite", contentQ: "non", gestion: "agent", profil: "equilibre", rendement: "3,1", note: "PER individuel, ex-Madelin transféré" }),
-            ncAvoir({ id: 2, type: "av", valeur: "135000", anneeOuverture: "2008", etablissement: "LCL", titulaire: "commun", origine: "union", ppQ: "non", objectif: "transmission", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,3", note: "Clause bénéficiaire standard" }),
+            ncAvoir({ id: 1, type: "per", valeur: "52000", anneeOuverture: "2014", etablissement: "AXA", titulaire: "client", origine: "union", ppQ: "oui", pp: "300", objectif: "retraite", contentQ: "non", gestion: "agent", profil: "equilibre", rendement: "3,1", fraisEntreeQ: "nsp", note: "PER individuel, ex-Madelin transféré" }),
+            ncAvoir({ id: 2, type: "av", valeur: "135000", anneeOuverture: "2008", fraisEntreeQ: "oui", fraisEntree: "3", etablissement: "LCL", titulaire: "commun", origine: "union", ppQ: "non", objectif: "transmission", contentQ: "non", gestion: "banque", profil: "prudent", rendement: "2,3", note: "Clause bénéficiaire standard" }),
             ncAvoir({ id: 3, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "client", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 4, type: "livrets", livretType: "livret_a", valeur: "22950", etablissement: "LCL", titulaire: "conjoint", origine: "union", objectif: "precaution", gestion: "lui", rendement: "1,7" }),
             ncAvoir({ id: 5, type: "livrets", livretType: "csl", valeur: "41000", etablissement: "LCL", titulaire: "commun", origine: "union", objectif: "aucun", gestion: "lui", rendement: "1,0" }),
@@ -3519,15 +3522,16 @@
       if (pv <= 260000) return pv * 0.06 - (260000 - pv) * 0.25;
       return pv * 0.06;
     };
-    const ncPvImmo = ({ valeur, prix, annee, origine, anVente, rp }) => {
-      const v = Math.round(valeur || 0), pI = Math.round(prix || 0), a0 = ncInt(annee);
+    const ncPvImmo = ({ valeur, prix, annee, origine, anVente, rp, travaux }) => {
+      const v = Math.round(valeur || 0), pI = Math.round(prix || 0), a0 = ncInt(annee), tr = Math.max(0, Math.round(travaux || 0));
       if (!(v > 0) || !(pI > 0) || !(a0 > 1900)) return null;
       const duree = Math.max(0, (anVente || new Date().getFullYear()) - a0);
-      const latente = v - pI;
-      if (rp) return { duree, latente, pvBrute: Math.max(0, latente), impot: 0, rp: true };
+      const latente = v - pI - tr;
+      if (rp) return { duree, latente, pvBrute: Math.max(0, latente), impot: 0, rp: true, travaux: tr };
       const frais = origine === "achat" ? pI * 0.075 : 0;
-      const travaux = duree > 5 ? pI * 0.15 : 0;
-      const pvBrute = Math.max(0, v - pI - frais - travaux);
+      /* travaux reels justifies OU forfait 15 pct du prix (immeuble bati detenu plus de 5 ans) — pas les deux */
+      const travauxRet = duree > 5 ? Math.max(pI * 0.15, tr) : tr;
+      const pvBrute = Math.max(0, v - pI - frais - travauxRet);
       let aIR = 0, aPS = 0;
       for (let y = 6; y <= duree; y++) {
         if (y <= 21) { aIR += 6; aPS += 1.65; } else if (y === 22) { aIR += 4; aPS += 1.60; } else if (y <= 30) aPS += 9;
@@ -3544,7 +3548,7 @@
         : duree >= 22 ? `exonérée d'impôt (22 ans révolus) — prélèvements sociaux 17,2 % sur ${Math.round(100 - aPS)} % de la plus-value`
         : duree > 5 ? `abattements ${aIR} % (impôt) et ${String(aPS).replace(".", ",")} % (prélèvements sociaux)` : "sans abattement (moins de 6 ans)";
       const bord = duree === 22 || duree === 30 || duree === 21 || duree === 29;
-      return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false, etat, bord };
+      return { duree, latente, pvBrute: Math.round(pvBrute), aIR, aPS, ir: Math.round(ir), ps: Math.round(ps), sur: Math.round(sur), impot: Math.round(ir + ps + sur), rp: false, etat, bord, travaux: tr };
     };
     /* libellés des questions complémentaires (pop-up « entretien »), pour le document */
     const NC_ENT_LIB = { epargneMensuelle: "Augmenter l'épargne mensuelle", emprunt: "Recourir à l'emprunt", liquidites: "Faire travailler les liquidités", vente: "Replacer le produit de la vente", defisc: "Réduire l'impôt (PER, défiscalisation)", transmission: "Anticiper la transmission" };
@@ -3564,12 +3568,12 @@
         const quote = x.quote == null ? 1 : x.quote;
         const vente = x.venteQ === "oui";
         const anV = vente ? an + (NC_VENTE_ANS[x.venteDelai] || 1) : an;
-        const pv = ncPvImmo({ valeur: x.valeurPart, prix: ncInt(x.prix) * quote, annee: x.annee, origine: x.origine, anVente: anV, rp: x.rp });
+        const pv = ncPvImmo({ valeur: x.valeurPart, prix: ncInt(x.prix) * quote, annee: x.annee, origine: x.origine, anVente: anV, rp: x.rp, travaux: ncInt(x.travaux) * quote });
         const pvAuj = ncPvImmo({ valeur: x.valeurPart, prix: ncInt(x.prix) * quote, annee: x.annee, origine: x.origine, anVente: an, rp: x.rp });
         const net = vente ? Math.max(0, Math.round(x.valeurPart - x.crd - (pv ? pv.impot : 0))) : null;
         out.push({ ...x, quote, vente, anVente: anV, delaiLib: NC_VENTE_LIB[x.venteDelai] || "", pv, pvAuj, net });
       };
-      if (d.logement === "proprietaire") pousse({ cle: "rp", nom: "résidence principale", rp: true, valeurPart: ncRpValeur(d), quote: ncQuote(d.rpDetentionQ, d.rpQuotePart), crd: d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0, origine: d.rpOrigine, annee: d.rpAnneeEntree, prix: d.rpPrixInitial, venteQ: d.rpVenteQ, venteDelai: d.rpVenteDelai });
+      if (d.logement === "proprietaire") pousse({ cle: "rp", nom: "résidence principale", rp: true, valeurPart: ncRpValeur(d), quote: ncQuote(d.rpDetentionQ, d.rpQuotePart), crd: d.rpCreditQ === "oui" ? ncInt(d.rpCrd) : 0, origine: d.rpOrigine, annee: d.rpAnneeEntree, prix: d.rpPrixInitial, travaux: d.rpTravaux, venteQ: d.rpVenteQ, venteDelai: d.rpVenteDelai });
       (d.fonciersQ === "oui" ? (d.locatifs || []) : []).forEach((l, i) => pousse({ cle: "loc" + l.id, nom: (l.nom || "").trim() || `bien locatif ${i + 1}`, rp: false, valeurPart: ncLocValeur(l), quote: ncQuote(l.detentionQ, l.quotePart), crd: l.creditQ === "oui" ? ncInt(l.crd) : 0, origine: l.origine, annee: l.anneeEntree, prix: l.prixInitial, venteQ: l.venteQ, venteDelai: l.venteDelai }));
       (d.biensQ === "oui" ? (d.biens || []) : []).forEach((b, i) => pousse({ cle: "bien" + b.id, nom: (b.nom || "").trim() || `bien ${i + 1}`, rp: false, valeurPart: ncBienValeur(b), quote: b.detention === "indivision" && ncInt(b.indivPart) > 0 ? Math.min(99, Math.max(1, ncInt(b.indivPart))) / 100 : 1, crd: b.creditQ === "oui" ? ncInt(b.crd) : 0, origine: b.origine, annee: b.anneeEntree, prix: b.prixInitial, venteQ: b.venteQ, venteDelai: b.venteDelai }));
       return out;
@@ -3579,7 +3583,7 @@
       if (!x) return [];
       const nf = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(n || 0));
       const r = [];
-      if (x.origine || ncInt(x.annee) > 0) r.push({ l: "Origine", v: `${NC_ORIGINE_LIB[x.origine] || "entrée"}${ncInt(x.annee) > 0 ? ` en ${ncInt(x.annee)}` : ""}${ncInt(x.prix) > 0 ? ` — ${x.origine === "achat" || !x.origine ? "prix" : "valeur déclarée"} ${nf(ncInt(x.prix) * x.quote)} €${x.quote < 1 ? " (part détenue)" : ""}` : ""}` });
+      if (x.origine || ncInt(x.annee) > 0) r.push({ l: "Origine", v: `${NC_ORIGINE_LIB[x.origine] || "entrée"}${ncInt(x.annee) > 0 ? ` en ${ncInt(x.annee)}` : ""}${ncInt(x.prix) > 0 ? ` — ${x.origine === "achat" || !x.origine ? "prix" : "valeur déclarée"} ${nf(ncInt(x.prix) * x.quote)} €${x.quote < 1 ? " (part détenue)" : ""}${ncInt(x.travaux) > 0 ? ` + ${nf(ncInt(x.travaux) * x.quote)} € de travaux` : ""}` : ""}` });
       if (x.pvAuj) r.push({ l: "Plus-value latente", v: `${x.pvAuj.latente >= 0 ? "" : "moins-value "}${nf(Math.abs(x.pvAuj.latente))} €${x.rp ? " — exonérée (résidence principale)" : ` — détention ${x.pvAuj.duree} ans : ${x.pvAuj.etat}${x.pvAuj.bord ? " — années révolues à la date de l'acte : date exacte à vérifier" : ""}`}` });
       if (x.vente) r.push({ l: "Projet de vente", v: `${x.delaiLib}${x.net != null ? ` — produit net estimé ${nf(x.net)} €${x.pv && x.pv.impot > 0 ? ` (après ${nf(x.pv.impot)} € ${x.pv.ir > 0 ? "d'impôt de plus-value" : "de prélèvements sociaux sur la plus-value, l'impôt étant exonéré au-delà de 22 ans"}${x.crd > 0 ? " et le capital restant dû" : ""})` : x.crd > 0 ? " (après le capital restant dû)" : ""}` : ""}` });
       return r;
@@ -5556,11 +5560,9 @@
         /* 10/09/2026 — le CGP : « oublie les grandes phrases, va droit au but en mode
            bullet point, et ce pour chaque point ». Chaque point fort = un chiffre en
            tete (d), puis des puces courtes (puces). Les textes longs sont abandonnes. */
-        const pucesEnd = ["Plafond bancaire : 35 %"];
-        if (margeMens > 0) pucesEnd.push(`Mensualité encore disponible : ${eur(margeMens)}/mois`);
-        /* 10/09 — le CGP : « indique tout simplement : Montant finançable pour du locatif : Oui ». */
-        pucesEnd.push(`Montant finançable pour du locatif : ${capLocMax >= 80000 ? "Oui" : "Non"}`);
-        if (finRP) pucesEnd.push(finRP.replace(/^\s*—\s*(?:et )?le crédit RP se termine dans (.*?) : cet endettement disparaît à très court terme$/, "Crédit RP terminé dans $1 : cet endettement disparaît à très court terme").replace(/^\s*\(crédit RP : encore (\d+) ans à courir\)$/, "Crédit RP : encore $1 ans à courir"));
+        /* 08/10/2026 (CGP) : plus aucune puce sous « Endettement maîtrisé » — ni plafond bancaire,
+           ni mensualité disponible, ni montant finançable, ni durée du crédit RP. Le chiffre suffit. */
+        const pucesEnd = [];
         if (proprio) {
           if (0.35 - taux >= 0.05) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement`, puces: pucesEnd });
         } else if (largement) forces.push({ t: "Endettement maîtrisé", d: `${pc(taux)} de taux d'endettement${S.rpProjetRetenu > 0 ? " avec le projet RP (futur crédit compté à la place du loyer)" : ", aujourd'hui"}`, puces: pucesEnd });
@@ -5608,7 +5610,7 @@
         if (isFinite(dRPp) && dRPp > 0) pucesRP.push(`Durée restante : ${String(dRPp).replace(".", ",")} an${dRPp > 1 ? "s" : ""}`);
         if (ratioCrd != null && ratioCrd <= 0.25) pucesRP.push("Bien presque intégralement acquis");
         else if (ratioCrd != null && ratioCrd >= 0.75) pucesRP.push("Acquisition engagée : le capital se construit");
-        pucesRP.push("Le socle patrimonial est posé");
+        /* 08/10/2026 (CGP) : « Le socle patrimonial est posé » supprimé. */
         forces.push({ t: "Propriétaire de la résidence principale", d: ncQuote(d.rpDetentionQ, d.rpQuotePart) < 1 ? `${eur(ncRpValeur(d))} — ${Math.round(ncQuote(d.rpDetentionQ, d.rpQuotePart) * 100)} % d'un bien estimé ${eur(ncInt(d.rpValeur))}` : `${eur(ncInt(d.rpValeur))} de valeur estimée`, puces: pucesRP });
       }
       if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place", puces: ["Le survivant choisira son option au moment du décès (art. 1094-1 C. civ.)"] });
@@ -5627,7 +5629,8 @@
            détenu est cité, on demande la VÉRIFICATION DE L'ALLOCATION ET DE LA
            PERFORMANCE des supports — c'est le premier geste de conseil, et il ouvre
            l'audit du contrat existant. */
-        const VERIF_SUPPORTS = "À vérifier : allocation et performance des supports — un contrat ouvert ne travaille pas forcément";
+        /* 08/10/2026 (CGP) : tournure dictée. */
+        const VERIF_SUPPORTS = "Auditer votre contrat : allocation et performances des supports — un contrat ouvert n'est en rien une garantie de qualité";
         if (per > 0) forces.push({ t: "Retraite déjà amorcée", d: `${eur(per)} sur un PER${titDe("per") ? ` détenu par ${titDe("per")}` : ""}`,
           puces: ["Versements à calibrer sur le plafond disponible", VERIF_SUPPORTS].concat(noteDe("per") ? [`Note : ${noteDe("per")}`] : []) });
         if (avVie > 0) forces.push({ t: "Assurance-vie ouverte", d: `${eur(avVie)} placés${titDe("av") ? ` par ${titDe("av")}` : ""}`,
@@ -6005,7 +6008,10 @@
           // propre ligne — plus lisible que l'enchaînement « activité · banque : X ».
           const bqTuile = (bp, tit) => {
             const b = String(bp || "").trim() ? [String(bp).trim()] : bqDe(tit);
-            return b.length ? `banque : ${b.join(", ")}` : null;
+            /* 08/10/2026 : les autres banques du client suivent la principale */
+            const autres = tit === "client" ? (d.banquesAutres || []).map(x => String(x || "").trim()).filter(x => x && !b.some(y => y.toLowerCase() === x.toLowerCase())) : [];
+            const tous = [...b, ...autres];
+            return tous.length ? `banque${tous.length > 1 ? "s" : ""} : ${tous.join(", ")}` : null;
           };
           if (d.conjointQ === "oui") {
             phrases.push({ info: true, t: `Activité — ${civMoi}`, d: actSeule(d), sub: bqTuile(d.banquePrincipale, "client") });
@@ -9275,7 +9281,7 @@
       const banquesConnues = useMemo(() => {
         const out = [];
         const push = (x) => { const t = (x || "").trim(); if (t && !out.some(y => y.toLowerCase() === t.toLowerCase())) out.push(t); };
-        push(d.banquePrincipale); push(d.banqueConjoint); push(d.rpBanque);
+        push(d.banquePrincipale); push(d.banqueConjoint); push(d.rpBanque); (d.banquesAutres || []).forEach(push);
         (d.locatifs || []).forEach(l => push(l.banque));
         (d.biens || []).forEach(b => push(b.banque));
         (d.credits || []).forEach(c => push(c.banque));
@@ -10144,6 +10150,16 @@
                     <div>
                       <L>Banque principale <span className="normal-case font-normal">(compte courant)</span></L>
                       <BanqueSelect v={d.banquePrincipale || ""} on={v => set("banquePrincipale", v)} known={[]} />
+                      {/* 08/10/2026 (CGP) : plusieurs banques — chaque ligne est une banque de plus */}
+                      <div data-nc-banques-autres="1">
+                        {(d.banquesAutres || []).map((b, i) => (
+                          <div key={i} className="flex items-center gap-2 mt-1.5">
+                            <div className="flex-1 min-w-0"><BanqueSelect v={b || ""} on={v => set("banquesAutres", (d.banquesAutres || []).map((x, k) => k === i ? v : x))} known={[]} /></div>
+                            <button type="button" title="Retirer cette banque" onClick={() => set("banquesAutres", (d.banquesAutres || []).filter((x, k) => k !== i))} className="p-1 text-stone-400 hover:text-red-600 transition flex-shrink-0"><I.x/></button>
+                          </div>
+                        ))}
+                        <button type="button" onClick={() => set("banquesAutres", [...(d.banquesAutres || []), ""])} className="mt-1.5 text-[11.5px] font-bold underline underline-offset-2 text-stone-500 hover:text-stone-900 transition">+ Ajouter une banque</button>
+                      </div>
                     </div>
                   </div>
 
@@ -10413,8 +10429,10 @@
                             <div className="flex flex-wrap items-center gap-3">
                               <div className="w-28"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">En quelle année ?</div><Txt v={d.rpAnneeEntree || ""} on={v => set("rpAnneeEntree", v.replace(/[^\d]/g, "").slice(0, 4))} ph="2012" /></div>
                               <div className="w-44"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">{d.rpOrigine === "achat" || !d.rpOrigine ? "Prix d'achat du bien" : "Valeur déclarée à l'acte"}</div><Eur v={d.rpPrixInitial || ""} on={v => set("rpPrixInitial", v)} ph="0" /></div>
+                              {/* 08/10/2026 (CGP) : « à côté du prix d'achat, un montant éventuel de travaux » */}
+                              <div className="w-40"><div className="text-[10.5px] font-bold text-stone-500 mb-0.5">Travaux réalisés <span className="font-normal text-stone-400">(facultatif)</span></div><Eur v={d.rpTravaux || ""} on={v => set("rpTravaux", v)} /></div>
                               {ncInt(d.rpValeur) && ncInt(d.rpPrixInitial) > 0 && ncInt(d.rpAnneeEntree) > 1900 && (() => {
-                                const lat = ncInt(d.rpValeur) - ncInt(d.rpPrixInitial);
+                                const lat = ncInt(d.rpValeur) - ncInt(d.rpPrixInitial) - ncInt(d.rpTravaux);
                                 return <span className="num text-[11px] font-bold" style={{ color: lat >= 0 ? "#0f766e" : "#b91c1c" }}>{lat >= 0 ? "plus-value latente" : "moins-value latente"} ≈ {new Intl.NumberFormat('fr-FR').format(Math.abs(lat))} €{" — exonérée (résidence principale)"}</span>;
                               })()}
                             </div>
@@ -12408,14 +12426,15 @@
                           const bqDe = (tit) => Array.from(new Set(avB
                             .filter(a => a.type !== "epargne_salariale" && (a.titulaire === tit || (!a.titulaire && tit === "client")) && (a.etablissement || "").trim())
                             .map(a => a.etablissement.trim())));
-                          const banque = (bp, tit) => { const b = String(bp || "").trim(); if (b) return b; const l = bqDe(tit); return l.length ? l.join(", ") : null; };
+                          /* 08/10/2026 : les autres banques du client suivent la principale (état civil du document) */
+                          const banque = (bp, tit) => { const b = String(bp || "").trim(); const base = b ? [b] : bqDe(tit); const autres = tit === "client" ? (d.banquesAutres || []).map(x => String(x || "").trim()).filter(x => x && !base.some(y => y.toLowerCase() === x.toLowerCase())) : []; const tous = [...base, ...autres]; return tous.length ? tous.join(", ") : null; };
                           const gens = [{
                             nom: `${ncCapNom(d.prenom || "")} ${(d.nom || "").toUpperCase()}`.trim() || civMoi,
                             lignes: [
                               ["Date de naissance", neLe(d.dateNaissance)],
                               ["Profession", [metier(d, d.civilite === "Mme"), moisSal(d)].filter(Boolean).join(" · ")],
                               ["Employeur", employeur(d)],
-                              ["Banque", banque(d.banquePrincipale, "client")],
+                              [(d.banquesAutres || []).some(x => String(x || "").trim()) ? "Banques" : "Banque", banque(d.banquePrincipale, "client")],
                               ["Téléphone", (d.tel || "").trim() || "non renseigné"],
                               ["Courriel", (d.email || "").trim() || "non renseigné"],
                             ],
@@ -12766,33 +12785,47 @@
                               };
 
                               // Suivi en badges : chaque fait devient une pastille typée et colorée.
-                              const Badge = ({ txt, bg, fg, bd }) => (
-                                <span className="inline-block rounded-full px-2 py-[2px] text-[9px] font-bold mr-1 mb-[3px] whitespace-nowrap align-middle" style={{ background: bg, color: fg, border: `1px solid ${bd}` }}>{txt}</span>
-                              );
-                              const PROF_C = { prudent: ["#e6f2ef", "#0f766e", "#0f766e55"], equilibre: ["#e8f0f7", "#0369a1", "#0369a155"], dynamique: ["#fdf0e3", "#b45309", "#b4530955"] };
-                              const GEST_COURT = { lui: "gestion : lui-même", banque: "gestion : banque", cgp: "gestion : CGP", agent: "gestion : agent", courtier: "gestion : courtier" };
+                              /* 08/10/2026 (CGP, maquette A retenue : « des patchs plus sympas ») — pastille à
+                                 deux tons : la CLÉ en gris capitales, la VALEUR en couleur (noir / vert / rouge).
+                                 Plus de « rendement ? — inconnu » : « RENDEMENT | inconnu ». */
+                              const TONE = { neutre: ["#1d2735", "#d6d3d1"], ok: ["#0f766e", "#99d6c6"], ko: ["#b91c1c", "#fca5a5"], or: ["#8a6d34", "#d9c49a"], bleu: ["#3730a3", "#b4b9ec"] };
+                              const Badge = ({ k, v, tone, txt, bg, fg, bd }) => {
+                                if (!k) return <span className="inline-block rounded-full px-2 py-[2px] text-[9px] font-bold mr-1 mb-[3px] whitespace-nowrap align-middle" style={{ background: bg, color: fg, border: `1px solid ${bd}` }}>{txt}</span>;
+                                const [fgV, bdV] = TONE[tone || "neutre"];
+                                return (
+                                  <span className="inline-flex rounded-full overflow-hidden mr-1 mb-[3px] whitespace-nowrap align-middle" style={{ border: `1px solid ${bdV}`, fontSize: 9 }} data-nc-patch={tone || "neutre"}>
+                                    <span className="px-1.5 py-[2px] font-extrabold uppercase" style={{ background: "#f5f5f4", color: "#78716c", letterSpacing: "0.07em", fontSize: 8 }}>{k}</span>
+                                    <span className="px-1.5 py-[2px] font-bold" style={{ background: "#fff", color: fgV }}>{v}</span>
+                                  </span>
+                                );
+                              };
+                              const GEST_COURT = { lui: "lui-même", banque: "banque", cgp: "CGP", agent: "agent", courtier: "courtier" };
+                              const PROF_T = { prudent: "ok", equilibre: "bleu", dynamique: "or" };
+                              const PROF_V = { prudent: "prudent", equilibre: "équilibré", dynamique: "dynamique" };
                               const suiviBadges = (x) => {
                                 const b = [];
-                                if (x._fiscal) b.push({ txt: `déclaré en fiscalité${ncInt(x.pp) > 0 ? ` — ${new Intl.NumberFormat('fr-FR').format(ncInt(x.pp))} €/mois versés` : ""}`, bg: "#efe9fb", fg: "#6d28d9", bd: "#6d28d955" });
-                                if ((x.etablissement || "").trim()) b.push({ txt: x.etablissement.trim().toUpperCase(), bg: "#faf4e8", fg: "#8a6d34", bd: "#b8924e66" });
+                                if (x._fiscal) b.push({ k: "Fiscalité", v: `déclaré${ncInt(x.pp) > 0 ? ` — ${new Intl.NumberFormat('fr-FR').format(ncInt(x.pp))} €/mois versés` : ""}`, tone: "bleu" });
+                                if ((x.etablissement || "").trim()) b.push({ k: "Chez", v: x.etablissement.trim(), tone: "or" });
                                 /* 28/09/2026 (CGP) : année d'ouverture des contrats d'assurance-vie et de PER */
                                 if ((x.type === "av" || x.type === "per") && ncInt(x.anneeOuverture) > 1900) {
                                   const agC = new Date().getFullYear() - ncInt(x.anneeOuverture);
-                                  b.push({ txt: `ouvert en ${ncInt(x.anneeOuverture)}${x.type === "av" ? (agC >= 8 ? " · plus de 8 ans" : ` · 8 ans en ${ncInt(x.anneeOuverture) + 8}`) : ""}`, bg: "#eef2ff", fg: "#3730a3", bd: "#3730a355" });
+                                  b.push({ k: "Ouvert", v: `${ncInt(x.anneeOuverture)}${x.type === "av" ? (agC >= 8 ? " · plus de 8 ans" : ` · 8 ans en ${ncInt(x.anneeOuverture) + 8}`) : ""}`, tone: "bleu" });
                                 }
-                                if (GEST_COURT[x.gestion]) b.push({ txt: GEST_COURT[x.gestion], bg: "#f5f5f4", fg: "#57534e", bd: "#d6d3d1" });
-                                if (PROF_C[x.profil]) b.push({ txt: PROF[x.profil] || x.profil, bg: PROF_C[x.profil][0], fg: PROF_C[x.profil][1], bd: PROF_C[x.profil][2] });
-                                if (x.rendement) b.push({ txt: `rendement constaté ${x.rendement} %`, bg: "#e6f2ef", fg: "#0f766e", bd: "#0f766e55" });
-                                else if (x.rendementNsp === "oui") b.push({ txt: "rendement ? — inconnu", bg: "#fbe9e9", fg: "#b91c1c", bd: "#b91c1c55" });
-                                if (x.contentQ === "oui") b.push({ txt: "✓ satisfait", bg: "#e6f2ef", fg: "#0f766e", bd: "#0f766e55" });
-                                else if (x.contentQ === "non") b.push({ txt: "✗ non satisfait", bg: "#fbe9e9", fg: "#b91c1c", bd: "#b91c1c55" });
+                                if (GEST_COURT[x.gestion]) b.push({ k: "Gestion", v: GEST_COURT[x.gestion], tone: "neutre" });
+                                if (PROF_V[x.profil]) b.push({ k: "Profil", v: PROF_V[x.profil], tone: PROF_T[x.profil] });
+                                if (x.rendement) b.push({ k: "Rendement", v: `${x.rendement} %`, tone: "ok" });
+                                else if (x.rendementNsp === "oui") b.push({ k: "Rendement", v: "inconnu", tone: "ko" });
+                                if (x.fraisEntreeQ === "oui" && String(x.fraisEntree || "").trim()) b.push({ k: "Frais d'entrée", v: `${String(x.fraisEntree).trim()} %`, tone: "neutre" });
+                                else if (x.fraisEntreeQ === "non" || x.fraisEntreeQ === "nsp") b.push({ k: "Frais d'entrée", v: "inconnus", tone: "ko" });
+                                if (x.contentQ === "oui") b.push({ k: "Satisfait", v: "oui", tone: "ok" });
+                                else if (x.contentQ === "non") b.push({ k: "Satisfait", v: "non", tone: "ko" });
                                 return b;
                               };
                               const cTh = "text-left text-[9px] uppercase tracking-[0.14em] font-bold text-stone-400 pb-2.5 pr-4";
                               const cTd = "py-2.5 pr-4 align-top border-t border-stone-100";
                               // Smiley en tête de ligne : lecture immédiate content / neutre / pas content.
                               const nomP = (x) => x.type === "autre" && x.precision ? x.precision : (TYPES_LIB[x.type] || "Placement");
-                              const CellSuivi = ({ x }) => { const bb = suiviBadges(x); return bb.length ? bb.map((b, k) => <Badge key={k} txt={b.txt} bg={b.bg} fg={b.fg} bd={b.bd} />) : <span className="text-stone-400">—</span>; };
+                              const CellSuivi = ({ x }) => { const bb = suiviBadges(x); return bb.length ? bb.map((b, k) => <Badge key={k} {...b} />) : <span className="text-stone-400">—</span>; };
                               // GROUPEMENT PAR DÉTENTEUR (28/08) : lecture rapide de ce qui appartient
                               // à Monsieur et à Madame — SAUF mariage sans contrat (communauté), où
                               // l'épargne du couple se lit d'un bloc.
@@ -12861,7 +12894,7 @@
                                                   <NcSmiley etat={x.contentQ} />
                                                 </span>
                                               </div>
-                                              {(() => { const bb = suiviBadges(x); return bb.length ? <div className="mt-1.5 leading-none">{bb.map((b, k) => <Badge key={k} txt={b.txt} bg={b.bg} fg={b.fg} bd={b.bd} />)}</div> : null; })()}
+                                              {(() => { const bb = suiviBadges(x); return bb.length ? <div className="mt-1.5 leading-none">{bb.map((b, k) => <Badge key={k} {...b} />)}</div> : null; })()}
                                             </div>
                                           ))}
                                         </div>
@@ -14810,6 +14843,15 @@
                             <button type="button"
                               onClick={() => { const on = fa.rendementNsp === "oui"; setList("avoirs", fa.id, "rendementNsp", on ? "" : "oui"); if (!on) setList("avoirs", fa.id, "rendement", ""); }}
                               className={`px-3 py-2 rounded-lg text-[11.5px] font-bold border transition flex-shrink-0 ${fa.rendementNsp === "oui" ? "bg-stone-900 text-white border-stone-900" : "bg-white text-stone-500 border-stone-300 hover:border-stone-900 hover:text-stone-800"}`}>Ne sait pas</button>
+                          </div>
+                          {/* 08/10/2026 (CGP) : « connaissez-vous le montant des frais d'entrée payés à l'origine ? » */}
+                          <div className="mt-2" data-nc-frais-entree="1">
+                            <FL>Connaissez-vous le montant des frais d'entrée payés à l'origine ?</FL>
+                            <div className="flex items-center gap-3 flex-wrap">
+                              <Chips opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }, { v: "nsp", l: "Ne sait pas" }]} val={fa.fraisEntreeQ || ""} on={v => { setList("avoirs", fa.id, "fraisEntreeQ", v); if (v !== "oui") setList("avoirs", fa.id, "fraisEntree", ""); }} />
+                              {fa.fraisEntreeQ === "oui" && <div className="w-28"><Txt v={fa.fraisEntree || ""} on={v => setList("avoirs", fa.id, "fraisEntree", v)} ph="Ex. 3 (%)" /></div>}
+                              {(fa.fraisEntreeQ === "non" || fa.fraisEntreeQ === "nsp") && <span className="text-[10.5px] font-semibold" style={{ color: "#b45309" }}>Point à relever : les conditions d'origine du contrat sont à retrouver.</span>}
+                            </div>
                           </div>
                           {fa.rendementNsp === "oui" && <div className="text-[10.5px] font-semibold mt-1" style={{ color: "#b45309" }}>Performance inconnue du client — point à relever : demander le relevé de situation.</div>}
                         </div>
