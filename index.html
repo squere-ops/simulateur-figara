@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v269 (08/10 : LISIBILITE — retours du CGP sur le dossier FAURE. (1) Carte « Participation mensuelle et apport envisages » : une ligne par information (libelle a gauche, valeur a droite, plus de sous-ligne « fourchette indiquee »), « Epargne de precaution a conserver : 10 000 € » (plus de « 10 000 € a conserver disponibles » qui doublonnait « moins de 10 000 € »), horizon de placement en petit curseur sur un trait a quatre crans, notes et questions complementaires en texte simple dessous. (2) Analyse R2, points forts du dossier recentre : plus de « Une etape essentielle… » ni « Epargne immobiliere : … en hausse a chaque echeance » — « 522 €/mois de capital rembourse des la premiere annee », « Apport 45 000 € — il reste 14 450 € d epargne de precaution ». (3) Axe retraite, tournure dictee : « Preparation de votre retraite — Le temps est votre meilleur allie, 31 ans pour consolider votre strategie » (plus de « a 33 ans » ni « le temps joue pour vous »), puces « Une epargne reguliere vous permettra de capitaliser sereinement », « Un PER et une assurance-vie alimentes chaque mois, des maintenant », « Versements PER deductibles a votre TMI de 30 pct ». (4) Titre « Ou trouver l epargne complementaire ». Bancs t_recentre, t_controle, t_sticky_app mis a jour. 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v271 (08/10 : HYPOTHESE DE RENDEMENT, PARTOUT — et plus de bandeaux par nature. Le CGP : « a chaque fois que tu parles d un rendement, mets systematiquement qu il s agit d une hypothese de rendement — il est important que je me protege sur chaque document ». Analyse R2 : intro de « Ou trouver l epargne complementaire » (« sur hypotheses de rendement non garanties »), mini-tableaux (« places a 5,2 pct (hypothese de rendement) »), cartes PER / AV (« Hypothese de rendement : 5,2 pct, non garantie »), tableau « A N ans » (« a leur hypothese de rendement »), mention de bas de carte (« etablie sur des hypotheses de rendement non garanties »), « Ce que votre capital peut vous verser » (« Hypothese de rendement net »). Les deux bandeaux « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree » sont supprimes : seul reste le bloc « N €/mois d epargne a reorienter — a € liberes + b € d interets en plus ». Banc t_gisements reecrit sur ce bloc. 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v270 (08/10 : RIEN A GERER SUR LE COURT TERME. Le CGP : « livrets, comptes courants, CEL, PEL — il n est pas necessaire de mettre gestion : banque, il n y a rien a gerer sur ce type de placement ». Plus de pastille GESTION ni PROFIL sur les types livrets (Livret A, LDDS, LEP, Livret Jeune, CEL, PEL, CSL) et compte courant — seules restent CHEZ et RENDEMENT. Banc t_v266 etendu. (2) « Situation fiscale du foyer » : la tuile « Revenus estimes a la retraite » s etend sur deux colonnes (trois sans avantages fiscaux) — plus de case vide, ligne du bas moins haute ; hypothese « releve » raccourcie. (3) Points forts AV/PER : « Auditer votre contrat : allocation et performances des supports » — la fin « un contrat ouvert n est en rien une garantie de qualite » est supprimee. (4) « Fiscalite deja optimisee » : « Generee par les dispositifs en place (emploi a domicile, dons) » — les dispositifs saisis sont rappeles entre parentheses. 33/33.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v269 (08/10 : LISIBILITE — retours du CGP sur le dossier FAURE. (1) Carte « Participation mensuelle et apport envisages » : une ligne par information (libelle a gauche, valeur a droite, plus de sous-ligne « fourchette indiquee »), « Epargne de precaution a conserver : 10 000 € » (plus de « 10 000 € a conserver disponibles » qui doublonnait « moins de 10 000 € »), horizon de placement en petit curseur sur un trait a quatre crans, notes et questions complementaires en texte simple dessous. (2) Analyse R2, points forts du dossier recentre : plus de « Une etape essentielle… » ni « Epargne immobiliere : … en hausse a chaque echeance » — « 522 €/mois de capital rembourse des la premiere annee », « Apport 45 000 € — il reste 14 450 € d epargne de precaution ». (3) Axe retraite, tournure dictee : « Preparation de votre retraite — Le temps est votre meilleur allie, 31 ans pour consolider votre strategie » (plus de « a 33 ans » ni « le temps joue pour vous »), puces « Une epargne reguliere vous permettra de capitaliser sereinement », « Un PER et une assurance-vie alimentes chaque mois, des maintenant », « Versements PER deductibles a votre TMI de 30 pct ». (4) Titre « Ou trouver l epargne complementaire ». Bancs t_recentre, t_controle, t_sticky_app mis a jour. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v268 (08/10 : OU TROUVER L EPARGNE — OPTION C RETENUE PAR LE CGP SUR LES DEUX CARTES. Mini-tableau aligne « rendement | capital dans N ans » : « 45 000 € places a 2,5 pct | 79 407 € », « places a 5,2 pct | 144 402 € », « Difference dans 23 ans | + 64 995 € » en vert, puis le €/mois conclut. Idem « Redirection des versements » avec les versements mensuels capitalises (ncpCap). Plus de phrase « d interets en plus chaque mois · 2 pct → 5,2 pct · soit… ». Composant MiniTab, data-nc-pedago=arb|red ; banc t_gisements 3 bis recalcule les six chiffres. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v267 (08/10 : AXES DE TRAVAIL — PHRASES COURTES, DROIT AU BUT. Le CGP : « fais toujours des phrases plus courtes, va droit au but, pas la peine de noyer l information ». (1) Epargne de precaution : ne sort que sur un GROS decalage (court terme < moitie de la cible basse), titre « Epargne de precaution insuffisante / court terme — x € ». (2) « Performance et gestion de l epargne long terme — Assurance-vie 135 000 € chez LCL : rendement, gestion inconnus » ; puces « Il est essentiel dans une bonne gestion de maitriser ses placements (performance, allocation, gestion) », « Releve de situation a demander imperativement » ; declenche par rendement, gestion ou frais d entree inconnus. (3) « Versements programmes insuffisants au vu de vos revenus ». (4) « Capacite d endettement — utilisee a 17 pct sur les 35 pct autorises » ; puces « Disponibilite pour un investissement locatif : N € (chiffre indicatif, a verifier avec notre courtier) », « Protection de vos heritiers grace a l assurance de pret en cas de deces », « En cas de vie, creation de revenus complementaires ». Les formulations du 11/09 sont remplacees. Banc de controle mis a jour. (5) Analyse R2, carte « Arbitrage du capital place » : lecture pedagogique en trois lignes — « 95 000 € places a 2 pct = x € dans N ans », « places a 5,2 pct = y € », « Difference : + z € » (banc t_gisements). 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v266 (08/10 : PLUSIEURS BANQUES, TRAVAUX SUR LA RP, FRAIS D ENTREE, PASTILLES A DEUX TONS, POINTS FORTS ALLEGES. (1) Etat civil : « + Ajouter une banque » (banquesAutres), ecrites a l etat civil du document « Banques : LCL, Boursorama ». (2) RP : « Travaux realises » a cote du prix d achat ; latente = valeur − prix − travaux ; regle 150 VB : travaux reels retenus s ils depassent le forfait 15 pct (plus de 5 ans), jamais les deux ; document « prix 380 000 € + 45 000 € de travaux ». (3) Fiche du placement, sous le rendement constate : « Connaissez-vous le montant des frais d entree payes a l origine ? » oui (taux) / non / ne sait pas, point a releve, pastille au document. (4) Pastilles « Vos placements — etat des lieux » : maquette A retenue par le CGP — cle en gris capitales, valeur en couleur (CHEZ | AXA, RENDEMENT | inconnu, FRAIS D ENTREE | 3 pct, SATISFAIT | non). (5) Points forts (Analyse R2) : plus aucune puce sous « Endettement maitrise », « Le socle patrimonial est pose » supprime, tournure dictee « Auditer votre contrat : allocation et performances des supports — un contrat ouvert n est en rien une garantie de qualite ». Banc t_v266 (33) : 33/33.)','color:#94a3b8');
@@ -5633,7 +5635,8 @@
            PERFORMANCE des supports — c'est le premier geste de conseil, et il ouvre
            l'audit du contrat existant. */
         /* 08/10/2026 (CGP) : tournure dictée. */
-        const VERIF_SUPPORTS = "Auditer votre contrat : allocation et performances des supports — un contrat ouvert n'est en rien une garantie de qualité";
+        /* 08/10/2026 (CGP) : « un contrat ouvert n'est en rien une garantie de qualité » — supprimé. */
+        const VERIF_SUPPORTS = "Auditer votre contrat : allocation et performances des supports";
         if (per > 0) forces.push({ t: "Retraite déjà amorcée", d: `${eur(per)} sur un PER${titDe("per") ? ` détenu par ${titDe("per")}` : ""}`,
           puces: ["Versements à calibrer sur le plafond disponible", VERIF_SUPPORTS].concat(noteDe("per") ? [`Note : ${noteDe("per")}`] : []) });
         if (avVie > 0) forces.push({ t: "Assurance-vie ouverte", d: `${eur(avVie)} placés${titDe("av") ? ` par ${titDe("av")}` : ""}`,
@@ -5665,7 +5668,15 @@
       // montant symbolique (ex. 360 € face à 22 581 € d'impôt, moins de 2 %) — le
       // point fort exige une économie d'au moins 10 % de l'impôt sans avantage.
       const gainSignificatif = F.gainTotal > 0 && F.impotSansAvantage > 0 && F.gainTotal >= F.impotSansAvantage * 0.10;
-      if ((F.deductions > 0 || F.reductions > 0) && gainSignificatif) forces.push({ t: "Fiscalité déjà optimisée", d: `${eur(F.gainTotal)} d'économie d'impôt cette année`, puces: ["Générée par les dispositifs en place"] });
+      /* 08/10/2026 (CGP) : « rappelle entre parenthèses les dispositifs dont tu parles » — libellé court
+         de chaque ligne de réduction saisie (PER, immobilier défiscalisant, emploi à domicile, dons…). */
+      const dispositifsLib = (() => {
+        const COURT = { per: "PER", immo_defisc: "immobilier défiscalisant", emploi_domicile: "emploi à domicile", dons: "dons", girardin: "Girardin", autre: "autre réduction" };
+        const l = (d.reductionsQ === "oui" ? (d.reductionsLignes || []) : []).filter(x => ncInt(x.montant) > 0).map(x => x.type === "autre" && (x.note || "").trim() ? x.note.trim() : (COURT[x.type] || x.type));
+        if (F.deductions > 0 && !l.includes("PER")) l.unshift("PER"); /* versements PER lus sur les placements */
+        return Array.from(new Set(l)).join(", ");
+      })();
+      if ((F.deductions > 0 || F.reductions > 0) && gainSignificatif) forces.push({ t: "Fiscalité déjà optimisée", d: `${eur(F.gainTotal)} d'économie d'impôt cette année`, puces: [`Générée par les dispositifs en place${dispositifsLib ? ` (${dispositifsLib})` : ""}`] });
       if (deuxRevenus && bas.r > 0 && disparite < 1.4) forces.push({ t: "Deux revenus équilibrés", d: `${eur(revC)} et ${eur(revJ)}`, puces: ["La disparition d'un revenu ne ferait pas basculer le foyer"] });
       if (S.patrimoineNet >= 300000) {
         /* 02/09 : en couple, le total seul ne dit pas QUI detient. La repartition
@@ -7840,7 +7851,7 @@
               <table className="w-full" style={{ borderCollapse: "collapse", fontSize: 10, marginTop: 4 }} data-nc-pedago={cle}>
                 <tbody>
                   <tr><td style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, color: C.gris }}>{lib} à {t0}</td><td className="text-right tabular-nums" style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, fontWeight: 800, color: C.encre }}>{eur(a)}</td></tr>
-                  <tr><td style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, color: C.gris }}>{lib} à {t1}</td><td className="text-right tabular-nums" style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, fontWeight: 800, color: C.encre }}>{eur(b)}</td></tr>
+                  <tr><td style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, color: C.gris }}>{lib} à {t1} <span style={{ color: C.gris3 }}>(hypothèse de rendement)</span></td><td className="text-right tabular-nums" style={{ padding: "2px 4px", borderBottom: "1px solid " + C.bord, fontWeight: 800, color: C.encre }}>{eur(b)}</td></tr>
                   <tr><td style={{ padding: "3px 4px", fontWeight: 800, color: C.vert }}>Différence dans {R.H} ans</td><td className="text-right tabular-nums" style={{ padding: "3px 4px", fontWeight: 800, color: C.vert }}>+ {eur(b - a)}</td></tr>
                 </tbody>
               </table>
@@ -7858,7 +7869,7 @@
           <div ref={seuilBarRef} data-nc-bar-seuil="1" className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne complémentaire">
             <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne complémentaire</div>
             <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
-              L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
+              L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>, sur <b style={{ color: C.encre }}>hypothèses de rendement</b> non garanties.
             </div>
             <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))" }}>
               <Carte petit on={G.ass} toggle={() => sg('ass', !G.ass)} titre="Délégation d'assurance emprunteur"
@@ -7899,25 +7910,8 @@
                 {R.redActif ? (() => { const v0 = nb(G.versMens, 0), t0 = nb(G.txVersAct, 2.5) / 100, t1 = nb(h.tMed, 5.2) / 100; return <MiniTab cle="red" lib={eur(v0) + "/mois"} t0={pctTxt(G.txVersAct, 2.5)} t1={tMedTxt} a={ncpCap(0, v0, t0, R.H)} b={ncpCap(0, v0, t1, R.H)} />; })() : null}
               </Carte>
             </div>
-            {/* résumé par NATURE : une trésorerie réelle d'un côté, un rendement ramené
-                au mois de l'autre — jamais additionnés. Structure lue par t_gisements :
-                le titre dans un span, la valeur dans le DERNIER span du même parent. */}
-            <div className="grid gap-3 mt-3" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))" }}>
-              {[
-                { titre: "Trésorerie libérée chaque mois", actif: ass, val: ass ? eur(R.ecoAss) + "/mois" : "—",
-                  sous: ass ? "d'argent disponible en plus · soit " + eur(R.ecoAss * 12 * dRest) + " sur " + dRest + " ans" : "aucun levier retenu" },
-                { titre: "Meilleur rendement sur la durée", actif: rend, val: rend ? "≈ " + eur(mRend) + "/mois" : "—",
-                  sous: rend ? "d'intérêts en plus chaque mois · soit + " + eur(R.gainRendCap) + " de capital dans " + R.H + " ans" : "aucun levier retenu" }
-              ].map((f, i) => (
-                <div key={i} className="rounded-xl px-3.5 py-2 border" style={{ borderColor: f.actif ? C.vertBord : C.bord, background: f.actif ? C.vertPale : "#fafaf9" }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "7.5pt", letterSpacing: "0.16em", textTransform: "uppercase", color: f.actif ? C.vert : C.gris, fontWeight: 800, display: "block" }}>{f.titre}</span>
-                  <span style={{ display: "block", marginTop: 2, lineHeight: 1.3 }}>
-                    <span className="tabular-nums whitespace-nowrap" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 17, fontWeight: 800, color: f.actif ? C.vert : C.gris3, letterSpacing: "-0.02em" }}>{f.val}</span>
-                    <span style={{ fontSize: 10, fontWeight: 600, color: C.gris2, marginLeft: 7 }}>{f.sous}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
+            {/* 08/10/2026 (CGP) : les deux bandeaux « Trésorerie libérée chaque mois » et « Meilleur
+                rendement sur la durée » sont SUPPRIMÉS — seul reste le bloc qui additionne. */}
             {/* 14/09/2026 (CGP) : UN bloc qui additionne — « 238 € d'épargne à réorienter »
                 = trésorerie libérée + rendement ramené au mois. */}
             {(ass ? R.ecoAss : 0) + (rend ? mRend : 0) > 0 ? (
@@ -8020,12 +8014,12 @@
                 eff={eur(Math.max(0, nb(L.vPer, 0) - R.ecoM))}
                 effSub={"d'effort mensuel net — " + eur(nb(L.vPer, 0)) + " versés − " + eur(R.ecoM) + " d'impôt"}>
                 Versement <Mini v={L.vPer} on={v => sl('vPer', v)} /> €/mois<br />
-                <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Rendement : hypothèse cabinet · déduction à {Math.round((R.tmi || 0) * 100)} % de TMI</span>
+                <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Hypothèse de rendement : {String(nb(h.tMed, 5.2)).replace(".", ",")} %, non garantie · déduction à {Math.round((R.tmi || 0) * 100)} % de TMI</span>
               </Carte>
               <Carte on={L.av} toggle={() => sl('av', !L.av)} titre="Assurance-vie"
                 eff={eur(nb(L.vAv, 0))} effSub="d'effort mensuel">
                 Versement <Mini v={L.vAv} on={v => sl('vAv', v)} /> €/mois<br />
-                <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Rendement : hypothèse cabinet · disponible à tout moment</span>
+                <span className="italic" style={{ color: C.gris2, fontSize: 10.5 }}>Hypothèse de rendement : {String(nb(h.tMed, 5.2)).replace(".", ",")} %, non garantie · disponible à tout moment</span>
               </Carte>
               <Carte on={L.loc} toggle={() => sl('loc', !L.loc)} titre="Investissement locatif"
                 eff={R.effLocMoy < 0 ? "+ " + eur(-R.effLocMoy) : eur(R.effLocMoy)}
@@ -8221,7 +8215,7 @@
                 { l: libLoc, a: R.avLoc, b: R.natLoc, sub: true },
                 { l: "Placements financiers", a: R.avPla, b: R.natPla, sub: true },
                 { sec: "Chaque mois, chaque année" },
-                { l: "Complément de revenus mensuel à vie", a: R.avRevTot, b: R.revTot, fort: true, unit: "/mois", note: "rente des placements à leur rendement (" + String(nb(h.tLiv, 1.7)).replace(".", ",") + " % à gauche, " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % à droite) + loyers nets" },
+                { l: "Complément de revenus mensuel à vie", a: R.avRevTot, b: R.revTot, fort: true, unit: "/mois", note: "rente des placements à leur hypothèse de rendement (" + String(nb(h.tLiv, 1.7)).replace(".", ",") + " % à gauche, " + String(nb(h.tMed, 5.2)).replace(".", ",") + " % à droite) + loyers nets" },
                 { l: "Impôt économisé par an", a: 0, b: R.ecoImpot, unit: "/an", note: R.ecoRegimeAn > 0 ? "PER + dispositif locatif" : "" },
                 { sec: `En cas de décès à ${R.ageFin} ans` },
                 sS && sA ? { l: "Droits de succession estimés", a: sS.total, b: sA.total, fort: true, inv: true, note: sS.lib || "" } : null,
@@ -8299,7 +8293,7 @@
               </div>
             ) : null}
             <div className="italic" style={{ fontSize: 9.5, color: C.gris3, marginTop: 14, lineHeight: 1.55 }}>
-              Projection non contractuelle. Rente calculée au taux mensuel équivalent du rendement retenu, capital préservé. Revenus locatifs nets de charges et de vacance.
+              Projection non contractuelle, établie sur des hypothèses de rendement non garanties. Rente calculée au taux mensuel équivalent de l'hypothèse de rendement retenue, capital préservé. Revenus locatifs nets de charges et de vacance.
             </div>
           </div>
 
@@ -8325,7 +8319,7 @@
                 <div className="text-[10px] uppercase tracking-[0.16em] font-bold mb-1.5" style={{ color: fort ? NCP_C.vert : NCP_C.gris2 }}>{titre} <span className="tabular-nums normal-case tracking-normal" style={{ fontFamily: "'Lora','Playfair Display',serif", fontSize: 14, color: NCP_C.encre, marginLeft: 6 }}>{eur(C)}</span></div>
                 <table className="w-full text-[11.5px]" style={{ borderCollapse: "collapse" }} data-nc-cap-table={fort ? "apres" : "avant"}>
                   <thead><tr style={{ background: "#fafaf9" }}>
-                    <th className="text-left px-2 py-1.5" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.14em", textTransform: "uppercase", color: NCP_C.gris, fontWeight: 700 }}>Rendement net</th>
+                    <th className="text-left px-2 py-1.5" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.14em", textTransform: "uppercase", color: NCP_C.gris, fontWeight: 700 }}>Hypothèse de rendement net</th>
                     {ages.map(a => <th key={a} className="text-right px-2 py-1.5" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "7pt", letterSpacing: "0.14em", textTransform: "uppercase", color: NCP_C.gris, fontWeight: 700 }}>Jusqu'à {a} ans<div style={{ fontSize: "6.5pt", color: NCP_C.gris3, letterSpacing: "0.08em" }}>{a - a0} ans</div></th>)}
                   </tr></thead>
                   <tbody>
@@ -12857,8 +12851,11 @@
                                   const agC = new Date().getFullYear() - ncInt(x.anneeOuverture);
                                   b.push({ k: "Ouvert", v: `${ncInt(x.anneeOuverture)}${x.type === "av" ? (agC >= 8 ? " · plus de 8 ans" : ` · 8 ans en ${ncInt(x.anneeOuverture) + 8}`) : ""}`, tone: "bleu" });
                                 }
-                                if (GEST_COURT[x.gestion]) b.push({ k: "Gestion", v: GEST_COURT[x.gestion], tone: "neutre" });
-                                if (PROF_V[x.profil]) b.push({ k: "Profil", v: PROF_V[x.profil], tone: PROF_T[x.profil] });
+                                /* 08/10/2026 (CGP) : livrets, comptes courants, CEL, PEL — « il n'y a rien à gérer sur ce
+                                   type de placement » : ni gestion ni profil sur le court terme. */
+                                const courtT = x.type === "livrets" || x.type === "compte_courant";
+                                if (!courtT && GEST_COURT[x.gestion]) b.push({ k: "Gestion", v: GEST_COURT[x.gestion], tone: "neutre" });
+                                if (!courtT && PROF_V[x.profil]) b.push({ k: "Profil", v: PROF_V[x.profil], tone: PROF_T[x.profil] });
                                 if (x.rendement) b.push({ k: "Rendement", v: `${x.rendement} %`, tone: "ok" });
                                 else if (x.rendementNsp === "oui") b.push({ k: "Rendement", v: "inconnu", tone: "ko" });
                                 if (x.fraisEntreeQ === "oui" && String(x.fraisEntree || "").trim()) b.push({ k: "Frais d'entrée", v: `${String(x.fraisEntree).trim()} %`, tone: "neutre" });
@@ -13295,7 +13292,7 @@
                                 const moi7 = d.civilite === "Mme" ? "Madame" : "Monsieur";
                                 const lui7 = d.civilite === "Mme" ? "Monsieur" : "Madame";
                                 const hyp7 = P7.reel
-                                  ? `montants relevés sur info-retraite.fr et saisis dans les objectifs — estimation officielle, non contractuelle`
+                                  ? `montants relevés sur info-retraite.fr — estimation officielle, non contractuelle`
                                   : P7.partiel
                                   ? `${P7.reelC ? moi7 : lui7} : montant relevé sur info-retraite.fr ; ${P7.reelC ? lui7 : moi7} : estimation par taux de remplacement — à compléter par son relevé de carrière`
                                   : mixte7
@@ -13310,7 +13307,10 @@
                                 const baisseHaut7 = Math.max(0, act7 - pensBas7);
                                 return (
                                   <>
-                                    <div className="rounded-xl px-3 py-2.5 border border-stone-200 bg-white">
+                                    {/* 08/10/2026 (CGP) : « mieux occuper l'espace sur la largeur pour que les blocs du bas
+                                        soient moins hauts » — la tuile retraite s'étend sur deux colonnes (trois sans
+                                        tuile d'avantages fiscaux) : plus de case vide, texte sur une ligne. */}
+                                    <div className={"rounded-xl px-3 py-2.5 border border-stone-200 bg-white " + (fisc7.reductions > 0 || fisc7.deductions > 0 ? "col-span-2" : "col-span-3")} data-nc-tuile-retraite="1">
                                       <div className="text-[9.5px] uppercase tracking-wider font-bold text-stone-400 mb-1">Revenus estimés à la retraite</div>
                                       {/* mediane, comme la tuile de baisse juste en dessous : deux
                                           presentations differentes de la meme estimation ne collent pas */}
