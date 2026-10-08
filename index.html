@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v266 (08/10 : PLUSIEURS BANQUES, TRAVAUX SUR LA RP, FRAIS D ENTREE, PASTILLES A DEUX TONS, POINTS FORTS ALLEGES. (1) Etat civil : « + Ajouter une banque » (banquesAutres), ecrites a l etat civil du document « Banques : LCL, Boursorama ». (2) RP : « Travaux realises » a cote du prix d achat ; latente = valeur − prix − travaux ; regle 150 VB : travaux reels retenus s ils depassent le forfait 15 pct (plus de 5 ans), jamais les deux ; document « prix 380 000 € + 45 000 € de travaux ». (3) Fiche du placement, sous le rendement constate : « Connaissez-vous le montant des frais d entree payes a l origine ? » oui (taux) / non / ne sait pas, point a releve, pastille au document. (4) Pastilles « Vos placements — etat des lieux » : maquette A retenue par le CGP — cle en gris capitales, valeur en couleur (CHEZ | AXA, RENDEMENT | inconnu, FRAIS D ENTREE | 3 pct, SATISFAIT | non). (5) Points forts (Analyse R2) : plus aucune puce sous « Endettement maitrise », « Le socle patrimonial est pose » supprime, tournure dictee « Auditer votre contrat : allocation et performances des supports — un contrat ouvert n est en rien une garantie de qualite ». Banc t_v266 (33) : 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v267 (08/10 : AXES DE TRAVAIL — PHRASES COURTES, DROIT AU BUT. Le CGP : « fais toujours des phrases plus courtes, va droit au but, pas la peine de noyer l information ». (1) Epargne de precaution : ne sort que sur un GROS decalage (court terme < moitie de la cible basse), titre « Epargne de precaution insuffisante / court terme — x € ». (2) « Performance et gestion de l epargne long terme — Assurance-vie 135 000 € chez LCL : rendement, gestion inconnus » ; puces « Il est essentiel dans une bonne gestion de maitriser ses placements (performance, allocation, gestion) », « Releve de situation a demander imperativement » ; declenche par rendement, gestion ou frais d entree inconnus. (3) « Versements programmes insuffisants au vu de vos revenus ». (4) « Capacite d endettement — utilisee a 17 pct sur les 35 pct autorises » ; puces « Disponibilite pour un investissement locatif : N € (chiffre indicatif, a verifier avec notre courtier) », « Protection de vos heritiers grace a l assurance de pret en cas de deces », « En cas de vie, creation de revenus complementaires ». Les formulations du 11/09 sont remplacees. Banc de controle mis a jour. (5) Analyse R2, carte « Arbitrage du capital place » : lecture pedagogique en trois lignes — « 95 000 € places a 2 pct = x € dans N ans », « places a 5,2 pct = y € », « Difference : + z € » (banc t_gisements). 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v266 (08/10 : PLUSIEURS BANQUES, TRAVAUX SUR LA RP, FRAIS D ENTREE, PASTILLES A DEUX TONS, POINTS FORTS ALLEGES. (1) Etat civil : « + Ajouter une banque » (banquesAutres), ecrites a l etat civil du document « Banques : LCL, Boursorama ». (2) RP : « Travaux realises » a cote du prix d achat ; latente = valeur − prix − travaux ; regle 150 VB : travaux reels retenus s ils depassent le forfait 15 pct (plus de 5 ans), jamais les deux ; document « prix 380 000 € + 45 000 € de travaux ». (3) Fiche du placement, sous le rendement constate : « Connaissez-vous le montant des frais d entree payes a l origine ? » oui (taux) / non / ne sait pas, point a releve, pastille au document. (4) Pastilles « Vos placements — etat des lieux » : maquette A retenue par le CGP — cle en gris capitales, valeur en couleur (CHEZ | AXA, RENDEMENT | inconnu, FRAIS D ENTREE | 3 pct, SATISFAIT | non). (5) Points forts (Analyse R2) : plus aucune puce sous « Endettement maitrise », « Le socle patrimonial est pose » supprime, tournure dictee « Auditer votre contrat : allocation et performances des supports — un contrat ouvert n est en rien une garantie de qualite ». Banc t_v266 (33) : 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v265 (30/09 : PLUS AUCUN DIALOGUE NATIF DU NAVIGATEUR. Le CGP : « pourquoi je vois encore ces fenetres moches ? je t ai demande de tout uniformiser ». Il restait une confirmation native (remplacer le dossier en cours par un client type) et une alerte native (logo > 2 Mo). Le premier passe par une fenetre du simulateur (data-nc-confirm : titre, texte, Annuler / Remplacer), le second par un message rouge en ligne sous le bouton. Garde-fou dans verif.sh : zero confirm / alert / prompt dans le fichier. Banc t_clients_types verifie la fenetre entre deux clients types. 32/32.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v264 (28/09 : CE QUE VOTRE CAPITAL PEUT VOUS VERSER — maquette C retenue par le CGP. Dans Analyse R2, apres « A N ans, votre situation » : on fixe l age jusqu auquel les placements financiers doivent durer (80 et 90 ans), le tableau donne le retrait mensuel constant possible, capital consomme au terme, a 2 / 5 / 7 pct nets. Deux tableaux : « Sans rien changer » (R.avPla) et « Avec les preconisations » (R.natPla). Besoin de reference = baisse de revenus estimee a la retraite, modifiable a l ecran (champ non imprime), cases cochees quand le retrait couvre le besoin, phrase de lecture par colonne. Tous les dossiers. Mention « hypotheses dynamiques, non garanties ». Moteur : ncCapRetrait (annuite) et ncCapDuree (inverse). Reponses du CGP consignees dans le journal des questions. Banc t_cap_verser (32) : 32/32.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v263 (28/09 : QUESTIONS COMPLEMENTAIRES — SIX SUJETS, NOTE LIBRE, ET LA TMI SE CORRIGE AVEC L IMPOT. Le CGP : « ecris Questions plutot que le document ne doit dire que… », « questions complementaires, n hesite pas a demander plus de choses pour etre certain de partir dans la bonne direction », « il est imperatif de poser des questions pour ne pas faire de fausses routes ». Le pop-up pose desormais six questions quand le moteur doute : epargne mensuelle, emprunt, liquidites importantes (>= 50 000 € sans projet), produit d une vente, reduction d impot (PER / defiscalisation, TMI >= 30 pct), transmission anticipee (>= 55 ans ou retraite, enfants, >= 300 000 € net — additive : objectif + preco de donation seulement sur oui). Une note libre par question, reprise dans le document (carte « Questions complementaires »). Decision du CGP : SANS reponse, comportement d avant (seul un « non » fait taire le document) ; apprentissage via les skills, pas de memoire dans l outil. (2) Etape Fiscalite, bloc « corriger avec l impot reellement paye » : la TMI de l avis se corrige au meme endroit (chips + rappel de la TMI calculee + retour). Bancs t_brichet (28, etendu) et t_tmi_corr (31) : 31/31.)','color:#94a3b8');
@@ -5696,17 +5697,27 @@
       /* 10/09/2026 — le CGP : « sur les axes de travail, fonctionne en bullet point encore
          plus, comme sur les points forts ». Chaque axe = un constat court (d) + des
          puces (puces) : chiffre, règle, geste. */
-      if (cibleBasM > 0 && courtTermeM < cibleBasM) faiblesses.push({ t: "Épargne de précaution / court terme", d: `${eur(courtTermeM)} de court terme seulement`,
+      /* 08/10/2026 (CGP) : « épargne de précaution à mentionner seulement lorsqu'il y a un GROS
+         décalage » — seuil retenu : moins de la moitié de la cible basse du cabinet (20 000 € pour
+         25 000 € ne sort plus). Tournure dictée. */
+      if (cibleBasM > 0 && courtTermeM < cibleBasM * 0.5) faiblesses.push({ t: "Épargne de précaution insuffisante / court terme", d: `${eur(courtTermeM)}`,
         puces: [`Cible du cabinet — ${profPrecLib}`, "À reconstituer avant tout placement long terme"] });
       {
         // RÈGLE CABINET (28/08) : NOMMER les placements concernés (« le PER chez
         // Generali ») — le lecteur doit savoir de quoi on parle sans remonter au tableau.
         const TYPES_NOM = { av: "l'assurance-vie", per: "le PER", pea: "le PEA", cto: "le compte-titres", epargne_salariale: "l'épargne salariale", capi: "le contrat de capitalisation", autre: "le placement" };
-        const inconnus = (d.avoirsQ === "oui" ? (d.avoirs || []) : []).filter(x => x.type !== "livrets" && x.type !== "compte_courant" && ncInt(x.valeur) > 0 && x.rendementNsp === "oui");
+        /* 08/10/2026 (CGP) : tournure dictée — « Performance et gestion de l'épargne long terme :
+           Ass Vie x € chez banque x, rendement, gestion inconnus. Il est essentiel dans une bonne
+           gestion de maîtriser ses placements (performance, allocation, gestion). Relevé de
+           situation à demander impérativement. » Déclenché dès qu'un contrat long terme a son
+           rendement, sa gestion ou ses frais d'entrée inconnus. */
+        const TYPES_MAJ = { av: "Assurance-vie", per: "PER", pea: "PEA", cto: "Compte-titres", epargne_salariale: "Épargne salariale", capi: "Contrat de capitalisation", autre: "Placement" };
+        const inconnuDe = (x) => { const m = []; if (x.rendementNsp === "oui" || (!x.rendement && x.type !== "livrets")) m.push("rendement"); if (!x.gestion) m.push("gestion"); if (x.fraisEntreeQ === "non" || x.fraisEntreeQ === "nsp") m.push("frais d'entrée"); return m; };
+        const inconnus = (d.avoirsQ === "oui" ? (d.avoirs || []) : []).filter(x => x.type !== "livrets" && x.type !== "compte_courant" && ncInt(x.valeur) > 0 && inconnuDe(x).length > 0);
         if (inconnus.length > 0) {
-          const noms = inconnus.map(x => `${TYPES_NOM[x.type] || "le placement"}${(x.etablissement || "").trim() ? ` chez ${x.etablissement.trim()}` : ""} (${eur(ncInt(x.valeur))})`).join(", ");
-          faiblesses.push({ t: "Performance de l'épargne inconnue", d: `rendement inconnu : ${noms}`,
-            puces: ["On ne pilote pas une épargne sans connaître son rendement", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander`] });
+          const noms = inconnus.map(x => { const m = inconnuDe(x); return `${TYPES_MAJ[x.type] || "Placement"} ${eur(ncInt(x.valeur))}${(x.etablissement || "").trim() ? ` chez ${x.etablissement.trim()}` : ""} : ${m.join(", ")} inconnu${m.length > 1 || /frais/.test(m[0]) ? "s" : ""}`; }).join(" · ");
+          faiblesses.push({ t: "Performance et gestion de l'épargne long terme", d: noms,
+            puces: ["Il est essentiel dans une bonne gestion de maîtriser ses placements (performance, allocation, gestion)", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander impérativement`] });
         }
       }
       /* 14/09/2026 (CGP, dossier Coconut) : formulation EXACTE, une seule ligne, sans puce —
@@ -5871,7 +5882,9 @@
       // 29/08 (contrôle expert n°3) : en union libre, le levier de crédit AGGRAVE le
       // problème du concubin non protégé s'il vient avant la protection (au décès,
       // l'enfant hérite du bien ET de la dette, le concubin de rien) — l'axe le dit.
-      if (veutEmprunter && taux != null && taux < 0.25 && capMax >= 100000) faiblesses.push({ t: "Capacité d'endettement non utilisée",
+      /* 08/10/2026 (CGP) : « Capacité d'endettement utilisée à 17 % sur les 35 % autorisés » et des
+         puces courtes, plus impactantes — tournures dictées. Les formulations du 11/09 sont remplacées. */
+      if (veutEmprunter && taux != null && taux < 0.25 && capMax >= 100000) faiblesses.push({ t: "Capacité d'endettement",
         /* 02/09 : la phrase portait six idees a la file, en petits caracteres.
            Elle s ecrit desormais en PUCES.
            Et elle ne dicte plus l ordre des operations au client : on ne connait
@@ -5885,16 +5898,16 @@
            protégeant vos héritiers en cas de décès. » Les phrases « Avant tout
            engagement : stress-test… » et « Utilisations possibles… » sont SUPPRIMÉES
            DÉFINITIVEMENT. */
-        d: `Endettement à ${pc(taux)} seulement${S.rpProjetRetenu > 0 ? " avec le projet RP" : ""}`,
+        d: `utilisée à ${pc(taux)} sur les 35 % autorisés${S.rpProjetRetenu > 0 ? " (projet RP compris)" : ""}`,
         puces: [
-          `Votre capacité d'endettement vous permettrait de réaliser un investissement locatif pour un montant de ${eur(capLocMax)}${ncProjetRP(d).chiffre ? " une fois le projet RP financé" : ""}`,
-          "L'effet de levier du crédit est indispensable dans une bonne gestion de patrimoine",
-          "Il vous permet de capitaliser dans le temps, tout en protégeant vos héritiers en cas de décès",
+          `Disponibilité pour un investissement locatif : ${eur(capLocMax)}${ncProjetRP(d).chiffre ? " une fois le projet RP financé" : ""} (chiffre indicatif, à vérifier avec notre courtier)`,
+          "Protection de vos héritiers grâce à l'assurance de prêt en cas de décès",
+          "En cas de vie, création de revenus complémentaires",
           ...(unionLibre && d.conjointQ === "oui" ? ["Au décès de l'emprunteur, le bien et la dette reviennent à ses héritiers — le concubin n'est pas protégé"] : [])
         ] });
       // AXE CABINET (27/08) : versements programmés trop faibles au vu des revenus du foyer
       // (repère : 18 % du revenu, moyenne des Français — INSEE).
-      if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés beaucoup trop faibles au vu des revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
+      if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés insuffisants au vu de vos revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
         /* 14/09/2026 (CGP) : préciser — 18 % du revenu épargnés en moyenne, DONT 9 % en
            épargne financière (le reste est le remboursement du capital des crédits). */
         puces: ["Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière"] });
@@ -7849,7 +7862,14 @@
                 pot={!G.arb && R.gainArbPot > 0}
                 eff={G.arb ? "+ " + eur(mArb) + "/mois" : (R.gainArbPot > 0 ? "+ " + eur(mArbPot) + "/mois" : "—")}
                 effSub={G.arb
-                  ? "d'intérêts en plus chaque mois · " + pctTxt(G.txArbAct, 2.5) + " → " + tMedTxt + " · soit + " + eur(R.gainArbCap) + " de capital dans " + R.H + " ans"
+                  /* 08/10/2026 (CGP) : « plus pédagogue : 95 000 placés à 2 % = x €, en dessous à 5 %, en
+                     dessous la différence. Simple, efficace, sans blabla. » Trois lignes, un chiffre chacune. */
+                  ? (() => { const m0 = nb(G.montArb, 0), t0 = nb(G.txArbAct, 2.5) / 100, t1 = nb(h.tMed, 5.2) / 100; const a = m0 * Math.pow(1 + t0, R.H), b = m0 * Math.pow(1 + t1, R.H); return (
+                      <span data-nc-arb-pedago="1" style={{ display: "block" }}>
+                        <span style={{ display: "block" }}>{eur(m0)} placés à {pctTxt(G.txArbAct, 2.5)} = <b style={{ color: NCP_C.encre }}>{eur(a)}</b> dans {R.H} ans</span>
+                        <span style={{ display: "block" }}>{eur(m0)} placés à {tMedTxt} = <b style={{ color: NCP_C.encre }}>{eur(b)}</b></span>
+                        <span style={{ display: "block", color: NCP_C.vert }}>Différence : <b>+ {eur(b - a)}</b></span>
+                      </span>); })()
                   : (R.gainArbPot > 0 ? "si vous l'activez — non compté tant que la case n'est pas cochée · soit + " + eur(R.gainArbPot) + " dans " + R.H + " ans" : "renseignez le montant et son rendement actuel")}>
                 Montant <Mini v={G.montArb} on={v => sg('montArb', v)} /> €<br />
                 Rendement actuel <Mini v={G.txArbAct} on={v => sg('txArbAct', v)} w={48} /> %/an<br />
