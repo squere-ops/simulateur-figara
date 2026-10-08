@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v268 (08/10 : OU TROUVER L EPARGNE — OPTION C RETENUE PAR LE CGP SUR LES DEUX CARTES. Mini-tableau aligne « rendement | capital dans N ans » : « 45 000 € places a 2,5 pct | 79 407 € », « places a 5,2 pct | 144 402 € », « Difference dans 23 ans | + 64 995 € » en vert, puis le €/mois conclut. Idem « Redirection des versements » avec les versements mensuels capitalises (ncpCap). Plus de phrase « d interets en plus chaque mois · 2 pct → 5,2 pct · soit… ». Composant MiniTab, data-nc-pedago=arb|red ; banc t_gisements 3 bis recalcule les six chiffres. 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v269 (08/10 : LISIBILITE — retours du CGP sur le dossier FAURE. (1) Carte « Participation mensuelle et apport envisages » : une ligne par information (libelle a gauche, valeur a droite, plus de sous-ligne « fourchette indiquee »), « Epargne de precaution a conserver : 10 000 € » (plus de « 10 000 € a conserver disponibles » qui doublonnait « moins de 10 000 € »), horizon de placement en petit curseur sur un trait a quatre crans, notes et questions complementaires en texte simple dessous. (2) Analyse R2, points forts du dossier recentre : plus de « Une etape essentielle… » ni « Epargne immobiliere : … en hausse a chaque echeance » — « 522 €/mois de capital rembourse des la premiere annee », « Apport 45 000 € — il reste 14 450 € d epargne de precaution ». (3) Axe retraite, tournure dictee : « Preparation de votre retraite — Le temps est votre meilleur allie, 31 ans pour consolider votre strategie » (plus de « a 33 ans » ni « le temps joue pour vous »), puces « Une epargne reguliere vous permettra de capitaliser sereinement », « Un PER et une assurance-vie alimentes chaque mois, des maintenant », « Versements PER deductibles a votre TMI de 30 pct ». (4) Titre « Ou trouver l epargne complementaire ». Bancs t_recentre, t_controle, t_sticky_app mis a jour. 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v268 (08/10 : OU TROUVER L EPARGNE — OPTION C RETENUE PAR LE CGP SUR LES DEUX CARTES. Mini-tableau aligne « rendement | capital dans N ans » : « 45 000 € places a 2,5 pct | 79 407 € », « places a 5,2 pct | 144 402 € », « Difference dans 23 ans | + 64 995 € » en vert, puis le €/mois conclut. Idem « Redirection des versements » avec les versements mensuels capitalises (ncpCap). Plus de phrase « d interets en plus chaque mois · 2 pct → 5,2 pct · soit… ». Composant MiniTab, data-nc-pedago=arb|red ; banc t_gisements 3 bis recalcule les six chiffres. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v267 (08/10 : AXES DE TRAVAIL — PHRASES COURTES, DROIT AU BUT. Le CGP : « fais toujours des phrases plus courtes, va droit au but, pas la peine de noyer l information ». (1) Epargne de precaution : ne sort que sur un GROS decalage (court terme < moitie de la cible basse), titre « Epargne de precaution insuffisante / court terme — x € ». (2) « Performance et gestion de l epargne long terme — Assurance-vie 135 000 € chez LCL : rendement, gestion inconnus » ; puces « Il est essentiel dans une bonne gestion de maitriser ses placements (performance, allocation, gestion) », « Releve de situation a demander imperativement » ; declenche par rendement, gestion ou frais d entree inconnus. (3) « Versements programmes insuffisants au vu de vos revenus ». (4) « Capacite d endettement — utilisee a 17 pct sur les 35 pct autorises » ; puces « Disponibilite pour un investissement locatif : N € (chiffre indicatif, a verifier avec notre courtier) », « Protection de vos heritiers grace a l assurance de pret en cas de deces », « En cas de vie, creation de revenus complementaires ». Les formulations du 11/09 sont remplacees. Banc de controle mis a jour. (5) Analyse R2, carte « Arbitrage du capital place » : lecture pedagogique en trois lignes — « 95 000 € places a 2 pct = x € dans N ans », « places a 5,2 pct = y € », « Difference : + z € » (banc t_gisements). 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v266 (08/10 : PLUSIEURS BANQUES, TRAVAUX SUR LA RP, FRAIS D ENTREE, PASTILLES A DEUX TONS, POINTS FORTS ALLEGES. (1) Etat civil : « + Ajouter une banque » (banquesAutres), ecrites a l etat civil du document « Banques : LCL, Boursorama ». (2) RP : « Travaux realises » a cote du prix d achat ; latente = valeur − prix − travaux ; regle 150 VB : travaux reels retenus s ils depassent le forfait 15 pct (plus de 5 ans), jamais les deux ; document « prix 380 000 € + 45 000 € de travaux ». (3) Fiche du placement, sous le rendement constate : « Connaissez-vous le montant des frais d entree payes a l origine ? » oui (taux) / non / ne sait pas, point a releve, pastille au document. (4) Pastilles « Vos placements — etat des lieux » : maquette A retenue par le CGP — cle en gris capitales, valeur en couleur (CHEZ | AXA, RENDEMENT | inconnu, FRAIS D ENTREE | 3 pct, SATISFAIT | non). (5) Points forts (Analyse R2) : plus aucune puce sous « Endettement maitrise », « Le socle patrimonial est pose » supprime, tournure dictee « Auditer votre contrat : allocation et performances des supports — un contrat ouvert n est en rien une garantie de qualite ». Banc t_v266 (33) : 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v265 (30/09 : PLUS AUCUN DIALOGUE NATIF DU NAVIGATEUR. Le CGP : « pourquoi je vois encore ces fenetres moches ? je t ai demande de tout uniformiser ». Il restait une confirmation native (remplacer le dossier en cours par un client type) et une alerte native (logo > 2 Mo). Le premier passe par une fenetre du simulateur (data-nc-confirm : titre, texte, Annuler / Remplacer), le second par un message rouge en ligne sous le bouton. Garde-fou dans verif.sh : zero confirm / alert / prompt dans le fichier. Banc t_clients_types verifie la fenetre entre deux clients types. 32/32.)','color:#94a3b8');
@@ -6166,23 +6167,24 @@
         const forcesR = [];
         if (projetRPsyn) {
           forcesR.push({ t: "Acquisition de votre résidence principale", d: `un projet de ${eur(pRPsyn.budget)}, ${eur(pRPsyn.mens)}/mois sur ${pRPsyn.ans} ans à ${txLib(pRPsyn.tx)}`,
+            /* 08/10/2026 (CGP) : « arrête les phrases à rallonge » — les deux puces explicatives
+               (« Une étape essentielle… », « Épargne immobilière : … ») sont SUPPRIMÉES. */
             puces: [
-              "Une étape essentielle : chaque mensualité rembourse du capital et construit votre patrimoine",
-              epargneImmo > 0 ? `Épargne immobilière : ${eur(epargneImmo)}/mois de capital remboursé dès la première année, en hausse à chaque échéance` : null,
-              /* le CGP : « il va consommer 40 k€ d'apport sur 57 950 € qui lui serviront d'épargne
-                 de précaution » — c'est l'épargne TOTALE, pas le seul court terme, qui reste. */
-              apportRPsyn > 0 ? `Après un apport de ${eur(apportRPsyn)}, il vous reste ${eur(Math.max(0, (epargne || 0) - apportRPsyn))} d'épargne : votre épargne de précaution` : null,
+              epargneImmo > 0 ? `${eur(epargneImmo)}/mois de capital remboursé dès la première année` : null,
+              apportRPsyn > 0 ? `Apport ${eur(apportRPsyn)} — il reste ${eur(Math.max(0, (epargne || 0) - apportRPsyn))} d'épargne de précaution` : null,
             ].filter(Boolean) });
         } else if (proprio && d.rpCreditQ === "oui") {
-          forcesR.push({ t: "Résidence principale en cours de remboursement", d: epargneImmo > 0 ? `${eur(epargneImmo)}/mois de capital remboursé : une épargne immobilière qui augmente à chaque échéance` : "chaque mensualité rembourse du capital et construit votre patrimoine" });
+          forcesR.push({ t: "Résidence principale en cours de remboursement", d: epargneImmo > 0 ? `${eur(epargneImmo)}/mois de capital remboursé` : "chaque mensualité rembourse du capital et construit votre patrimoine" });
         }
         forces.filter(f => /retraite déjà amorcée|assurance-vie ouverte/i.test(f.t)).forEach(f => forcesR.push(f));
         forces.length = 0; forcesR.forEach(f => forces.push(f));
         /* axes de travail */
         const faibR = [];
-        faibR.push({ t: "Préparer votre retraite", d: ansAvant != null ? `à ${age} ans, ${ansAvant} ans avant la retraite : le temps joue pour vous` : "le temps joue pour vous",
+        /* 08/10/2026 (CGP), tournure dictée : « Préparation de votre retraite : Le temps est votre
+           meilleur allié, plus de 30 ans pour consolider votre stratégie » — sans « à 33 ans ». */
+        faibR.push({ t: "Préparation de votre retraite", d: ansAvant != null && ansAvant > 0 ? `Le temps est votre meilleur allié, ${ansAvant} ans pour consolider votre stratégie` : "Le temps est votre meilleur allié",
           puces: [
-            PCr && PCr.act > 0 && PCr.median > 0 ? `Revenus estimés à la retraite : environ ${eur(Math.round(PCr.median))}/mois, contre ${eur(PCr.act)} aujourd'hui` : null,
+            "Une épargne régulière vous permettra de capitaliser sereinement",
             "Un PER et une assurance-vie alimentés chaque mois, dès maintenant",
             perPertinent ? `Versements PER déductibles à votre TMI de ${pc(F.tmi)}` : null,
           ].filter(Boolean) });
@@ -6194,7 +6196,7 @@
            « aucune problématique — complétez les étapes précédentes », ce qui est faux. */
         const probR = [];
         const baisseR = PCr && PCr.act > 0 && PCr.median > 0 ? Math.max(0, PCr.act - PCr.median) : 0;
-        probR.push({ code: "recentre_retraite", priorite: "haute", famille: "Retraite", titre: "Préparer votre retraite",
+        probR.push({ code: "recentre_retraite", priorite: "haute", famille: "Retraite", titre: "Préparation de votre retraite",
           constat: PCr && PCr.act > 0 && PCr.median > 0 ? `Revenus estimés à la retraite : environ ${eur(Math.round(PCr.median))}/mois, contre ${eur(PCr.act)} aujourd'hui.` : "Aucun dispositif retraite en place.",
           consequence: baisseR > 0 ? `Une baisse d'environ ${eur(Math.round(baisseR))}/mois à compenser${ansAvant != null ? ` — et ${ansAvant} ans pour la préparer` : ""}.` : (ansAvant != null ? `${ansAvant} ans pour la préparer.` : ""),
           enjeu: "Maintenir votre niveau de vie à la retraite",
@@ -7651,7 +7653,7 @@
         { l: "Employée", v: eur(R.effort) + "/mois", c: C.vert,
           sous: "par les solutions cochées · " + (R.ecoM > 0 ? "nette des " + eur(R.ecoM) + " d'économie d'impôt" : "effort mensuel net") },
         { l: R.ENV - R.effort >= 0 ? "Reste" : "Manque", v: (R.ENV - R.effort >= 0 ? "" : "− ") + eur(Math.abs(R.ENV - R.effort)) + "/mois", c: R.ENV - R.effort >= 0 ? C.vert : "#b91c1c", fort: true,
-          sous: R.ENV - R.effort >= 0 ? "à allouer · épargné et capitalisé tant que non employé" : "chaque mois · à trouver dans « Où trouver l'épargne »" },
+          sous: R.ENV - R.effort >= 0 ? "à allouer · épargné et capitalisé tant que non employé" : "chaque mois · à trouver dans « Où trouver l'épargne complémentaire »" },
         /* 21/09 : l'item compte TOUS les gisements cochés (délégation, arbitrage,
            redirection), plus la seule délégation. */
         R.gainsMens > 0 ? { l: "Trouvé", v: "+ " + eur(R.gainsMens) + "/mois", c: C.vert, sous: "par les gisements retenus — déjà compris dans l'enveloppe" } : null
@@ -7853,8 +7855,8 @@
             const mRend = mArb + mRed;
             const ass = G.ass && R.ecoAss > 0, rend = (mArb + mRed) > 0;
             return (
-          <div ref={seuilBarRef} data-nc-bar-seuil="1" className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne">
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne</div>
+          <div ref={seuilBarRef} data-nc-bar-seuil="1" className="rounded-2xl bg-white p-6 mb-4 border" style={{ borderColor: C.bord, boxShadow: "0 1px 3px rgba(0,0,0,0.03)" }} data-nc-chap="Où trouver l'épargne complémentaire">
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9.5pt", letterSpacing: "0.22em", textTransform: "uppercase", color: C.encre, fontWeight: 800 }}>Où trouver l'épargne complémentaire</div>
             <div className="text-[11px] mb-3" style={{ color: C.gris2, marginTop: 6, lineHeight: 1.5 }}>
               L'argent qui dort déjà, sans effort nouveau — chaque levier ramené <b style={{ color: C.encre }}>au mois</b>.
             </div>
@@ -9544,10 +9546,10 @@
           if (d.apportInitial) lignes.push(d.apportInitial === "libre"
             ? { t: "Apport initial mobilisable", d: `${nfE(ncInt(d.apportInitialLibre))} €`, sub: "montant précis indiqué" }
             : { t: "Apport initial mobilisable", d: NC_APPORT_LIB[d.apportInitial] || d.apportInitial, sub: d.apportInitial === "aucun" ? null : "fourchette indiquée" });
-          if (ncInt(d.epargnePrecaution) > 0) lignes.push({ t: "Épargne de précaution souhaitée", d: `${nfE(ncInt(d.epargnePrecaution))} € à conserver disponibles.` });
+          if (ncInt(d.epargnePrecaution) > 0) lignes.push({ t: "Épargne de précaution à conserver", d: `${nfE(ncInt(d.epargnePrecaution))} €` });
           const odL = (d.objectifsDetail || {}).locatif || {};
           if (ncInt(odL.apport) > 0) lignes.push({ t: "Apport envisagé (projet locatif)", d: `${nfE(ncInt(odL.apport))} €${ncInt(odL.budget) > 0 ? ` pour un budget d'environ ${nfE(ncInt(odL.budget))} €` : ""}.` });
-          if (d.horizon) lignes.push({ t: "Horizon de placement", d: HOR_LIB[d.horizon] || d.horizon });
+          if (d.horizon) lignes.push({ t: "Horizon de placement", d: HOR_LIB[d.horizon] || d.horizon, horizon: d.horizon });
           if ((d.notes || "").trim()) lignes.push({ t: "Notes d'entretien", d: (d.notes || "").trim() });
           /* 28/09/2026 (CGP) : les réponses aux questions complémentaires, avec leur note */
           {
@@ -9559,19 +9561,35 @@
           return (
             <div className="rounded-xl px-4 pt-4 pb-3.5 border border-stone-200"
               style={{ borderTop: "3px solid #0f766e", background: "linear-gradient(180deg, #0f766e0a, #ffffff 55%)", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
-              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-3" style={{ color: "#0f766e" }}>{foyerRetraiteS ? "Apport mobilisable" : "Participation mensuelle & apport envisagés"}</div>
-              <div className="grid grid-cols-2 gap-2.5">
-                {lignes.map((l, i) => (
-                  <div key={i} className={`rounded-lg px-3 py-2.5 bg-white border border-stone-200 ${l.t === "Notes d'entretien" || l.t === "Questions complémentaires" ? "col-span-2" : ""}`} style={{ borderLeft: "3px solid rgba(15,118,110,0.55)" }}>
-                    <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-1">{l.t}</div>
-                    <div className={l.t === "Notes d'entretien" || l.t === "Questions complémentaires" ? "text-[12px] text-stone-700 leading-snug" : "num text-[15.5px] font-extrabold leading-snug"} style={l.t === "Notes d'entretien" ? undefined : { fontFamily: "'Lora', 'Playfair Display', serif", color: "#0f766e" }}>{l.d}</div>
-                    {/* 03/09 : ligne dédiée, toujours à la même position sous le nombre —
-                        ne dépend plus du retour à la ligne du texte du dessus (cf. tuile
-                        voisine, dont le nombre peut être plus court ou plus long). */}
-                    {l.sub ? <div className="text-[10px] font-semibold mt-0.5" style={{ color: "#0f766e99" }}>{l.sub}</div> : null}
+              <div className="text-[9.5px] uppercase tracking-wider font-bold mb-2" style={{ color: "#0f766e" }}>{foyerRetraiteS ? "Apport mobilisable" : "Participation mensuelle & apport envisagés"}</div>
+              {/* 08/10/2026 (CGP) : « trop dense, pas assez lisible » — une ligne par information
+                  (libellé à gauche, valeur à droite, sans sous-ligne), l'horizon en petit curseur. */}
+              <div data-nc-participation="compact">
+                {lignes.filter(l => l.t !== "Notes d'entretien" && l.t !== "Questions complémentaires").map((l, i) => (
+                  <div key={i} className="flex items-center justify-between gap-3 py-1.5" style={{ borderBottom: "1px solid #ebe7e1" }}>
+                    <span className="text-[10.5px] font-bold text-stone-500">{l.t}</span>
+                    {l.horizon ? (() => {
+                      const H = ["<5", "5-10", "10-15", ">15"], k = Math.max(0, H.indexOf(l.horizon));
+                      return (
+                        <span className="flex items-center gap-2" data-nc-horizon-curseur={l.horizon}>
+                          <span className="num text-[11.5px] font-extrabold text-stone-900 whitespace-nowrap">{l.d}</span>
+                          <span className="relative inline-block" style={{ width: 92, height: 10 }}>
+                            <span style={{ position: "absolute", left: 0, right: 0, top: 4, height: 2, background: "#d6d3d1", borderRadius: 1 }} />
+                            {H.map((h, j) => <span key={h} style={{ position: "absolute", left: `${(j / 3) * 100}%`, top: 2, width: 6, height: 6, marginLeft: -3, borderRadius: 3, background: j <= k ? "#0f766e" : "#d6d3d1" }} />)}
+                            <span style={{ position: "absolute", left: `${(k / 3) * 100}%`, top: -1, width: 12, height: 12, marginLeft: -6, borderRadius: 6, background: "#fff", border: "2.5px solid #0f766e", boxSizing: "border-box" }} />
+                          </span>
+                        </span>
+                      );
+                    })() : <span className="num text-[12px] font-extrabold text-stone-900 text-right">{l.d}</span>}
                   </div>
                 ))}
               </div>
+              {lignes.filter(l => l.t === "Notes d'entretien" || l.t === "Questions complémentaires").map((l, i) => (
+                <div key={"n" + i} className="pt-2">
+                  <div className="text-[9px] uppercase tracking-wider font-bold text-stone-400 mb-0.5">{l.t}</div>
+                  <div className="text-[11.5px] text-stone-700 leading-snug">{l.d}</div>
+                </div>
+              ))}
             </div>
           );
         })();
@@ -14131,7 +14149,7 @@
                             q: impot10 > 0
                               ? `Que vous évoque le chiffre de ${nfQ(impot10)} € ?`
                               : "Savez-vous quelle part de votre imposition peut être réorientée vers votre propre patrimoine, et par quel mécanisme ?" },
-                          { p: 4, fam: "retraite", skip: foyerRetraiteQ, re: /dispositif retraite|retraite de .* non préparée|retraite non préparée|préparer votre retraite/i,
+                          { p: 4, fam: "retraite", skip: foyerRetraiteQ, re: /dispositif retraite|retraite de .* non préparée|retraite non préparée|préparer votre retraite|préparation de votre retraite/i,
                             q: (pension > 0 && revAuj > 0)
                               ? `${anneesRet > 0 ? `Dans ${anneesRet} ans, vous aurez ${ageRet} ans` : `À ${ageRet} ans`}, vos revenus passeront de ${nfQ(revAuj)} € à environ ${nfQ(Math.round(pension / 500) * 500)} €/mois. Comment comptez-vous compenser cette baisse ?`
                               : "Vos revenus baisseront au moment de votre retraite. Comment comptez-vous compenser cette baisse ?" },
