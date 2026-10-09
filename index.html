@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v271 (08/10 : HYPOTHESE DE RENDEMENT, PARTOUT — et plus de bandeaux par nature. Le CGP : « a chaque fois que tu parles d un rendement, mets systematiquement qu il s agit d une hypothese de rendement — il est important que je me protege sur chaque document ». Analyse R2 : intro de « Ou trouver l epargne complementaire » (« sur hypotheses de rendement non garanties »), mini-tableaux (« places a 5,2 pct (hypothese de rendement) »), cartes PER / AV (« Hypothese de rendement : 5,2 pct, non garantie »), tableau « A N ans » (« a leur hypothese de rendement »), mention de bas de carte (« etablie sur des hypotheses de rendement non garanties »), « Ce que votre capital peut vous verser » (« Hypothese de rendement net »). Les deux bandeaux « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree » sont supprimes : seul reste le bloc « N €/mois d epargne a reorienter — a € liberes + b € d interets en plus ». Banc t_gisements reecrit sur ce bloc. 33/33.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v273 (08/10 : L ONGLET SIMULATION OUVRE LE SIMULATEUR AVEC LES CHIFFRES DU DOSSIER. Le CGP : « supprime tout ce qu il y a dans l onglet simulation. Il faut que je trouve un onglet ass vie ou PER selon ce qui a ete preconise ; si je clique, ma simulation commence avec les chiffres evoques dans l outil ; une version imprimable et une presentation client pour chaque placement ». (1) L ancien contenu (problematiques, regimes, forces/axes, protection du conjoint, signature) est MIS DE COTE (NC_MASQUES.simulationAncienne). (2) NcSimuCartes : une carte Assurance-vie, une carte PER si le PER est preconise (jamais a un retraite). Chiffres (reponses du CGP) : versement initial AV = liquidites moins la precaution cible (+ produit d une vente a replacer) ; mensuel = enveloppe, gisements compris si l Analyse R2 a ete ouverte (sinon fourchette declaree), le PER prend la borne basse ; duree = jusqu a la retraite, sinon l horizon de placement ; TMI du PER = etape Fiscalite. (3) Ouvrir la simulation = dossier enregistre, produit et montants poses, etape Produit. Version imprimable = etape Presentation puis PDF. Presentation client = etape Presentation. L hypothese de rendement reste choisie a l etape Allocation. t_simu_cartes (35). 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v272 (08/10 : BUG REDUCTION LOCATIVE + CINQ BLOCS MIS DE COTE. (1) Le CGP : « je mets une reduction d impot pour un bien immobilier et je ne la retrouve absolument pas dans le bloc en bas a droite » — la saisie manuelle (nu au reel, N €/an pendant D ans) n entrait que dans l effort, jamais dans « Impot economise par an » : corrige (reducMoy). (2) Mis de cote, conserves dans le code derriere NC_MASQUES (« garde-le dans un coin ») : « Fiscalite de l operation » et l alerte rouge « il manquera N €/mois », « Vos priorites — a classer ensemble », « Ce que votre capital peut vous verser », le tableau « A N ans, votre situation ». Les bancs historiques reveillent ces blocs (window.__NC_MASQUES) pour continuer a les couvrir ; t_masques (34) verifie le mode livre. 34/34.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v271 (08/10 : HYPOTHESE DE RENDEMENT, PARTOUT — et plus de bandeaux par nature. Le CGP : « a chaque fois que tu parles d un rendement, mets systematiquement qu il s agit d une hypothese de rendement — il est important que je me protege sur chaque document ». Analyse R2 : intro de « Ou trouver l epargne complementaire » (« sur hypotheses de rendement non garanties »), mini-tableaux (« places a 5,2 pct (hypothese de rendement) »), cartes PER / AV (« Hypothese de rendement : 5,2 pct, non garantie »), tableau « A N ans » (« a leur hypothese de rendement »), mention de bas de carte (« etablie sur des hypotheses de rendement non garanties »), « Ce que votre capital peut vous verser » (« Hypothese de rendement net »). Les deux bandeaux « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree » sont supprimes : seul reste le bloc « N €/mois d epargne a reorienter — a € liberes + b € d interets en plus ». Banc t_gisements reecrit sur ce bloc. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v270 (08/10 : RIEN A GERER SUR LE COURT TERME. Le CGP : « livrets, comptes courants, CEL, PEL — il n est pas necessaire de mettre gestion : banque, il n y a rien a gerer sur ce type de placement ». Plus de pastille GESTION ni PROFIL sur les types livrets (Livret A, LDDS, LEP, Livret Jeune, CEL, PEL, CSL) et compte courant — seules restent CHEZ et RENDEMENT. Banc t_v266 etendu. (2) « Situation fiscale du foyer » : la tuile « Revenus estimes a la retraite » s etend sur deux colonnes (trois sans avantages fiscaux) — plus de case vide, ligne du bas moins haute ; hypothese « releve » raccourcie. (3) Points forts AV/PER : « Auditer votre contrat : allocation et performances des supports » — la fin « un contrat ouvert n est en rien une garantie de qualite » est supprimee. (4) « Fiscalite deja optimisee » : « Generee par les dispositifs en place (emploi a domicile, dons) » — les dispositifs saisis sont rappeles entre parentheses. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v269 (08/10 : LISIBILITE — retours du CGP sur le dossier FAURE. (1) Carte « Participation mensuelle et apport envisages » : une ligne par information (libelle a gauche, valeur a droite, plus de sous-ligne « fourchette indiquee »), « Epargne de precaution a conserver : 10 000 € » (plus de « 10 000 € a conserver disponibles » qui doublonnait « moins de 10 000 € »), horizon de placement en petit curseur sur un trait a quatre crans, notes et questions complementaires en texte simple dessous. (2) Analyse R2, points forts du dossier recentre : plus de « Une etape essentielle… » ni « Epargne immobiliere : … en hausse a chaque echeance » — « 522 €/mois de capital rembourse des la premiere annee », « Apport 45 000 € — il reste 14 450 € d epargne de precaution ». (3) Axe retraite, tournure dictee : « Preparation de votre retraite — Le temps est votre meilleur allie, 31 ans pour consolider votre strategie » (plus de « a 33 ans » ni « le temps joue pour vous »), puces « Une epargne reguliere vous permettra de capitaliser sereinement », « Un PER et une assurance-vie alimentes chaque mois, des maintenant », « Versements PER deductibles a votre TMI de 30 pct ». (4) Titre « Ou trouver l epargne complementaire ». Bancs t_recentre, t_controle, t_sticky_app mis a jour. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v268 (08/10 : OU TROUVER L EPARGNE — OPTION C RETENUE PAR LE CGP SUR LES DEUX CARTES. Mini-tableau aligne « rendement | capital dans N ans » : « 45 000 € places a 2,5 pct | 79 407 € », « places a 5,2 pct | 144 402 € », « Difference dans 23 ans | + 64 995 € » en vert, puis le €/mois conclut. Idem « Redirection des versements » avec les versements mensuels capitalises (ncpCap). Plus de phrase « d interets en plus chaque mois · 2 pct → 5,2 pct · soit… ». Composant MiniTab, data-nc-pedago=arb|red ; banc t_gisements 3 bis recalcule les six chiffres. 33/33.)','color:#94a3b8');
@@ -2096,6 +2098,13 @@
         }
       };
       const handleOpenPrint = () => { archiveSimulation(); setPrintMode(true); };
+      /* 08/10/2026 : lancement depuis l onglet Simulation de l audit — étape demandée, puis
+         impression une fois la présentation rendue avec les NOUVEAUX inputs (ref, pas de closure). */
+      const printAttenduRef = useRef(false);
+      const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setStep(n); };
+      useEffect(() => {
+        if (step === 5 && printAttenduRef.current) { printAttenduRef.current = false; const t = setTimeout(() => handleOpenPrint(), 500); return () => clearTimeout(t); }
+      }, [step, inputs]);
 
       const openBuilder = (sourceInputs) => {
         setBuilderInitial(JSON.parse(JSON.stringify(sourceInputs || inputs)));
@@ -2181,7 +2190,7 @@
           </div>
 
           <main className="flex-1 py-12 px-6 relative" style={{zIndex: 10}}>
-            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} key="s1"/>}
+            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} key="s1"/>}
             {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
@@ -3563,6 +3572,17 @@
        interets couvrent le retrait). */
     const ncCapRetrait = (C, annees, r) => { const n = Math.max(1, Math.round(annees * 12)), m = r / 12; if (!(C > 0)) return 0; if (m <= 0) return C / n; return C * m / (1 - Math.pow(1 + m, -n)); };
     const ncCapDuree = (C, W, r) => { const m = r / 12; if (!(C > 0) || !(W > 0)) return 0; if (m <= 0) return C / W / 12; const x = 1 - C * m / W; if (x <= 0) return Infinity; return -Math.log(x) / Math.log(1 + m) / 12; };
+    /* 08/10/2026 (CGP) : blocs MIS DE CÔTÉ, conservés dans le code pour un éventuel retour.
+       true = masqué. Ne rien réintroduire sans accord explicite du CGP. */
+    const NC_MASQUES = Object.assign({
+      fiscaliteOperation: true,   /* « Fiscalité de l'opération » (déficit foncier, effet cumulé) — Analyse R2 */
+      alerteEnveloppe: true,      /* alerte rouge « il manquera N €/mois en année 25 » — Analyse R2 */
+      priorites: true,            /* « Vos priorités — à classer ensemble » — audit */
+      capitalVerser: true,        /* « Ce que votre capital peut vous verser » (maquette C, v264) — Analyse R2 */
+      tableauAvantApres: true,    /* « À N ans, votre situation » (tableau avant / après) — Analyse R2 */
+      simulationAncienne: true,   /* 08/10/2026 : ancien contenu de l onglet Simulation (problématiques, régimes, forces/axes,
+                                     protection du conjoint, signature) — remplacé par les cartes AV / PER (NcSimuCartes) */
+    }, (typeof window !== "undefined" && window.__NC_MASQUES) || {}); /* les bancs historiques réveillent les blocs dormants via window.__NC_MASQUES */
     const NC_VENTE_ANS = { "<1": 1, "1-3": 2, "3-5": 4, ">5": 6 };
     const NC_VENTE_LIB = { "<1": "d'ici un an", "1-3": "d'ici un à trois ans", "3-5": "d'ici trois à cinq ans", ">5": "au-delà de cinq ans" };
     const NC_ORIGINE_LIB = { achat: "achat", donation: "donation", succession: "héritage" };
@@ -6335,8 +6355,26 @@
       /* 28/09/2026 (CGP, réponse explicite) : SANS réponse, le document garde le comportement
          d'avant (il pousse) — seul un « non » le fait taire. Le pop-up, lui, exige une réponse
          avant la synthèse ; un dossier ancien n'est donc pas modifié. */
+      /* 08/10/2026 (CGP) : l onglet Simulation ouvre le simulateur AVEC LES CHIFFRES DU DOSSIER.
+         Réponses du CGP : versement initial AV = liquidités moins la précaution cible ; mensuel =
+         enveloppe (fourchette déclarée, + gisements si l Analyse R2 a été ouverte) ; durée = jusqu à
+         la retraite ; PER seulement s il est préconisé (jamais à un retraité). */
+      const simu = (() => {
+        const TR = { "<100": [0, 100], "100-300": [100, 300], "300-500": [300, 500], "500-1000": [500, 1000], ">1000": [1000, 1000] };
+        const un = (br, libre) => br === "libre" ? [Math.max(0, ncInt(libre)), Math.max(0, ncInt(libre))] : (TR[br] || [0, 0]);
+        let [envBas, envHaut] = un(d.capaciteEpargne, d.capaciteEpargneLibre);
+        if (d.reflexionPatrimoine === "separee") { const [b2, h2] = un(d.capaciteEpargneConjoint, d.capaciteEpargneConjointLibre); envBas += b2; envHaut += h2; }
+        const ageRet = ncInt(((d.objectifsDetail || {}).retraite || {}).age) || 64;
+        const HOR = { "<5": 5, "5-10": 10, "10-15": 15, ">15": 20 };
+        const duree = (!foyerRetraite && age != null && ageRet - age > 0) ? ageRet - age : (HOR[d.horizon] || 10);
+        let venteNet = 0;
+        try { if (veutReplacer) venteNet = ncBiensImmo(d).filter(x => x.vente && x.net > 0).reduce((t, x) => t + x.net, 0); } catch (e) {}
+        const liquidites = veutPlacer ? Math.max(0, courtTermeM - cibleBasM) : 0;
+        return { per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
+          courtTermeM, precaCible: cibleBasM, liquidites, venteNet, tmi: F.tmi, age, nbEnf, foyerRetraite };
+      })();
       return {
-        resume: phrases, forces, faiblesses, problematiques, entretien,
+        resume: phrases, forces, faiblesses, problematiques, entretien, simu,
         recentre, incoherences, epargneImmo, courtTermeApresRP: courtTermeM, apportRP: apportRPsyn,
         chiffresCles: {
           revenusMensuels: revFoyer, chargesMensuelles: chFoyer, tauxEndettement: taux,
@@ -6911,7 +6949,7 @@
        travailler ». Les deux vivent dans le composant parent (ils ont besoin de `set`
        et de `setEditOpen` pour les corrections à l'écran) : NcProjection les affiche,
        il ne les fabrique pas. */
-    function NcProjection({ d, synth, syn, ageClient, estTNS, inputs, blocObjectifs, blocForces }) {
+    function NcProjection({ d, synth, syn, ageClient, estTNS, inputs, blocObjectifs, blocForces, onFigures }) {
       const eur = (n) => ncNbsp((Math.round(n || 0)).toLocaleString('fr-FR')) + ' €';
       /* 11/09/2026 (CGP) : « apport passé de 5 k à 10 k, la tuile indique 0k ». Cause :
          parseFloat("10 000") = 10 — l'espace des milliers coupait la lecture, et
@@ -7225,7 +7263,11 @@
         const ecoImpotReduc = 0; /* renseigne plus bas, une fois reducAn calcule */
         /* reducAn est calcule plus haut : moyenne annuelle sur les annees ou la
            reduction court, pas sur tout l horizon */
-        const reducMoy = reducAn.length ? reducTot / reducAn.filter(x => x.utilisee > 0).length || 0 : 0;
+        /* 08/10/2026 (CGP) : « je mets une réduction d'impôt pour un bien immobilier et je ne la
+           retrouve absolument pas dans le bloc en bas à droite » — la saisie MANUELLE (nu au
+           réel, « Réduction d'impôt N €/an pendant D ans ») n'entrait que dans l'effort, jamais
+           dans « Impôt économisé par an ». Elle y entre désormais tant que le locatif est coché. */
+        const reducMoy = reducAn.length ? reducTot / reducAn.filter(x => x.utilisee > 0).length || 0 : (L.loc && redDur > 0 ? redIr : 0);
         const ecoImpot = ecoImpotPer + (isFinite(reducMoy) ? reducMoy : 0) + (isFinite(ecoRegimeAn) ? ecoRegimeAn : 0);
         const ecoM = ecoImpotPer / 12;
         /* 10/09/2026 — l effort TOTAL comptait le locatif en BRUT (mensualite − loyer net)
@@ -7527,6 +7569,11 @@
           }) : null
         };
       }, [d, socle, h, L, G, synth]);
+      /* 08/10/2026 : l onglet Simulation reprend l enveloppe et la précaution retenues ICI,
+         gisements compris, si l Analyse R2 a été ouverte. */
+      React.useEffect(() => {
+        if (typeof onFigures === "function") onFigures({ ENV: R.ENV, envPoche: R.envPoche, gainsMens: R.gainsMens, precaCible: R.precaCible, tMed: R.tMed, ageFin: R.ageFin, H: R.H });
+      }, [R.ENV, R.envPoche, R.gainsMens, R.precaCible, R.tMed, R.ageFin, R.H]);
 
       /* ——— INTRODUCTION : baisse de revenus a la retraite, objectifs, preconisations ———
          Meme calcul que la carte du constat (ncPensionPerso applique aux revenus
@@ -8096,7 +8143,7 @@
               <Tuile v={R.endet.toFixed(1).replace('.', ',') + " %"} l="Endettement après opération" couleur={R.endet > 35 ? "#b91c1c" : C.encre} />
               <Tuile v={eur(R.ecoImpot)} l="Impôt économisé par an" couleur={C.vert} />
             </div>
-            {L.loc && R.fiscAn.length ? (
+            {!NC_MASQUES.fiscaliteOperation && L.loc && R.fiscAn.length ? (
               <div className="mt-4 rounded-xl px-4 py-3.5" style={{ background: "linear-gradient(135deg,#ecfdf5,#ffffff)", border: "1px solid " + C.vertBord }}>
                 <div className="nc-ctitre mb-2.5">Fiscalité de l'opération<span className="sfx">{R.REG.l}{R.REG.court ? " — " + R.REG.court : ""}</span></div>
                 <div className="grid grid-cols-4 gap-3">
@@ -8173,7 +8220,7 @@
               <div className="rounded-xl px-4 py-3 mt-3 text-[12px]" style={{ background: "#fafaf9", border: "1px solid " + C.bord, color: C.gris }}>
                 Aucune préconisation cochée : la courbe verte est confondue avec la grise.
               </div>
-            ) : R.soldeMin < -1 ? (
+            ) : R.soldeMin < -1 && NC_MASQUES.alerteEnveloppe ? null : R.soldeMin < -1 ? (
               <Alerte>{R.effort - R.ENV > 1
                 ? <span>Il manque <b>{eur(R.effort - R.ENV)}/mois</b> dès la première année pour financer les solutions cochées{-R.soldeMin > (R.effort - R.ENV) + 1 ? <span> — et jusqu'à <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés)</span> : null}. À trouver dans « Où trouver l'épargne » ci-dessous, ou en ajustant les montants.</span>
                 : <span>L'enveloppe de <b>{eur(R.ENV)}/mois</b> couvre la première année, mais il manquera <b>{eur(-R.soldeMin)}/mois</b> en année {R.anneeMin} (fin des avantages fiscaux, loyers et charges indexés).</span>}</Alerte>
@@ -8191,6 +8238,7 @@
               Le « AVANT » n'est pas l'immobilisme : le client y épargne le MÊME
               montant, sur ses supports actuels. L'écart est donc le gain de la
               RÉALLOCATION, pas celui d'épargner. */}
+          {!NC_MASQUES.tableauAvantApres && (<>
           {/* 11/09 : data-nc-split — la pagination PDF peut répartir ce bloc entre deux
               pages (titre + tableau ensemble, insécables ; le reste à la suite). Sans cela,
               « Où trouver l'épargne » restait seul sur une page aux deux tiers vide. */}
@@ -8296,6 +8344,8 @@
               Projection non contractuelle, établie sur des hypothèses de rendement non garanties. Rente calculée au taux mensuel équivalent de l'hypothèse de rendement retenue, capital préservé. Revenus locatifs nets de charges et de vacance.
             </div>
           </div>
+          </>)}
+
 
           {/* ═══ 28/09/2026 (CGP, maquette C retenue) — CE QUE VOTRE CAPITAL PEUT VOUS VERSER ═══
               Lecture inverse : on fixe l'âge jusqu'auquel le capital doit durer (80 et 90 ans), le
@@ -8304,6 +8354,7 @@
               Retrait de référence = baisse de revenus à la retraite calculée, modifiable à l'écran.
               Tous les dossiers. Hypothèses dynamiques, non garanties (mention sous le tableau). */}
           {(() => {
+            if (NC_MASQUES.capitalVerser) return null;
             const capA = Math.round(R.avPla || 0), capB = Math.round(R.natPla || 0);
             if (!(capA > 0) && !(capB > 0)) return null;
             const a0 = R.ageFin;
@@ -8458,7 +8509,81 @@
       );
     }
 
-    function NouveauClientModal({ inputs, upd, onClose, niveauInitial }) {
+    /* ═══ 08/10/2026 (CGP) — ONGLET SIMULATION : « lorsque j arrive, trouver un onglet simulation
+       ass vie ou PER, selon ce qui a été préconisé avant. Si je clique, ma simulation commence avec
+       les chiffres évoqués dans l outil. Une version imprimable et une présentation client pour
+       chaque placement. » Les chiffres viennent de ncSynthese().simu ; si l Analyse R2 a été ouverte,
+       l enveloppe (gisements compris) et la précaution retenues là-bas priment (figR2). ═══ */
+    const ncSimuFigures = (syn, figR2) => {
+      const S = (syn && syn.simu) || {};
+      const envTot = figR2 && figR2.ENV > 0 ? Math.round(figR2.ENV) : (S.envHaut || 0);
+      const preca = figR2 && figR2.precaCible > 0 ? figR2.precaCible : (S.precaCible || 0);
+      const liquidites = Math.max(0, (S.courtTermeM || 0) - preca);
+      const initialAV = (S.liquidites > 0 || S.venteNet > 0 ? liquidites : 0) + (S.venteNet || 0);
+      /* PER = borne basse de la fourchette déclarée ; si la capacité est un chiffre unique
+         (saisie libre, « > 1 000 € »), moitié pour chaque enveloppe. */
+      const perM = S.per ? Math.min(envTot, S.envBas > 0 && S.envBas < envTot ? S.envBas : Math.round(envTot / 2)) : 0;
+      const avM = Math.max(0, envTot - perM);
+      const duree = figR2 && figR2.H > 0 && S.dureeRetraite ? figR2.H : (S.duree || 10);
+      const srcEnv = figR2 && figR2.ENV > 0 && figR2.gainsMens > 0 ? "enveloppe + gisements (Analyse R2)" : (S.envBas !== S.envHaut && S.envHaut > 0 ? `capacité déclarée (${S.envBas} à ${S.envHaut} €)` : "capacité d'épargne déclarée");
+      const srcDuree = S.dureeRetraite ? `jusqu'à la retraite (${S.ageRet} ans)` : "horizon de placement";
+      const cartes = [];
+      cartes.push({ produit: "av", titre: "Assurance-vie", k: "Préconisé · assurance-vie", c: "#0f766e",
+        pourquoi: initialAV > 0 ? "Replacer les liquidités sans projet et verser chaque mois." : "Un versement régulier, disponible à tout moment.",
+        lignes: [
+          { t: "Versement initial", v: initialAV, u: "€", src: S.venteNet > 0 ? "liquidités − précaution + produit de la vente" : (initialAV > 0 ? `liquidités − précaution (${new Intl.NumberFormat("fr-FR").format(S.courtTermeM || 0)} − ${new Intl.NumberFormat("fr-FR").format(preca)})` : "rien à replacer") },
+          { t: "Versements mensuels", v: avM, u: "€/mois", src: srcEnv },
+          { t: "Durée", v: duree, u: "ans", src: srcDuree },
+          { t: "Bénéficiaires", v: S.nbEnf > 0 ? S.nbEnf : null, u: S.nbEnf > 1 ? "enfants" : "enfant", src: "dossier", texte: S.nbEnf > 0 ? null : "à préciser" },
+        ], fig: { initial: initialAV, mensuel: avM, duree } });
+      if (S.per) cartes.push({ produit: "per", titre: "PER", k: "Préconisé · PER", c: "#6d28d9",
+        pourquoi: "Préparer la retraite et déduire les versements à la TMI.",
+        lignes: [
+          { t: "Versement initial", v: 0, u: "€", src: "—" },
+          { t: "Versements mensuels", v: perM, u: "€/mois", src: S.envBas > 0 && S.envBas < envTot ? "borne basse de la capacité déclarée" : "moitié de l'enveloppe" },
+          { t: "Durée", v: duree, u: "ans", src: srcDuree },
+          { t: "TMI", v: Math.round((S.tmi || 0) * 100), u: "%", src: "étape Fiscalité" },
+        ], fig: { initial: 0, mensuel: perM, duree, tmi: S.tmi } });
+      return cartes;
+    };
+    function NcSimuCartes({ syn, figR2, onSimuler }) {
+      const cartes = ncSimuFigures(syn, figR2);
+      const fmt = (n) => new Intl.NumberFormat("fr-FR").format(Math.round(n || 0));
+      return (
+        <div data-nc-simu-cartes="1" className="mb-6">
+          <div className="text-[17px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }} data-nc-chap="Simulations à partir des préconisations">Simulations à partir des préconisations</div>
+          <div className="text-[11.5px] text-stone-500 mb-4">Chaque simulation démarre avec les chiffres du dossier, modifiables dans le simulateur. Version imprimable et présentation client pour chaque placement.</div>
+          <div className={`grid gap-4 ${cartes.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+            {cartes.map(c => (
+              <div key={c.produit} className="rounded-2xl bg-white border p-4" data-nc-simu-carte={c.produit} style={{ borderColor: "#e7e5e4", borderTop: "4px solid " + c.c, boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                <div className="text-[9.5px] uppercase tracking-[0.16em] font-extrabold" style={{ color: c.c }}>{c.k}</div>
+                <div className="text-[16px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>{c.titre}</div>
+                <div className="text-[11.5px] text-stone-600 mb-2.5">{c.pourquoi}</div>
+                <table className="w-full text-[12px] mb-3" style={{ borderCollapse: "collapse" }}>
+                  <tbody>
+                    {c.lignes.map((l, i) => (
+                      <tr key={i} data-nc-simu-ligne={l.t}>
+                        <td className="py-1.5 pr-2 text-stone-600" style={{ borderBottom: "1px solid #f0ede8" }}>{l.t}</td>
+                        <td className="py-1.5 text-right font-extrabold tabular-nums whitespace-nowrap" style={{ borderBottom: "1px solid #f0ede8", color: "#1d2735" }} data-nc-simu-val={l.v == null ? "" : l.v}>{l.v == null ? l.texte : fmt(l.v) + " " + l.u}</td>
+                        <td className="py-1.5 pl-2 text-right text-[10px] text-stone-400" style={{ borderBottom: "1px solid #f0ede8" }}>{l.src}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="flex flex-wrap gap-2 nc-syn-noprint">
+                  <button type="button" onClick={() => onSimuler(c.produit, c.fig, 2, false)} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold text-white transition hover:brightness-110" style={{ background: c.c }} data-nc-simu-btn="ouvrir">Ouvrir la simulation</button>
+                  <button type="button" onClick={() => onSimuler(c.produit, c.fig, 5, true)} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold transition hover:bg-stone-50" style={{ border: "1.5px solid #d6d3d1", color: "#44403c" }} data-nc-simu-btn="imprimer">Version imprimable</button>
+                  <button type="button" onClick={() => onSimuler(c.produit, c.fig, 5, false)} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold transition hover:bg-stone-50" style={{ border: "1.5px solid #d6d3d1", color: "#44403c" }} data-nc-simu-btn="presenter">Présentation client</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-[10.5px] text-stone-400 mt-3">L'hypothèse de rendement se choisit à l'étape Allocation du simulateur. Projection non contractuelle, sur hypothèses de rendement non garanties.</div>
+        </div>
+      );
+    }
+
+    function NouveauClientModal({ inputs, upd, onClose, niveauInitial, onSimuler }) {
       const [niveau, setNiveau] = useState(niveauInitial || (inputs.audit ? "complet" : "rapide"));
       const [touched, setTouched] = useState(false);
       const [etape, setEtape] = useState(1);
@@ -8598,6 +8723,9 @@
       // RDV 1 = constat factuel + forces/faiblesses + problématiques SANS solutions ;
       // RDV 2 = préconisations. Les solutions se méritent — elles justifient le second rendez-vous.
       const [synMode, setSynMode] = useState("constat");
+      /* 08/10/2026 : chiffres remontés par l Analyse R2 (enveloppe gisements compris, précaution) */
+      const [figR2, setFigR2] = useState(null);
+      const simulationCartes = synMode === "preco" && NC_MASQUES.simulationAncienne;
       /* classement des chantiers par le client (bloc « Vos priorites ») : saisi a
          l ecran, imprime en texte. Un cloneNode ne recopie PAS la valeur d un
          input : le PDF affiche donc un span, pas le champ. */
@@ -9729,6 +9857,7 @@
                 CHANTIERS, chacun avec une case vide à numéroter à la main
                 pendant le rendez-vous. Le détail reste au-dessus. ——— */}
             {(() => {
+              if (NC_MASQUES.priorites) return null; /* 08/10/2026 (CGP) : mis de côté */
               if (axesAff.length < 4) return null;
               const CHANTIERS = [
                 { k: "proteger", l: "Protéger la famille", c: "#6d28d9",
@@ -9786,6 +9915,19 @@
       };
 
 
+      /* 08/10/2026 (CGP) : « si je clique sur ass vie, ma simulation commence avec les chiffres
+         évoqués dans l outil » — on enregistre le dossier (valider), on pose produit et montants,
+         puis le simulateur s ouvre à l étape demandée (2 = Produit, 5 = Présentation, print = PDF). */
+      const simuler = (produit, fig, etapeSimu, print) => {
+        if (!nomOk || !prenomOk) { setTouched(true); if (niveau === "complet") goEtape(1); return; }
+        upd("produit", produit);
+        upd("versementInitial", Math.max(0, Math.round(fig.initial || 0)));
+        upd("versementMensuel", Math.max(0, Math.round(fig.mensuel || 0)));
+        upd("dureeAnnees", Math.max(1, Math.round(fig.duree || 10)));
+        if (produit === "per" && typeof fig.tmi === "number") upd("tauxIR", fig.tmi);
+        valider();
+        if (typeof onSimuler === "function") onSimuler(etapeSimu, !!print);
+      };
       const valider = () => {
         if (!nomOk || !prenomOk) { setTouched(true); if (niveau === "complet") goEtape(1); return; }
         upd("clientType", "particulier");
@@ -12326,7 +12468,9 @@
                     <div style={{ height: 3, background: "linear-gradient(90deg, #b8924e, #d8bc86 45%, rgba(216,188,134,0))" }}></div>
                   </div>
 
-                  {syn && synMode === "proj" && <NcProjection d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} blocObjectifs={rendreObjectifsParticipation({ cartesCabinet: false, chapitre: null })} blocForces={rendreForcesAxes()} />}
+                  {syn && simulationCartes && <NcSimuCartes syn={syn} figR2={figR2} onSimuler={simuler} />}
+                  {!simulationCartes && (<>
+                  {syn && synMode === "proj" && <NcProjection onFigures={setFigR2} d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} blocObjectifs={rendreObjectifsParticipation({ cartesCabinet: false, chapitre: null })} blocForces={rendreForcesAxes()} />}
                   {syn && synMode !== "proj" && (
                     <div className="mb-5" data-nc-pres-host="1">
                       {/* ═══ PAGE DE PRÉSENTATION (15/09/2026, CGP : « il faut une page de
@@ -14766,6 +14910,8 @@
                     Toute décision devra être précédée d'un échange avec votre conseiller et, le cas échéant, validée avec un notaire ou un avocat fiscaliste.
                   </div>
 
+                  </>)}
+
                   {/* ═══ BARRE DU MODE PRÉSENTATION (15/09/2026, CGP : « il va falloir un mode
                       présentation et un mode impression ») — seule pièce ajoutée à l'écran.
                       Le document n'est PAS reconstruit : il est montré chapitre par chapitre,
@@ -15189,7 +15335,7 @@
     // ============================================================
     // STEP 1 — IDENTITÉ (inchangé)
     // ============================================================
-    function Step1Identite({ inputs, upd, clients }) {
+    function Step1Identite({ inputs, upd, clients, onSimuler }) {
       const [search, setSearch] = useState("");
       const [open, setOpen] = useState(false);
       const [newClientOpen, setNewClientOpen] = useState(false);
@@ -15421,7 +15567,7 @@
             </label>
           </div>
 
-          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} onClose={() => setNewClientOpen(false)} />}
+          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} onSimuler={onSimuler} onClose={() => setNewClientOpen(false)} />}
         </div>
       );
     }
