@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v273 (08/10 : L ONGLET SIMULATION OUVRE LE SIMULATEUR AVEC LES CHIFFRES DU DOSSIER. Le CGP : « supprime tout ce qu il y a dans l onglet simulation. Il faut que je trouve un onglet ass vie ou PER selon ce qui a ete preconise ; si je clique, ma simulation commence avec les chiffres evoques dans l outil ; une version imprimable et une presentation client pour chaque placement ». (1) L ancien contenu (problematiques, regimes, forces/axes, protection du conjoint, signature) est MIS DE COTE (NC_MASQUES.simulationAncienne). (2) NcSimuCartes : une carte Assurance-vie, une carte PER si le PER est preconise (jamais a un retraite). Chiffres (reponses du CGP) : versement initial AV = liquidites moins la precaution cible (+ produit d une vente a replacer) ; mensuel = enveloppe, gisements compris si l Analyse R2 a ete ouverte (sinon fourchette declaree), le PER prend la borne basse ; duree = jusqu a la retraite, sinon l horizon de placement ; TMI du PER = etape Fiscalite. (3) Ouvrir la simulation = dossier enregistre, produit et montants poses, etape Produit. Version imprimable = etape Presentation puis PDF. Presentation client = etape Presentation. L hypothese de rendement reste choisie a l etape Allocation. t_simu_cartes (35). 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v274 (09/10 : PASSAGE COMPLET DES PUCES — PHRASES COURTES. Le CGP a valide les trente reformulations proposees (points forts et axes de travail du constat) : RP payee, capacite d emprunt (date aout 2026 retiree des hypotheses de taux), conjoint protege, testament, patrimoine diversifie, deux revenus, assurance-vie, precaution, performance long terme, retraite du conjoint, pas d assurance-vie, prevoyance TNS, taux d effort locataire, rattachement / pension alimentaire (huit lignes → trois puces, sans articles), fiscalite subie, conjoint insuffisamment protege, succession / locatif, epargne long terme et tresorerie trop importante (« frappes de plein fouet » → « entierement soumis aux droits de succession »), capacite d endettement, assurance de pret, absence d epargne mensuelle (avec « hypothese de rendement »), preparation retraite, delegation, chiffrage PER TNS. Bancs t_controle, t_exp167, t_rdv1, t_recentre alignes. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v273 (08/10 : L ONGLET SIMULATION OUVRE LE SIMULATEUR AVEC LES CHIFFRES DU DOSSIER. Le CGP : « supprime tout ce qu il y a dans l onglet simulation. Il faut que je trouve un onglet ass vie ou PER selon ce qui a ete preconise ; si je clique, ma simulation commence avec les chiffres evoques dans l outil ; une version imprimable et une presentation client pour chaque placement ». (1) L ancien contenu (problematiques, regimes, forces/axes, protection du conjoint, signature) est MIS DE COTE (NC_MASQUES.simulationAncienne). (2) NcSimuCartes : une carte Assurance-vie, une carte PER si le PER est preconise (jamais a un retraite). Chiffres (reponses du CGP) : versement initial AV = liquidites moins la precaution cible (+ produit d une vente a replacer) ; mensuel = enveloppe, gisements compris si l Analyse R2 a ete ouverte (sinon fourchette declaree), le PER prend la borne basse ; duree = jusqu a la retraite, sinon l horizon de placement ; TMI du PER = etape Fiscalite. (3) Ouvrir la simulation = dossier enregistre, produit et montants poses, etape Produit. Version imprimable = etape Presentation puis PDF. Presentation client = etape Presentation. L hypothese de rendement reste choisie a l etape Allocation. t_simu_cartes (35). 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v272 (08/10 : BUG REDUCTION LOCATIVE + CINQ BLOCS MIS DE COTE. (1) Le CGP : « je mets une reduction d impot pour un bien immobilier et je ne la retrouve absolument pas dans le bloc en bas a droite » — la saisie manuelle (nu au reel, N €/an pendant D ans) n entrait que dans l effort, jamais dans « Impot economise par an » : corrige (reducMoy). (2) Mis de cote, conserves dans le code derriere NC_MASQUES (« garde-le dans un coin ») : « Fiscalite de l operation » et l alerte rouge « il manquera N €/mois », « Vos priorites — a classer ensemble », « Ce que votre capital peut vous verser », le tableau « A N ans, votre situation ». Les bancs historiques reveillent ces blocs (window.__NC_MASQUES) pour continuer a les couvrir ; t_masques (34) verifie le mode livre. 34/34.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v271 (08/10 : HYPOTHESE DE RENDEMENT, PARTOUT — et plus de bandeaux par nature. Le CGP : « a chaque fois que tu parles d un rendement, mets systematiquement qu il s agit d une hypothese de rendement — il est important que je me protege sur chaque document ». Analyse R2 : intro de « Ou trouver l epargne complementaire » (« sur hypotheses de rendement non garanties »), mini-tableaux (« places a 5,2 pct (hypothese de rendement) »), cartes PER / AV (« Hypothese de rendement : 5,2 pct, non garantie »), tableau « A N ans » (« a leur hypothese de rendement »), mention de bas de carte (« etablie sur des hypotheses de rendement non garanties »), « Ce que votre capital peut vous verser » (« Hypothese de rendement net »). Les deux bandeaux « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree » sont supprimes : seul reste le bloc « N €/mois d epargne a reorienter — a € liberes + b € d interets en plus ». Banc t_gisements reecrit sur ce bloc. 33/33.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v270 (08/10 : RIEN A GERER SUR LE COURT TERME. Le CGP : « livrets, comptes courants, CEL, PEL — il n est pas necessaire de mettre gestion : banque, il n y a rien a gerer sur ce type de placement ». Plus de pastille GESTION ni PROFIL sur les types livrets (Livret A, LDDS, LEP, Livret Jeune, CEL, PEL, CSL) et compte courant — seules restent CHEZ et RENDEMENT. Banc t_v266 etendu. (2) « Situation fiscale du foyer » : la tuile « Revenus estimes a la retraite » s etend sur deux colonnes (trois sans avantages fiscaux) — plus de case vide, ligne du bas moins haute ; hypothese « releve » raccourcie. (3) Points forts AV/PER : « Auditer votre contrat : allocation et performances des supports » — la fin « un contrat ouvert n est en rien une garantie de qualite » est supprimee. (4) « Fiscalite deja optimisee » : « Generee par les dispositifs en place (emploi a domicile, dons) » — les dispositifs saisis sont rappeles entre parentheses. 33/33.)','color:#94a3b8');
@@ -5616,16 +5617,16 @@
         /* 11/09 (CGP) : « Loyers attendus ajoutés aux revenus retenus par la banque »
            supprimé — une hypothèse de calcul n'est pas un point fort du dossier. */
         if (!proprio && !pRP.chiffre) pucesCap.push(`Résidence principale : ≈ ${eur(capMax)} (${d.logement === "gratuit" ? "forfait logement de 600 €/mois supprimé" : "loyer actuel supprimé"} à l'achat)`);
-        if (!proprio && !pRP.chiffre) pucesCap.push("Les deux montants ne s'additionnent pas : même enveloppe d'endettement");
-        pucesCap.push("Hypothèses cabinet août 2026 : 3,90 % sur 20 ans, 4,00 % sur 25 ans, hors assurance");
-        if (unionLibre && d.conjointQ === "oui") pucesCap.push("Union libre : calculé pour un emprunt à deux — seul, sur les seuls revenus de l'emprunteur");
+        if (!proprio && !pRP.chiffre) pucesCap.push("RP ou locatif : une seule enveloppe, pas les deux");
+        pucesCap.push("Taux retenus : 3,90 % / 20 ans, 4,00 % / 25 ans, hors assurance");
+        if (unionLibre && d.conjointQ === "oui") pucesCap.push("Union libre : calcul à deux ; seul, sur ses seuls revenus");
         forces.push({ t: "Capacité d'emprunt disponible", d: `≈ ${eur(capLocMax)} pour un investissement locatif sur ${dureeMax} ans${pRP.chiffre ? ", une fois le projet RP financé" : proprio ? "" : (d.logement === "gratuit" ? ", logement actuel conservé" : ", location actuelle conservée")}`, puces: pucesCap });
       }
       // RÈGLE CABINET (28/08) : trop de précaution n'est JAMAIS un point fort — le point
       // fort ne s'affiche que si le court terme est DANS la cible du profil.
       if (chFoyer > 0 && cibleBasM > 0 && courtTermeM >= cibleBasM && !surDoteM) forces.push({ t: "Épargne de précaution constituée", d: `${eur(courtTermeM)} d'épargne disponible en court terme.` });
       if (proprio && d.rpCreditQ !== "oui") forces.push({ t: `Résidence principale payée${age != null ? ` à ${age} ans` : ""}`, d: `${eur(ncRpValeur(d))} d'actif net, sans aucun crédit`,
-        puces: [age != null && age <= 55 ? "Position rare à cet âge" : "Position solide", "À prolonger par l'immobilier locatif"] });
+        puces: ["Socle acquis, à prolonger par le locatif"] });
       if (proprio && d.rpCreditQ === "oui") {
         // RÈGLE CABINET (28/08) : un CRD de 10 % ou de 90 % de la valeur, 2 ans ou
         // 15 ans restants — ce n'est pas du tout pareil : le constat le dit.
@@ -5638,8 +5639,8 @@
         /* 08/10/2026 (CGP) : « Le socle patrimonial est posé » supprimé. */
         forces.push({ t: "Propriétaire de la résidence principale", d: ncQuote(d.rpDetentionQ, d.rpQuotePart) < 1 ? `${eur(ncRpValeur(d))} — ${Math.round(ncQuote(d.rpDetentionQ, d.rpQuotePart) * 100)} % d'un bien estimé ${eur(ncInt(d.rpValeur))}` : `${eur(ncInt(d.rpValeur))} de valeur estimée`, puces: pucesRP });
       }
-      if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place", puces: ["Le survivant choisira son option au moment du décès (art. 1094-1 C. civ.)"] });
-      if ((pacse || unionLibre) && d.testamentQ === "oui") forces.push({ t: "Testament rédigé", d: `Le ${unionLibre ? "concubin" : "partenaire"} est désigné`, puces: ["Vocation successorale qu'il n'aurait pas légalement"] });
+      if (marie && d.ddvQ === "oui") forces.push({ t: "Conjoint protégé", d: "Donation au dernier vivant en place", puces: ["Le survivant choisira son option au décès (art. 1094-1)"] });
+      if ((pacse || unionLibre) && d.testamentQ === "oui") forces.push({ t: "Testament rédigé", d: `Le ${unionLibre ? "concubin" : "partenaire"} est désigné`, puces: ["Sans testament, il n'hériterait de rien"] });
       // RÈGLE CABINET (28/08) : dire À QUI appartient chaque AV / PER, et ressortir
       // la note saisie sur le contrat.
       {
@@ -5660,7 +5661,7 @@
         if (per > 0) forces.push({ t: "Retraite déjà amorcée", d: `${eur(per)} sur un PER${titDe("per") ? ` détenu par ${titDe("per")}` : ""}`,
           puces: ["Versements à calibrer sur le plafond disponible", VERIF_SUPPORTS].concat(noteDe("per") ? [`Note : ${noteDe("per")}`] : []) });
         if (avVie > 0) forces.push({ t: "Assurance-vie ouverte", d: `${eur(avVie)} placés${titDe("av") ? ` par ${titDe("av")}` : ""}`,
-          puces: ["Antériorité fiscale en cours", "Outil de transmission en place (art. 990 I CGI)", VERIF_SUPPORTS].concat(noteDe("av") ? [`Note : ${noteDe("av")}`] : []) });
+          puces: ["Antériorité fiscale en cours", "Transmission hors succession (art. 990 I)", VERIF_SUPPORTS].concat(noteDe("av") ? [`Note : ${noteDe("av")}`] : []) });
       }
       // 31/08 (contrôle expert n°4) : « diversifié » ne se dit JAMAIS quand la poche
       // financière dort intégralement en court terme (livrets / comptes courants) —
@@ -5668,7 +5669,7 @@
       const finTotF = Math.max(0, S.actifTotal - S.actifImmo);
       const ctFinF = av.filter(a => a.type === "livrets" || a.type === "compte_courant").reduce((s2, a) => s2 + ncInt(a.valeur), 0);
       const ltPartF = finTotF > 0 ? Math.max(0, finTotF - ctFinF) / finTotF : 0;
-      if (S.actifTotal > 0 && partImmo > 0.2 && partImmo < 0.75 && S.actifTotal >= 100000 && ltPartF > 0.2) forces.push({ t: "Patrimoine diversifié", d: `${pc(partImmo)} d'immobilier · ${pc(1 - partImmo)} de financier`, puces: ["Allocation équilibrée entre rendement et liquidité", "À vérifier : allocation et performance des supports financiers"] });
+      if (S.actifTotal > 0 && partImmo > 0.2 && partImmo < 0.75 && S.actifTotal >= 100000 && ltPartF > 0.2) forces.push({ t: "Patrimoine diversifié", d: `${pc(partImmo)} d'immobilier · ${pc(1 - partImmo)} de financier`, puces: ["Équilibre rendement / liquidité", "Auditer les supports financiers"] });
       // 29/08 (contrôle expert) : ce chiffre vient de la PARTICIPATION DÉCLARÉE par le
       // client (fourchette de l'étape Objectifs) — le nommer, jamais « réelle » sans base.
       /* 11/09 (CGP) : le document est lu par le CLIENT — plus de « milieu de la
@@ -5697,7 +5698,7 @@
         return Array.from(new Set(l)).join(", ");
       })();
       if ((F.deductions > 0 || F.reductions > 0) && gainSignificatif) forces.push({ t: "Fiscalité déjà optimisée", d: `${eur(F.gainTotal)} d'économie d'impôt cette année`, puces: [`Générée par les dispositifs en place${dispositifsLib ? ` (${dispositifsLib})` : ""}`] });
-      if (deuxRevenus && bas.r > 0 && disparite < 1.4) forces.push({ t: "Deux revenus équilibrés", d: `${eur(revC)} et ${eur(revJ)}`, puces: ["La disparition d'un revenu ne ferait pas basculer le foyer"] });
+      if (deuxRevenus && bas.r > 0 && disparite < 1.4) forces.push({ t: "Deux revenus équilibrés", d: `${eur(revC)} et ${eur(revJ)}`, puces: ["Un revenu en moins ne fait pas basculer le foyer"] });
       if (S.patrimoineNet >= 300000) {
         /* 02/09 : en couple, le total seul ne dit pas QUI detient. La repartition
            se lit a partir de la detention DECLAREE — residence principale
@@ -5734,7 +5735,7 @@
          décalage » — seuil retenu : moins de la moitié de la cible basse du cabinet (20 000 € pour
          25 000 € ne sort plus). Tournure dictée. */
       if (cibleBasM > 0 && courtTermeM < cibleBasM * 0.5) faiblesses.push({ t: "Épargne de précaution insuffisante / court terme", d: `${eur(courtTermeM)}`,
-        puces: [`Cible du cabinet — ${profPrecLib}`, "À reconstituer avant tout placement long terme"] });
+        puces: [`Cible du cabinet — ${profPrecLib}`, "À reconstituer en priorité"] });
       {
         // RÈGLE CABINET (28/08) : NOMMER les placements concernés (« le PER chez
         // Generali ») — le lecteur doit savoir de quoi on parle sans remonter au tableau.
@@ -5750,14 +5751,14 @@
         if (inconnus.length > 0) {
           const noms = inconnus.map(x => { const m = inconnuDe(x); return `${TYPES_MAJ[x.type] || "Placement"} ${eur(ncInt(x.valeur))}${(x.etablissement || "").trim() ? ` chez ${x.etablissement.trim()}` : ""} : ${m.join(", ")} inconnu${m.length > 1 || /frais/.test(m[0]) ? "s" : ""}`; }).join(" · ");
           faiblesses.push({ t: "Performance et gestion de l'épargne long terme", d: noms,
-            puces: ["Il est essentiel dans une bonne gestion de maîtriser ses placements (performance, allocation, gestion)", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander impérativement`] });
+            puces: ["Maîtriser ses placements : performance, allocation, gestion", `Relevé${inconnus.length > 1 ? "s" : ""} de situation à demander impérativement`] });
         }
       }
       /* 14/09/2026 (CGP, dossier Coconut) : formulation EXACTE, une seule ligne, sans puce —
          « Épargne insuffisante au regard des revenus — 65 500 € d'épargne pour 15 334 € de
          revenus mensuels. » La puce « Moins de six mois de revenus : une anomalie… » est
          supprimée définitivement. */
-      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne insuffisante au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus mensuels.`,
+      if (revFoyer * 12 > 100000 && epargne < revFoyer * 6) faiblesses.push({ t: "Épargne insuffisante au regard des revenus", d: `${eur(epargne)} d'épargne pour ${eur(revFoyer)} de revenus`,
         puces: [] });
       if (deuxRevenus && partHaut >= 0.6 && disparite >= 1.6) faiblesses.push({ t: "Disparité de revenus dans le couple", d: `${pc(partHaut)} des revenus du foyer reposent sur ${haut.n}`,
         puces: [`Protection de ${bas.n} à optimiser`] });
@@ -5771,7 +5772,7 @@
         const benefTNS = Math.round(((S.revActiviteClient || 0) + (S.revActiviteConjoint || 0)) * 12);
         const plafTNS = estTNS && benefTNS > 0 ? Math.round(0.10 * Math.min(benefTNS, 8 * PASS_TNS) + 0.15 * Math.max(0, Math.min(benefTNS, 8 * PASS_TNS) - PASS_TNS)) : 0;
         const chiffragePER = estTNS && F.tmi >= 0.30 && plafTNS > 0
-          ? ` Pour un indépendant (TNS) à ${pc(F.tmi)} de tranche marginale, c'est LE levier n° 1 : plafond de déduction estimé ≈ ${eur(plafTNS)}/an (10 % du bénéfice + 15 % de la fraction au-delà d'un PASS — 48 060 € en 2026), soit jusqu'à ≈ ${eur(Math.round(plafTNS * F.tmi))} d'impôt en moins par an — estimation sur les revenus déclarés, à confirmer avec le disponible fiscal de l'avis d'imposition.`
+          ? ` TNS à ${pc(F.tmi)} : plafond PER ≈ ${eur(plafTNS)}/an, jusqu'à ${eur(Math.round(plafTNS * F.tmi))} d'impôt en moins`
           : "";
         faiblesses.push({ t: "Aucun dispositif retraite en place", d: "pas de PER",
           puces: ["Ni complément de revenu préparé, ni déduction fiscale"].concat(chiffragePER ? [chiffragePER.trim()] : []) });
@@ -5790,10 +5791,10 @@
         const sansPer = perMoiT > 0 && perLuiT === 0 ? { n: civLuiR, r: revJ, autre: civMoiR, rAutre: revC }
                       : perLuiT > 0 && perMoiT === 0 ? { n: civMoiR, r: revC, autre: civLuiR, rAutre: revJ } : null;
         if (sansPer) faiblesses.push({ t: `Retraite de ${sansPer.n} non préparée — axe important`, d: `un PER pour ${sansPer.autre}, rien pour ${sansPer.n}`,
-          puces: [sansPer.r > 0 && sansPer.rAutre > sansPer.r ? `Ses revenus sont plus faibles (${eur(sansPer.r)} contre ${eur(sansPer.rAutre)} par mois) : sa retraite sera moins bonne` : "Sa retraite sera moins bonne et rien n'est cotisé pour la préparer", "Ouvrir un PER à son nom (versements déductibles) rétablirait l'équilibre du foyer"] });
+          puces: [sansPer.r > 0 && sansPer.rAutre > sansPer.r ? `Revenus plus faibles (${eur(sansPer.r)} contre ${eur(sansPer.rAutre)}) : retraite plus faible` : "Retraite plus faible, rien n'est préparé", "Un PER à son nom, versements déductibles"] });
       }
-      if (avVie === 0) faiblesses.push({ t: "Pas d'assurance-vie", d: "aucun contrat ouvert", puces: ["Pas d'antériorité fiscale", "Pas d'outil de transmission hors succession (abattement 152 500 € par bénéficiaire, art. 990 I CGI)"] });
-      if (estTNS && prevQ !== "oui") faiblesses.push({ t: "Prévoyance TNS non confirmée", d: "revenu professionnel non sécurisé", puces: ["En cas d'arrêt de travail, aucune garantie de revenu confirmée"] });
+      if (avVie === 0) faiblesses.push({ t: "Pas d'assurance-vie", d: "aucun contrat ouvert", puces: ["Pas d'antériorité fiscale", "Pas de transmission hors succession (152 500 € par bénéficiaire)"] });
+      if (estTNS && prevQ !== "oui") faiblesses.push({ t: "Prévoyance TNS non confirmée", d: "revenu professionnel non sécurisé", puces: ["Arrêt de travail : aucun revenu garanti"] });
       if (estTNS && prevQ === "oui") faiblesses.push({ t: "Couverture prévoyance à auditer", d: `une couverture est en place${prevAssureur ? ` chez ${prevAssureur}` : ""}`, puces: ["À étudier et comparer : conserver, ou arbitrer"] });
       // 31/08 (contrôle expert n°4) : pour un LOCATAIRE, le loyer n'est pas une dette
       // bancaire — le libellé le dit, et il n'est JAMAIS écrit « plus aucun financement »
@@ -5801,7 +5802,7 @@
       // s'expliquent l'un l'autre (le loyer disparaît à l'achat de la RP).
       if (taux != null && taux > 0.35) {
         if (d.logement === "locataire") faiblesses.push({ t: "Taux d'effort supérieur à 35 % (loyer compris)", d: `${pc(taux)} des revenus absorbés par le loyer et les charges`,
-          puces: ["Aucun financement supplémentaire en conservant cette location", "Seul un achat de résidence principale reste finançable : le loyer disparaît à l'achat"] });
+          puces: ["Aucun crédit possible en restant locataire", "Seul l'achat de la RP reste finançable"] });
         else faiblesses.push({ t: "Endettement supérieur à 35 %", d: `${pc(taux)} de taux d'endettement`, puces: ["Plus aucun financement accessible en l'état"] });
       }
       // 29/08 (demande cabinet + contrôle expert n°3) : enfant MAJEUR RATTACHÉ avec une
@@ -5818,13 +5819,15 @@
         // plafond QF / TMI. Le plafond légal de déduction se confirme au millésime,
         // jamais de mémoire.
         const basculeM = Math.round(NC_PLAFOND_DEMI_PART / F.tmi / 100) * 100;
-        faiblesses.push({ t: `Optimiser l'arbitrage rattachement / pension alimentaire pour ${prenomM}`, d: `l'avantage du rattachement est écrêté par le plafonnement du quotient familial — au plus ${eur(NC_PLAFOND_DEMI_PART)} par demi-part, quel que soit le revenu. À ${pc(F.tmi)} de TMI, le détachement avec pension alimentaire déductible (art. 156, II, 2° CGI) devient gagnant dès ≈ ${eur(basculeM)} de pension réellement versée et justifiée par an (≈ ${eur(Math.round(basculeM / 12 / 10) * 10)}/mois) — souvent atteint pour un étudiant logé, nourri et dont la scolarité est financée. Rattachement et pension sont exclusifs la même année, l'option se rejoue CHAQUE année ; la pension est imposable chez ${prenomM} (déclaration propre, incidence possible sur bourses et APL) ; le plafond légal de déduction est à confirmer sur le millésime en vigueur avant chiffrage définitif.` });
+        /* 09/10/2026 (CGP) : le paragraphe de huit lignes devient trois puces. */
+        faiblesses.push({ t: `Optimiser l'arbitrage rattachement / pension alimentaire pour ${prenomM}`, d: `à ${pc(F.tmi)} de TMI, la pension déductible peut l'emporter sur le rattachement`,
+          puces: [`Rattachement plafonné à ${eur(NC_PLAFOND_DEMI_PART)} par demi-part`, `Pension déductible gagnante dès ≈ ${eur(basculeM)}/an (${eur(Math.round(basculeM / 12 / 10) * 10)}/mois)`, `Option à rejouer chaque année, pension imposable chez ${prenomM}`] });
       });
       const pensVA = d.pensionQ === "oui" ? Math.round(ncMens(d.pensionVersee, d.pensionPeriode) * 12) : 0;
       if (F.impotNet >= 2000 && F.deductions === 0 && F.reductions === 0) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
-        puces: [pensVA > 0 ? `Seule la pension alimentaire versée est déjà déduite (${eur(pensVA)}/an, art. 156, II-2°) — aucun autre levier activé` : "Aucun levier activé", `Plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} d'impôt sur 10 ans à situation constante`] });
+        puces: [pensVA > 0 ? `Seule la pension alimentaire est déduite (${eur(pensVA)}/an)` : "Aucun levier activé", `Plus de ${eur(Math.floor(F.impotNet * 10 / 10000) * 10000)} d'impôt sur 10 ans à situation constante`] });
       else if (F.impotNet >= 2000 && !gainSignificatif && (F.deductions > 0 || F.reductions > 0)) faiblesses.push({ t: "Fiscalité subie", d: `${eur(F.impotNet)} d'impôt à ${pc(F.tmi)} de tranche marginale`,
-        puces: [`Avantages en place : ${eur(F.gainTotal)} seulement (${Math.round(F.gainTotal / Math.max(1, F.impotSansAvantage) * 100)} % de l'impôt) — un montant symbolique`, "Le levier fiscal reste à activer"] });
+        puces: [`Avantages en place : ${eur(F.gainTotal)}, soit ${Math.round(F.gainTotal / Math.max(1, F.impotSansAvantage) * 100)} % de l'impôt`, "Le levier fiscal reste à activer"] });
       if (marie && d.ddvQ !== "oui") {
         /* 03/09/2026 — décision du CGP : la phrase rouge se CHIFFRE au RDV 1 (item 9).
            Les nombres viennent de ncCalcSuccession (v.ddvImpact), jamais recalculés ici.
@@ -5842,7 +5845,7 @@
             if (morceaux.length) chiffrage = " " + morceaux.map(m => m.charAt(0).toUpperCase() + m.slice(1)).join(". ") + ".";
           } catch (e) { chiffrage = ""; }
         }
-        faiblesses.push({ t: "Conjoint insuffisamment protégé", d: recomposee ? `Famille recomposée sans donation au dernier vivant : quart en pleine propriété seulement.${chiffrage}` : "Pas de donation au dernier vivant confirmée." });
+        faiblesses.push({ t: "Conjoint insuffisamment protégé", d: recomposee ? `Famille recomposée, pas de donation au dernier vivant : un quart en pleine propriété${chiffrage}` : "Pas de donation au dernier vivant confirmée" });
       }
       if ((pacse || unionLibre) && d.testamentQ !== "oui") {
         // RÈGLE CABINET (28/08) : en cas de disparité de revenus, l'absence de
@@ -5881,7 +5884,7 @@
           verdict: "Le problème n'est pas fiscal, il est civil — c'est le chantier à traiter en premier, et il coûte quasiment zéro." });
       }
       if (S.actifTotal >= 100000 && age != null && age >= 50 && (d.locatifs || []).length > 0 && revFoyer > 0 && epargne < revFoyer * 3) faiblesses.push({ t: "Succession à préparer — épargne faible face au locatif", d: "patrimoine surtout immobilier, épargne faible",
-        puces: ["Arbitrer quelques biens locatifs vers l'assurance-vie (abattement 152 500 € par parent et par enfant)", "Évite de très lourds droits de succession — arbitrage d'optimisation"] });
+        puces: ["Arbitrer un ou deux locatifs vers l'assurance-vie", "152 500 € par parent et par enfant hors droits"] });
       // RÈGLE CABINET (28/08) : JAMAIS deux conclusions contradictoires dans le même
       // document. Quand l'épargne globale est FAIBLE au regard des revenus (ou que le
       // long terme est à zéro), on ne dit pas « trésorerie court terme trop importante »
@@ -5901,12 +5904,12 @@
              critique pour une gestion de votre épargne. » puis « Rémunérés à peine plus que
              l'inflation, et frappés de plein fouet par les droits de succession en cas de
              décès ». (11/09 : « Placés en assurance-vie ou en PER… » reste supprimée.) */
-          faiblesses.push({ t: "Épargne long terme", d: `aucune épargne long terme : ${eur(courtTermeM)} investis sur des livrets et comptes courants.`,
-            puces: [`Situation critique pour une gestion de votre épargne${locataire ? ", d'autant plus en étant locataire" : ""}.`, `Rémunérés à peine plus que l'inflation${succAvecDroits ? ", et frappés de plein fouet par les droits de succession en cas de décès" : ""}`],
+          faiblesses.push({ t: "Épargne long terme", d: `${eur(courtTermeM)} sur livrets et comptes courants, rien à long terme`,
+            puces: ["Rendement à peine au-dessus de l'inflation", succAvecDroits ? "Entièrement soumis aux droits de succession" : null].filter(Boolean),
             verdict: "Le sujet n'est pas l'effort d'épargne, c'est son affectation." });
         } else if (surDoteM) {
           faiblesses.push({ t: "Épargne de précaution / court terme", d: `trésorerie beaucoup trop importante : ${eur(courtTermeM)} sur livrets et comptes courants`,
-            puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rémunérés à peine plus que l'inflation, et frappés de plein fouet par les droits de succession en cas de décès", "Placés en assurance-vie ou en PER : gestion plus pertinente, et abattement de 152 500 € par bénéficiaire (art. 990 I CGI)"] });
+            puces: [`Besoin de précaution : ${eur(cibleBasM)}${cibleHautM > cibleBasM ? ` à ${eur(cibleHautM)}` : ""}`, "Rendement à peine au-dessus de l'inflation", "Entièrement soumis aux droits de succession", "En assurance-vie : 152 500 € par bénéficiaire hors droits"] });
         }
       }
       // AXE CABINET (27/08) : endettement non utilisé — l'effet de levier du financement
@@ -5933,10 +5936,10 @@
            DÉFINITIVEMENT. */
         d: `utilisée à ${pc(taux)} sur les 35 % autorisés${S.rpProjetRetenu > 0 ? " (projet RP compris)" : ""}`,
         puces: [
-          `Disponibilité pour un investissement locatif : ${eur(capLocMax)}${ncProjetRP(d).chiffre ? " une fois le projet RP financé" : ""} (chiffre indicatif, à vérifier avec notre courtier)`,
+          `Locatif possible : ${eur(capLocMax)}${ncProjetRP(d).chiffre ? " une fois le projet RP financé" : ""}, à valider avec notre courtier`,
           "Protection de vos héritiers grâce à l'assurance de prêt en cas de décès",
           "En cas de vie, création de revenus complémentaires",
-          ...(unionLibre && d.conjointQ === "oui" ? ["Au décès de l'emprunteur, le bien et la dette reviennent à ses héritiers — le concubin n'est pas protégé"] : [])
+          ...(unionLibre && d.conjointQ === "oui" ? ["Au décès, bien et dette vont aux héritiers : le concubin n'est pas protégé"] : [])
         ] });
       // AXE CABINET (27/08) : versements programmés trop faibles au vu des revenus du foyer
       // (repère : 18 % du revenu, moyenne des Français — INSEE).
@@ -5945,10 +5948,10 @@
            épargne financière (le reste est le remboursement du capital des crédits). */
         puces: ["Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière"] });
       if (bienNonRenego > 0) faiblesses.push({ t: "Assurance de prêt", d: bienNonRenego > 1 ? `${bienNonRenego} crédits en cours` : "un crédit en cours",
-        puces: ["Simulation de renégociation de l'assurance de prêt à faire : des économies sont souvent possibles"] });
+        puces: ["Renégociation à simuler : économies fréquentes"] });
       if (enfantsJeunes > 0 && budgetEtudes === 0 && epargne < 15000 * enfantsJeunes) faiblesses.push({ t: "Études des enfants non provisionnées", d: `${enfantsJeunes} enfant${enfantsJeunes > 1 ? "s" : ""} mineur${enfantsJeunes > 1 ? "s" : ""}`, puces: ["Aucune épargne dédiée"] });
       if (S.ppMensuels === 0 && epargneImmo <= 0 && (revC > 0 || revJ > 0)) faiblesses.push({ t: "Absence totale d'épargne mensuelle", d: "aucun versement programmé",
-        puces: [`Une petite épargne régulière sur une longue durée fait un capital significatif : 200 €/mois à 4 % pendant 20 ans = ${eur(Math.round(200 * ((Math.pow(1 + 0.04 / 12, 240) - 1) / (0.04 / 12))))}`] });
+        puces: [`200 €/mois à 4 % pendant 20 ans = ${eur(Math.round(200 * ((Math.pow(1 + 0.04 / 12, 240) - 1) / (0.04 / 12))))} (hypothèse de rendement)`] });
       // 29/08 (contrôle expert) : pour un divorcé, les vrais risques sont le testament
       // antérieur (non révoqué automatiquement) et la clause bénéficiaire nominative.
       // RÈGLE CABINET (28/08) : la protection du conjoint suit IMMÉDIATEMENT la
@@ -6215,12 +6218,12 @@
            meilleur allié, plus de 30 ans pour consolider votre stratégie » — sans « à 33 ans ». */
         faibR.push({ t: "Préparation de votre retraite", d: ansAvant != null && ansAvant > 0 ? `Le temps est votre meilleur allié, ${ansAvant} ans pour consolider votre stratégie` : "Le temps est votre meilleur allié",
           puces: [
-            "Une épargne régulière vous permettra de capitaliser sereinement",
+            "Une épargne régulière pour capitaliser",
             "Un PER et une assurance-vie alimentés chaque mois, dès maintenant",
             perPertinent ? `Versements PER déductibles à votre TMI de ${pc(F.tmi)}` : null,
           ].filter(Boolean) });
         faibR.push({ t: "Assurance de votre prêt", d: projetRPsyn ? "à faire étudier en délégation dès l'offre de prêt" : "à faire étudier en délégation",
-          puces: ["La délégation d'assurance emprunteur peut en réduire nettement le coût — résiliable à tout moment (loi Lemoine)"] });
+          puces: ["Délégation : coût souvent réduit, résiliable à tout moment (loi Lemoine)"] });
         faiblesses.length = 0; faibR.forEach(f => faiblesses.push(f));
         /* problématiques (second rendez-vous) : les MÊMES deux sujets, écrits pour le
            tableau constat → conséquence → préconisation. Laisser la liste vide affichait
