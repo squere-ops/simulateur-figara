@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v274 (09/10 : PASSAGE COMPLET DES PUCES — PHRASES COURTES. Le CGP a valide les trente reformulations proposees (points forts et axes de travail du constat) : RP payee, capacite d emprunt (date aout 2026 retiree des hypotheses de taux), conjoint protege, testament, patrimoine diversifie, deux revenus, assurance-vie, precaution, performance long terme, retraite du conjoint, pas d assurance-vie, prevoyance TNS, taux d effort locataire, rattachement / pension alimentaire (huit lignes → trois puces, sans articles), fiscalite subie, conjoint insuffisamment protege, succession / locatif, epargne long terme et tresorerie trop importante (« frappes de plein fouet » → « entierement soumis aux droits de succession »), capacite d endettement, assurance de pret, absence d epargne mensuelle (avec « hypothese de rendement »), preparation retraite, delegation, chiffrage PER TNS. Bancs t_controle, t_exp167, t_rdv1, t_recentre alignes. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v275 (10/10 : RETOUR A L ETUDE DEPUIS LE SIMULATEUR. Le CGP : « lorsque j arrive sur la simulation, il faudrait que je puisse revenir en arriere plutot que sortir definitivement d ou j etais ». Quand la simulation est lancee depuis l onglet Simulation de l etude, une barre « Retour a l etude patrimoniale · onglet Simulation » apparait sous le fil d etapes ; elle rouvre la fenetre d audit directement a l etape 8 sur le volet Simulation (dossier deja enregistre, memes cartes, autres onglets accessibles). Mecanique : App.retourAudit / reouvrirAudit → Step1Identite (prop reouvrir, useEffect) → NouveauClientModal (voletInitial, etapeInitiale). t_simu_cartes etendu. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v274 (09/10 : PASSAGE COMPLET DES PUCES — PHRASES COURTES. Le CGP a valide les trente reformulations proposees (points forts et axes de travail du constat) : RP payee, capacite d emprunt (date aout 2026 retiree des hypotheses de taux), conjoint protege, testament, patrimoine diversifie, deux revenus, assurance-vie, precaution, performance long terme, retraite du conjoint, pas d assurance-vie, prevoyance TNS, taux d effort locataire, rattachement / pension alimentaire (huit lignes → trois puces, sans articles), fiscalite subie, conjoint insuffisamment protege, succession / locatif, epargne long terme et tresorerie trop importante (« frappes de plein fouet » → « entierement soumis aux droits de succession »), capacite d endettement, assurance de pret, absence d epargne mensuelle (avec « hypothese de rendement »), preparation retraite, delegation, chiffrage PER TNS. Bancs t_controle, t_exp167, t_rdv1, t_recentre alignes. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v273 (08/10 : L ONGLET SIMULATION OUVRE LE SIMULATEUR AVEC LES CHIFFRES DU DOSSIER. Le CGP : « supprime tout ce qu il y a dans l onglet simulation. Il faut que je trouve un onglet ass vie ou PER selon ce qui a ete preconise ; si je clique, ma simulation commence avec les chiffres evoques dans l outil ; une version imprimable et une presentation client pour chaque placement ». (1) L ancien contenu (problematiques, regimes, forces/axes, protection du conjoint, signature) est MIS DE COTE (NC_MASQUES.simulationAncienne). (2) NcSimuCartes : une carte Assurance-vie, une carte PER si le PER est preconise (jamais a un retraite). Chiffres (reponses du CGP) : versement initial AV = liquidites moins la precaution cible (+ produit d une vente a replacer) ; mensuel = enveloppe, gisements compris si l Analyse R2 a ete ouverte (sinon fourchette declaree), le PER prend la borne basse ; duree = jusqu a la retraite, sinon l horizon de placement ; TMI du PER = etape Fiscalite. (3) Ouvrir la simulation = dossier enregistre, produit et montants poses, etape Produit. Version imprimable = etape Presentation puis PDF. Presentation client = etape Presentation. L hypothese de rendement reste choisie a l etape Allocation. t_simu_cartes (35). 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v272 (08/10 : BUG REDUCTION LOCATIVE + CINQ BLOCS MIS DE COTE. (1) Le CGP : « je mets une reduction d impot pour un bien immobilier et je ne la retrouve absolument pas dans le bloc en bas a droite » — la saisie manuelle (nu au reel, N €/an pendant D ans) n entrait que dans l effort, jamais dans « Impot economise par an » : corrige (reducMoy). (2) Mis de cote, conserves dans le code derriere NC_MASQUES (« garde-le dans un coin ») : « Fiscalite de l operation » et l alerte rouge « il manquera N €/mois », « Vos priorites — a classer ensemble », « Ce que votre capital peut vous verser », le tableau « A N ans, votre situation ». Les bancs historiques reveillent ces blocs (window.__NC_MASQUES) pour continuer a les couvrir ; t_masques (34) verifie le mode livre. 34/34.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v271 (08/10 : HYPOTHESE DE RENDEMENT, PARTOUT — et plus de bandeaux par nature. Le CGP : « a chaque fois que tu parles d un rendement, mets systematiquement qu il s agit d une hypothese de rendement — il est important que je me protege sur chaque document ». Analyse R2 : intro de « Ou trouver l epargne complementaire » (« sur hypotheses de rendement non garanties »), mini-tableaux (« places a 5,2 pct (hypothese de rendement) »), cartes PER / AV (« Hypothese de rendement : 5,2 pct, non garantie »), tableau « A N ans » (« a leur hypothese de rendement »), mention de bas de carte (« etablie sur des hypotheses de rendement non garanties »), « Ce que votre capital peut vous verser » (« Hypothese de rendement net »). Les deux bandeaux « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree » sont supprimes : seul reste le bloc « N €/mois d epargne a reorienter — a € liberes + b € d interets en plus ». Banc t_gisements reecrit sur ce bloc. 33/33.)','color:#94a3b8');
@@ -2102,7 +2103,14 @@
       /* 08/10/2026 : lancement depuis l onglet Simulation de l audit — étape demandée, puis
          impression une fois la présentation rendue avec les NOUVEAUX inputs (ref, pas de closure). */
       const printAttenduRef = useRef(false);
-      const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setStep(n); };
+      /* 10/10/2026 (CGP) : « lorsque j arrive sur la simulation, il faudrait que je puisse revenir
+         en arrière plutôt que sortir définitivement d où j étais ». On retient que la simulation
+         vient de l onglet Simulation de l étude ; une barre « Retour à l étude » rouvre la fenêtre
+         d audit directement sur cet onglet (étape 8, volet preco), le dossier étant déjà enregistré. */
+      const [retourAudit, setRetourAudit] = useState(null);
+      const [reouvrirAudit, setReouvrirAudit] = useState(null);
+      const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setRetourAudit({ volet: "preco" }); setStep(n); };
+      const revenirAudit = () => { const r = retourAudit || { volet: "preco" }; setRetourAudit(null); setReouvrirAudit({ volet: r.volet, n: Date.now() }); setStep(1); };
       useEffect(() => {
         if (step === 5 && printAttenduRef.current) { printAttenduRef.current = false; const t = setTimeout(() => handleOpenPrint(), 500); return () => clearTimeout(t); }
       }, [step, inputs]);
@@ -2188,10 +2196,19 @@
             <div className="py-5 relative">
               <Breadcrumb current={step} onJump={setStep} completable={completable}/>
             </div>
+            {retourAudit && step > 1 && (
+              <div className="no-print flex justify-center pb-4 relative" data-nc-retour-audit="1">
+                <button type="button" onClick={revenirAudit}
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-bold transition hover:brightness-110"
+                  style={{ background: "rgba(184,146,78,0.18)", color: "#d8bc86", border: "1px solid rgba(216,188,134,0.45)" }}>
+                  ← Retour à l'étude patrimoniale · onglet Simulation
+                </button>
+              </div>
+            )}
           </div>
 
           <main className="flex-1 py-12 px-6 relative" style={{zIndex: 10}}>
-            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} key="s1"/>}
+            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} reouvrir={reouvrirAudit} key="s1"/>}
             {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
@@ -8586,11 +8603,11 @@
       );
     }
 
-    function NouveauClientModal({ inputs, upd, onClose, niveauInitial, onSimuler }) {
+    function NouveauClientModal({ inputs, upd, onClose, niveauInitial, onSimuler, voletInitial, etapeInitiale }) {
       const [niveau, setNiveau] = useState(niveauInitial || (inputs.audit ? "complet" : "rapide"));
       const [touched, setTouched] = useState(false);
-      const [etape, setEtape] = useState(1);
-      const [visited, setVisited] = useState(() => new Set([1]));
+      const [etape, setEtape] = useState(etapeInitiale || 1);
+      const [visited, setVisited] = useState(() => new Set(etapeInitiale ? [1, etapeInitiale] : [1]));
       // Taille de la fenêtre : confort de saisie.
       // "auto" = grand format d'office pour l'étude patrimoniale complète, format compact pour la fiche rapide.
       // Dès que le conseiller clique Agrandir / Réduire, son choix est mémorisé d'une session à l'autre.
@@ -8725,7 +8742,7 @@
       // Synthèse en deux temps (doctrine commerciale du cabinet) :
       // RDV 1 = constat factuel + forces/faiblesses + problématiques SANS solutions ;
       // RDV 2 = préconisations. Les solutions se méritent — elles justifient le second rendez-vous.
-      const [synMode, setSynMode] = useState("constat");
+      const [synMode, setSynMode] = useState(voletInitial || "constat");
       /* 08/10/2026 : chiffres remontés par l Analyse R2 (enveloppe gisements compris, précaution) */
       const [figR2, setFigR2] = useState(null);
       const simulationCartes = synMode === "preco" && NC_MASQUES.simulationAncienne;
@@ -15338,12 +15355,17 @@
     // ============================================================
     // STEP 1 — IDENTITÉ (inchangé)
     // ============================================================
-    function Step1Identite({ inputs, upd, clients, onSimuler }) {
+    function Step1Identite({ inputs, upd, clients, onSimuler, reouvrir }) {
       const [search, setSearch] = useState("");
       const [open, setOpen] = useState(false);
       const [newClientOpen, setNewClientOpen] = useState(false);
       const [logoErr, setLogoErr] = useState("");
       const [modalNiveau, setModalNiveau] = useState(null);
+      /* 10/10/2026 : retour depuis le simulateur — la fenêtre s ouvre sur l onglet d où l on vient */
+      const [modalVolet, setModalVolet] = useState(null);
+      useEffect(() => {
+        if (reouvrir && reouvrir.n && inputs.audit) { setModalNiveau("complet"); setModalVolet(reouvrir.volet || "preco"); setNewClientOpen(true); }
+      }, [reouvrir && reouvrir.n]);
       const allClients = clients || CLIENTS_EXISTANTS;
       const filtered = allClients.filter(c => {
         const q = search.toLowerCase();
@@ -15570,7 +15592,7 @@
             </label>
           </div>
 
-          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} onSimuler={onSimuler} onClose={() => setNewClientOpen(false)} />}
+          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} voletInitial={modalVolet} etapeInitiale={modalVolet ? 8 : null} onSimuler={onSimuler} onClose={() => { setNewClientOpen(false); setModalVolet(null); }} />}
         </div>
       );
     }
