@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v281 (12/10 : ACHETER OU LOUER — cinq retours du CGP. (1) « Autre commune… » ouvre un champ libre (prix et loyer a saisir). (2) Zone de commentaires sur le projet, reprise sur le resultat. (3) Quotites : le couple se lit dans le dossier (ncSynthese().simu.couple / prenoms) ou dans la situation familiale de l etape Identite — six repartitions pour un couple, plus seulement « 100 % Monsieur ». (4) Hypotheses et financement : tout en CURSEURS alignes (NcAlSlide : libelle, valeur modifiable, curseur, aide) — duree, taux, assurance, taxe fonciere, copro, revente, entretien, revalorisation, IRL, placement, fiscalite, horizon. (5) Resultat lisible : tableau ANNEE APRES ANNEE (1 a 10 puis tous les cinq ans, horizon surligne, meilleure solution nommee et en couleur) et, a l horizon, D OU VIENT chaque patrimoine : locataire = apport + ecarts de mensualite verses + gains − fiscalite (loyers payes pour memoire) ; acheteur = valeur − CRD − revente + epargne placee (capital rembourse et depenses pour memoire). Moteur : decomposition exposee dans pts (val, crd, rev, capRemb, placeNet, cumCout / apport, ecarts, gains, impot, cumLoyer). 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v282 (12/10 : ACHETER OU LOUER — ECRAN RESULTAT REFAIT. Le CGP : « ton graph est nul, supprime-le ; reprends les infos pour demarrer ; la mensualite de depart pour comparer ; trois options ; un curseur de duree qui fait changer les resultats ». Graphique supprime. Haut de page : « De quoi parle-t-on » (ville, bien, prix ancien / neuf, apport, credit, assurance, loyer d un bien similaire, commentaires). Curseur « dans combien d annees je compare » (1 a 30) qui pilote tout. Trois cartes cote a cote — rester locataire + assurance-vie / acheter dans l ancien / acheter dans le neuf — chacune avec la MENSUALITE DE DEPART, le patrimoine net a N ans, sa composition, et « sorti de ma poche » (identique entre options : le locataire epargne l ecart). Badge « Meilleure a N ans ». Point mort et sensibilite en deux lignes. Tableau annee par annee conserve. 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v281 (12/10 : ACHETER OU LOUER — cinq retours du CGP. (1) « Autre commune… » ouvre un champ libre (prix et loyer a saisir). (2) Zone de commentaires sur le projet, reprise sur le resultat. (3) Quotites : le couple se lit dans le dossier (ncSynthese().simu.couple / prenoms) ou dans la situation familiale de l etape Identite — six repartitions pour un couple, plus seulement « 100 % Monsieur ». (4) Hypotheses et financement : tout en CURSEURS alignes (NcAlSlide : libelle, valeur modifiable, curseur, aide) — duree, taux, assurance, taxe fonciere, copro, revente, entretien, revalorisation, IRL, placement, fiscalite, horizon. (5) Resultat lisible : tableau ANNEE APRES ANNEE (1 a 10 puis tous les cinq ans, horizon surligne, meilleure solution nommee et en couleur) et, a l horizon, D OU VIENT chaque patrimoine : locataire = apport + ecarts de mensualite verses + gains − fiscalite (loyers payes pour memoire) ; acheteur = valeur − CRD − revente + epargne placee (capital rembourse et depenses pour memoire). Moteur : decomposition exposee dans pts (val, crd, rev, capRemb, placeNet, cumCout / apport, ecarts, gains, impot, cumLoyer). 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v280 (12/10 : ACHETER OU LOUER — PARCOURS PAS A PAS. Le CGP : « bien trop complexe, un tableau de bord d avion ; sur tous les autres simulateurs on avance pas a pas ». L outil devient quatre ecrans avec fil d etapes, Precedent / Continuer : (1) le projet — ville, typologie, surface, prix ancien / neuf proposes par la grille, primo-accedant, travaux, loyer d un bien similaire ; (2) le financement — apport, duree (curseur), taux, assurance de pret avec REPARTITION EN QUOTITES (couple : 100/100, 50/50, 70/30…, cout = taux × capital × somme des quotites), garantie, mensualite calculee ; (3) hypotheses du cabinet preremplies ; (4) resultat — phrase de verdict, trois tuiles, sensibilite, courbe, tableau. Presentation client = resultat seul ; version imprimable. Montants formates en milliers. Moteur inchange (quotites ajoutees). t_acheter_louer reecrit sur le parcours. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v279 (12/10 : ETAPE PRODUIT — pour un PARTICULIER, la carte « Contrat capi PM » (reservee aux entreprises) est remplacee par la carte « Acheter ou louer sa RP ? » qui ouvre l outil. Le petit bouton d en-tete de la v278 est retire. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v278 (12/10 : ACHETER OU LOUER SA RESIDENCE PRINCIPALE. Nouvel outil, demande du CGP : « frais de notaire, hypotheque, travaux, taxe fonciere, interets VS location ». Methode des etudes (Meilleurtaux, Arbolyo, Hestia) : patrimoine net annee par annee, acheteur = valeur − CRD − frais de revente, locataire = apport + ecart mensuel places ; point mort. Trois colonnes : NEUF, ANCIEN, LOCATION (ecart place / non place). Hypotheses validees par le CGP : bareme notarial 2026 exact (ancien 6,32 pct, primo 5,81, neuf 0,715 + emoluments), caution par defaut, taxe fonciere ≈ 1 mois de loyer, entretien 1 pct ancien / 0,5 neuf, revalorisation 1 pct, revente 5 pct, IRL 2 pct, placement 5,2 pct fiscalise AV > 8 ans, assurance habitation neutralisee. Ville + typologie + surface proposent prix ancien / neuf et loyer (grille PAP / SeLoger oct. 2026, 38 villes, modifiable). Ligne de sensibilite (revalorisation + 1 pt, placement 3 pct). Carte dans l onglet Simulation pour un client LOCATAIRE (projet RP et loyer repris), bouton a l etape Produit. Version imprimable, presentation client, retour. t_acheter_louer (36). 36/36.)','color:#94a3b8');
@@ -8827,66 +8828,89 @@
       const ecartNeufH = at(R.neuf.pts, H) - at(R.locNeuf, H);
       const pmTxt = (y) => y == null ? "jamais" : y + " an" + (y > 1 ? "s" : "");
       const ansT = [5, 10, 15, 20, 25];
-      const G = (() => {
-        const X0 = 44, X1 = 690, Y0 = 18, Y1 = 196, maxY = Math.max(1, ...[R.ancien.pts, R.neuf.pts, R.locAncien, R.locNP].flatMap(a => a.map(p => p.pat)));
-        const minY = Math.min(0, ...[R.ancien.pts, R.neuf.pts].flatMap(a => a.map(p => p.pat)));
-        const px = (y) => X0 + (X1 - X0) * y / 30, py = (v) => Y1 - (Y1 - Y0) * (v - minY) / (maxY - minY);
-        const path = (pts) => pts.map((p, i) => (i ? "L" : "M") + px(p.y).toFixed(1) + "," + py(p.pat).toFixed(1)).join(" ");
-        return { px, py, path, y0: py(0), minY, maxY };
-      })();
       const imprimer = () => { document.body.classList.add("nc-al-print"); setTimeout(() => { window.print(); setTimeout(() => document.body.classList.remove("nc-al-print"), 800); }, 150); };
       const ETAPES = [{ n: 1, l: "Le projet" }, { n: 2, l: "Le financement" }, { n: 3, l: "Hypothèses" }, { n: 4, l: "Résultat" }];
       const Lab = NcAlLab, Carte = NcAlCarte, Hint = NcAlHint;
-      const verdict = (() => {
-        const gagne = ecartH >= 0;
-        const np = R.pmAncienNP;
-        return (
-          <span>
-            <b style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 19 }}>À {H} ans, {gagne ? "l'achat dans l'ancien l'emporte" : "la location l'emporte"} de {eur(Math.abs(ecartH))}</b>
-            {" "}{gagne ? "face à un locataire qui place l'écart mensuel à " + P.tPlac + " %." : "face à l'achat dans l'ancien, si l'écart mensuel est placé à " + P.tPlac + " %."}
-            {!gagne && np != null ? " Si le locataire ne place pas la différence, l'achat l'emporte dès la " + np + (np > 1 ? "ᵉ" : "ʳᵉ") + " année." : ""}
-            {R.neuf.prix > 0 ? " Dans le neuf : " + sg(ecartNeufH) + "." : ""}
-          </span>
-        );
-      })();
-      const resultat = (
-        <div data-nc-al-resultat="1">
-          <div className="rounded-xl bg-white border px-4 py-3 mb-3 text-[13.5px] leading-relaxed" style={{ borderColor: "#e7e5e4", borderLeft: "5px solid " + (ecartH >= 0 ? "#0f766e" : "#b45309"), color: "#1d2735" }} data-nc-al-ecart={ecartH}>{verdict}</div>
-          <div className="grid grid-cols-3 gap-3 mb-3">
-            {[
-              { n: pmTxt(R.pmAncien), l: "Point mort · ancien", d: R.pmAncien == null ? "sur 30 ans, locataire qui place" : "l'achat passe devant un locataire qui place", c: "#0f766e", k: "pm-ancien" },
-              { n: pmTxt(R.pmNeuf), l: "Point mort · neuf", d: R.pmNeuf == null ? "sur 30 ans, locataire qui place" : "l'achat dans le neuf passe devant", c: "#6d28d9", k: "pm-neuf" },
-              { n: pmTxt(R.pmAncienNP), l: "Si l'écart n'est pas placé", d: "locataire qui consomme la différence", c: "#b45309", k: "pm-np" },
-            ].map(t => (
-              <div key={t.k} className="rounded-2xl bg-white border p-3.5" style={{ borderColor: "#e7e5e4", borderTop: "4px solid " + t.c }} data-nc-al-tuile={t.k}>
-                <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 32 : 26, color: "#1d2735" }}>{t.n}</div>
-                <div className="text-[9.5px] uppercase tracking-[0.14em] font-extrabold text-stone-500 mt-0.5">{t.l}</div>
-                <div className="text-[11px] text-stone-600 mt-1">{t.d}</div>
+      /* ═══ 12/10/2026 (CGP) : « ton graph est nul, supprime-le. Reprends les infos pour démarrer, la
+         mensualité de départ pour comparer, trois options comparatives, un curseur de durée qui fait
+         changer les résultats en dessous ». ═══ */
+      const nbP = (v) => parseFloat(String(v == null ? "" : v).replace(/[\s  €%]/g, "").replace(",", ".")) || 0;
+      const yH = Math.min(H, 30);
+      const l = R.locAncien[yH] || {}, a = R.ancien.pts[yH] || {}, nn = R.neuf.pts[yH] || {};
+      const best = Math.max(l.pat || 0, a.pat || 0, R.neuf.prix > 0 ? (nn.pat || 0) : -Infinity);
+      const coutLoc1 = Math.round(R.loyer0);
+      const Opt = ({ titre, sous, c, data, mens, mensDetail, effort, effortDetail, lignes, total }) => (
+        <div className="rounded-2xl bg-white border p-4 flex flex-col" style={{ borderColor: total === best ? c : "#e7e5e4", borderTop: "5px solid " + c, boxShadow: total === best ? "0 0 0 2px " + c + "22" : "none" }} data-nc-al-decomp={data} data-nc-al-option-pat={total}>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold" style={{ color: c }}>{titre}</div>
+              <div className="text-[11px] text-stone-500">{sous}</div>
+            </div>
+            {total === best ? <span className="text-[9.5px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-full text-white" style={{ background: c }} data-nc-al-meilleure={data}>Meilleure à {yH} ans</span> : null}
+          </div>
+          <div className="mt-3 rounded-xl px-3 py-2.5" style={{ background: "#f5f5f4" }}>
+            <div className="text-[9.5px] uppercase tracking-[0.14em] font-extrabold text-stone-500">Mensualité de départ</div>
+            <div className="flex items-baseline gap-1"><span className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 22, color: "#1d2735" }} data-nc-al-mens-depart={mens}>{eur(mens)}</span><span className="text-[11px] text-stone-500">/mois</span></div>
+            <div className="text-[10.5px] text-stone-500 leading-snug">{mensDetail}</div>
+          </div>
+          <div className="mt-3">
+            <div className="text-[9.5px] uppercase tracking-[0.14em] font-extrabold text-stone-500">Patrimoine net à {yH} ans</div>
+            <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 34 : 28, color: c }}>{eur(total)}</div>
+          </div>
+          <div className="mt-2 flex-1">
+            {lignes.map(([k, v, sign], i) => (
+              <div key={i} className="flex items-baseline justify-between gap-2 py-1 text-[11.5px]" style={{ borderBottom: "1px solid #f0ede8" }}>
+                <span className="text-stone-600">{k}</span><span className="tabular-nums font-bold whitespace-nowrap" style={{ color: sign === "-" ? "#b91c1c" : "#1d2735" }}>{sign === "-" ? "− " : sign === "+" ? "+ " : ""}{eur(Math.abs(v))}</span>
               </div>
             ))}
           </div>
-          <div className="text-[11px] text-stone-600 mb-3 rounded-lg px-3 py-2" style={{ background: "#fffbeb", border: "1px solid #fde68a" }} data-nc-al-sensib="1">
-            <b>Sensibilité (ancien)</b> — revalorisation à {String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1).replace(".", ",")} %/an : point mort {pmTxt(S2.reval2.pmAncien)} · placement du locataire à 3 % : point mort {pmTxt(S2.plac3.pmAncien)}. Ces deux hypothèses décident.
-          </div>
-          <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }}>
-            <div className="flex flex-wrap gap-4 text-[10.5px] text-stone-600 mb-1">
-              {[["#0f766e", "Achat ancien"], ["#6d28d9", "Achat neuf"], ["#1d2735", "Location, écart placé à " + P.tPlac + " %"], ["#b45309", "Location, écart non placé"]].map(([c, l]) => <span key={l}><i style={{ display: "inline-block", width: 18, height: 3, background: c, verticalAlign: "middle", marginRight: 5 }}></i>{l}</span>)}
+          <div className="mt-2 text-[10.5px] text-stone-500">Sorti de ma poche sur {yH} ans : <b className="text-stone-700">{eur(effort)}</b>{effortDetail ? <span> ({effortDetail})</span> : null}</div>
+        </div>
+      );
+      const pm = (y) => y == null ? "jamais sur 30 ans" : "à " + y + " an" + (y > 1 ? "s" : "");
+      const resultat = (
+        <div data-nc-al-resultat="1">
+          {/* rappel du projet */}
+          <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }} data-nc-al-rappel="1">
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-1" style={{ color: "#b8924e" }}>De quoi parle-t-on</div>
+            <div className="text-[14px] leading-relaxed" style={{ color: "#1d2735" }}>
+              Réflexion sur l'acquisition d'une résidence principale{P.ville ? " à " + P.ville : ""} — {P.typo} de {P.surface} m², <b>{eur(nbP(P.prixAncien))}</b> dans l'ancien{nbP(P.travaux) > 0 ? " (+ " + eur(nbP(P.travaux)) + " de travaux)" : ""}, <b>{eur(nbP(P.prixNeuf))}</b> dans le neuf. Apport de <b>{eur(nbP(P.apport))}</b>, crédit sur <b>{R.duree} ans à {P.taux} %</b>, assurance {P.assur} %{couple ? " (" + (QUOT.find(q => q.v === P.quotites) || {}).l + ")" : ""}. Louer un bien similaire coûte <b>{eur(R.loyer0)}/mois</b>.
             </div>
-            <svg viewBox="0 0 700 214" style={{ width: "100%", height: pres ? 300 : 230 }}>
-              <line x1="44" y1={G.y0} x2="690" y2={G.y0} stroke="#d6d3d1" strokeWidth="1" />
-              {[5, 10, 15, 20, 25, 30].map(y => <g key={y}><line x1={G.px(y)} y1="18" x2={G.px(y)} y2="196" stroke="#f0ede8" strokeDasharray="3 4" /><text x={G.px(y)} y="209" fontSize="9" fill="#a8a29e" textAnchor="middle">{y} ans</text></g>)}
-              <text x="4" y={G.py(G.maxY) + 4} fontSize="9" fill="#a8a29e">{Math.round(G.maxY / 1000)} k€</text>
-              <path d={G.path(R.locNP)} fill="none" stroke="#b45309" strokeWidth="2" opacity="0.8" />
-              <path d={G.path(R.locAncien)} fill="none" stroke="#1d2735" strokeWidth="2.5" />
-              {R.neuf.prix > 0 ? <path d={G.path(R.neuf.pts)} fill="none" stroke="#6d28d9" strokeWidth="2.5" /> : null}
-              {R.ancien.prix > 0 ? <path d={G.path(R.ancien.pts)} fill="none" stroke="#0f766e" strokeWidth="3" /> : null}
-              {R.pmAncien ? <g><circle cx={G.px(R.pmAncien)} cy={G.py(at(R.ancien.pts, R.pmAncien))} r="5" fill="#fff" stroke="#0f766e" strokeWidth="2.5" /><text x={G.px(R.pmAncien) + 8} y={G.py(at(R.ancien.pts, R.pmAncien)) - 7} fontSize="10" fontWeight="800" fill="#0f766e">point mort ancien · {R.pmAncien} ans</text></g> : null}
-              {R.pmNeuf ? <circle cx={G.px(R.pmNeuf)} cy={G.py(at(R.neuf.pts, R.pmNeuf))} r="5" fill="#fff" stroke="#6d28d9" strokeWidth="2.5" /> : null}
-            </svg>
+            {P.notes && P.notes.trim() ? <div className="text-[12px] text-stone-600 mt-2" data-nc-al-notes="1"><b>Commentaires :</b> {P.notes}</div> : null}
           </div>
-          {/* ═══ 12/10/2026 (CGP) : « je veux comprendre, selon les solutions, ce que j ai année après
-              année » — une ligne par année, une colonne par solution, le meilleur en vert ; puis, à
-              l horizon choisi, D OÙ VIENT chaque patrimoine. ═══ */}
+          {/* curseur de durée */}
+          <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }} data-nc-al-curseur-horizon="1">
+            <div className="flex items-end justify-between gap-3 mb-1">
+              <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b8924e" }}>Dans combien d'années je compare</div>
+              <div className="flex items-baseline gap-1"><span className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735" }} data-nc-al-horizon-val={yH}>{yH}</span><span className="text-[12px] text-stone-500">ans</span></div>
+            </div>
+            <input type="range" min="1" max="30" step="1" value={yH} onChange={e => set("horizon", e.target.value)} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur="horizon" />
+            <div className="flex justify-between text-[9.5px] text-stone-400 mt-0.5"><span>1 an</span><span>10 ans</span><span>20 ans</span><span>30 ans</span></div>
+          </div>
+          {/* trois options */}
+          <div className={"grid gap-3 mb-3 " + (R.neuf.prix > 0 ? "grid-cols-3" : "grid-cols-2")}>
+            <Opt titre="Rester locataire + assurance-vie" sous={"loyer " + eur(R.loyer0) + "/mois, apport et écart placés à " + P.tPlac + " %"} c="#1d2735" data="location"
+              mens={coutLoc1} mensDetail="le loyer, charges comprises"
+              effort={(l.cumLoyer || 0) + (l.ecarts || 0)} effortDetail={"loyers " + eur(l.cumLoyer || 0) + " + épargne " + eur(l.ecarts || 0) + " — le même effort que l'acheteur"}
+              total={l.pat || 0}
+              lignes={[["Apport initial placé", l.apport || 0, "+"], ["Écarts de mensualité versés (crédit + charges + taxes − loyer)", l.ecarts || 0, "+"], ["Gains du placement", l.gains || 0, "+"], ["Fiscalité à la sortie", l.impot || 0, "-"]]} />
+            <Opt titre="Acheter dans l'ancien" sous={eur(R.ancien.prix) + (R.ancien.travaux > 0 ? " + " + eur(R.ancien.travaux) + " de travaux" : "") + ", frais " + eur(R.ancien.frais.total + R.ancien.garantie)} c="#0f766e" data="ancien"
+              mens={R.ancien.coutM1} mensDetail={"crédit " + eur(R.ancien.mens) + " + taxe foncière, charges, entretien"}
+              effort={a.cumCout || 0}
+              total={a.pat || 0}
+              lignes={[["Valeur du bien", a.val || 0, "+"], ["Capital restant dû", a.crd || 0, "-"], ["Frais de revente", a.rev || 0, "-"], ...((a.placeNet || 0) > 0 ? [["Épargne placée (crédit moins cher que le loyer)", a.placeNet, "+"]] : []), ["dont capital remboursé", a.capRemb || 0, ""]]} />
+            {R.neuf.prix > 0 ? <Opt titre="Acheter dans le neuf" sous={eur(R.neuf.prix) + ", frais " + eur(R.neuf.frais.total + R.neuf.garantie)} c="#6d28d9" data="neuf"
+              mens={R.neuf.coutM1} mensDetail={"crédit " + eur(R.neuf.mens) + " + taxe foncière, charges, entretien"}
+              effort={nn.cumCout || 0}
+              total={nn.pat || 0}
+              lignes={[["Valeur du bien", nn.val || 0, "+"], ["Capital restant dû", nn.crd || 0, "-"], ["Frais de revente", nn.rev || 0, "-"], ...((nn.placeNet || 0) > 0 ? [["Épargne placée (crédit moins cher que le loyer)", nn.placeNet, "+"]] : []), ["dont capital remboursé", nn.capRemb || 0, ""]]} /> : null}
+          </div>
+          {/* point mort et sensibilité, en deux lignes */}
+          <div className="rounded-xl px-4 py-3 mb-3 text-[12px] leading-relaxed" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al-ecart={(a.pat || 0) - (l.pat || 0)}>
+            <b>Point mort</b> — l'achat dans l'ancien passe devant la location <b data-nc-al-tuile="pm-ancien">{pm(R.pmAncien)}</b>{R.neuf.prix > 0 ? <span>, le neuf <b data-nc-al-tuile="pm-neuf">{pm(R.pmNeuf)}</b></span> : null} ; si le locataire ne place pas la différence, l'ancien l'emporte <b data-nc-al-tuile="pm-np">{pm(R.pmAncienNP)}</b>.
+            <div className="text-[11px] text-stone-600 mt-1" data-nc-al-sensib="1"><b>Sensibilité</b> — revalorisation à {String(nbP(P.reval) + 1).replace(".", ",")} %/an : point mort {pm(S2.reval2.pmAncien)} · placement du locataire à 3 % : point mort {pm(S2.plac3.pmAncien)}. Ces deux hypothèses décident.</div>
+          </div>
+          {/* année après année */}
           <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }}>
             <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: "#b8924e" }}>Année après année — ce que je possède, net de dettes et de frais de revente</div>
             <table className="w-full text-[12px]" style={{ borderCollapse: "collapse" }} data-nc-al-table="1">
@@ -8898,72 +8922,23 @@
                 <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-stone-500 text-right" style={{ borderBottom: "1.5px solid #e7e5e4" }}>Meilleure solution</th>
               </tr></thead>
               <tbody>
-                {Array.from({ length: 30 }, (_, i) => i + 1).filter(y => pres ? (y <= 10 || y % 5 === 0) : (y <= 10 || y % 5 === 0 || y === H)).map(y => {
-                  const L = at(R.locAncien, y), A = at(R.ancien.pts, y), Nn = R.neuf.prix > 0 ? at(R.neuf.pts, y) : -Infinity;
-                  const best = Math.max(L, A, Nn); const lib = best === L ? "Location" : best === A ? "Ancien" : "Neuf"; const col = best === L ? "#1d2735" : best === A ? "#0f766e" : "#6d28d9";
-                  const fort = y === H || y % 5 === 0;
-                  const cell = (v, c) => <td className="py-1 px-2 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8", fontWeight: v === best ? 800 : 500, color: v === best ? c : "#57534e", background: y === H ? "#fffbeb" : "transparent" }}>{eur(v)}</td>;
+                {Array.from({ length: 30 }, (_, i) => i + 1).filter(y => y <= 10 || y % 5 === 0 || y === yH).map(y => {
+                  const Lv = at(R.locAncien, y), Av = at(R.ancien.pts, y), Nv = R.neuf.prix > 0 ? at(R.neuf.pts, y) : -Infinity;
+                  const b = Math.max(Lv, Av, Nv); const lib = b === Lv ? "Location" : b === Av ? "Ancien" : "Neuf"; const col = b === Lv ? "#1d2735" : b === Av ? "#0f766e" : "#6d28d9";
+                  const cell = (v, c) => <td className="py-1 px-2 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8", fontWeight: v === b ? 800 : 500, color: v === b ? c : "#57534e" }}>{eur(v)}</td>;
                   return (
-                    <tr key={y} data-nc-al-an={y} style={{ background: y === H ? "#fffbeb" : "transparent" }}>
-                      <td className="py-1 px-2" style={{ borderBottom: "1px solid #f0ede8", fontWeight: fort ? 800 : 600, color: "#1d2735" }}>{y} an{y > 1 ? "s" : ""}{y === H ? " ·" : ""}</td>
-                      {cell(L, "#1d2735")}{cell(A, "#0f766e")}{R.neuf.prix > 0 ? cell(Nn, "#6d28d9") : null}
-                      <td className="py-1 px-2 text-right text-[11px] font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: col, background: y === H ? "#fffbeb" : "transparent" }}>{lib}</td>
+                    <tr key={y} data-nc-al-an={y} style={{ background: y === yH ? "#fffbeb" : "transparent" }}>
+                      <td className="py-1 px-2" style={{ borderBottom: "1px solid #f0ede8", fontWeight: y === yH || y % 5 === 0 ? 800 : 600, color: "#1d2735" }}>{y} an{y > 1 ? "s" : ""}{y === yH ? " ·" : ""}</td>
+                      {cell(Lv, "#1d2735")}{cell(Av, "#0f766e")}{R.neuf.prix > 0 ? cell(Nv, "#6d28d9") : null}
+                      <td className="py-1 px-2 text-right text-[11px] font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: col }}>{lib}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-            <div className="text-[10px] text-stone-400 mt-1.5">Les dix premières années en détail, puis tous les cinq ans ; la ligne surlignée est l'horizon mis en avant ({H} ans).</div>
           </div>
-          {(() => {
-            const yL = Math.min(H, 30);
-            const l = R.locAncien[yL] || {}, a = R.ancien.pts[yL] || {}, nn = R.neuf.pts[yL] || {};
-            const Col = ({ titre, c, lignes, total, data }) => (
-              <div className="rounded-2xl bg-white border p-3.5" style={{ borderColor: "#e7e5e4", borderTop: "4px solid " + c }} data-nc-al-decomp={data}>
-                <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold mb-2" style={{ color: c }}>{titre}</div>
-                {lignes.map(([k, v, sign], i) => (
-                  <div key={i} className="flex items-baseline justify-between gap-2 py-1 text-[11.5px]" style={{ borderBottom: "1px solid #f0ede8" }}>
-                    <span className="text-stone-600">{k}</span><span className="tabular-nums font-bold whitespace-nowrap" style={{ color: sign === "-" ? "#b91c1c" : "#1d2735" }}>{sign === "-" ? "− " : sign === "+" ? "+ " : ""}{eur(Math.abs(v))}</span>
-                  </div>
-                ))}
-                <div className="flex items-baseline justify-between gap-2 pt-2 text-[13px] font-extrabold" style={{ color: c }}><span>Patrimoine net à {yL} ans</span><span className="tabular-nums">{eur(total)}</span></div>
-              </div>
-            );
-            return (
-              <div className="mb-3">
-                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: "#b8924e" }}>D'où vient mon patrimoine à {yL} ans</div>
-                <div className={"grid gap-3 " + (R.neuf.prix > 0 ? "grid-cols-3" : "grid-cols-2")}>
-                  <Col titre="Locataire + assurance-vie" c="#1d2735" data="location" total={l.pat || 0} lignes={[
-                    ["Apport initial placé", l.apport || 0, "+"],
-                    ["Écarts de mensualité versés (crédit + charges + taxes − loyer)", l.ecarts || 0, "+"],
-                    ["Gains du placement", l.gains || 0, "+"],
-                    ["Fiscalité à la sortie", l.impot || 0, "-"],
-                    ["Pour mémoire : loyers payés", l.cumLoyer || 0, ""],
-                  ]} />
-                  <Col titre="Achat ancien" c="#0f766e" data="ancien" total={a.pat || 0} lignes={[
-                    ["Valeur du bien", a.val || 0, "+"],
-                    ["Capital restant dû", a.crd || 0, "-"],
-                    ["Frais de revente", a.rev || 0, "-"],
-                    ["Épargne placée quand le crédit coûte moins que le loyer", a.placeNet || 0, "+"],
-                    ["Pour mémoire : capital remboursé", a.capRemb || 0, ""],
-                    ["Pour mémoire : dépensé (crédit, assurance, taxes, charges, entretien)", a.cumCout || 0, ""],
-                  ]} />
-                  {R.neuf.prix > 0 ? <Col titre="Achat neuf" c="#6d28d9" data="neuf" total={nn.pat || 0} lignes={[
-                    ["Valeur du bien", nn.val || 0, "+"],
-                    ["Capital restant dû", nn.crd || 0, "-"],
-                    ["Frais de revente", nn.rev || 0, "-"],
-                    ["Épargne placée quand le crédit coûte moins que le loyer", nn.placeNet || 0, "+"],
-                    ["Pour mémoire : capital remboursé", nn.capRemb || 0, ""],
-                    ["Pour mémoire : dépensé (crédit, assurance, taxes, charges, entretien)", nn.cumCout || 0, ""],
-                  ]} /> : null}
-                </div>
-                <div className="text-[10.5px] text-stone-500 mt-2">Frais d'acquisition et de garantie payés au départ, perdus : ancien {eur(R.ancien.frais.total + R.ancien.garantie)}, neuf {eur(R.neuf.frais.total + R.neuf.garantie)}.</div>
-              </div>
-            );
-          })()}
-          {P.notes && P.notes.trim() ? <div className="rounded-xl px-4 py-3 mb-3 text-[12px]" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al-notes="1"><b>Commentaires :</b> {P.notes}</div> : null}
           <div className="text-[10.5px] text-stone-500 leading-relaxed">
-            Acheteur = valeur du bien (revalorisée à {P.reval} %/an, travaux comptés pour moitié) − capital restant dû − frais de revente {P.revente} %. Locataire = apport + écart mensuel (mensualité assurance comprise, taxe foncière, charges, entretien − loyer indexé {P.irl} %/an) placés, nets de fiscalité ; la colonne « Location » est calculée face à l'ancien, l'écart du neuf face à son propre locataire. Frais d'acquisition et de garantie perdus. « Non placé » : apport sur livret à {P.tLiv} %, écart consommé. Coût mensuel propriétaire la première année : ancien {eur(R.ancien.coutM1)}, neuf {eur(R.neuf.coutM1)}, pour un loyer de {eur(R.loyer0)}. Projection non contractuelle, sur hypothèses de rendement non garanties.
+            Acheteur = valeur du bien (revalorisée à {P.reval} %/an, travaux comptés pour moitié) − capital restant dû − frais de revente {P.revente} %. Locataire = apport + écarts de mensualité placés, nets de fiscalité ; loyer indexé {P.irl} %/an. Frais d'acquisition et de garantie perdus. Projection non contractuelle, sur hypothèses de rendement non garanties.
           </div>
         </div>
       );
@@ -9072,7 +9047,7 @@
         <div data-nc-al-etape4="1">
           <div className="text-[10px] tracking-widest font-semibold text-red-600 uppercase text-center mb-1">Étape 4 sur 4</div>
           <h1 className="text-[26px] font-bold text-center" style={{ color: "#1d2735", letterSpacing: "-0.01em" }}>Acheter ou louer ?</h1>
-          <div className="text-[13px] text-stone-500 text-center mb-5">{P.ville || "Commune"} · {P.typo} {P.surface} m² · {eur(parseFloat(String(P.prixAncien).replace(/\s/g, "")) || 0)} dans l'ancien, {eur(parseFloat(String(P.prixNeuf).replace(/\s/g, "")) || 0)} dans le neuf · loyer {eur(R.loyer0)}/mois</div>
+          <div className="text-[13px] text-stone-500 text-center mb-5">Trois options, comparées dans le temps avec le curseur.</div>
           {resultat}
         </div>
       );
