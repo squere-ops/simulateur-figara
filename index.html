@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v282 (12/10 : ACHETER OU LOUER — ECRAN RESULTAT REFAIT. Le CGP : « ton graph est nul, supprime-le ; reprends les infos pour demarrer ; la mensualite de depart pour comparer ; trois options ; un curseur de duree qui fait changer les resultats ». Graphique supprime. Haut de page : « De quoi parle-t-on » (ville, bien, prix ancien / neuf, apport, credit, assurance, loyer d un bien similaire, commentaires). Curseur « dans combien d annees je compare » (1 a 30) qui pilote tout. Trois cartes cote a cote — rester locataire + assurance-vie / acheter dans l ancien / acheter dans le neuf — chacune avec la MENSUALITE DE DEPART, le patrimoine net a N ans, sa composition, et « sorti de ma poche » (identique entre options : le locataire epargne l ecart). Badge « Meilleure a N ans ». Point mort et sensibilite en deux lignes. Tableau annee par annee conserve. 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v284 (12/10 : ACHETER OU LOUER — ECRAN 1 REFAIT. Le CGP : « un curseur dynamique prix au m² pour le neuf et l ancien, et rends cette page plus jolie, on se croirait dans l administration communiste ». Bandeau sombre « Ou, et quoi » (commune, surface avec curseur, typologies en pastilles T1…Maison), deux tuiles ancien / neuf avec le prix en grand, le prix au m² et son curseur (500 a 16 000 €/m²), travaux et primo-accedant sous chaque tuile, loyer en grand avec curseur, commentaires. Le CGP : « ne te prends pas la tete sur le prix au m², ca depend du quartier, de l exposition » → grille indicative, curseurs larges. NcAlTuilePrix hissee (focus conserve). 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v283 (12/10 : GRILLE DES VILLES — 88 communes et le neuf dit honnetement. Le CGP : « dis-moi quand il y a des points faibles, ne fais pas comme si tout etait ok ». Ancien et loyers : PAP / SeLoger (38 villes) + MeilleursAgents 1er octobre 2026 (50 villes ajoutees : Ile-de-France, cote, villes moyennes). NEUF : 15 villes avec un prix promoteur reel (Logisneuf, prix moyen catalogue : Paris 12 284, Lyon 6 296, Nice 6 463, Rennes 5 983, Nantes 5 085, Bordeaux 4 842, Lille 3 967…) ; les autres = ESTIMATION ancien × 1,3, affichee en orange avec un bandeau « Point faible : estimation, pas une donnee », reprise sur le resultat. Aucune source publique ne donne le neuf au m² ville par ville au-dela. 36/36.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v282 (12/10 : ACHETER OU LOUER — ECRAN RESULTAT REFAIT. Le CGP : « ton graph est nul, supprime-le ; reprends les infos pour demarrer ; la mensualite de depart pour comparer ; trois options ; un curseur de duree qui fait changer les resultats ». Graphique supprime. Haut de page : « De quoi parle-t-on » (ville, bien, prix ancien / neuf, apport, credit, assurance, loyer d un bien similaire, commentaires). Curseur « dans combien d annees je compare » (1 a 30) qui pilote tout. Trois cartes cote a cote — rester locataire + assurance-vie / acheter dans l ancien / acheter dans le neuf — chacune avec la MENSUALITE DE DEPART, le patrimoine net a N ans, sa composition, et « sorti de ma poche » (identique entre options : le locataire epargne l ecart). Badge « Meilleure a N ans ». Point mort et sensibilite en deux lignes. Tableau annee par annee conserve. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v281 (12/10 : ACHETER OU LOUER — cinq retours du CGP. (1) « Autre commune… » ouvre un champ libre (prix et loyer a saisir). (2) Zone de commentaires sur le projet, reprise sur le resultat. (3) Quotites : le couple se lit dans le dossier (ncSynthese().simu.couple / prenoms) ou dans la situation familiale de l etape Identite — six repartitions pour un couple, plus seulement « 100 % Monsieur ». (4) Hypotheses et financement : tout en CURSEURS alignes (NcAlSlide : libelle, valeur modifiable, curseur, aide) — duree, taux, assurance, taxe fonciere, copro, revente, entretien, revalorisation, IRL, placement, fiscalite, horizon. (5) Resultat lisible : tableau ANNEE APRES ANNEE (1 a 10 puis tous les cinq ans, horizon surligne, meilleure solution nommee et en couleur) et, a l horizon, D OU VIENT chaque patrimoine : locataire = apport + ecarts de mensualite verses + gains − fiscalite (loyers payes pour memoire) ; acheteur = valeur − CRD − revente + epargne placee (capital rembourse et depenses pour memoire). Moteur : decomposition exposee dans pts (val, crd, rev, capRemb, placeNet, cumCout / apport, ecarts, gains, impot, cumLoyer). 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v280 (12/10 : ACHETER OU LOUER — PARCOURS PAS A PAS. Le CGP : « bien trop complexe, un tableau de bord d avion ; sur tous les autres simulateurs on avance pas a pas ». L outil devient quatre ecrans avec fil d etapes, Precedent / Continuer : (1) le projet — ville, typologie, surface, prix ancien / neuf proposes par la grille, primo-accedant, travaux, loyer d un bien similaire ; (2) le financement — apport, duree (curseur), taux, assurance de pret avec REPARTITION EN QUOTITES (couple : 100/100, 50/50, 70/30…, cout = taux × capital × somme des quotites), garantie, mensualite calculee ; (3) hypotheses du cabinet preremplies ; (4) resultat — phrase de verdict, trois tuiles, sensibilite, courbe, tableau. Presentation client = resultat seul ; version imprimable. Montants formates en milliers. Moteur inchange (quotites ajoutees). t_acheter_louer reecrit sur le parcours. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v279 (12/10 : ETAPE PRODUIT — pour un PARTICULIER, la carte « Contrat capi PM » (reservee aux entreprises) est remplacee par la carte « Acheter ou louer sa RP ? » qui ouvre l outil. Le petit bouton d en-tete de la v278 est retire. 36/36.)','color:#94a3b8');
@@ -8614,21 +8616,101 @@
        à l hypothèse cabinet 5,2 % fiscalisé AV > 8 ans (24,7 % après abattement), assurance
        habitation neutralisée (même montant des deux côtés). Travaux comptés pour moitié dans la
        valeur du bien. Grille de prix / loyers : PAP et SeLoger, octobre 2026 — ordres de grandeur
-       à actualiser, toujours modifiables à l écran. */
+       à actualiser, toujours modifiables à l écran.
+       GRILLE (12/10/2026) : 90 communes. ANCIEN et LOYER : PAP (octobre 2026) et SeLoger (janvier 2026)
+       pour les 38 premières, MeilleursAgents (1er octobre 2026) pour les 52 ajoutées. NEUF : seules
+       15 villes ont un prix promoteur réel (Logisneuf, prix moyen catalogue) — neufSrc "L" ; pour les
+       autres, ESTIMATION ancien × 1,3 — neufSrc "e" — affichée comme telle, à vérifier avec un
+       programme réel (SeLoger Neuf, Immoneuf, Nexity, Bouygues). Point faible assumé et visible. */
     const NC_AL_VILLES = [
-      { v: "Paris", prix: 9800, neuf: 14500, loyer: 33 }, { v: "Boulogne-Billancourt", prix: 8370, neuf: 11500, loyer: 29 },
-      { v: "Nice", prix: 4890, neuf: 8800, loyer: 20 }, { v: "Cannes", prix: 5790, neuf: 8000, loyer: 19 }, { v: "Aix-en-Provence", prix: 4840, neuf: 6200, loyer: 18 },
-      { v: "Lyon", prix: 4520, neuf: 6150, loyer: 17 }, { v: "Villeurbanne", prix: 3620, neuf: 5000, loyer: 16 }, { v: "Bordeaux", prix: 4180, neuf: 4450, loyer: 17 },
-      { v: "Rennes", prix: 3760, neuf: 4700, loyer: 14 }, { v: "Lille", prix: 3770, neuf: 5130, loyer: 16 }, { v: "Nantes", prix: 3460, neuf: 3990, loyer: 14 },
-      { v: "Montpellier", prix: 3440, neuf: 4170, loyer: 15 }, { v: "Toulouse", prix: 3300, neuf: 4120, loyer: 15 }, { v: "Marseille", prix: 3250, neuf: 4800, loyer: 16 },
-      { v: "Strasbourg", prix: 3200, neuf: 4360, loyer: 15 }, { v: "Angers", prix: 3200, neuf: 4000, loyer: 13 }, { v: "Annecy", prix: 5200, neuf: 6500, loyer: 18 },
-      { v: "Tours", prix: 2900, neuf: 3600, loyer: 13 }, { v: "Toulon", prix: 2740, neuf: 3800, loyer: 15 }, { v: "Dijon", prix: 2730, neuf: 3400, loyer: 13 },
-      { v: "Reims", prix: 2700, neuf: 3400, loyer: 13 }, { v: "Orléans", prix: 2580, neuf: 3200, loyer: 13 }, { v: "Grenoble", prix: 2550, neuf: 3400, loyer: 14 },
-      { v: "Rouen", prix: 2500, neuf: 3300, loyer: 14 }, { v: "Caen", prix: 2500, neuf: 3300, loyer: 14 }, { v: "Nancy", prix: 2320, neuf: 3000, loyer: 13 },
-      { v: "Nîmes", prix: 2210, neuf: 2900, loyer: 12 }, { v: "Le Havre", prix: 2260, neuf: 2900, loyer: 13 }, { v: "Brest", prix: 2210, neuf: 2900, loyer: 12 },
-      { v: "Metz", prix: 2100, neuf: 2800, loyer: 13 }, { v: "Besançon", prix: 2100, neuf: 2800, loyer: 13 }, { v: "Amiens", prix: 2100, neuf: 2800, loyer: 13 },
-      { v: "Le Mans", prix: 2000, neuf: 2600, loyer: 12 }, { v: "Clermont-Ferrand", prix: 1900, neuf: 2600, loyer: 12 }, { v: "Perpignan", prix: 1800, neuf: 2500, loyer: 12 },
-      { v: "Limoges", prix: 1570, neuf: 2200, loyer: 11 }, { v: "Mulhouse", prix: 1220, neuf: 2000, loyer: 11 }, { v: "Saint-Étienne", prix: 1250, neuf: 2100, loyer: 11 },
+      { v: "Aix-en-Provence", prix: 4840, neuf: 6290, neufSrc: "e", loyer: 18 },
+      { v: "Ajaccio", prix: 4918, neuf: 6390, neufSrc: "e", loyer: 15.5 },
+      { v: "Amiens", prix: 2100, neuf: 2730, neufSrc: "e", loyer: 13 },
+      { v: "Angers", prix: 3200, neuf: 4513, neufSrc: "L", loyer: 13 },
+      { v: "Annecy", prix: 5200, neuf: 6760, neufSrc: "e", loyer: 18 },
+      { v: "Annemasse", prix: 3589, neuf: 4670, neufSrc: "e", loyer: 20.3 },
+      { v: "Antibes", prix: 6488, neuf: 8430, neufSrc: "e", loyer: 19.5 },
+      { v: "Argenteuil", prix: 3255, neuf: 4230, neufSrc: "e", loyer: 20 },
+      { v: "Arras", prix: 2721, neuf: 3540, neufSrc: "e", loyer: 13.4 },
+      { v: "Asnières-sur-Seine", prix: 6340, neuf: 8240, neufSrc: "e", loyer: 24.9 },
+      { v: "Aubagne", prix: 3848, neuf: 5000, neufSrc: "e", loyer: 16.3 },
+      { v: "Avignon", prix: 2547, neuf: 3310, neufSrc: "e", loyer: 13.3 },
+      { v: "Bayonne", prix: 4671, neuf: 6070, neufSrc: "e", loyer: 15.2 },
+      { v: "Beauvais", prix: 1723, neuf: 2240, neufSrc: "e", loyer: 13 },
+      { v: "Besançon", prix: 2100, neuf: 2730, neufSrc: "e", loyer: 13 },
+      { v: "Béziers", prix: 2106, neuf: 2740, neufSrc: "e", loyer: 11.7 },
+      { v: "Biarritz", prix: 7559, neuf: 9830, neufSrc: "e", loyer: 17.6 },
+      { v: "Blois", prix: 1743, neuf: 2270, neufSrc: "e", loyer: 11.8 },
+      { v: "Bordeaux", prix: 4180, neuf: 4842, neufSrc: "L", loyer: 17 },
+      { v: "Boulogne-Billancourt", prix: 8370, neuf: 10880, neufSrc: "e", loyer: 29 },
+      { v: "Bourges", prix: 1566, neuf: 2040, neufSrc: "e", loyer: 12.1 },
+      { v: "Brest", prix: 2210, neuf: 2870, neufSrc: "e", loyer: 12 },
+      { v: "Caen", prix: 2500, neuf: 3250, neufSrc: "e", loyer: 14 },
+      { v: "Calais", prix: 2188, neuf: 2840, neufSrc: "e", loyer: 12 },
+      { v: "Cannes", prix: 6106, neuf: 7940, neufSrc: "e", loyer: 19.5 },
+      { v: "Chambéry", prix: 3555, neuf: 4620, neufSrc: "e", loyer: 14.2 },
+      { v: "Chartres", prix: 2371, neuf: 3080, neufSrc: "e", loyer: 13.4 },
+      { v: "Clermont-Ferrand", prix: 1900, neuf: 2470, neufSrc: "e", loyer: 12 },
+      { v: "Colmar", prix: 2602, neuf: 3380, neufSrc: "e", loyer: 13.6 },
+      { v: "Courbevoie", prix: 6556, neuf: 8520, neufSrc: "e", loyer: 26.4 },
+      { v: "Créteil", prix: 3982, neuf: 5180, neufSrc: "e", loyer: 20.4 },
+      { v: "Dijon", prix: 2730, neuf: 3550, neufSrc: "e", loyer: 13 },
+      { v: "Dunkerque", prix: 1950, neuf: 2540, neufSrc: "e", loyer: 12.9 },
+      { v: "Fréjus", prix: 4802, neuf: 6240, neufSrc: "e", loyer: 16.1 },
+      { v: "Grenoble", prix: 2550, neuf: 3320, neufSrc: "e", loyer: 14 },
+      { v: "Hyères", prix: 4531, neuf: 5890, neufSrc: "e", loyer: 15.6 },
+      { v: "Issy-les-Moulineaux", prix: 7458, neuf: 9700, neufSrc: "e", loyer: 28.1 },
+      { v: "La Rochelle", prix: 4445, neuf: 5780, neufSrc: "e", loyer: 15.3 },
+      { v: "La Roche-sur-Yon", prix: 2332, neuf: 3030, neufSrc: "e", loyer: 12.2 },
+      { v: "Laval", prix: 2294, neuf: 2980, neufSrc: "e", loyer: 11.3 },
+      { v: "Le Havre", prix: 2260, neuf: 2940, neufSrc: "e", loyer: 13 },
+      { v: "Le Mans", prix: 2000, neuf: 2600, neufSrc: "e", loyer: 12 },
+      { v: "Levallois-Perret", prix: 8112, neuf: 10550, neufSrc: "e", loyer: 31.4 },
+      { v: "Lille", prix: 3770, neuf: 3967, neufSrc: "L", loyer: 16 },
+      { v: "Limoges", prix: 1570, neuf: 2040, neufSrc: "e", loyer: 11 },
+      { v: "Lorient", prix: 2792, neuf: 3630, neufSrc: "e", loyer: 14.4 },
+      { v: "Lyon", prix: 4520, neuf: 6296, neufSrc: "L", loyer: 17 },
+      { v: "Marseille", prix: 3250, neuf: 4796, neufSrc: "L", loyer: 16 },
+      { v: "Metz", prix: 2100, neuf: 2730, neufSrc: "e", loyer: 13 },
+      { v: "Montauban", prix: 2234, neuf: 2900, neufSrc: "e", loyer: 12.1 },
+      { v: "Montpellier", prix: 3440, neuf: 4985, neufSrc: "L", loyer: 15 },
+      { v: "Montreuil", prix: 6373, neuf: 8280, neufSrc: "e", loyer: 24.5 },
+      { v: "Mulhouse", prix: 1220, neuf: 1590, neufSrc: "e", loyer: 11 },
+      { v: "Nancy", prix: 2320, neuf: 3020, neufSrc: "e", loyer: 13 },
+      { v: "Nanterre", prix: 5378, neuf: 6990, neufSrc: "e", loyer: 24 },
+      { v: "Nantes", prix: 3460, neuf: 5085, neufSrc: "L", loyer: 14 },
+      { v: "Narbonne", prix: 2308, neuf: 3000, neufSrc: "e", loyer: 12.3 },
+      { v: "Neuilly-sur-Seine", prix: 10235, neuf: 13310, neufSrc: "e", loyer: 34.8 },
+      { v: "Nice", prix: 4890, neuf: 6463, neufSrc: "L", loyer: 20 },
+      { v: "Nîmes", prix: 2210, neuf: 2870, neufSrc: "e", loyer: 12 },
+      { v: "Niort", prix: 1879, neuf: 2440, neufSrc: "e", loyer: 11.8 },
+      { v: "Orléans", prix: 2580, neuf: 3350, neufSrc: "e", loyer: 13 },
+      { v: "Paris", prix: 9800, neuf: 12284, neufSrc: "L", loyer: 33 },
+      { v: "Pau", prix: 2331, neuf: 3030, neufSrc: "e", loyer: 13.3 },
+      { v: "Perpignan", prix: 1800, neuf: 2340, neufSrc: "e", loyer: 12 },
+      { v: "Poitiers", prix: 2230, neuf: 2900, neufSrc: "e", loyer: 13.2 },
+      { v: "Quimper", prix: 2417, neuf: 3140, neufSrc: "e", loyer: 12.2 },
+      { v: "Reims", prix: 2700, neuf: 3510, neufSrc: "e", loyer: 13 },
+      { v: "Rennes", prix: 3760, neuf: 5983, neufSrc: "L", loyer: 14 },
+      { v: "Rouen", prix: 2500, neuf: 3783, neufSrc: "L", loyer: 14 },
+      { v: "Rueil-Malmaison", prix: 5670, neuf: 7370, neufSrc: "e", loyer: 24.1 },
+      { v: "Saint-Denis", prix: 3652, neuf: 4750, neufSrc: "e", loyer: 21.5 },
+      { v: "Saint-Étienne", prix: 1250, neuf: 1620, neufSrc: "e", loyer: 11 },
+      { v: "Saint-Malo", prix: 4684, neuf: 6090, neufSrc: "e", loyer: 14.1 },
+      { v: "Saint-Maur-des-Fossés", prix: 5412, neuf: 7040, neufSrc: "e", loyer: 21.6 },
+      { v: "Saint-Nazaire", prix: 3023, neuf: 3930, neufSrc: "e", loyer: 12.9 },
+      { v: "Sète", prix: 3812, neuf: 4960, neufSrc: "e", loyer: 13.5 },
+      { v: "Strasbourg", prix: 3200, neuf: 5271, neufSrc: "L", loyer: 15 },
+      { v: "Toulon", prix: 2740, neuf: 5150, neufSrc: "L", loyer: 15 },
+      { v: "Toulouse", prix: 3300, neuf: 4817, neufSrc: "L", loyer: 15 },
+      { v: "Tours", prix: 2900, neuf: 4074, neufSrc: "L", loyer: 13 },
+      { v: "Troyes", prix: 1698, neuf: 2210, neufSrc: "e", loyer: 13.3 },
+      { v: "Valence", prix: 2407, neuf: 3130, neufSrc: "e", loyer: 12.9 },
+      { v: "Valenciennes", prix: 1955, neuf: 2540, neufSrc: "e", loyer: 13 },
+      { v: "Vannes", prix: 4049, neuf: 5260, neufSrc: "e", loyer: 14.7 },
+      { v: "Versailles", prix: 7739, neuf: 10060, neufSrc: "e", loyer: 21.3 },
+      { v: "Villeurbanne", prix: 3620, neuf: 4710, neufSrc: "e", loyer: 16 },
+      { v: "Vincennes", prix: 9177, neuf: 11930, neufSrc: "e", loyer: 29 },
     ];
     const NC_AL_TYPO = [{ v: "T1", m2: 30 }, { v: "T2", m2: 45 }, { v: "T3", m2: 65 }, { v: "T4", m2: 85 }, { v: "T5", m2: 105 }, { v: "Maison", m2: 110 }];
     /* Frais d acquisition 2026 : DMTO 5 % départemental (4,5 % primo-accédant ou département resté
@@ -8782,6 +8864,29 @@
       );
     };
     const NcAlHint = ({ children }) => <div className="text-[11.5px] text-stone-500 mt-2 leading-relaxed">{children}</div>;
+    /* 12/10/2026 (CGP) : tuile de prix avec curseur au m² — hissée (jamais définie dans le rendu). */
+    const NcAlTuilePrix = ({ P, set, titre, c, k, m2, src, estime, surface, onM2, children }) => {
+      const fmtN = (n) => new Intl.NumberFormat("fr-FR").format(Math.round(n || 0));
+      return (
+        <div className="rounded-2xl p-4" style={{ background: "linear-gradient(160deg, #ffffff, #fafaf9)", border: "1.5px solid #e7e5e4", borderTop: "5px solid " + c }} data-nc-al-tuile-prix={k}>
+          <div className="flex items-baseline justify-between gap-2">
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: c }}>{titre}</div>
+            {estime ? <span className="text-[9.5px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full" style={{ background: "#fffbeb", color: "#b45309", border: "1px solid #fde68a" }}>estimation</span> : null}
+          </div>
+          <div className="flex items-baseline gap-2 mt-1">
+            <input type="text" inputMode="decimal" value={P[k]} onChange={e => set(k, e.target.value)} onBlur={e => { const v = parseFloat(String(e.target.value).replace(/[\s  €]/g, "").replace(",", ".")) || 0; if (v > 0) set(k, fmtN(v)); }} className="num font-extrabold bg-transparent focus:outline-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735", width: "60%", borderBottom: "1.5px solid #d6d3d1" }} data-nc-al={k} />
+            <span className="text-[12px] text-stone-500">€</span>
+          </div>
+          <div className="flex items-baseline justify-between mt-3 mb-1">
+            <span className="text-[10px] uppercase tracking-[0.14em] font-extrabold text-stone-500">Prix au m²</span>
+            <span className="tabular-nums font-extrabold text-[15px]" style={{ color: "#1d2735" }} data-nc-al-m2={k}>{fmtN(m2)} <span className="text-[10.5px] text-stone-500 font-semibold">€/m² × {surface} m²</span></span>
+          </div>
+          <input type="range" min={500} max={16000} step={50} value={Math.max(500, Math.min(16000, m2 || 500))} onChange={e => onM2(k, parseInt(e.target.value, 10))} className="w-full" style={{ accentColor: c }} data-nc-al-curseur={"m2-" + k} />
+          <div className="text-[10.5px] text-stone-500 mt-1 leading-snug">{src}</div>
+          {children}
+        </div>
+      );
+    };
     function NcAcheterLouer({ init, onClose }) {
       const villeInit = (init && init.ville) || "";
       const vRef = NC_AL_VILLES.find(x => x.v.toLowerCase() === villeInit.toLowerCase()) || null;
@@ -8874,7 +8979,7 @@
           <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }} data-nc-al-rappel="1">
             <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-1" style={{ color: "#b8924e" }}>De quoi parle-t-on</div>
             <div className="text-[14px] leading-relaxed" style={{ color: "#1d2735" }}>
-              Réflexion sur l'acquisition d'une résidence principale{P.ville ? " à " + P.ville : ""} — {P.typo} de {P.surface} m², <b>{eur(nbP(P.prixAncien))}</b> dans l'ancien{nbP(P.travaux) > 0 ? " (+ " + eur(nbP(P.travaux)) + " de travaux)" : ""}, <b>{eur(nbP(P.prixNeuf))}</b> dans le neuf. Apport de <b>{eur(nbP(P.apport))}</b>, crédit sur <b>{R.duree} ans à {P.taux} %</b>, assurance {P.assur} %{couple ? " (" + (QUOT.find(q => q.v === P.quotites) || {}).l + ")" : ""}. Louer un bien similaire coûte <b>{eur(R.loyer0)}/mois</b>.
+              Réflexion sur l'acquisition d'une résidence principale{P.ville ? " à " + P.ville : ""} — {P.typo} de {P.surface} m², <b>{eur(nbP(P.prixAncien))}</b> dans l'ancien{nbP(P.travaux) > 0 ? " (+ " + eur(nbP(P.travaux)) + " de travaux)" : ""}, <b>{eur(nbP(P.prixNeuf))}</b> dans le neuf{vRefCur && vRefCur.neufSrc !== "L" && Math.abs(nbP(P.prixNeuf) - vRefCur.neuf * nbP(P.surface)) < 1 ? " (estimation, à vérifier)" : ""}. Apport de <b>{eur(nbP(P.apport))}</b>, crédit sur <b>{R.duree} ans à {P.taux} %</b>, assurance {P.assur} %{couple ? " (" + (QUOT.find(q => q.v === P.quotites) || {}).l + ")" : ""}. Louer un bien similaire coûte <b>{eur(R.loyer0)}/mois</b>.
             </div>
             {P.notes && P.notes.trim() ? <div className="text-[12px] text-stone-600 mt-2" data-nc-al-notes="1"><b>Commentaires :</b> {P.notes}</div> : null}
           </div>
@@ -8942,45 +9047,84 @@
           </div>
         </div>
       );
+      /* ═══ 12/10/2026 (CGP) : « un curseur dynamique prix au m² pour le neuf et l ancien, et rends
+         cette page plus jolie ». Prix = €/m² × surface ; le curseur pilote le €/m², le champ du prix
+         reste modifiable (il recale le €/m²). Le CGP : « ne te prends pas la tête sur le prix au m²,
+         ça dépend du quartier, de l exposition… » → grille indicative, curseurs larges. ═══ */
+      const surfN = Math.max(1, nbP(P.surface) || 65);
+      const m2Ancien = Math.round(nbP(P.prixAncien) / surfN), m2Neuf = Math.round(nbP(P.prixNeuf) / surfN);
+      const fmtN = (n) => new Intl.NumberFormat("fr-FR").format(Math.round(n || 0));
+      const setM2 = (k, m2) => set(k, fmtN(m2 * surfN));
       const ecran1 = (
         <div>
           <div className="text-[10px] tracking-widest font-semibold text-red-600 uppercase text-center mb-1">Étape 1 sur 4</div>
           <h1 className="text-[26px] font-bold text-center" style={{ color: "#1d2735", letterSpacing: "-0.01em" }}>Le projet d'achat</h1>
           <div className="text-[13px] text-stone-500 text-center mb-5">Le bien visé, et ce que coûterait sa location dans la même commune.</div>
-          <Carte>
-            <Lab>Où, et quoi</Lab>
-            <div className="grid grid-cols-3 gap-3">
-              <select value={vRefCur ? P.ville : "__autre"} onChange={e => { if (e.target.value === "__autre") setP(p => ({ ...p, ville: "" })); else proposer(e.target.value, P.typo, P.surface); }} className="rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al="ville"><option value="__autre">Autre commune…</option>{NC_AL_VILLES.map(v => <option key={v.v} value={v.v}>{v.v}</option>)}</select>
-              <select value={P.typo} onChange={e => { const t = NC_AL_TYPO.find(x => x.v === e.target.value); proposer(P.ville, e.target.value, t ? t.m2 : P.surface); }} className="rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al="typo">{NC_AL_TYPO.map(t => <option key={t.v} value={t.v}>{t.v}</option>)}</select>
-              <div className="flex items-center justify-between rounded-xl px-3 py-2.5" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4" }}><input type="text" inputMode="decimal" value={P.surface} onChange={e => proposer(P.ville, P.typo, e.target.value)} className="num font-extrabold bg-transparent focus:outline-none text-[17px]" style={{ width: "70%", color: "#1d2735" }} data-nc-al="surface" /><span className="text-[11.5px] text-stone-500">m²</span></div>
-            </div>
-            {!vRefCur ? (
-              <div className="mt-3 flex items-center justify-between rounded-xl px-3 py-2.5" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4" }}>
-                <input type="text" value={P.ville} onChange={e => set("ville", e.target.value)} placeholder="Nom de la commune" className="font-extrabold bg-transparent focus:outline-none text-[16px] w-full" style={{ color: "#1d2735" }} data-nc-al="villeLibre" />
-                <span className="text-[11px] text-stone-500 whitespace-nowrap">hors grille : prix et loyer à saisir</span>
+
+          {/* ——— Où, et quoi ——— */}
+          <div className="rounded-2xl p-4 mb-3" style={{ background: "linear-gradient(135deg, #1d2735, #2c3a4d)", color: "#fff" }}>
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-3" style={{ color: "#d8bc86" }}>Où, et quoi</div>
+            <div className="grid gap-3" style={{ gridTemplateColumns: "1.2fr 1fr" }}>
+              <div>
+                <div className="text-[9.5px] uppercase tracking-[0.14em] font-bold mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>Commune</div>
+                <select value={vRefCur ? P.ville : "__autre"} onChange={e => { if (e.target.value === "__autre") setP(p => ({ ...p, ville: "" })); else proposer(e.target.value, P.typo, P.surface); }} className="w-full rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff" }} data-nc-al="ville"><option value="__autre" style={{ color: "#1d2735" }}>Autre commune…</option>{NC_AL_VILLES.map(v => <option key={v.v} value={v.v} style={{ color: "#1d2735" }}>{v.v}</option>)}</select>
+                {!vRefCur ? <input type="text" value={P.ville} onChange={e => set("ville", e.target.value)} placeholder="Nom de la commune" className="w-full mt-2 rounded-xl px-3 py-2.5 font-extrabold text-[15px] focus:outline-none" style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff" }} data-nc-al="villeLibre" /> : null}
               </div>
-            ) : null}
-            {vRefCur ? <Hint>Grille octobre 2026 pour {vRefCur.v} : ancien <b style={{ color: "#0f766e" }}>{new Intl.NumberFormat("fr-FR").format(vRefCur.prix)} €/m²</b>, neuf <b style={{ color: "#0f766e" }}>{new Intl.NumberFormat("fr-FR").format(vRefCur.neuf)} €/m²</b>, loyer <b style={{ color: "#0f766e" }}>{vRefCur.loyer} €/m²</b> — proposés ci-dessous, modifiables.</Hint> : <Hint>Commune hors grille : saisir le prix et le loyer.</Hint>}
-          </Carte>
-          <Carte>
-            <Lab>Prix d'achat</Lab>
-            <div className="grid grid-cols-2 gap-3"><NcAlFld P={P} set={set} k="prixAncien" suf="€ · ancien" /><NcAlFld P={P} set={set} k="prixNeuf" suf="€ · neuf" /></div>
-            <div className="grid grid-cols-2 gap-3 mt-3">
-              <div><Lab>Primo-accédant</Lab><NcAlChips2 P={P} set={set} k="primo" opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }]} /></div>
-              <div><Lab>Travaux à l'entrée (ancien)</Lab><NcAlFld P={P} set={set} k="travaux" suf="€" /></div>
+              <div>
+                <div className="text-[9.5px] uppercase tracking-[0.14em] font-bold mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>Surface</div>
+                <div className="flex items-center gap-2 rounded-xl px-3 py-2" style={{ background: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.25)" }}>
+                  <input type="text" inputMode="decimal" value={P.surface} onChange={e => proposer(P.ville, P.typo, e.target.value)} className="num font-extrabold bg-transparent focus:outline-none text-[20px]" style={{ width: 64, color: "#fff" }} data-nc-al="surface" />
+                  <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>m²</span>
+                  <input type="range" min={15} max={200} step={1} value={Math.max(15, Math.min(200, Math.round(surfN)))} onChange={e => proposer(P.ville, P.typo, e.target.value)} className="flex-1" style={{ accentColor: "#d8bc86" }} data-nc-al-curseur="surface" />
+                </div>
+              </div>
             </div>
-          </Carte>
-          <Carte>
-            <Lab>Louer un bien similaire, même commune</Lab>
-            <div className="grid grid-cols-2 gap-3 items-center">
-              <NcAlFld P={P} set={set} k="loyer" suf="€/mois · charges comprises" />
-              <Hint>{P.loyerDossier ? "Loyer actuel du dossier." : ""}{vRefCur ? " La grille " + vRefCur.v + " donne " + new Intl.NumberFormat("fr-FR").format(Math.round(vRefCur.loyer * (parseFloat(String(P.surface).replace(",", ".")) || 0))) + " €/mois pour " + P.surface + " m²." : ""}</Hint>
+            <div className="flex flex-wrap gap-2 mt-3" data-nc-al-typos="1">
+              {NC_AL_TYPO.map(t => <button key={t.v} type="button" onClick={() => proposer(P.ville, t.v, t.m2)} className="px-3.5 py-1.5 rounded-full text-[12px] font-bold transition" style={P.typo === t.v ? { background: "#d8bc86", color: "#1d2735", border: "1.5px solid #d8bc86" } : { background: "transparent", color: "rgba(255,255,255,0.8)", border: "1.5px solid rgba(255,255,255,0.3)" }} data-nc-al-chip={"typo:" + t.v}>{t.v}<span className="opacity-60 font-semibold"> · {t.m2} m²</span></button>)}
             </div>
-          </Carte>
-          <Carte>
-            <Lab>Commentaires sur le projet</Lab>
-            <textarea value={P.notes} onChange={e => set("notes", e.target.value)} rows={3} placeholder="Bien visé, quartier, calendrier, points d'attention…" className="w-full rounded-xl px-3 py-2.5 text-[13px] focus:outline-none" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735", resize: "vertical" }} data-nc-al="notes" />
-          </Carte>
+            <div className="text-[11px] mt-3" style={{ color: "rgba(255,255,255,0.7)" }}>
+              {vRefCur ? <span>Grille octobre 2026 pour <b style={{ color: "#fff" }}>{vRefCur.v}</b> : ancien <b style={{ color: "#fff" }}>{fmtN(vRefCur.prix)} €/m²</b>, loyer <b style={{ color: "#fff" }}>{String(vRefCur.loyer).replace(".", ",")} €/m²</b>, neuf {vRefCur.neufSrc === "L" ? <b style={{ color: "#fff" }}>{fmtN(vRefCur.neuf)} €/m² (prix promoteurs)</b> : <b style={{ color: "#fde68a" }}>≈ {fmtN(vRefCur.neuf)} €/m², estimation</b>}. Indicatif : quartier, étage, exposition font varier le m² — ajustez avec les curseurs.</span> : <span>Commune hors grille : réglez le prix au m² avec les curseurs, le loyer en dessous.</span>}
+            </div>
+            {vRefCur && vRefCur.neufSrc !== "L" ? <div className="mt-2 text-[11px] font-bold rounded-lg px-3 py-1.5" style={{ background: "rgba(253,230,138,0.12)", border: "1px solid rgba(253,230,138,0.4)", color: "#fde68a" }} data-nc-al-neuf-estime="1">Point faible : pas de prix promoteur connu pour {vRefCur.v}, le neuf est une estimation (ancien × 1,3).</div> : null}
+          </div>
+
+          {/* ——— Prix d achat : deux tuiles avec curseur au m² ——— */}
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <NcAlTuilePrix P={P} set={set} surface={P.surface} onM2={setM2} titre="Acheter dans l'ancien" c="#0f766e" k="prixAncien" m2={m2Ancien} src={vRefCur ? "grille " + vRefCur.v + " : " + fmtN(vRefCur.prix) + " €/m²" : "prix à régler"}>
+              <div className="mt-3">
+                <div className="flex items-baseline justify-between mb-1"><span className="text-[10px] uppercase tracking-[0.14em] font-extrabold text-stone-500">Travaux à l'entrée</span><span className="tabular-nums font-extrabold text-[15px]" style={{ color: "#1d2735" }}>{fmtN(nbP(P.travaux))} <span className="text-[10.5px] text-stone-500 font-semibold">€</span></span></div>
+                <input type="range" min={0} max={100000} step={1000} value={Math.max(0, Math.min(100000, nbP(P.travaux)))} onChange={e => set("travaux", fmtN(parseInt(e.target.value, 10)))} className="w-full" style={{ accentColor: "#0f766e" }} data-nc-al-curseur="travaux" />
+              </div>
+            </NcAlTuilePrix>
+            <NcAlTuilePrix P={P} set={set} surface={P.surface} onM2={setM2} titre="Acheter dans le neuf" c="#6d28d9" k="prixNeuf" m2={m2Neuf} estime={!!(vRefCur && vRefCur.neufSrc !== "L")} src={vRefCur ? (vRefCur.neufSrc === "L" ? "Logisneuf : " + fmtN(vRefCur.neuf) + " €/m² (prix promoteurs)" : "estimation ancien × 1,3 — à vérifier sur un programme réel") : "prix à régler"}>
+              <div className="mt-3">
+                <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold text-stone-500 mb-1">Primo-accédant</div>
+                <NcAlChips2 P={P} set={set} k="primo" opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }]} />
+                <div className="text-[10.5px] text-stone-500 mt-1">Droits de mutation 5,81 % au lieu de 6,32 % dans l'ancien.</div>
+              </div>
+            </NcAlTuilePrix>
+          </div>
+
+          {/* ——— Louer un bien similaire ——— */}
+          <div className="rounded-2xl p-4 mb-3" style={{ background: "linear-gradient(160deg, #ffffff, #fafaf9)", border: "1.5px solid #e7e5e4", borderTop: "5px solid #1d2735" }}>
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#1d2735" }}>Louer un bien similaire, même commune</div>
+            <div className="grid gap-4 mt-1" style={{ gridTemplateColumns: "1fr 1.3fr" }}>
+              <div className="flex items-baseline gap-2">
+                <input type="text" inputMode="decimal" value={P.loyer} onChange={e => set("loyer", e.target.value)} className="num font-extrabold bg-transparent focus:outline-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735", width: "60%", borderBottom: "1.5px solid #d6d3d1" }} data-nc-al="loyer" />
+                <span className="text-[12px] text-stone-500">€/mois, charges comprises</span>
+              </div>
+              <div className="flex flex-col justify-end">
+                <input type="range" min={200} max={5000} step={10} value={Math.max(200, Math.min(5000, nbP(P.loyer)))} onChange={e => set("loyer", String(parseInt(e.target.value, 10)))} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur="loyer" />
+                <div className="text-[10.5px] text-stone-500 mt-1">{P.loyerDossier ? "Loyer actuel du dossier. " : ""}{vRefCur ? "Grille " + vRefCur.v + " : " + fmtN(vRefCur.loyer * surfN) + " €/mois pour " + P.surface + " m² (" + String(vRefCur.loyer).replace(".", ",") + " €/m²)." : ""}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* ——— Commentaires ——— */}
+          <div className="rounded-2xl p-4 mb-3" style={{ background: "#fff", border: "1.5px solid #e7e5e4" }}>
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: "#b8924e" }}>Commentaires sur le projet</div>
+            <textarea value={P.notes} onChange={e => set("notes", e.target.value)} rows={2} placeholder="Bien visé, quartier, calendrier, points d'attention…" className="w-full rounded-xl px-3 py-2.5 text-[13px] focus:outline-none" style={{ background: "#fafaf9", border: "1px solid #e7e5e4", color: "#1d2735", resize: "vertical" }} data-nc-al="notes" />
+          </div>
         </div>
       );
       const ecran2 = (
