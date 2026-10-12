@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v275 (10/10 : RETOUR A L ETUDE DEPUIS LE SIMULATEUR. Le CGP : « lorsque j arrive sur la simulation, il faudrait que je puisse revenir en arriere plutot que sortir definitivement d ou j etais ». Quand la simulation est lancee depuis l onglet Simulation de l etude, une barre « Retour a l etude patrimoniale · onglet Simulation » apparait sous le fil d etapes ; elle rouvre la fenetre d audit directement a l etape 8 sur le volet Simulation (dossier deja enregistre, memes cartes, autres onglets accessibles). Mecanique : App.retourAudit / reouvrirAudit → Step1Identite (prop reouvrir, useEffect) → NouveauClientModal (voletInitial, etapeInitiale). t_simu_cartes etendu. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v277 (10/10 : COHERENCE DE L EPARGNE, MODE PRESENTATION DIRECT, PRIME + 100 €. (1) Le CGP : « tu demandes a ce client d augmenter son epargne alors meme qu elle est superieure a la moyenne des Francais ». Les 18 % INSEE comprennent le capital rembourse sur les credits ; la part financiere est de 9 %. Les versements programmes se comparent donc a 9 % (NC_EPARGNE_FIN_FR) et l effort total a 18 % ; on ne demande d augmenter (objectif recommande, axe, question du pop-up) que si les DEUX sont sous la moyenne (ncEpargneSousMoyenne). Le point fort « Discipline d epargne » dit le pourcentage. (2) Etape 4 : bouton « Mode presentation → » qui ouvre directement le plein ecran client de l etape 5 ; le bouton « Presentation client » des cartes de l onglet Simulation fait de meme (presAuto). (3) Prime periodique majoree : + 100 € exactement par defaut (plus d arrondi a 50). t_simu_cartes etendu, constantes ajoutees au harnais. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v276 (10/10 : ORDRE UNIQUE DES PASTILLES. Le CGP : « sur une ligne tu as le oui a gauche et le non a droite et la ligne du dessous c est l inverse ». Regle : Oui · Non · Ne sait pas, toujours dans cet ordre, partout. NcOuiNon et les pastilles handicap passaient Non avant Oui : corriges. « Je ne sais pas » (quotites, assurance de pret) devient « Ne sait pas » comme ailleurs. verif.sh refuse desormais toute pastille dans le mauvais ordre. 35/35.)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v275 (10/10 : RETOUR A L ETUDE DEPUIS LE SIMULATEUR. Le CGP : « lorsque j arrive sur la simulation, il faudrait que je puisse revenir en arriere plutot que sortir definitivement d ou j etais ». Quand la simulation est lancee depuis l onglet Simulation de l etude, une barre « Retour a l etude patrimoniale · onglet Simulation » apparait sous le fil d etapes ; elle rouvre la fenetre d audit directement a l etape 8 sur le volet Simulation (dossier deja enregistre, memes cartes, autres onglets accessibles). Mecanique : App.retourAudit / reouvrirAudit → Step1Identite (prop reouvrir, useEffect) → NouveauClientModal (voletInitial, etapeInitiale). t_simu_cartes etendu. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v274 (09/10 : PASSAGE COMPLET DES PUCES — PHRASES COURTES. Le CGP a valide les trente reformulations proposees (points forts et axes de travail du constat) : RP payee, capacite d emprunt (date aout 2026 retiree des hypotheses de taux), conjoint protege, testament, patrimoine diversifie, deux revenus, assurance-vie, precaution, performance long terme, retraite du conjoint, pas d assurance-vie, prevoyance TNS, taux d effort locataire, rattachement / pension alimentaire (huit lignes → trois puces, sans articles), fiscalite subie, conjoint insuffisamment protege, succession / locatif, epargne long terme et tresorerie trop importante (« frappes de plein fouet » → « entierement soumis aux droits de succession »), capacite d endettement, assurance de pret, absence d epargne mensuelle (avec « hypothese de rendement »), preparation retraite, delegation, chiffrage PER TNS. Bancs t_controle, t_exp167, t_rdv1, t_recentre alignes. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v273 (08/10 : L ONGLET SIMULATION OUVRE LE SIMULATEUR AVEC LES CHIFFRES DU DOSSIER. Le CGP : « supprime tout ce qu il y a dans l onglet simulation. Il faut que je trouve un onglet ass vie ou PER selon ce qui a ete preconise ; si je clique, ma simulation commence avec les chiffres evoques dans l outil ; une version imprimable et une presentation client pour chaque placement ». (1) L ancien contenu (problematiques, regimes, forces/axes, protection du conjoint, signature) est MIS DE COTE (NC_MASQUES.simulationAncienne). (2) NcSimuCartes : une carte Assurance-vie, une carte PER si le PER est preconise (jamais a un retraite). Chiffres (reponses du CGP) : versement initial AV = liquidites moins la precaution cible (+ produit d une vente a replacer) ; mensuel = enveloppe, gisements compris si l Analyse R2 a ete ouverte (sinon fourchette declaree), le PER prend la borne basse ; duree = jusqu a la retraite, sinon l horizon de placement ; TMI du PER = etape Fiscalite. (3) Ouvrir la simulation = dossier enregistre, produit et montants poses, etape Produit. Version imprimable = etape Presentation puis PDF. Presentation client = etape Presentation. L hypothese de rendement reste choisie a l etape Allocation. t_simu_cartes (35). 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v272 (08/10 : BUG REDUCTION LOCATIVE + CINQ BLOCS MIS DE COTE. (1) Le CGP : « je mets une reduction d impot pour un bien immobilier et je ne la retrouve absolument pas dans le bloc en bas a droite » — la saisie manuelle (nu au reel, N €/an pendant D ans) n entrait que dans l effort, jamais dans « Impot economise par an » : corrige (reducMoy). (2) Mis de cote, conserves dans le code derriere NC_MASQUES (« garde-le dans un coin ») : « Fiscalite de l operation » et l alerte rouge « il manquera N €/mois », « Vos priorites — a classer ensemble », « Ce que votre capital peut vous verser », le tableau « A N ans, votre situation ». Les bancs historiques reveillent ces blocs (window.__NC_MASQUES) pour continuer a les couvrir ; t_masques (34) verifie le mode livre. 34/34.)','color:#94a3b8');
@@ -2109,7 +2111,13 @@
          d audit directement sur cet onglet (étape 8, volet preco), le dossier étant déjà enregistré. */
       const [retourAudit, setRetourAudit] = useState(null);
       const [reouvrirAudit, setReouvrirAudit] = useState(null);
-      const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setRetourAudit({ volet: "preco" }); setStep(n); };
+      /* 10/10/2026 (CGP) : « à l onglet 4, un bouton pour basculer directement au mode présentation »
+         — le mode présentation plein écran de l étape 5 (ClientWowScreen). Même chose pour le bouton
+         « Présentation client » des cartes de l onglet Simulation. presAuto s efface en quittant l étape 5. */
+      const [presAuto, setPresAuto] = useState(0);
+      useEffect(() => { if (step !== 5 && presAuto) setPresAuto(0); }, [step]);
+      const versPresentation = () => { setPresAuto(Date.now()); setStep(5); };
+      const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setRetourAudit({ volet: "preco" }); if (n === 5 && !print) setPresAuto(Date.now()); setStep(n); };
       const revenirAudit = () => { const r = retourAudit || { volet: "preco" }; setRetourAudit(null); setReouvrirAudit({ volet: r.volet, n: Date.now() }); setStep(1); };
       useEffect(() => {
         if (step === 5 && printAttenduRef.current) { printAttenduRef.current = false; const t = setTimeout(() => handleOpenPrint(), 500); return () => clearTimeout(t); }
@@ -2211,8 +2219,8 @@
             {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} reouvrir={reouvrirAudit} key="s1"/>}
             {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
-            {step === 4 && <Step4Resultats inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
-            {step === 5 && <Step5Presentation inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} autreAV={autreAV} prime={presPrime} setPrime={setPresPrime} comparOn={presComparOn} setComparOn={setPresComparOn} key="s5"/>}
+            {step === 4 && <Step4Resultats onPresenter={versPresentation} inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
+            {step === 5 && <Step5Presentation presInitial={presAuto} inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} autreAV={autreAV} prime={presPrime} setPrime={setPresPrime} comparOn={presComparOn} setComparOn={setPresComparOn} key="s5"/>}
           </main>
 
           <footer className="border-t border-white/10 backdrop-blur py-5 px-6 no-print relative" style={{zIndex: 10, background: 'linear-gradient(0deg, rgba(28, 25, 23, 0.95) 0%, rgba(41, 37, 36, 0.92) 100%)'}}>
@@ -2701,7 +2709,8 @@
     const NcMultiChips = ({ opts, vals, on }) => (
       <div className="flex flex-wrap gap-1.5">{opts.map(o => <NcChip key={o.v} act={(vals||[]).includes(o.v)} on={() => on((vals||[]).includes(o.v) ? vals.filter(x => x !== o.v) : [...(vals||[]), o.v])}>{o.l}</NcChip>)}</div>
     );
-    const NcOuiNon = ({ val, on }) => <NcChips opts={[{v:"non",l:"Non"},{v:"oui",l:"Oui"}]} val={val} on={on} />;
+    /* 10/10/2026 (CGP) : RÈGLE UNIQUE — Oui · Non · Ne sait pas, toujours dans cet ordre, partout. */
+    const NcOuiNon = ({ val, on }) => <NcChips opts={[{v:"oui",l:"Oui"},{v:"non",l:"Non"}]} val={val} on={on} />;
     const NcL = ({ children }) => <div className="text-[11px] uppercase tracking-wider font-bold text-stone-500 mb-1.5 mt-3">{children}</div>;
     const NcTxt = ({ v, on, ph, cls = "" }) => (
       <input type="text" value={v} placeholder={ph || ""} onChange={e => on(e.target.value)}
@@ -3269,7 +3278,7 @@
     const NC_ASSUR_RENEG_OPTS = [
       { v: "oui", l: "Oui" },
       { v: "non", l: "Non" },
-      { v: "nsp", l: "Je ne sais pas" },
+      { v: "nsp", l: "Ne sait pas" },
     ];
     const NC_TYPES_AVOIR = [
       { v: "livrets", l: "Livrets", c: "#0369a1", d: "A, LDDS, LEP, CEL" },
@@ -4325,6 +4334,13 @@
     // Taux d'epargne moyen des menages en France (INSEE : 18,3 % du revenu disponible
     // en 2025, 17,9 % debut 2026) — reference pedagogique affichee en synthese.
     const NC_EPARGNE_MOYENNE_FR = 0.18;
+    /* 10/10/2026 (CGP) : « tu demandes à ce client d augmenter son épargne alors même qu elle est
+       supérieure à la moyenne des Français ». Les 18 % INSEE comprennent le capital remboursé
+       sur les crédits ; la part FINANCIÈRE est de 9 %. Les versements programmés (financiers) se
+       comparent donc à 9 %, et l effort total (versements + capital remboursé) à 18 %. On ne
+       demande d augmenter que si les DEUX repères sont sous la moyenne. */
+    const NC_EPARGNE_FIN_FR = 0.09;
+    const ncEpargneSousMoyenne = (pp, immo, rev) => rev > 0 && (pp || 0) / rev < NC_EPARGNE_FIN_FR && ((pp || 0) + (immo || 0)) / rev < NC_EPARGNE_MOYENNE_FR;
     const NC_BAREME_COLORS = ["#94a3b8", "#0f766e", "#b8924e", "#dc2626", "#7c2d12"];
     // Parts du foyer : 1 (ou 2 en couple) + 0,5 par enfant (1 à partir du 3e),
     // moitié pour la garde alternée ; veuf avec enfant à charge = régime des mariés ;
@@ -5701,7 +5717,7 @@
           : `Apport en numéraire de ${(NC_APPORT_LIB[d.apportInitial] || d.apportInitial)}`;
         forces.push({ t: "Capacité d'épargne déclarée", d: capTxt, puces: apportTxt ? [apportTxt] : [] });
       }
-      if (S.ppMensuels > 0 && (revFoyer <= 0 || S.ppMensuels / revFoyer >= NC_EPARGNE_MOYENNE_FR)) forces.push({ t: "Discipline d'épargne", d: `${eur(S.ppMensuels)} de versements programmés`, puces: ["Participation déjà automatisée"] });
+      if (S.ppMensuels > 0 && (revFoyer <= 0 || S.ppMensuels / revFoyer >= NC_EPARGNE_FIN_FR)) forces.push({ t: "Discipline d'épargne", d: `${eur(S.ppMensuels)} de versements programmés, ${pc(S.ppMensuels / Math.max(1, revFoyer))} de vos revenus`, puces: ["Au-dessus des 9 % d'épargne financière des Français"] });
       // RÈGLE CABINET (28/08) : « Fiscalité déjà optimisée » ne se dit JAMAIS pour un
       // montant symbolique (ex. 360 € face à 22 581 € d'impôt, moins de 2 %) — le
       // point fort exige une économie d'au moins 10 % de l'impôt sans avantage.
@@ -5960,7 +5976,7 @@
         ] });
       // AXE CABINET (27/08) : versements programmés trop faibles au vu des revenus du foyer
       // (repère : 18 % du revenu, moyenne des Français — INSEE).
-      if (S.ppMensuels > 0 && revFoyer > 0 && S.ppMensuels / revFoyer < NC_EPARGNE_MOYENNE_FR) faiblesses.push({ t: "Versements programmés insuffisants au vu de vos revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
+      if (S.ppMensuels > 0 && revFoyer > 0 && ncEpargneSousMoyenne(S.ppMensuels, epargneImmo, revFoyer)) faiblesses.push({ t: "Versements programmés insuffisants au vu de vos revenus", d: `${eur(S.ppMensuels)} par mois pour ${eur(revFoyer)} de revenus, soit ${pc(S.ppMensuels / revFoyer)}`,
         /* 14/09/2026 (CGP) : préciser — 18 % du revenu épargnés en moyenne, DONT 9 % en
            épargne financière (le reste est le remboursement du capital des crédits). */
         puces: ["Moyenne des Français : 18 % des revenus, dont 9 % en épargne financière"] });
@@ -6120,10 +6136,10 @@
            immobilière — il entre dans l'effort d'épargne. */
         const effortM = (S.ppMensuels || 0) + epargneImmo;
         const pctEffort = revFoyer > 0 ? effortM / revFoyer : null;
-        if (!foyerRetraite && veutEpargner && pctEffort != null && pctEffort < NC_EPARGNE_MOYENNE_FR) {
-          /* 21/09/2026 (CGP) : « rajoute 9 % en financier sur 18 % au total ». Même
-             repère que le bloc « Votre épargne mensuelle actuelle » (INSEE). */
-          conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
+        if (!foyerRetraite && veutEpargner && ncEpargneSousMoyenne(S.ppMensuels, epargneImmo, revFoyer)) {
+          /* 21/09/2026 (CGP) : « rajoute 9 % en financier sur 18 % au total ». 10/10/2026 : on ne
+             le dit QUE si le financier est sous 9 % ET le total sous 18 %. */
+          conseils.push(`Augmenter votre épargne mensuelle, actuellement à ${effortM > 0 ? pc(pctEffort) : "0 %"} contre 18 % en moyenne pour les Français, dont 9 % en épargne financière`);
         }
         // 2. Capacité d'endettement disponible non utilisée (même seuil que le point fort).
         /* 23/09/2026 (CGP) : à 70 ans, plus d'objectif ni de préconisation d'emprunt. */
@@ -6347,9 +6363,9 @@
         const qui = enCouple && d.conjointQ === "oui" ? "Le foyer" : (d.civilite === "Mme" ? "Madame" : "Monsieur");
         /* dossier recentré (projet RP / crédits, capacité < 80 000 €) : les objectifs sont fixés
            d'avance (PER + AV + délégation) — pas de question d'épargne à poser. */
-        if (!foyerRetraite && !recentre && pctE != null && pctE < NC_EPARGNE_MOYENNE_FR && ENT.epargneMensuelle == null)
+        if (!foyerRetraite && !recentre && ncEpargneSousMoyenne(S.ppMensuels, epargneImmo, revFoyer) && ENT.epargneMensuelle == null)
           entretien.push({ cle: "epargneMensuelle", q: `${qui} souhaite-t-${enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il"} augmenter son épargne mensuelle ?`,
-            aide: `Épargne actuelle : ${effM > 0 ? pc(pctE) : "0 %"} des revenus (moyenne des Français : 18 %). Sur « non », le document ne demandera pas d'épargner davantage.` });
+            aide: `Épargne actuelle : ${effM > 0 ? pc(pctE) : "0 %"} des revenus, dont ${pc((S.ppMensuels || 0) / revFoyer)} en financier (moyenne des Français : 18 %, dont 9 % en financier). Sur « non », le document ne demandera pas d'épargner davantage.` });
         const elle = enCouple && d.conjointQ === "oui" ? "il" : d.civilite === "Mme" ? "elle" : "il";
         if (courtTermeM >= 50000 && !projetRPsyn && ENT.liquidites == null)
           entretien.push({ cle: "liquidites", q: `${qui} souhaite-t-${elle} faire travailler ses ${eur(courtTermeM)} de liquidités ?`,
@@ -9446,7 +9462,7 @@
         { v: "50_50", l: "50 / 50" },
         { v: "70_30", l: "70 / 30" },
         { v: "30_70", l: "30 / 70" },
-        { v: "nsp", l: "Je ne sais pas" },
+        { v: "nsp", l: "Ne sait pas" },
       ];
       // Banques déjà citées dans le dossier (banque principale, conjoint, crédits) :
       // proposées en pastilles partout où une banque est demandée — plus de re-saisie.
@@ -10841,7 +10857,7 @@
                         {/* Handicap — ouvre droit à une demi-part supplémentaire (art. 195-2 CGI) */}
                         <div className="mt-2 flex items-center gap-3 flex-wrap">
                           <span className="text-[11px] font-semibold text-stone-600">Situation de handicap ?</span>
-                          <Chips opts={[{v:"non",l:"Non"},{v:"oui",l:"Oui"}]} val={e.handicap || "non"} on={v => setList("enfants", e.id, "handicap", v)} />
+                          <Chips opts={[{v:"oui",l:"Oui"},{v:"non",l:"Non"}]} val={e.handicap || "non"} on={v => setList("enfants", e.id, "handicap", v)} />
                           {e.handicap === "oui" && (
                             <span className="text-[10.5px] font-bold" style={{ color: "var(--nc-accent, #6d28d9)" }}>
                               + {e.charge === "alternee" ? "0,25" : "0,5"} part fiscale — carte mobilité inclusion « invalidité » (art. 195-2 CGI)
@@ -16536,7 +16552,7 @@
     // ============================================================
     // STEP 4 — RÉSULTATS — COLONNES PREMIUM
     // ============================================================
-    function Step4Resultats({ inputs, setInputs, sim, scenarioLvl, setScenarioLvl, scenarios, openBuilder, removeScen, loadScen, upd, autreAV, setAutreAV }) {
+    function Step4Resultats({ inputs, setInputs, sim, scenarioLvl, setScenarioLvl, scenarios, openBuilder, removeScen, loadScen, upd, autreAV, setAutreAV, onPresenter }) {
       // Pour Capi PM (personne morale), le comparateur est un "Compte à terme" entreprise, pas un livret particulier
       const isCapiProduit = inputs.produit === "capi";
       const livretNom = isCapiProduit ? "Compte à terme" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret");
@@ -16875,6 +16891,14 @@
             <div className="text-[10px] tracking-widest font-semibold text-red-600 uppercase mb-1.5">Étape 4 sur 4</div>
             <h1 className="text-xl md:text-2xl font-bold text-stone-900 tracking-tightest">Comparaison des solutions</h1>
             <p className="mt-1.5 text-[13px] text-stone-500">Le {isCapiProduit ? "compte à terme" : "livret"} reste fixé. Ajoutez des scénarios pour comparer plusieurs allocations côte-à-côte.</p>
+            {/* 10/10/2026 (CGP) : « à l onglet 4, un bouton pour basculer directement au mode présentation » */}
+            {onPresenter ? (
+              <button type="button" onClick={onPresenter} data-nc-vers-presentation="1"
+                className="mt-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12px] font-bold text-white transition hover:brightness-110"
+                style={{ background: "#1d2735" }}>
+                Mode présentation →
+              </button>
+            ) : null}
           </div>
 
           {/* Bandeau rappel des hypothèses — sticky permanent. Chaque ligne (base + scénarios) a le même format pour faciliter la comparaison */}
@@ -17946,7 +17970,7 @@
               {/* Bloc 1 — Comparatif prime périodique */}
               <div className="inline-flex items-center gap-3 rounded-xl px-4 py-3 transition" style={comparOn ? { background: "rgba(184,146,78,0.12)", border: `1.5px solid ${WOW_GOLD}` } : { background: "rgba(255,255,255,0.62)", border: "1px solid rgba(29,39,53,0.15)" }}>
                 <label className="inline-flex items-center gap-2.5 cursor-pointer select-none">
-                  <input type="checkbox" checked={comparOn} onChange={e => { setComparOn(e.target.checked); if (e.target.checked && Math.round(prime) === Math.round(baseMensuel)) setPrime(Math.round((baseMensuel + 100) / 50) * 50); }} className="w-4 h-4 cursor-pointer" style={{ accentColor: WOW_GOLD }} />
+                  <input type="checkbox" checked={comparOn} onChange={e => { setComparOn(e.target.checked); if (e.target.checked && Math.round(prime) === Math.round(baseMensuel)) setPrime(Math.round(baseMensuel) + 100); }} className="w-4 h-4 cursor-pointer" style={{ accentColor: WOW_GOLD }} />
                   <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: comparOn ? WOW_GOLD : WOW_SUB }}>Prime périodique majorée</span>
                 </label>
                 {comparOn && (
@@ -19151,13 +19175,14 @@
     // ============================================================
     // STEP 5 — PRÉSENTATION CLIENT (graphique premium)
     // ============================================================
-    function Step5Presentation({ inputs, sim, scenarios, scenarioLvl, setScenarioLvl, onOpenPrint, autreAV, prime, setPrime, comparOn, setComparOn }) {
+    function Step5Presentation({ inputs, sim, scenarios, scenarioLvl, setScenarioLvl, onOpenPrint, autreAV, prime, setPrime, comparOn, setComparOn, presInitial }) {
       const chartRef = useRef(null);
       const chartInst = useRef(null);
       const isPER_Step5 = inputs.produit === "per";
       const useAutreAV = !isPER_Step5 && inputs.produit !== "capi" && autreAV && autreAV.active;
       const livretNom = isPER_Step5 ? "PER + Réintégration" : (inputs.produit === "capi" ? "Compte à terme" : (useAutreAV ? "Assurance vie client" : (LIVRETS.find(p=>p.id===inputs.livretId)?.nom || "Livret")));
-      const [presOpen, setPresOpen] = useState(false);  // Mode présentation client (plein écran)
+      const [presOpen, setPresOpen] = useState(!!presInitial);  // Mode présentation client (plein écran)
+      useEffect(() => { if (presInitial) setPresOpen(true); }, [presInitial]);
 
       // Compute series and metrics
       const N = Math.round(inputs.dureeAnnees);
