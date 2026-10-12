@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v277 (10/10 : COHERENCE DE L EPARGNE, MODE PRESENTATION DIRECT, PRIME + 100 €. (1) Le CGP : « tu demandes a ce client d augmenter son epargne alors meme qu elle est superieure a la moyenne des Francais ». Les 18 % INSEE comprennent le capital rembourse sur les credits ; la part financiere est de 9 %. Les versements programmes se comparent donc a 9 % (NC_EPARGNE_FIN_FR) et l effort total a 18 % ; on ne demande d augmenter (objectif recommande, axe, question du pop-up) que si les DEUX sont sous la moyenne (ncEpargneSousMoyenne). Le point fort « Discipline d epargne » dit le pourcentage. (2) Etape 4 : bouton « Mode presentation → » qui ouvre directement le plein ecran client de l etape 5 ; le bouton « Presentation client » des cartes de l onglet Simulation fait de meme (presAuto). (3) Prime periodique majoree : + 100 € exactement par defaut (plus d arrondi a 50). t_simu_cartes etendu, constantes ajoutees au harnais. 35/35.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v278 (12/10 : ACHETER OU LOUER SA RESIDENCE PRINCIPALE. Nouvel outil, demande du CGP : « frais de notaire, hypotheque, travaux, taxe fonciere, interets VS location ». Methode des etudes (Meilleurtaux, Arbolyo, Hestia) : patrimoine net annee par annee, acheteur = valeur − CRD − frais de revente, locataire = apport + ecart mensuel places ; point mort. Trois colonnes : NEUF, ANCIEN, LOCATION (ecart place / non place). Hypotheses validees par le CGP : bareme notarial 2026 exact (ancien 6,32 pct, primo 5,81, neuf 0,715 + emoluments), caution par defaut, taxe fonciere ≈ 1 mois de loyer, entretien 1 pct ancien / 0,5 neuf, revalorisation 1 pct, revente 5 pct, IRL 2 pct, placement 5,2 pct fiscalise AV > 8 ans, assurance habitation neutralisee. Ville + typologie + surface proposent prix ancien / neuf et loyer (grille PAP / SeLoger oct. 2026, 38 villes, modifiable). Ligne de sensibilite (revalorisation + 1 pt, placement 3 pct). Carte dans l onglet Simulation pour un client LOCATAIRE (projet RP et loyer repris), bouton a l etape Produit. Version imprimable, presentation client, retour. t_acheter_louer (36). 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v277 (10/10 : COHERENCE DE L EPARGNE, MODE PRESENTATION DIRECT, PRIME + 100 €. (1) Le CGP : « tu demandes a ce client d augmenter son epargne alors meme qu elle est superieure a la moyenne des Francais ». Les 18 % INSEE comprennent le capital rembourse sur les credits ; la part financiere est de 9 %. Les versements programmes se comparent donc a 9 % (NC_EPARGNE_FIN_FR) et l effort total a 18 % ; on ne demande d augmenter (objectif recommande, axe, question du pop-up) que si les DEUX sont sous la moyenne (ncEpargneSousMoyenne). Le point fort « Discipline d epargne » dit le pourcentage. (2) Etape 4 : bouton « Mode presentation → » qui ouvre directement le plein ecran client de l etape 5 ; le bouton « Presentation client » des cartes de l onglet Simulation fait de meme (presAuto). (3) Prime periodique majoree : + 100 € exactement par defaut (plus d arrondi a 50). t_simu_cartes etendu, constantes ajoutees au harnais. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v276 (10/10 : ORDRE UNIQUE DES PASTILLES. Le CGP : « sur une ligne tu as le oui a gauche et le non a droite et la ligne du dessous c est l inverse ». Regle : Oui · Non · Ne sait pas, toujours dans cet ordre, partout. NcOuiNon et les pastilles handicap passaient Non avant Oui : corriges. « Je ne sais pas » (quotites, assurance de pret) devient « Ne sait pas » comme ailleurs. verif.sh refuse desormais toute pastille dans le mauvais ordre. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v275 (10/10 : RETOUR A L ETUDE DEPUIS LE SIMULATEUR. Le CGP : « lorsque j arrive sur la simulation, il faudrait que je puisse revenir en arriere plutot que sortir definitivement d ou j etais ». Quand la simulation est lancee depuis l onglet Simulation de l etude, une barre « Retour a l etude patrimoniale · onglet Simulation » apparait sous le fil d etapes ; elle rouvre la fenetre d audit directement a l etape 8 sur le volet Simulation (dossier deja enregistre, memes cartes, autres onglets accessibles). Mecanique : App.retourAudit / reouvrirAudit → Step1Identite (prop reouvrir, useEffect) → NouveauClientModal (voletInitial, etapeInitiale). t_simu_cartes etendu. 35/35.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v274 (09/10 : PASSAGE COMPLET DES PUCES — PHRASES COURTES. Le CGP a valide les trente reformulations proposees (points forts et axes de travail du constat) : RP payee, capacite d emprunt (date aout 2026 retiree des hypotheses de taux), conjoint protege, testament, patrimoine diversifie, deux revenus, assurance-vie, precaution, performance long terme, retraite du conjoint, pas d assurance-vie, prevoyance TNS, taux d effort locataire, rattachement / pension alimentaire (huit lignes → trois puces, sans articles), fiscalite subie, conjoint insuffisamment protege, succession / locatif, epargne long terme et tresorerie trop importante (« frappes de plein fouet » → « entierement soumis aux droits de succession »), capacite d endettement, assurance de pret, absence d epargne mensuelle (avec « hypothese de rendement »), preparation retraite, delegation, chiffrage PER TNS. Bancs t_controle, t_exp167, t_rdv1, t_recentre alignes. 35/35.)','color:#94a3b8');
@@ -2115,6 +2116,14 @@
          — le mode présentation plein écran de l étape 5 (ClientWowScreen). Même chose pour le bouton
          « Présentation client » des cartes de l onglet Simulation. presAuto s efface en quittant l étape 5. */
       const [presAuto, setPresAuto] = useState(0);
+      /* 12/10/2026 (CGP) : outil « Acheter ou louer sa résidence principale » — plein écran au-dessus
+         de tout (fenêtre d étude comprise) ; « Retour » le ferme et rend la main là où on était. */
+      const [acheterLouer, setAcheterLouer] = useState(null);
+      const ouvrirAcheterLouer = (init) => {
+        let a = null;
+        try { if (inputs.audit) { const nS = ncSynthese(inputs.audit); a = nS && nS.simu ? nS.simu.acheterLouer : null; } } catch (e) { a = null; }
+        setAcheterLouer(init || (a ? { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux } : { ville: (inputs.audit && inputs.audit.ville) || "" }));
+      };
       useEffect(() => { if (step !== 5 && presAuto) setPresAuto(0); }, [step]);
       const versPresentation = () => { setPresAuto(Date.now()); setStep(5); };
       const simulerDepuisAudit = (n, print) => { printAttenduRef.current = !!print; setRetourAudit({ volet: "preco" }); if (n === 5 && !print) setPresAuto(Date.now()); setStep(n); };
@@ -2216,8 +2225,8 @@
           </div>
 
           <main className="flex-1 py-12 px-6 relative" style={{zIndex: 10}}>
-            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} reouvrir={reouvrirAudit} key="s1"/>}
-            {step === 2 && <Step2Produit inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
+            {step === 1 && <Step1Identite inputs={inputs} upd={upd} clients={clients} onSimuler={simulerDepuisAudit} reouvrir={reouvrirAudit} onAcheterLouer={ouvrirAcheterLouer} key="s1"/>}
+            {step === 2 && <Step2Produit onAcheterLouer={ouvrirAcheterLouer} inputs={inputs} upd={upd} totalVerseBrut={totalVerseBrut} reductionCommerciale={reductionCommerciale} reductionPCT={reductionPCT} fraisAuTarifMax={fraisAuTarifMax} fraisActuels={fraisActuels} addVersementComp={addVersementComp} updVersementComp={updVersementComp} removeVersementComp={removeVersementComp} key="s2"/>}
             {step === 3 && <Step3Allocation inputs={inputs} updAllocItem={updAllocItem} addAllocItem={addAllocItem} removeAllocItem={removeAllocItem} changeAllocType={changeAllocType} sim={sim} totalP={totalP} key="s3"/>}
             {step === 4 && <Step4Resultats onPresenter={versPresentation} inputs={inputs} setInputs={setInputs} sim={sim} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} scenarios={scenarios} openBuilder={openBuilder} removeScen={removeScen} loadScen={loadScen} upd={upd} autreAV={autreAV} setAutreAV={setAutreAV} key="s4"/>}
             {step === 5 && <Step5Presentation presInitial={presAuto} inputs={inputs} sim={sim} scenarios={scenarios} scenarioLvl={scenarioLvl} setScenarioLvl={setScenarioLvl} onOpenPrint={handleOpenPrint} autreAV={autreAV} prime={presPrime} setPrime={setPresPrime} comparOn={presComparOn} setComparOn={setPresComparOn} key="s5"/>}
@@ -2235,6 +2244,7 @@
             </div>
           </footer>
 
+          {acheterLouer && <NcAcheterLouer init={acheterLouer} onClose={() => setAcheterLouer(null)} />}
           {/* SCENARIO BUILDER (slide-over) */}
           <ScenarioBuilder open={builderOpen} initialInputs={builderInitial} scenariosCount={scenarios.length} onClose={closeBuilder} onSave={saveBuilderScen} />
         </div>
@@ -6406,7 +6416,9 @@
         let venteNet = 0;
         try { if (veutReplacer) venteNet = ncBiensImmo(d).filter(x => x.vente && x.net > 0).reduce((t, x) => t + x.net, 0); } catch (e) {}
         const liquidites = veutPlacer ? Math.max(0, courtTermeM - cibleBasM) : 0;
-        return { per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
+        const pRPal = ncProjetRP(d);
+        const acheterLouer = d.logement === "locataire" ? { locataire: true, loyer: ncInt(d.loyer), ville: d.ville || "", projet: pRPal.chiffre, prix: pRPal.chiffre ? pRPal.budget : 0, apport: pRPal.apport, duree: pRPal.ans, taux: Math.round(pRPal.tx * 10000) / 100, horizon: d.horizon || "" } : null;
+        return { acheterLouer, per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
           courtTermeM, precaCible: cibleBasM, liquidites, venteNet, tmi: F.tmi, age, nbEnf, foyerRetraite };
       })();
       return {
@@ -8582,7 +8594,296 @@
         ], fig: { initial: 0, mensuel: perM, duree, tmi: S.tmi } });
       return cartes;
     };
-    function NcSimuCartes({ syn, figR2, onSimuler }) {
+    /* ═══ 12/10/2026 (CGP) — ACHETER OU LOUER SA RÉSIDENCE PRINCIPALE ═══
+       Méthode des études (Meilleurtaux, Arbolyo, Hestia) : on compare le PATRIMOINE NET à chaque
+       année. Acheteur = valeur du bien − capital restant dû − frais de revente (+ ce qu il place
+       quand son coût mensuel passe sous le loyer). Locataire = apport + écart mensuel placés, nets
+       de fiscalité. Trois colonnes : NEUF, ANCIEN, LOCATION (placée / non placée).
+       Hypothèses validées par le CGP le 12/10 : barème notarial 2026 exact (ancien 6,32 % / primo
+       5,81 % / neuf 0,715 % + émoluments), caution par défaut, taxe foncière ≈ 1 mois de loyer,
+       entretien 1 % ancien / 0,5 % neuf, revalorisation 1 %/an, revente 5 %, IRL 2 %, placement
+       à l hypothèse cabinet 5,2 % fiscalisé AV > 8 ans (24,7 % après abattement), assurance
+       habitation neutralisée (même montant des deux côtés). Travaux comptés pour moitié dans la
+       valeur du bien. Grille de prix / loyers : PAP et SeLoger, octobre 2026 — ordres de grandeur
+       à actualiser, toujours modifiables à l écran. */
+    const NC_AL_VILLES = [
+      { v: "Paris", prix: 9800, neuf: 14500, loyer: 33 }, { v: "Boulogne-Billancourt", prix: 8370, neuf: 11500, loyer: 29 },
+      { v: "Nice", prix: 4890, neuf: 8800, loyer: 20 }, { v: "Cannes", prix: 5790, neuf: 8000, loyer: 19 }, { v: "Aix-en-Provence", prix: 4840, neuf: 6200, loyer: 18 },
+      { v: "Lyon", prix: 4520, neuf: 6150, loyer: 17 }, { v: "Villeurbanne", prix: 3620, neuf: 5000, loyer: 16 }, { v: "Bordeaux", prix: 4180, neuf: 4450, loyer: 17 },
+      { v: "Rennes", prix: 3760, neuf: 4700, loyer: 14 }, { v: "Lille", prix: 3770, neuf: 5130, loyer: 16 }, { v: "Nantes", prix: 3460, neuf: 3990, loyer: 14 },
+      { v: "Montpellier", prix: 3440, neuf: 4170, loyer: 15 }, { v: "Toulouse", prix: 3300, neuf: 4120, loyer: 15 }, { v: "Marseille", prix: 3250, neuf: 4800, loyer: 16 },
+      { v: "Strasbourg", prix: 3200, neuf: 4360, loyer: 15 }, { v: "Angers", prix: 3200, neuf: 4000, loyer: 13 }, { v: "Annecy", prix: 5200, neuf: 6500, loyer: 18 },
+      { v: "Tours", prix: 2900, neuf: 3600, loyer: 13 }, { v: "Toulon", prix: 2740, neuf: 3800, loyer: 15 }, { v: "Dijon", prix: 2730, neuf: 3400, loyer: 13 },
+      { v: "Reims", prix: 2700, neuf: 3400, loyer: 13 }, { v: "Orléans", prix: 2580, neuf: 3200, loyer: 13 }, { v: "Grenoble", prix: 2550, neuf: 3400, loyer: 14 },
+      { v: "Rouen", prix: 2500, neuf: 3300, loyer: 14 }, { v: "Caen", prix: 2500, neuf: 3300, loyer: 14 }, { v: "Nancy", prix: 2320, neuf: 3000, loyer: 13 },
+      { v: "Nîmes", prix: 2210, neuf: 2900, loyer: 12 }, { v: "Le Havre", prix: 2260, neuf: 2900, loyer: 13 }, { v: "Brest", prix: 2210, neuf: 2900, loyer: 12 },
+      { v: "Metz", prix: 2100, neuf: 2800, loyer: 13 }, { v: "Besançon", prix: 2100, neuf: 2800, loyer: 13 }, { v: "Amiens", prix: 2100, neuf: 2800, loyer: 13 },
+      { v: "Le Mans", prix: 2000, neuf: 2600, loyer: 12 }, { v: "Clermont-Ferrand", prix: 1900, neuf: 2600, loyer: 12 }, { v: "Perpignan", prix: 1800, neuf: 2500, loyer: 12 },
+      { v: "Limoges", prix: 1570, neuf: 2200, loyer: 11 }, { v: "Mulhouse", prix: 1220, neuf: 2000, loyer: 11 }, { v: "Saint-Étienne", prix: 1250, neuf: 2100, loyer: 11 },
+    ];
+    const NC_AL_TYPO = [{ v: "T1", m2: 30 }, { v: "T2", m2: 45 }, { v: "T3", m2: 65 }, { v: "T4", m2: 85 }, { v: "T5", m2: 105 }, { v: "Maison", m2: 110 }];
+    /* Frais d acquisition 2026 : DMTO 5 % départemental (4,5 % primo-accédant ou département resté
+       à 4,5 %) + 2,37 % de frais d assiette + 1,20 % communal ; neuf : TPF 0,715 % ; émoluments
+       art. A444-91 (3,870 / 1,596 / 1,064 / 0,799 %) + TVA 20 % ; CSI 0,10 % ; débours ≈ 1 000 €. */
+    function ncFraisAcquisition(prix, opt) {
+      const o = opt || {};
+      const P = Math.max(0, prix || 0);
+      const dmto = o.neuf ? P * 0.00715 : P * (o.primo ? 0.0581 : 0.0632);
+      let emol = 0;
+      const tr = [[6500, 0.0387], [17000, 0.01596], [60000, 0.01064], [Infinity, 0.00799]];
+      let bas = 0;
+      for (const [haut, t] of tr) { if (P > bas) emol += (Math.min(P, haut) - bas) * t; bas = haut; }
+      const emolTTC = emol * 1.2;
+      const csi = Math.max(15, P * 0.001);
+      const debours = 1000;
+      const total = Math.round(dmto + emolTTC + csi + debours);
+      return { total, dmto: Math.round(dmto), emoluments: Math.round(emolTTC), csi: Math.round(csi), debours, taux: P > 0 ? total / P : 0 };
+    }
+    const NC_AL_GARANTIE = { caution: 0.0065, hypotheque: 0.015, ppd: 0.008 };
+    function ncAcheterLouer(P) {
+      const n = (v, d) => { const x = parseFloat(String(v == null ? "" : v).replace(/[\s  €%]/g, "").replace(",", ".")); return isFinite(x) ? x : d; };
+      const surface = n(P.surface, 65), loyer0 = n(P.loyer, 0), apport = n(P.apport, 0);
+      const duree = Math.max(1, Math.round(n(P.duree, 25))), taux = n(P.taux, 4) / 100, assur = n(P.assur, 0.34) / 100;
+      const tf0 = n(P.tf, 0), copro0 = n(P.copro, 0), reval = n(P.reval, 1) / 100, revente = n(P.revente, 5) / 100, irl = n(P.irl, 2) / 100;
+      const tPlac = n(P.tPlac, 5.2) / 100, fisc = n(P.fiscPlac, 24.7) / 100, abatt = n(P.abattement, 4600), tLiv = n(P.tLiv, 1.7) / 100;
+      const gar = NC_AL_GARANTIE[P.garantie] != null ? NC_AL_GARANTIE[P.garantie] : NC_AL_GARANTIE.caution;
+      const ANS = 30, N = ANS * 12;
+      const mPlac = Math.pow(1 + tPlac, 1 / 12) - 1, mLiv = Math.pow(1 + tLiv, 1 / 12) - 1;
+      const netFisc = (cap, verse) => cap - Math.max(0, cap - verse - abatt) * fisc;
+      /* ——— une variante d achat ——— */
+      const achat = (prix, neuf) => {
+        const frais = ncFraisAcquisition(prix, { neuf, primo: P.primo !== "non" });
+        const travaux = neuf ? 0 : n(P.travaux, 0);
+        const entretien = (neuf ? n(P.entretienNeuf, 0.5) : n(P.entretienAncien, 1)) / 100;
+        const total = prix + frais.total + travaux;
+        const emprunt = Math.max(0, total - apport);
+        const garantie = Math.round(emprunt * gar);
+        const emprunt2 = Math.max(0, emprunt + garantie);
+        const i = taux / 12, nM = duree * 12;
+        const mens = emprunt2 > 0 ? (i === 0 ? emprunt2 / nM : emprunt2 * i / (1 - Math.pow(1 + i, -nM))) : 0;
+        const assurM = emprunt2 * assur / 12;
+        const surplus = Math.max(0, apport - total - garantie); /* apport excédentaire : placé */
+        const valBase = prix + 0.5 * travaux;
+        let crd = emprunt2, place = surplus, verse = surplus;
+        const pts = [{ y: 0, pat: Math.round(valBase * (1 - revente) - crd + surplus), coutM: 0 }];
+        let coutAn1 = 0;
+        for (let m = 1; m <= N; m++) {
+          const y = Math.floor((m - 1) / 12);
+          const idx = Math.pow(1 + irl, y);
+          let interet = 0;
+          if (m <= nM && crd > 0) { interet = crd * i; crd = Math.max(0, crd - (mens - interet)); }
+          const coutM = (m <= nM ? mens + assurM : 0) + tf0 * idx / 12 + copro0 * idx + prix * entretien * idx / 12;
+          if (m <= 12) coutAn1 += coutM;
+          const loyerM = loyer0 * idx;
+          const ecart = coutM - loyerM;              /* > 0 : l acheteur paie plus ; < 0 : il place la différence */
+          place = place * (1 + mPlac);
+          if (ecart < 0) { place += -ecart; verse += -ecart; }
+          if (m % 12 === 0) {
+            const yy = m / 12;
+            const val = valBase * Math.pow(1 + reval, yy);
+            pts.push({ y: yy, pat: Math.round(val * (1 - revente) - crd + netFisc(place, verse)), coutM: Math.round(coutM) });
+          }
+        }
+        return { prix, frais, travaux, garantie, emprunt: Math.round(emprunt2), mens: Math.round(mens + assurM), mensHorsAssur: Math.round(mens), coutM1: Math.round(coutAn1 / 12), pts, neuf };
+      };
+      const ancien = achat(n(P.prixAncien, 0), false);
+      const neuf = achat(n(P.prixNeuf, 0), true);
+      /* ——— locataire : écart placé (contre chaque variante) ou non placé ——— */
+      const location = (ref, placeEcart) => {
+        let place = apport, verse = apport, placeNP = apport;
+        const pts = [{ y: 0, pat: Math.round(apport) }];
+        for (let m = 1; m <= N; m++) {
+          const y = Math.floor((m - 1) / 12), idx = Math.pow(1 + irl, y);
+          const coutM = ref.pts.length ? (m <= duree * 12 ? ref.mens : 0) + tf0 * idx / 12 + copro0 * idx + ref.prix * ((ref.neuf ? n(P.entretienNeuf, 0.5) : n(P.entretienAncien, 1)) / 100) * idx / 12 : 0;
+          const ecart = coutM - loyer0 * idx;
+          place = place * (1 + mPlac); placeNP = placeNP * (1 + mLiv);
+          if (placeEcart && ecart > 0) { place += ecart; verse += ecart; }
+          if (m % 12 === 0) pts.push({ y: m / 12, pat: Math.round(placeEcart ? netFisc(place, verse) : placeNP) });
+        }
+        return pts;
+      };
+      const locAncien = location(ancien, true), locNeuf = location(neuf, true), locNP = location(ancien, false);
+      const pointMort = (a, l) => { for (let y = 1; y <= ANS; y++) { if (a[y].pat >= l[y].pat) { let ok = true; for (let z = y; z <= Math.min(ANS, y + 3); z++) if (a[z].pat < l[z].pat) { ok = false; break; } if (ok) return y; } } return null; };
+      return {
+        ancien, neuf, locAncien, locNeuf, locNP, loyer0, surface, apport, duree,
+        pmAncien: ancien.prix > 0 ? pointMort(ancien.pts, locAncien) : null,
+        pmNeuf: neuf.prix > 0 ? pointMort(neuf.pts, locNeuf) : null,
+        pmAncienNP: ancien.prix > 0 ? pointMort(ancien.pts, locNP) : null,
+        pmNeufNP: neuf.prix > 0 ? pointMort(neuf.pts, locNP) : null,
+      };
+    }
+    /* composants HORS du rendu : définis dans le composant, React les remonterait à chaque
+       frappe et le champ perdrait le focus (piège déjà rencontré, étape 5 de verif.sh) */
+    const NcAlIn = ({ P, set, k, w, suf }) => (
+      <span className="inline-flex items-center gap-1">
+        <input type="text" inputMode="decimal" value={P[k]} onChange={e => set(k, e.target.value)} className="num text-right font-extrabold rounded-md px-2 py-1 text-[12px]" style={{ width: w || 84, background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al={k} />
+        {suf ? <span className="text-[10.5px] text-stone-500">{suf}</span> : null}
+      </span>
+    );
+    const NcAlChips = ({ P, set, k, opts }) => (
+      <span className="inline-flex gap-1">{opts.map(o => <button key={o.v} type="button" onClick={() => set(k, o.v)} className="px-2.5 py-1 rounded-full text-[11px] font-bold" style={P[k] === o.v ? { background: "#1d2735", color: "#fff", border: "1px solid #1d2735" } : { background: "#fff", color: "#44403c", border: "1px solid #d6d3d1" }} data-nc-al-chip={k + ":" + o.v}>{o.l}</button>)}</span>
+    );
+    const NcAlRow = ({ l, children, src }) => (
+      <div className="flex items-center justify-between gap-2 py-1.5" style={{ borderBottom: "1px solid #f0ede8", fontSize: 12 }}>
+        <span className="text-stone-700">{l}</span>
+        <span className="flex items-center gap-2">{children}{src ? <span className="text-[9.5px] text-stone-400">{src}</span> : null}</span>
+      </div>
+    );
+    const NcAlK = ({ children }) => <div className="text-[9.5px] uppercase tracking-[0.16em] font-extrabold mt-3 mb-1.5" style={{ color: "#b8924e" }}>{children}</div>;
+    function NcAcheterLouer({ init, onClose }) {
+      const villeInit = (init && init.ville) || "";
+      const vRef = NC_AL_VILLES.find(x => x.v.toLowerCase() === villeInit.toLowerCase()) || null;
+      const typoInit = "T3";
+      const m2Init = (NC_AL_TYPO.find(t => t.v === typoInit) || {}).m2 || 65;
+      const prixInit = init && init.prix > 0 ? init.prix : (vRef ? vRef.prix * m2Init : 250000);
+      const surfInit = init && init.prix > 0 && vRef ? Math.round(init.prix / vRef.prix) : m2Init;
+      const [P, setP] = useState(() => ({
+        ville: vRef ? vRef.v : villeInit, typo: typoInit, surface: String(surfInit),
+        prixAncien: String(Math.round(prixInit)), prixNeuf: String(Math.round(vRef ? vRef.neuf * surfInit : prixInit * 1.25)),
+        loyer: String(init && init.loyer > 0 ? init.loyer : (vRef ? Math.round(vRef.loyer * surfInit) : 1000)),
+        primo: "oui", travaux: "0", apport: String(init && init.apport > 0 ? init.apport : 30000),
+        duree: String(init && init.duree > 0 ? init.duree : 25), taux: String(init && init.taux > 0 ? init.taux : 4).replace(".", ","), assur: "0,34", garantie: "caution",
+        tf: String(init && init.loyer > 0 ? init.loyer : (vRef ? Math.round(vRef.loyer * surfInit) : 1000)), copro: "0", entretienAncien: "1", entretienNeuf: "0,5",
+        reval: "1", revente: "5", irl: "2", tPlac: "5,2", fiscPlac: "24,7", abattement: "4600", tLiv: "1,7",
+        horizon: String(init && init.horizonAns > 0 ? init.horizonAns : 15),
+      }));
+      const [pres, setPres] = useState(false);
+      const set = (k, v) => setP(p => ({ ...p, [k]: v }));
+      /* ville / typologie / surface → prix et loyer proposés (le CGP garde la main : les champs restent libres) */
+      const proposer = (ville, typo, surface) => {
+        const v = NC_AL_VILLES.find(x => x.v === ville); const m2 = parseFloat(String(surface).replace(",", ".")) || 0;
+        setP(p => ({ ...p, ville, typo, surface: String(surface), ...(v && m2 > 0 ? { prixAncien: String(Math.round(v.prix * m2)), prixNeuf: String(Math.round(v.neuf * m2)), loyer: String(Math.round(v.loyer * m2)), tf: String(Math.round(v.loyer * m2)) } : {}) }));
+      };
+      const R = useMemo(() => ncAcheterLouer(P), [P]);
+      /* sensibilité : les deux hypothèses qui font tout (revalorisation du bien, rendement du placement) */
+      const S2 = useMemo(() => ({
+        reval2: ncAcheterLouer({ ...P, reval: String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1) }),
+        plac3: ncAcheterLouer({ ...P, tPlac: "3" }),
+      }), [P]);
+      const eur = (n) => ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(n || 0))) + " €";
+      const sg = (n) => (n >= 0 ? "+ " : "− ") + eur(Math.abs(n));
+      const H = Math.max(1, Math.min(30, Math.round(parseFloat(P.horizon) || 15)));
+      const ansT = [5, 10, 15, 20, 25].filter(y => y <= 30);
+      const at = (pts, y) => (pts[y] || pts[pts.length - 1]).pat;
+      const ecartH = at(R.ancien.pts, H) - at(R.locAncien, H);
+      const pmTxt = (y) => y == null ? "jamais sur 30 ans" : y + " an" + (y > 1 ? "s" : "");
+      /* graphique */
+      const G = (() => {
+        const X0 = 44, X1 = 690, Y0 = 18, Y1 = 196, maxY = Math.max(1, ...[R.ancien.pts, R.neuf.pts, R.locAncien, R.locNP].flatMap(a => a.map(p => p.pat)));
+        const minY = Math.min(0, ...[R.ancien.pts, R.neuf.pts].flatMap(a => a.map(p => p.pat)));
+        const px = (y) => X0 + (X1 - X0) * y / 30, py = (v) => Y1 - (Y1 - Y0) * (v - minY) / (maxY - minY);
+        const path = (pts) => pts.map((p, i) => (i ? "L" : "M") + px(p.y).toFixed(1) + "," + py(p.pat).toFixed(1)).join(" ");
+        return { px, py, path, y0: py(0), minY, maxY };
+      })();
+      const imprimer = () => { document.body.classList.add("nc-al-print"); setTimeout(() => { window.print(); setTimeout(() => document.body.classList.remove("nc-al-print"), 800); }, 150); };
+      const content = (
+        <div className="nc-al-root fixed inset-0 overflow-auto" style={{ zIndex: 2147483500, background: "#ece9e3" }} data-nc-acheter-louer="1">
+          <style>{`@media print { body.nc-al-print > *:not(.nc-al-root) { display: none !important; } body.nc-al-print .nc-al-root { position: static !important; background: #fff !important; } .nc-al-noprint { display: none !important; } }`}</style>
+          <div className="mx-auto bg-white rounded-2xl" style={{ maxWidth: 1240, margin: "18px auto", padding: "22px 28px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <div>
+                <div className="text-[22px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Acheter ou louer sa résidence principale ?</div>
+                <div className="text-[12px] text-stone-500">{pres ? "Patrimoine net année par année : acheter dans le neuf, dans l'ancien, ou rester locataire en plaçant l'apport et l'écart mensuel." : "Patrimoine net à chaque année : neuf, ancien, ou location avec placement de l'apport et de l'écart mensuel. Hypothèses à gauche, résultat à droite."}</div>
+              </div>
+              <div className="flex gap-2 nc-al-noprint">
+                <button type="button" onClick={imprimer} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold text-white" style={{ background: "#1d2735" }} data-nc-al-btn="imprimer">Version imprimable</button>
+                <button type="button" onClick={() => setPres(v => !v)} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold" style={{ border: "1.5px solid #d6d3d1", color: "#44403c" }} data-nc-al-btn="presenter">{pres ? "Revenir aux hypothèses" : "Présentation client"}</button>
+                <button type="button" onClick={onClose} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold" style={{ border: "1.5px solid #d6d3d1", color: "#44403c" }} data-nc-al-btn="retour">← Retour</button>
+              </div>
+            </div>
+            <div className="grid gap-4" style={{ gridTemplateColumns: pres ? "1fr" : "360px 1fr" }}>
+              {!pres && (
+                <div className="rounded-2xl border p-3.5 nc-al-noprint" style={{ borderColor: "#e7e5e4" }}>
+                  <NcAlK>Le bien</NcAlK>
+                  <NcAlRow l="Ville"><select value={P.ville} onChange={e => proposer(e.target.value, P.typo, P.surface)} className="text-[12px] font-bold rounded-md px-2 py-1" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", maxWidth: 170 }} data-nc-al="ville"><option value="">— autre —</option>{NC_AL_VILLES.map(v => <option key={v.v} value={v.v}>{v.v}</option>)}</select></NcAlRow>
+                  <NcAlRow l="Typologie · surface"><select value={P.typo} onChange={e => { const t = NC_AL_TYPO.find(x => x.v === e.target.value); proposer(P.ville, e.target.value, t ? t.m2 : P.surface); }} className="text-[12px] font-bold rounded-md px-2 py-1" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4" }} data-nc-al="typo">{NC_AL_TYPO.map(t => <option key={t.v} value={t.v}>{t.v}</option>)}</select><input type="text" inputMode="decimal" value={P.surface} onChange={e => proposer(P.ville, P.typo, e.target.value)} className="num text-right font-extrabold rounded-md px-2 py-1 text-[12px]" style={{ width: 56, background: "#f5f5f4", border: "1px solid #e7e5e4" }} data-nc-al="surface" /><span className="text-[10.5px] text-stone-500">m²</span></NcAlRow>
+                  <NcAlRow l="Prix ancien" src={P.ville ? "grille oct. 2026" : null}><NcAlIn P={P} set={set} k="prixAncien" w={96} suf="€" /></NcAlRow>
+                  <NcAlRow l="Prix neuf" src={P.ville ? "grille oct. 2026" : null}><NcAlIn P={P} set={set} k="prixNeuf" w={96} suf="€" /></NcAlRow>
+                  <NcAlRow l="Primo-accédant"><NcAlChips P={P} set={set} k="primo" opts={[{ v: "oui", l: "Oui" }, { v: "non", l: "Non" }]} /></NcAlRow>
+                  <NcAlRow l="Frais d'acquisition" src={"ancien " + Math.round(R.ancien.frais.taux * 1000) / 10 + " % · neuf " + Math.round(R.neuf.frais.taux * 1000) / 10 + " %"}><b className="tabular-nums text-[12px]" data-nc-al-frais={R.ancien.frais.total}>{eur(R.ancien.frais.total)} · {eur(R.neuf.frais.total)}</b></NcAlRow>
+                  <NcAlRow l="Travaux à l'entrée (ancien)"><NcAlIn P={P} set={set} k="travaux" w={84} suf="€" /></NcAlRow>
+                  <NcAlK>Le crédit</NcAlK>
+                  <NcAlRow l="Apport"><NcAlIn P={P} set={set} k="apport" w={84} suf="€" /></NcAlRow>
+                  <NcAlRow l="Durée · taux"><NcAlIn P={P} set={set} k="duree" w={44} suf="ans" /><NcAlIn P={P} set={set} k="taux" w={60} suf="%" /></NcAlRow>
+                  <NcAlRow l="Assurance emprunteur"><NcAlIn P={P} set={set} k="assur" w={52} suf="%" /></NcAlRow>
+                  <NcAlRow l="Garantie"><NcAlChips P={P} set={set} k="garantie" opts={[{ v: "caution", l: "Caution" }, { v: "hypotheque", l: "Hypothèque" }, { v: "ppd", l: "PPD" }]} /></NcAlRow>
+                  <NcAlRow l="Mensualité (assurance comprise)" src="ancien · neuf"><b className="tabular-nums text-[12px]" data-nc-al-mens={R.ancien.mens}>{eur(R.ancien.mens)} · {eur(R.neuf.mens)}</b></NcAlRow>
+                  <NcAlK>Coûts du propriétaire</NcAlK>
+                  <NcAlRow l="Taxe foncière" src="≈ 1 mois de loyer"><NcAlIn P={P} set={set} k="tf" w={70} suf="€/an" /></NcAlRow>
+                  <NcAlRow l="Charges copro non récupérables"><NcAlIn P={P} set={set} k="copro" w={60} suf="€/mois" /></NcAlRow>
+                  <NcAlRow l="Entretien ancien · neuf"><NcAlIn P={P} set={set} k="entretienAncien" w={44} suf="%" /><NcAlIn P={P} set={set} k="entretienNeuf" w={44} suf="%/an" /></NcAlRow>
+                  <NcAlRow l="Revalorisation du bien" src="hypothèse"><NcAlIn P={P} set={set} k="reval" w={44} suf="%/an" /></NcAlRow>
+                  <NcAlRow l="Frais de revente"><NcAlIn P={P} set={set} k="revente" w={44} suf="%" /></NcAlRow>
+                  <NcAlK>La location</NcAlK>
+                  <NcAlRow l="Loyer (charges comprises)"><NcAlIn P={P} set={set} k="loyer" w={70} suf="€/mois" /></NcAlRow>
+                  <NcAlRow l="Indexation IRL"><NcAlIn P={P} set={set} k="irl" w={44} suf="%/an" /></NcAlRow>
+                  <NcAlRow l="Placement du locataire" src="hypothèse de rendement"><NcAlIn P={P} set={set} k="tPlac" w={44} suf="%" /></NcAlRow>
+                  <NcAlRow l="Fiscalité du placement" src="AV > 8 ans, après abattement"><NcAlIn P={P} set={set} k="fiscPlac" w={44} suf="%" /></NcAlRow>
+                  <NcAlRow l="Horizon mis en avant"><NcAlIn P={P} set={set} k="horizon" w={44} suf="ans" /></NcAlRow>
+                </div>
+              )}
+              <div>
+                <div className="grid grid-cols-3 gap-3 mb-3">
+                  {[
+                    { n: pmTxt(R.pmAncien), l: "Point mort — ancien", d: "au-delà, acheter dans l'ancien rapporte plus que louer en plaçant à " + P.tPlac + " %", c: "#0f766e", k: "pm-ancien" },
+                    { n: pmTxt(R.pmNeuf), l: "Point mort — neuf", d: "au-delà, acheter dans le neuf rapporte plus que louer en plaçant", c: "#6d28d9", k: "pm-neuf" },
+                    { n: pmTxt(R.pmAncienNP), l: "Si l'écart n'est pas placé", d: "locataire qui consomme la différence (ancien)", c: "#b45309", k: "pm-np" },
+                  ].map(t => (
+                    <div key={t.k} className="rounded-xl border p-3" style={{ borderColor: "#e7e5e4", borderTop: "4px solid " + t.c }} data-nc-al-tuile={t.k}>
+                      <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 30 : 24, color: "#1d2735" }}>{t.n}</div>
+                      <div className="text-[9.5px] uppercase tracking-[0.14em] font-extrabold text-stone-500 mt-0.5">{t.l}</div>
+                      <div className="text-[10.5px] text-stone-600 mt-1">{t.d}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-xl border px-4 py-3 mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1" style={{ borderColor: "#e7e5e4", background: "linear-gradient(135deg,#f5f5f4,#fff)" }} data-nc-al-ecart={ecartH}>
+                  <span className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 22, color: ecartH >= 0 ? "#0f766e" : "#b91c1c" }}>{sg(ecartH)}</span>
+                  <span className="text-[12px] font-bold" style={{ color: "#1d2735" }}>à {H} ans, {ecartH >= 0 ? "en faveur de l'achat dans l'ancien" : "en faveur de la location"}</span>
+                  <span className="text-[10.5px] text-stone-500">face à un locataire qui place à {P.tPlac} % · neuf : {sg(at(R.neuf.pts, H) - at(R.locNeuf, H))}</span>
+                </div>
+                <div className="text-[11px] text-stone-600 mb-3 rounded-lg px-3 py-2" style={{ background: "#fffbeb", border: "1px solid #fde68a" }} data-nc-al-sensib="1">
+                  <b>Sensibilité (ancien)</b> — revalorisation à {String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1).replace(".", ",")} %/an : point mort {pmTxt(S2.reval2.pmAncien)} · placement du locataire à 3 % : point mort {pmTxt(S2.plac3.pmAncien)}. Ce sont ces deux hypothèses qui décident.
+                </div>
+                <div className="flex flex-wrap gap-4 text-[10.5px] text-stone-600 mb-1">
+                  {[["#0f766e", "Achat ancien"], ["#6d28d9", "Achat neuf"], ["#1d2735", "Location, écart placé à " + P.tPlac + " %"], ["#b45309", "Location, écart non placé"]].map(([c, l]) => <span key={l}><i style={{ display: "inline-block", width: 18, height: 3, background: c, verticalAlign: "middle", marginRight: 5 }}></i>{l}</span>)}
+                </div>
+                <svg viewBox="0 0 700 214" style={{ width: "100%", height: pres ? 300 : 220 }}>
+                  <line x1="44" y1={G.y0} x2="690" y2={G.y0} stroke="#d6d3d1" strokeWidth="1" />
+                  {[5, 10, 15, 20, 25, 30].map(y => <g key={y}><line x1={G.px(y)} y1="18" x2={G.px(y)} y2="196" stroke="#f0ede8" strokeDasharray="3 4" /><text x={G.px(y)} y="209" fontSize="9" fill="#a8a29e" textAnchor="middle">{y} ans</text></g>)}
+                  <text x="4" y={G.py(G.maxY) + 4} fontSize="9" fill="#a8a29e">{Math.round(G.maxY / 1000)} k€</text>
+                  <path d={G.path(R.locNP)} fill="none" stroke="#b45309" strokeWidth="2" opacity="0.8" />
+                  <path d={G.path(R.locAncien)} fill="none" stroke="#1d2735" strokeWidth="2.5" />
+                  {R.neuf.prix > 0 ? <path d={G.path(R.neuf.pts)} fill="none" stroke="#6d28d9" strokeWidth="2.5" /> : null}
+                  {R.ancien.prix > 0 ? <path d={G.path(R.ancien.pts)} fill="none" stroke="#0f766e" strokeWidth="3" /> : null}
+                  {R.pmAncien ? <g><circle cx={G.px(R.pmAncien)} cy={G.py(at(R.ancien.pts, R.pmAncien))} r="5" fill="#fff" stroke="#0f766e" strokeWidth="2.5" /><text x={G.px(R.pmAncien) + 8} y={G.py(at(R.ancien.pts, R.pmAncien)) - 7} fontSize="10" fontWeight="800" fill="#0f766e">point mort ancien · {R.pmAncien} ans</text></g> : null}
+                  {R.pmNeuf ? <circle cx={G.px(R.pmNeuf)} cy={G.py(at(R.neuf.pts, R.pmNeuf))} r="5" fill="#fff" stroke="#6d28d9" strokeWidth="2.5" /> : null}
+                </svg>
+                <table className="w-full text-[12px]" style={{ borderCollapse: "collapse" }} data-nc-al-table="1">
+                  <thead><tr>{["À", "Achat ancien", "Achat neuf", "Location, écart placé", "Écart ancien / location", "Écart neuf / location"].map((h, i) => <th key={h} className="py-1.5 px-1.5 text-[9.5px] uppercase tracking-[0.12em] text-stone-500" style={{ textAlign: i ? "right" : "left", borderBottom: "1.5px solid #e7e5e4" }}>{h}</th>)}</tr></thead>
+                  <tbody>
+                    {ansT.map(y => { const e = at(R.ancien.pts, y) - at(R.locAncien, y), eN = at(R.neuf.pts, y) - at(R.locNeuf, y); return (
+                      <tr key={y} data-nc-al-an={y}>
+                        <td className="py-1.5 px-1.5 font-bold" style={{ borderBottom: "1px solid #f0ede8" }}>{y} ans</td>
+                        <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{eur(at(R.ancien.pts, y))}</td>
+                        <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{R.neuf.prix > 0 ? eur(at(R.neuf.pts, y)) : "—"}</td>
+                        <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{eur(at(R.locAncien, y))}</td>
+                        <td className="py-1.5 px-1.5 text-right tabular-nums font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: e >= 0 ? "#0f766e" : "#b91c1c" }} data-nc-al-ecart-an={y}>{sg(e)}</td>
+                        <td className="py-1.5 px-1.5 text-right tabular-nums font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: eN >= 0 ? "#0f766e" : "#b91c1c" }}>{R.neuf.prix > 0 ? sg(eN) : "—"}</td>
+                      </tr>); })}
+                  </tbody>
+                </table>
+                <div className="text-[10.5px] text-stone-500 mt-3 leading-relaxed">
+                  Acheteur = valeur du bien (revalorisée à {P.reval} %/an, travaux comptés pour moitié) − capital restant dû − frais de revente {P.revente} %. Locataire = apport + écart mensuel (mensualité, taxe foncière, charges, entretien − loyer indexé {P.irl} %/an) placés, nets de fiscalité — la colonne « Location » est calculée face à l'ancien, l'écart du neuf face à son propre locataire. Frais d'acquisition et de garantie perdus. « Non placé » : apport sur livret à {P.tLiv} %, écart consommé. Coût mensuel propriétaire la première année : ancien {eur(R.ancien.coutM1)}, neuf {eur(R.neuf.coutM1)}, pour un loyer de {eur(R.loyer0)}. Projection non contractuelle, sur hypothèses de rendement non garanties.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      return ReactDOM.createPortal(content, document.body);
+    }
+
+    function NcSimuCartes({ syn, figR2, onSimuler, onAcheterLouer }) {
       const cartes = ncSimuFigures(syn, figR2);
       const fmt = (n) => new Intl.NumberFormat("fr-FR").format(Math.round(n || 0));
       return (
@@ -8614,12 +8915,32 @@
               </div>
             ))}
           </div>
+          {syn && syn.simu && syn.simu.acheterLouer && onAcheterLouer ? (() => {
+            const a = syn.simu.acheterLouer;
+            const HOR = { "<5": 5, "5-10": 10, "10-15": 15, ">15": 20 };
+            const init = { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, horizonAns: HOR[a.horizon] || 15 };
+            return (
+              <div className="rounded-2xl bg-white border p-4 mt-4" data-nc-simu-carte="acheter-louer" style={{ borderColor: "#e7e5e4", borderTop: "4px solid #b45309", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
+                <div className="text-[9.5px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b45309" }}>Résidence principale</div>
+                <div className="text-[16px] font-bold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", color: "#1d2735" }}>Acheter ou louer sa résidence principale ?</div>
+                <div className="text-[11.5px] text-stone-600 mb-2.5">{a.projet ? "Le projet d'achat du dossier face à la location actuelle : neuf, ancien ou rester locataire." : "Le client est locataire : neuf, ancien ou rester locataire en plaçant."}</div>
+                <table className="w-full text-[12px] mb-3" style={{ borderCollapse: "collapse" }}><tbody>
+                  {[a.projet ? ["Projet d'achat", fmt(a.prix) + " €", "dossier (projet RP)"] : ["Prix", "à saisir", a.ville ? "grille " + a.ville : "grille par ville"], ["Loyer actuel", a.loyer > 0 ? fmt(a.loyer) + " €/mois" : "à saisir", "dossier"], a.projet ? ["Apport · crédit", fmt(a.apport) + " € · " + a.duree + " ans à " + String(a.taux).replace(".", ",") + " %", "projet RP"] : null].filter(Boolean).map((l, i) => (
+                    <tr key={i}><td className="py-1.5 pr-2 text-stone-600" style={{ borderBottom: "1px solid #f0ede8" }}>{l[0]}</td><td className="py-1.5 text-right font-extrabold tabular-nums whitespace-nowrap" style={{ borderBottom: "1px solid #f0ede8", color: "#1d2735" }}>{l[1]}</td><td className="py-1.5 pl-2 text-right text-[10px] text-stone-400" style={{ borderBottom: "1px solid #f0ede8" }}>{l[2]}</td></tr>
+                  ))}
+                </tbody></table>
+                <div className="flex flex-wrap gap-2 nc-syn-noprint">
+                  <button type="button" onClick={() => onAcheterLouer(init)} className="px-3.5 py-2 rounded-lg text-[11.5px] font-extrabold text-white transition hover:brightness-110" style={{ background: "#b45309" }} data-nc-simu-btn="acheter-louer">Ouvrir la comparaison</button>
+                </div>
+              </div>
+            );
+          })() : null}
           <div className="text-[10.5px] text-stone-400 mt-3">L'hypothèse de rendement se choisit à l'étape Allocation du simulateur. Projection non contractuelle, sur hypothèses de rendement non garanties.</div>
         </div>
       );
     }
 
-    function NouveauClientModal({ inputs, upd, onClose, niveauInitial, onSimuler, voletInitial, etapeInitiale }) {
+    function NouveauClientModal({ inputs, upd, onClose, niveauInitial, onSimuler, voletInitial, etapeInitiale, onAcheterLouer }) {
       const [niveau, setNiveau] = useState(niveauInitial || (inputs.audit ? "complet" : "rapide"));
       const [touched, setTouched] = useState(false);
       const [etape, setEtape] = useState(etapeInitiale || 1);
@@ -12504,7 +12825,7 @@
                     <div style={{ height: 3, background: "linear-gradient(90deg, #b8924e, #d8bc86 45%, rgba(216,188,134,0))" }}></div>
                   </div>
 
-                  {syn && simulationCartes && <NcSimuCartes syn={syn} figR2={figR2} onSimuler={simuler} />}
+                  {syn && simulationCartes && <NcSimuCartes syn={syn} figR2={figR2} onSimuler={simuler} onAcheterLouer={onAcheterLouer} />}
                   {!simulationCartes && (<>
                   {syn && synMode === "proj" && <NcProjection onFigures={setFigR2} d={d} synth={synth} syn={syn} ageClient={ageClient} estTNS={estTNS} inputs={inputs} blocObjectifs={rendreObjectifsParticipation({ cartesCabinet: false, chapitre: null })} blocForces={rendreForcesAxes()} />}
                   {syn && synMode !== "proj" && (
@@ -15371,7 +15692,7 @@
     // ============================================================
     // STEP 1 — IDENTITÉ (inchangé)
     // ============================================================
-    function Step1Identite({ inputs, upd, clients, onSimuler, reouvrir }) {
+    function Step1Identite({ inputs, upd, clients, onSimuler, reouvrir, onAcheterLouer }) {
       const [search, setSearch] = useState("");
       const [open, setOpen] = useState(false);
       const [newClientOpen, setNewClientOpen] = useState(false);
@@ -15608,7 +15929,7 @@
             </label>
           </div>
 
-          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} voletInitial={modalVolet} etapeInitiale={modalVolet ? 8 : null} onSimuler={onSimuler} onClose={() => { setNewClientOpen(false); setModalVolet(null); }} />}
+          {ETUDE_PATRIMONIALE_ACTIVE && newClientOpen && <NouveauClientModal inputs={inputs} upd={upd} niveauInitial={modalNiveau} voletInitial={modalVolet} etapeInitiale={modalVolet ? 8 : null} onSimuler={onSimuler} onAcheterLouer={onAcheterLouer} onClose={() => { setNewClientOpen(false); setModalVolet(null); }} />}
         </div>
       );
     }
@@ -15859,7 +16180,7 @@
     // ============================================================
     // STEP 2 — PRODUIT (avec économie en € et %)
     // ============================================================
-    function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp }) {
+    function Step2Produit({ inputs, upd, totalVerseBrut, reductionCommerciale, reductionPCT, fraisAuTarifMax, fraisActuels, addVersementComp, updVersementComp, removeVersementComp, onAcheterLouer }) {
       const [reverseOpen, setReverseOpen] = useState(false);
       // Brouillon de versement complémentaire (validé via bouton avant d'impacter le calcul)
       const [draftCompAnnee, setDraftCompAnnee] = useState('2');
@@ -15898,7 +16219,12 @@
           </div>
 
           <div className="mb-6">
-            <label className="label">Enveloppe</label>
+            <div className="flex items-end justify-between gap-3">
+              <label className="label">Enveloppe</label>
+              {onAcheterLouer && inputs.clientType !== "entreprise" ? (
+                <button type="button" onClick={() => onAcheterLouer(null)} className="mb-2 px-3 py-1.5 rounded-full text-[11px] font-bold transition hover:bg-stone-100" style={{ border: "1.5px solid #d6d3d1", color: "#44403c" }} data-nc-al-ouvrir="1">Acheter ou louer sa RP ? →</button>
+              ) : null}
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
               {PRODUITS.map(p => (
                 <div key={p.id} onClick={()=> { if (dispoFor(p) && p.id !== inputs.produit) { upd("produit", p.id); resetAlloc(); } }}
