@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v280 (12/10 : ACHETER OU LOUER — PARCOURS PAS A PAS. Le CGP : « bien trop complexe, un tableau de bord d avion ; sur tous les autres simulateurs on avance pas a pas ». L outil devient quatre ecrans avec fil d etapes, Precedent / Continuer : (1) le projet — ville, typologie, surface, prix ancien / neuf proposes par la grille, primo-accedant, travaux, loyer d un bien similaire ; (2) le financement — apport, duree (curseur), taux, assurance de pret avec REPARTITION EN QUOTITES (couple : 100/100, 50/50, 70/30…, cout = taux × capital × somme des quotites), garantie, mensualite calculee ; (3) hypotheses du cabinet preremplies ; (4) resultat — phrase de verdict, trois tuiles, sensibilite, courbe, tableau. Presentation client = resultat seul ; version imprimable. Montants formates en milliers. Moteur inchange (quotites ajoutees). t_acheter_louer reecrit sur le parcours. 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v281 (12/10 : ACHETER OU LOUER — cinq retours du CGP. (1) « Autre commune… » ouvre un champ libre (prix et loyer a saisir). (2) Zone de commentaires sur le projet, reprise sur le resultat. (3) Quotites : le couple se lit dans le dossier (ncSynthese().simu.couple / prenoms) ou dans la situation familiale de l etape Identite — six repartitions pour un couple, plus seulement « 100 % Monsieur ». (4) Hypotheses et financement : tout en CURSEURS alignes (NcAlSlide : libelle, valeur modifiable, curseur, aide) — duree, taux, assurance, taxe fonciere, copro, revente, entretien, revalorisation, IRL, placement, fiscalite, horizon. (5) Resultat lisible : tableau ANNEE APRES ANNEE (1 a 10 puis tous les cinq ans, horizon surligne, meilleure solution nommee et en couleur) et, a l horizon, D OU VIENT chaque patrimoine : locataire = apport + ecarts de mensualite verses + gains − fiscalite (loyers payes pour memoire) ; acheteur = valeur − CRD − revente + epargne placee (capital rembourse et depenses pour memoire). Moteur : decomposition exposee dans pts (val, crd, rev, capRemb, placeNet, cumCout / apport, ecarts, gains, impot, cumLoyer). 36/36.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v280 (12/10 : ACHETER OU LOUER — PARCOURS PAS A PAS. Le CGP : « bien trop complexe, un tableau de bord d avion ; sur tous les autres simulateurs on avance pas a pas ». L outil devient quatre ecrans avec fil d etapes, Precedent / Continuer : (1) le projet — ville, typologie, surface, prix ancien / neuf proposes par la grille, primo-accedant, travaux, loyer d un bien similaire ; (2) le financement — apport, duree (curseur), taux, assurance de pret avec REPARTITION EN QUOTITES (couple : 100/100, 50/50, 70/30…, cout = taux × capital × somme des quotites), garantie, mensualite calculee ; (3) hypotheses du cabinet preremplies ; (4) resultat — phrase de verdict, trois tuiles, sensibilite, courbe, tableau. Presentation client = resultat seul ; version imprimable. Montants formates en milliers. Moteur inchange (quotites ajoutees). t_acheter_louer reecrit sur le parcours. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v279 (12/10 : ETAPE PRODUIT — pour un PARTICULIER, la carte « Contrat capi PM » (reservee aux entreprises) est remplacee par la carte « Acheter ou louer sa RP ? » qui ouvre l outil. Le petit bouton d en-tete de la v278 est retire. 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v278 (12/10 : ACHETER OU LOUER SA RESIDENCE PRINCIPALE. Nouvel outil, demande du CGP : « frais de notaire, hypotheque, travaux, taxe fonciere, interets VS location ». Methode des etudes (Meilleurtaux, Arbolyo, Hestia) : patrimoine net annee par annee, acheteur = valeur − CRD − frais de revente, locataire = apport + ecart mensuel places ; point mort. Trois colonnes : NEUF, ANCIEN, LOCATION (ecart place / non place). Hypotheses validees par le CGP : bareme notarial 2026 exact (ancien 6,32 pct, primo 5,81, neuf 0,715 + emoluments), caution par defaut, taxe fonciere ≈ 1 mois de loyer, entretien 1 pct ancien / 0,5 neuf, revalorisation 1 pct, revente 5 pct, IRL 2 pct, placement 5,2 pct fiscalise AV > 8 ans, assurance habitation neutralisee. Ville + typologie + surface proposent prix ancien / neuf et loyer (grille PAP / SeLoger oct. 2026, 38 villes, modifiable). Ligne de sensibilite (revalorisation + 1 pt, placement 3 pct). Carte dans l onglet Simulation pour un client LOCATAIRE (projet RP et loyer repris), bouton a l etape Produit. Version imprimable, presentation client, retour. t_acheter_louer (36). 36/36.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v277 (10/10 : COHERENCE DE L EPARGNE, MODE PRESENTATION DIRECT, PRIME + 100 €. (1) Le CGP : « tu demandes a ce client d augmenter son epargne alors meme qu elle est superieure a la moyenne des Francais ». Les 18 % INSEE comprennent le capital rembourse sur les credits ; la part financiere est de 9 %. Les versements programmes se comparent donc a 9 % (NC_EPARGNE_FIN_FR) et l effort total a 18 % ; on ne demande d augmenter (objectif recommande, axe, question du pop-up) que si les DEUX sont sous la moyenne (ncEpargneSousMoyenne). Le point fort « Discipline d epargne » dit le pourcentage. (2) Etape 4 : bouton « Mode presentation → » qui ouvre directement le plein ecran client de l etape 5 ; le bouton « Presentation client » des cartes de l onglet Simulation fait de meme (presAuto). (3) Prime periodique majoree : + 100 € exactement par defaut (plus d arrondi a 50). t_simu_cartes etendu, constantes ajoutees au harnais. 35/35.)','color:#94a3b8');
@@ -2122,10 +2123,14 @@
          de tout (fenêtre d étude comprise) ; « Retour » le ferme et rend la main là où on était. */
       const [acheterLouer, setAcheterLouer] = useState(null);
       const ouvrirAcheterLouer = (init) => {
-        let a = null;
-        try { if (inputs.audit) { const nS = ncSynthese(inputs.audit); a = nS && nS.simu ? nS.simu.acheterLouer : null; } } catch (e) { a = null; }
+        let a = null, cp = null;
+        try { if (inputs.audit) { const nS = ncSynthese(inputs.audit); a = nS && nS.simu ? nS.simu.acheterLouer : null; cp = nS && nS.simu ? { couple: nS.simu.couple, prenomC: nS.simu.prenomC, prenomJ: nS.simu.prenomJ } : null; } } catch (e) { a = null; cp = null; }
+        /* 12/10/2026 (CGP) : « tu ne proposes que 100 % sur Monsieur même pour un couple » — le couple
+           se lit dans le dossier, sinon dans la situation familiale de l étape Identité. */
+        const couple = cp ? cp.couple : inputs.situationFamiliale === "couple";
+        const prenomC = (cp && cp.prenomC) || inputs.clientPrenom || "Monsieur", prenomJ = (cp && cp.prenomJ) || "Madame";
         const nom = `${inputs.clientNom || ""} ${inputs.clientPrenom || ""}`.trim();
-        setAcheterLouer(init || (a ? { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, couple: a.couple, prenomC: a.prenomC, prenomJ: a.prenomJ, nom } : { ville: (inputs.audit && inputs.audit.ville) || "", nom }));
+        setAcheterLouer(init || (a ? { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, couple, prenomC, prenomJ, nom } : { ville: (inputs.audit && inputs.audit.ville) || "", couple, prenomC, prenomJ, nom }));
       };
       useEffect(() => { if (step !== 5 && presAuto) setPresAuto(0); }, [step]);
       const versPresentation = () => { setPresAuto(Date.now()); setStep(5); };
@@ -6421,7 +6426,7 @@
         const liquidites = veutPlacer ? Math.max(0, courtTermeM - cibleBasM) : 0;
         const pRPal = ncProjetRP(d);
         const acheterLouer = d.logement === "locataire" ? { locataire: true, loyer: ncInt(d.loyer), ville: d.ville || "", couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", projet: pRPal.chiffre, prix: pRPal.chiffre ? pRPal.budget : 0, apport: pRPal.apport, duree: pRPal.ans, taux: Math.round(pRPal.tx * 10000) / 100, horizon: d.horizon || "" } : null;
-        return { acheterLouer, per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
+        return { acheterLouer, couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
           courtTermeM, precaCible: cibleBasM, liquidites, venteNet, tmi: F.tmi, age, nbEnf, foyerRetraite };
       })();
       return {
@@ -8671,7 +8676,8 @@
         const surplus = Math.max(0, apport - total - garantie); /* apport excédentaire : placé */
         const valBase = prix + 0.5 * travaux;
         let crd = emprunt2, place = surplus, verse = surplus;
-        const pts = [{ y: 0, pat: Math.round(valBase * (1 - revente) - crd + surplus), coutM: 0 }];
+        const pts = [{ y: 0, pat: Math.round(valBase * (1 - revente) - crd + surplus), coutM: 0, val: Math.round(valBase), crd: Math.round(crd), rev: Math.round(valBase * revente), capRemb: 0, placeNet: Math.round(surplus), cumCout: 0 }];
+        let cumCout = 0;
         let coutAn1 = 0;
         for (let m = 1; m <= N; m++) {
           const y = Math.floor((m - 1) / 12);
@@ -8680,6 +8686,7 @@
           if (m <= nM && crd > 0) { interet = crd * i; crd = Math.max(0, crd - (mens - interet)); }
           const coutM = (m <= nM ? mens + assurM : 0) + tf0 * idx / 12 + copro0 * idx + prix * entretien * idx / 12;
           if (m <= 12) coutAn1 += coutM;
+          cumCout += coutM;
           const loyerM = loyer0 * idx;
           const ecart = coutM - loyerM;              /* > 0 : l acheteur paie plus ; < 0 : il place la différence */
           place = place * (1 + mPlac);
@@ -8687,7 +8694,8 @@
           if (m % 12 === 0) {
             const yy = m / 12;
             const val = valBase * Math.pow(1 + reval, yy);
-            pts.push({ y: yy, pat: Math.round(val * (1 - revente) - crd + netFisc(place, verse)), coutM: Math.round(coutM) });
+            pts.push({ y: yy, pat: Math.round(val * (1 - revente) - crd + netFisc(place, verse)), coutM: Math.round(coutM),
+              val: Math.round(val), crd: Math.round(crd), rev: Math.round(val * revente), capRemb: Math.round(emprunt2 - crd), placeNet: Math.round(netFisc(place, verse)), cumCout: Math.round(cumCout) });
           }
         }
         return { prix, frais, travaux, garantie, emprunt: Math.round(emprunt2), mens: Math.round(mens + assurM), mensHorsAssur: Math.round(mens), coutM1: Math.round(coutAn1 / 12), pts, neuf };
@@ -8697,14 +8705,17 @@
       /* ——— locataire : écart placé (contre chaque variante) ou non placé ——— */
       const location = (ref, placeEcart) => {
         let place = apport, verse = apport, placeNP = apport;
-        const pts = [{ y: 0, pat: Math.round(apport) }];
+        const pts = [{ y: 0, pat: Math.round(apport), apport: Math.round(apport), ecarts: 0, gains: 0, impot: 0, cumLoyer: 0 }];
+        let cumLoyer = 0;
         for (let m = 1; m <= N; m++) {
           const y = Math.floor((m - 1) / 12), idx = Math.pow(1 + irl, y);
           const coutM = ref.pts.length ? (m <= duree * 12 ? ref.mens : 0) + tf0 * idx / 12 + copro0 * idx + ref.prix * ((ref.neuf ? n(P.entretienNeuf, 0.5) : n(P.entretienAncien, 1)) / 100) * idx / 12 : 0;
           const ecart = coutM - loyer0 * idx;
+          cumLoyer += loyer0 * idx;
           place = place * (1 + mPlac); placeNP = placeNP * (1 + mLiv);
           if (placeEcart && ecart > 0) { place += ecart; verse += ecart; }
-          if (m % 12 === 0) pts.push({ y: m / 12, pat: Math.round(placeEcart ? netFisc(place, verse) : placeNP) });
+          if (m % 12 === 0) pts.push({ y: m / 12, pat: Math.round(placeEcart ? netFisc(place, verse) : placeNP),
+            apport: Math.round(apport), ecarts: Math.round(verse - apport), gains: Math.round(place - verse), impot: Math.round(place - netFisc(place, verse)), cumLoyer: Math.round(cumLoyer) });
         }
         return pts;
       };
@@ -8749,6 +8760,26 @@
       <div className="flex flex-wrap gap-2">{opts.map(o => <button key={o.v} type="button" onClick={() => set(k, o.v)} className="px-3.5 py-2 rounded-full text-[12px] font-bold transition" style={P[k] === o.v ? { background: "#1d2735", color: "#fff", border: "1.5px solid #1d2735" } : { background: "#fff", color: "#44403c", border: "1.5px solid #d6d3d1" }} data-nc-al-chip={k + ":" + o.v}>{o.l}</button>)}</div>
     );
     const NcAlCarte = ({ children }) => <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }}>{children}</div>;
+    /* 12/10/2026 (CGP) : « plus de curseurs, plus facile, plus rapide, plus lisible » — un libellé, une
+       valeur modifiable, un curseur ; même hauteur partout pour que les champs s alignent. */
+    const NcAlSlide = ({ P, set, k, l, min, max, step, suf, aide }) => {
+      const v = parseFloat(String(P[k]).replace(/[\s\u00a0\u202f]/g, "").replace(",", ".")); const val = isFinite(v) ? v : min;
+      const dec = String(step).includes(".") ? String(step).split(".")[1].length : 0;
+      const fmt = (x) => dec ? String(Math.round(x * Math.pow(10, dec)) / Math.pow(10, dec)).replace(".", ",") : new Intl.NumberFormat("fr-FR").format(Math.round(x));
+      return (
+        <div className="flex flex-col" data-nc-al-slide={k}>
+          <div className="flex items-end justify-between gap-2 mb-1" style={{ minHeight: 30 }}>
+            <span className="text-[10px] uppercase tracking-[0.14em] font-extrabold text-stone-500 leading-tight">{l}</span>
+            <span className="flex items-baseline gap-1 whitespace-nowrap">
+              <input type="text" inputMode="decimal" value={P[k]} onChange={e => set(k, e.target.value)} onBlur={e => { const x = parseFloat(String(e.target.value).replace(/[\s\u00a0\u202f]/g, "").replace(",", ".")); if (isFinite(x)) set(k, fmt(x)); }} className="num text-right font-extrabold bg-transparent focus:outline-none text-[17px]" style={{ width: 78, color: "#1d2735", borderBottom: "1.5px solid #d6d3d1" }} data-nc-al={k} />
+              <span className="text-[11px] text-stone-500">{suf}</span>
+            </span>
+          </div>
+          <input type="range" min={min} max={max} step={step} value={Math.max(min, Math.min(max, val))} onChange={e => set(k, fmt(parseFloat(e.target.value)))} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur={k} />
+          {aide ? <div className="text-[10px] text-stone-400 mt-0.5 leading-snug">{aide}</div> : null}
+        </div>
+      );
+    };
     const NcAlHint = ({ children }) => <div className="text-[11.5px] text-stone-500 mt-2 leading-relaxed">{children}</div>;
     function NcAcheterLouer({ init, onClose }) {
       const villeInit = (init && init.ville) || "";
@@ -8766,7 +8797,7 @@
         tf: String(init && init.loyer > 0 ? init.loyer : (vRef ? Math.round(vRef.loyer * surfInit) : 1000)), copro: "0", entretienAncien: "1", entretienNeuf: "0,5",
         reval: "1", revente: "5", irl: "2", tPlac: "5,2", fiscPlac: "24,7", abattement: "4600", tLiv: "1,7",
         horizon: String(init && init.horizonAns > 0 ? init.horizonAns : 15),
-        quotites: init && init.couple ? "100_100" : "100_0",
+        quotites: init && init.couple ? "100_100" : "100_0", notes: "",
       }));
       const couple = !!(init && init.couple);
       const pC = (init && init.prenomC) || "Monsieur", pJ = (init && init.prenomJ) || "Madame";
@@ -8783,6 +8814,7 @@
         setP(p => ({ ...p, ville, typo, surface: String(surface), ...(v && m2 > 0 ? { prixAncien: new Intl.NumberFormat("fr-FR").format(Math.round(v.prix * m2)), prixNeuf: new Intl.NumberFormat("fr-FR").format(Math.round(v.neuf * m2)), tf: String(Math.round(v.loyer * m2)), ...(p.loyerDossier ? {} : { loyer: String(Math.round(v.loyer * m2)) }) } : {}) }));
       };
       const R = useMemo(() => ncAcheterLouer(P), [P]);
+      try { window.__ncAlR = R; } catch (e) {} /* lu par le banc t_acheter_louer */
       const S2 = useMemo(() => ({
         reval2: ncAcheterLouer({ ...P, reval: String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1) }),
         plac3: ncAcheterLouer({ ...P, tPlac: "3" }),
@@ -8851,21 +8883,85 @@
               {R.pmAncien ? <g><circle cx={G.px(R.pmAncien)} cy={G.py(at(R.ancien.pts, R.pmAncien))} r="5" fill="#fff" stroke="#0f766e" strokeWidth="2.5" /><text x={G.px(R.pmAncien) + 8} y={G.py(at(R.ancien.pts, R.pmAncien)) - 7} fontSize="10" fontWeight="800" fill="#0f766e">point mort ancien · {R.pmAncien} ans</text></g> : null}
               {R.pmNeuf ? <circle cx={G.px(R.pmNeuf)} cy={G.py(at(R.neuf.pts, R.pmNeuf))} r="5" fill="#fff" stroke="#6d28d9" strokeWidth="2.5" /> : null}
             </svg>
+          </div>
+          {/* ═══ 12/10/2026 (CGP) : « je veux comprendre, selon les solutions, ce que j ai année après
+              année » — une ligne par année, une colonne par solution, le meilleur en vert ; puis, à
+              l horizon choisi, D OÙ VIENT chaque patrimoine. ═══ */}
+          <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }}>
+            <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: "#b8924e" }}>Année après année — ce que je possède, net de dettes et de frais de revente</div>
             <table className="w-full text-[12px]" style={{ borderCollapse: "collapse" }} data-nc-al-table="1">
-              <thead><tr>{["À", "Achat ancien", "Achat neuf", "Location, écart placé", "Écart ancien / location", "Écart neuf / location"].map((h, i) => <th key={h} className="py-1.5 px-1.5 text-[9.5px] uppercase tracking-[0.12em] text-stone-500" style={{ textAlign: i ? "right" : "left", borderBottom: "1.5px solid #e7e5e4" }}>{h}</th>)}</tr></thead>
+              <thead><tr>
+                <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-stone-500 text-left" style={{ borderBottom: "1.5px solid #e7e5e4" }}>Année</th>
+                <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-right" style={{ borderBottom: "1.5px solid #e7e5e4", color: "#1d2735" }}>Locataire + assurance-vie</th>
+                <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-right" style={{ borderBottom: "1.5px solid #e7e5e4", color: "#0f766e" }}>Achat ancien</th>
+                {R.neuf.prix > 0 ? <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-right" style={{ borderBottom: "1.5px solid #e7e5e4", color: "#6d28d9" }}>Achat neuf</th> : null}
+                <th className="py-1.5 px-2 text-[9.5px] uppercase tracking-[0.12em] text-stone-500 text-right" style={{ borderBottom: "1.5px solid #e7e5e4" }}>Meilleure solution</th>
+              </tr></thead>
               <tbody>
-                {ansT.map(y => { const e = at(R.ancien.pts, y) - at(R.locAncien, y), eN = at(R.neuf.pts, y) - at(R.locNeuf, y); return (
-                  <tr key={y} data-nc-al-an={y}>
-                    <td className="py-1.5 px-1.5 font-bold" style={{ borderBottom: "1px solid #f0ede8" }}>{y} ans</td>
-                    <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{eur(at(R.ancien.pts, y))}</td>
-                    <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{R.neuf.prix > 0 ? eur(at(R.neuf.pts, y)) : "—"}</td>
-                    <td className="py-1.5 px-1.5 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8" }}>{eur(at(R.locAncien, y))}</td>
-                    <td className="py-1.5 px-1.5 text-right tabular-nums font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: e >= 0 ? "#0f766e" : "#b91c1c" }} data-nc-al-ecart-an={y}>{sg(e)}</td>
-                    <td className="py-1.5 px-1.5 text-right tabular-nums font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: eN >= 0 ? "#0f766e" : "#b91c1c" }}>{R.neuf.prix > 0 ? sg(eN) : "—"}</td>
-                  </tr>); })}
+                {Array.from({ length: 30 }, (_, i) => i + 1).filter(y => pres ? (y <= 10 || y % 5 === 0) : (y <= 10 || y % 5 === 0 || y === H)).map(y => {
+                  const L = at(R.locAncien, y), A = at(R.ancien.pts, y), Nn = R.neuf.prix > 0 ? at(R.neuf.pts, y) : -Infinity;
+                  const best = Math.max(L, A, Nn); const lib = best === L ? "Location" : best === A ? "Ancien" : "Neuf"; const col = best === L ? "#1d2735" : best === A ? "#0f766e" : "#6d28d9";
+                  const fort = y === H || y % 5 === 0;
+                  const cell = (v, c) => <td className="py-1 px-2 text-right tabular-nums" style={{ borderBottom: "1px solid #f0ede8", fontWeight: v === best ? 800 : 500, color: v === best ? c : "#57534e", background: y === H ? "#fffbeb" : "transparent" }}>{eur(v)}</td>;
+                  return (
+                    <tr key={y} data-nc-al-an={y} style={{ background: y === H ? "#fffbeb" : "transparent" }}>
+                      <td className="py-1 px-2" style={{ borderBottom: "1px solid #f0ede8", fontWeight: fort ? 800 : 600, color: "#1d2735" }}>{y} an{y > 1 ? "s" : ""}{y === H ? " ·" : ""}</td>
+                      {cell(L, "#1d2735")}{cell(A, "#0f766e")}{R.neuf.prix > 0 ? cell(Nn, "#6d28d9") : null}
+                      <td className="py-1 px-2 text-right text-[11px] font-extrabold" style={{ borderBottom: "1px solid #f0ede8", color: col, background: y === H ? "#fffbeb" : "transparent" }}>{lib}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
+            <div className="text-[10px] text-stone-400 mt-1.5">Les dix premières années en détail, puis tous les cinq ans ; la ligne surlignée est l'horizon mis en avant ({H} ans).</div>
           </div>
+          {(() => {
+            const yL = Math.min(H, 30);
+            const l = R.locAncien[yL] || {}, a = R.ancien.pts[yL] || {}, nn = R.neuf.pts[yL] || {};
+            const Col = ({ titre, c, lignes, total, data }) => (
+              <div className="rounded-2xl bg-white border p-3.5" style={{ borderColor: "#e7e5e4", borderTop: "4px solid " + c }} data-nc-al-decomp={data}>
+                <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold mb-2" style={{ color: c }}>{titre}</div>
+                {lignes.map(([k, v, sign], i) => (
+                  <div key={i} className="flex items-baseline justify-between gap-2 py-1 text-[11.5px]" style={{ borderBottom: "1px solid #f0ede8" }}>
+                    <span className="text-stone-600">{k}</span><span className="tabular-nums font-bold whitespace-nowrap" style={{ color: sign === "-" ? "#b91c1c" : "#1d2735" }}>{sign === "-" ? "− " : sign === "+" ? "+ " : ""}{eur(Math.abs(v))}</span>
+                  </div>
+                ))}
+                <div className="flex items-baseline justify-between gap-2 pt-2 text-[13px] font-extrabold" style={{ color: c }}><span>Patrimoine net à {yL} ans</span><span className="tabular-nums">{eur(total)}</span></div>
+              </div>
+            );
+            return (
+              <div className="mb-3">
+                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: "#b8924e" }}>D'où vient mon patrimoine à {yL} ans</div>
+                <div className={"grid gap-3 " + (R.neuf.prix > 0 ? "grid-cols-3" : "grid-cols-2")}>
+                  <Col titre="Locataire + assurance-vie" c="#1d2735" data="location" total={l.pat || 0} lignes={[
+                    ["Apport initial placé", l.apport || 0, "+"],
+                    ["Écarts de mensualité versés (crédit + charges + taxes − loyer)", l.ecarts || 0, "+"],
+                    ["Gains du placement", l.gains || 0, "+"],
+                    ["Fiscalité à la sortie", l.impot || 0, "-"],
+                    ["Pour mémoire : loyers payés", l.cumLoyer || 0, ""],
+                  ]} />
+                  <Col titre="Achat ancien" c="#0f766e" data="ancien" total={a.pat || 0} lignes={[
+                    ["Valeur du bien", a.val || 0, "+"],
+                    ["Capital restant dû", a.crd || 0, "-"],
+                    ["Frais de revente", a.rev || 0, "-"],
+                    ["Épargne placée quand le crédit coûte moins que le loyer", a.placeNet || 0, "+"],
+                    ["Pour mémoire : capital remboursé", a.capRemb || 0, ""],
+                    ["Pour mémoire : dépensé (crédit, assurance, taxes, charges, entretien)", a.cumCout || 0, ""],
+                  ]} />
+                  {R.neuf.prix > 0 ? <Col titre="Achat neuf" c="#6d28d9" data="neuf" total={nn.pat || 0} lignes={[
+                    ["Valeur du bien", nn.val || 0, "+"],
+                    ["Capital restant dû", nn.crd || 0, "-"],
+                    ["Frais de revente", nn.rev || 0, "-"],
+                    ["Épargne placée quand le crédit coûte moins que le loyer", nn.placeNet || 0, "+"],
+                    ["Pour mémoire : capital remboursé", nn.capRemb || 0, ""],
+                    ["Pour mémoire : dépensé (crédit, assurance, taxes, charges, entretien)", nn.cumCout || 0, ""],
+                  ]} /> : null}
+                </div>
+                <div className="text-[10.5px] text-stone-500 mt-2">Frais d'acquisition et de garantie payés au départ, perdus : ancien {eur(R.ancien.frais.total + R.ancien.garantie)}, neuf {eur(R.neuf.frais.total + R.neuf.garantie)}.</div>
+              </div>
+            );
+          })()}
+          {P.notes && P.notes.trim() ? <div className="rounded-xl px-4 py-3 mb-3 text-[12px]" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al-notes="1"><b>Commentaires :</b> {P.notes}</div> : null}
           <div className="text-[10.5px] text-stone-500 leading-relaxed">
             Acheteur = valeur du bien (revalorisée à {P.reval} %/an, travaux comptés pour moitié) − capital restant dû − frais de revente {P.revente} %. Locataire = apport + écart mensuel (mensualité assurance comprise, taxe foncière, charges, entretien − loyer indexé {P.irl} %/an) placés, nets de fiscalité ; la colonne « Location » est calculée face à l'ancien, l'écart du neuf face à son propre locataire. Frais d'acquisition et de garantie perdus. « Non placé » : apport sur livret à {P.tLiv} %, écart consommé. Coût mensuel propriétaire la première année : ancien {eur(R.ancien.coutM1)}, neuf {eur(R.neuf.coutM1)}, pour un loyer de {eur(R.loyer0)}. Projection non contractuelle, sur hypothèses de rendement non garanties.
           </div>
@@ -8879,10 +8975,16 @@
           <Carte>
             <Lab>Où, et quoi</Lab>
             <div className="grid grid-cols-3 gap-3">
-              <select value={P.ville} onChange={e => proposer(e.target.value, P.typo, P.surface)} className="rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al="ville"><option value="">Autre commune</option>{NC_AL_VILLES.map(v => <option key={v.v} value={v.v}>{v.v}</option>)}</select>
+              <select value={vRefCur ? P.ville : "__autre"} onChange={e => { if (e.target.value === "__autre") setP(p => ({ ...p, ville: "" })); else proposer(e.target.value, P.typo, P.surface); }} className="rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al="ville"><option value="__autre">Autre commune…</option>{NC_AL_VILLES.map(v => <option key={v.v} value={v.v}>{v.v}</option>)}</select>
               <select value={P.typo} onChange={e => { const t = NC_AL_TYPO.find(x => x.v === e.target.value); proposer(P.ville, e.target.value, t ? t.m2 : P.surface); }} className="rounded-xl px-3 py-2.5 text-[15px] font-extrabold" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al="typo">{NC_AL_TYPO.map(t => <option key={t.v} value={t.v}>{t.v}</option>)}</select>
               <div className="flex items-center justify-between rounded-xl px-3 py-2.5" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4" }}><input type="text" inputMode="decimal" value={P.surface} onChange={e => proposer(P.ville, P.typo, e.target.value)} className="num font-extrabold bg-transparent focus:outline-none text-[17px]" style={{ width: "70%", color: "#1d2735" }} data-nc-al="surface" /><span className="text-[11.5px] text-stone-500">m²</span></div>
             </div>
+            {!vRefCur ? (
+              <div className="mt-3 flex items-center justify-between rounded-xl px-3 py-2.5" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4" }}>
+                <input type="text" value={P.ville} onChange={e => set("ville", e.target.value)} placeholder="Nom de la commune" className="font-extrabold bg-transparent focus:outline-none text-[16px] w-full" style={{ color: "#1d2735" }} data-nc-al="villeLibre" />
+                <span className="text-[11px] text-stone-500 whitespace-nowrap">hors grille : prix et loyer à saisir</span>
+              </div>
+            ) : null}
             {vRefCur ? <Hint>Grille octobre 2026 pour {vRefCur.v} : ancien <b style={{ color: "#0f766e" }}>{new Intl.NumberFormat("fr-FR").format(vRefCur.prix)} €/m²</b>, neuf <b style={{ color: "#0f766e" }}>{new Intl.NumberFormat("fr-FR").format(vRefCur.neuf)} €/m²</b>, loyer <b style={{ color: "#0f766e" }}>{vRefCur.loyer} €/m²</b> — proposés ci-dessous, modifiables.</Hint> : <Hint>Commune hors grille : saisir le prix et le loyer.</Hint>}
           </Carte>
           <Carte>
@@ -8900,6 +9002,10 @@
               <Hint>{P.loyerDossier ? "Loyer actuel du dossier." : ""}{vRefCur ? " La grille " + vRefCur.v + " donne " + new Intl.NumberFormat("fr-FR").format(Math.round(vRefCur.loyer * (parseFloat(String(P.surface).replace(",", ".")) || 0))) + " €/mois pour " + P.surface + " m²." : ""}</Hint>
             </div>
           </Carte>
+          <Carte>
+            <Lab>Commentaires sur le projet</Lab>
+            <textarea value={P.notes} onChange={e => set("notes", e.target.value)} rows={3} placeholder="Bien visé, quartier, calendrier, points d'attention…" className="w-full rounded-xl px-3 py-2.5 text-[13px] focus:outline-none" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735", resize: "vertical" }} data-nc-al="notes" />
+          </Carte>
         </div>
       );
       const ecran2 = (
@@ -8913,20 +9019,16 @@
             <Hint>Frais d'acquisition : ancien <b style={{ color: "#0f766e" }}>{eur(R.ancien.frais.total)}</b> ({Math.round(R.ancien.frais.taux * 1000) / 10} %), neuf <b style={{ color: "#0f766e" }}>{eur(R.neuf.frais.total)}</b> ({Math.round(R.neuf.frais.taux * 1000) / 10} %) — barème 2026.</Hint>
           </Carte>
           <Carte>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Lab>Durée</Lab><NcAlFld P={P} set={set} k="duree" suf="ans" />
-                <input type="range" min="5" max="30" step="1" value={Math.max(5, Math.min(30, parseInt(P.duree, 10) || 25))} onChange={e => set("duree", e.target.value)} className="w-full mt-2" data-nc-al="duree-curseur" />
-              </div>
-              <div><Lab>Taux</Lab><NcAlFld P={P} set={set} k="taux" suf="%" /><Hint>Taux cabinet : 3,90 % / 20 ans, 4,00 % / 25 ans, hors assurance.</Hint></div>
+            <div className="grid grid-cols-3 gap-5">
+              <NcAlSlide P={P} set={set} k="duree" l="Durée" min={5} max={30} step={1} suf="ans" />
+              <NcAlSlide P={P} set={set} k="taux" l="Taux" min={1} max={6} step={0.05} suf="%" aide="Cabinet : 3,90 % / 20 ans, 4,00 % / 25 ans" />
+              <NcAlSlide P={P} set={set} k="assur" l="Assurance de prêt" min={0.1} max={1} step={0.01} suf="% / an" aide="du capital emprunté, par tête assurée" />
             </div>
           </Carte>
           <Carte>
-            <Lab>Assurance de prêt</Lab>
-            <div className="grid grid-cols-2 gap-4">
-              <div><NcAlFld P={P} set={set} k="assur" suf="% du capital / an" /></div>
-              <div><Lab>Répartition (quotités)</Lab><NcAlChips2 P={P} set={set} k="quotites" opts={QUOT} /></div>
-            </div>
+            <Lab>Répartition de l'assurance (quotités)</Lab>
+            <NcAlChips2 P={P} set={set} k="quotites" opts={QUOT} />
+            {couple ? <Hint>Le coût est multiplié par la somme des quotités : 100 / 100 assure chacun en totalité (deux fois le coût), 50 / 50 partage une seule couverture.</Hint> : <Hint>Une seule tête assurée.</Hint>}
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div><Lab>Garantie</Lab><NcAlChips2 P={P} set={set} k="garantie" opts={[{ v: "caution", l: "Caution" }, { v: "hypotheque", l: "Hypothèque" }, { v: "ppd", l: "PPD" }]} /></div>
               <Hint>Mensualité, assurance comprise : ancien <b style={{ color: "#0f766e" }} data-nc-al-mens={R.ancien.mens}>{eur(R.ancien.mens)}</b> · neuf <b style={{ color: "#0f766e" }}>{eur(R.neuf.mens)}</b></Hint>
@@ -8941,26 +9043,28 @@
           <div className="text-[13px] text-stone-500 text-center mb-5">Celles du cabinet. Rien à saisir si elles conviennent.</div>
           <Carte>
             <Lab>Côté propriétaire</Lab>
-            <div className="grid grid-cols-3 gap-3">
-              <div><Lab>Taxe foncière</Lab><NcAlFld P={P} set={set} k="tf" suf="€/an" /></div>
-              <div><Lab>Charges copro non récupérables</Lab><NcAlFld P={P} set={set} k="copro" suf="€/mois" /></div>
-              <div><Lab>Entretien ancien · neuf</Lab><div className="grid grid-cols-2 gap-2"><NcAlFld P={P} set={set} k="entretienAncien" suf="%" /><NcAlFld P={P} set={set} k="entretienNeuf" suf="%" /></div></div>
+            <div className="grid grid-cols-3 gap-x-6 gap-y-5">
+              <NcAlSlide P={P} set={set} k="tf" l="Taxe foncière" min={0} max={6000} step={50} suf="€/an" aide="≈ un mois de loyer" />
+              <NcAlSlide P={P} set={set} k="copro" l="Charges copro non récupérables" min={0} max={600} step={10} suf="€/mois" aide="0 pour une maison" />
+              <NcAlSlide P={P} set={set} k="revente" l="Frais de revente" min={0} max={8} step={0.5} suf="%" aide="5 % par agence, 0 entre particuliers" />
+              <NcAlSlide P={P} set={set} k="entretienAncien" l="Entretien · ancien" min={0} max={2} step={0.1} suf="%/an" aide="du prix, gros entretien compris" />
+              <NcAlSlide P={P} set={set} k="entretienNeuf" l="Entretien · neuf" min={0} max={1.5} step={0.1} suf="%/an" />
+              <NcAlSlide P={P} set={set} k="reval" l="Revalorisation du bien" min={-1} max={4} step={0.1} suf="%/an" aide="hypothèse, non garantie" />
             </div>
-            <div className="grid grid-cols-3 gap-3 mt-3">
-              <div><Lab>Revalorisation du bien</Lab><NcAlFld P={P} set={set} k="reval" suf="%/an" /></div>
-              <div><Lab>Frais de revente</Lab><NcAlFld P={P} set={set} k="revente" suf="%" /></div>
-              <div><Lab>Horizon mis en avant</Lab><NcAlFld P={P} set={set} k="horizon" suf="ans" /></div>
-            </div>
-            <Hint>Taxe foncière ≈ un mois de loyer ; entretien 1 % par an dans l'ancien, 0,5 % dans le neuf ; revalorisation 1 %/an (hypothèse) ; 5 % de frais si revente par agence.</Hint>
           </Carte>
           <Carte>
             <Lab>Côté locataire</Lab>
-            <div className="grid grid-cols-3 gap-3">
-              <div><Lab>Indexation IRL</Lab><NcAlFld P={P} set={set} k="irl" suf="%/an" /></div>
-              <div><Lab>Placement de l'écart</Lab><NcAlFld P={P} set={set} k="tPlac" suf="% · hypothèse" /></div>
-              <div><Lab>Fiscalité du placement</Lab><NcAlFld P={P} set={set} k="fiscPlac" suf="% · AV > 8 ans" /></div>
+            <div className="grid grid-cols-3 gap-x-6 gap-y-5">
+              <NcAlSlide P={P} set={set} k="irl" l="Indexation du loyer (IRL)" min={0} max={4} step={0.1} suf="%/an" />
+              <NcAlSlide P={P} set={set} k="tPlac" l="Placement de l'écart" min={0} max={8} step={0.1} suf="%" aide="hypothèse de rendement, non garantie" />
+              <NcAlSlide P={P} set={set} k="fiscPlac" l="Fiscalité du placement" min={0} max={30} step={0.1} suf="%" aide="AV > 8 ans : 24,7 % après abattement" />
             </div>
-            <Hint>L'apport et l'écart mensuel sont placés à l'hypothèse de rendement du cabinet, non garantie, fiscalisés à la sortie après abattement. Assurance habitation identique des deux côtés, donc neutralisée.</Hint>
+            <Hint>Assurance habitation identique des deux côtés, donc neutralisée.</Hint>
+          </Carte>
+          <Carte>
+            <div className="grid grid-cols-3 gap-x-6">
+              <NcAlSlide P={P} set={set} k="horizon" l="Horizon mis en avant" min={3} max={30} step={1} suf="ans" aide="l'année détaillée à l'écran suivant" />
+            </div>
           </Carte>
         </div>
       );
