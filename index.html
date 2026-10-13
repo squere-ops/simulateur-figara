@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v292 (13/10 : lignes « Transmis en cas de vie » et « En cas de deces » supprimees du comparatif (le CGP : « aucun interet ») ; 8 lignes ; asterisque deplace sur « Patrimoine net * ». Et : PATRIMOINE NET HORS FISCALITE dans les deux cas (capitaux bruts, netFisc ne sert plus qu a l information) ; pastille « Details » sous chaque patrimoine net qui ouvre le calcul ligne a ligne.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v293 (13/10 : quotites d assurance de pret — la civilite du dossier donne le libelle : « 100 pct Madame Claire », « Madame » seule si pas de prenom ; plus jamais « Monsieur » par defaut pour une femme. civC / civJ transmis par ncSynthese().simu et ouvrirAcheterLouer.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v292 (13/10 : lignes « Transmis en cas de vie » et « En cas de deces » supprimees du comparatif (le CGP : « aucun interet ») ; 8 lignes ; asterisque deplace sur « Patrimoine net * ». Et : PATRIMOINE NET HORS FISCALITE dans les deux cas (capitaux bruts, netFisc ne sert plus qu a l information) ; pastille « Details » sous chaque patrimoine net qui ouvre le calcul ligne a ligne.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v291 (13/10 : 1) LE NEUF EN OPTION — par defaut l etude compare l ancien et la location (deux colonnes) ; le neuf s ajoute d un clic a l ecran 1 ou sous le tableau, et se retire. 2) APPORT DYNAMIQUE sur le resultat, a cote du curseur de duree : tout le tableau suit. 3) Ligne PATRIMOINE NET encadree (liseré or 3 px tout autour).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v290 (13/10 : tableau comparatif plus joli — colonne de gauche en bandeau sable avec libelle + aide, intertitres dores « Chaque mois » / « A N ans », ligne budget avec liseré or, ligne patrimoine net sur fond marine, ecart « vs la meilleure » sous chaque patrimoine. Le CGP : « un tableau plus joli, surtout la colonne de menu a gauche ».)','color:#94a3b8');
         console.log('%cANCIEN BUILD v289 (13/10 : la pastille TVA 5,5 pct du neuf CONVERTIT le prix TTC (meme HT : × 1,055 / 1,2, arrondi a 100 €) et inversement ; avant elle ne faisait que documenter — le CGP : « le bouton ne fonctionne pas ». Aussi : champs de saisie LIBRES partout (prix ancien / neuf, loyer, surface, travaux — travaux avait seulement un curseur) ; les curseurs etendent leur maximum a la valeur saisie au lieu de la plafonner.)','color:#94a3b8');
@@ -2135,14 +2136,19 @@
       const [acheterLouer, setAcheterLouer] = useState(null);
       const ouvrirAcheterLouer = (init) => {
         let a = null, cp = null;
-        try { if (inputs.audit) { const nS = ncSynthese(inputs.audit); a = nS && nS.simu ? nS.simu.acheterLouer : null; cp = nS && nS.simu ? { couple: nS.simu.couple, prenomC: nS.simu.prenomC, prenomJ: nS.simu.prenomJ } : null; } } catch (e) { a = null; cp = null; }
+        try { if (inputs.audit) { const nS = ncSynthese(inputs.audit); a = nS && nS.simu ? nS.simu.acheterLouer : null; cp = nS && nS.simu ? { couple: nS.simu.couple, prenomC: nS.simu.prenomC, prenomJ: nS.simu.prenomJ, civC: nS.simu.civC, civJ: nS.simu.civJ } : null; } } catch (e) { a = null; cp = null; }
         /* 12/10/2026 (CGP) : « tu ne proposes que 100 % sur Monsieur même pour un couple » — le couple
            se lit dans le dossier, sinon dans la situation familiale de l étape Identité. */
         const couple = cp ? cp.couple : inputs.situationFamiliale === "couple";
-        const prenomC = (cp && cp.prenomC) || inputs.clientPrenom || "Monsieur", prenomJ = (cp && cp.prenomJ) || "Madame";
+        /* 13/10/2026 (CGP) : « une femme célibataire : MADAME, pas MONSIEUR » — la civilité du dossier
+           décide du libellé par défaut des quotités, le prénom quand il existe. */
+        const civTxt = (civ, defaut) => civ === "Mme" ? "Madame" : civ === "M." ? "Monsieur" : defaut;
+        const civC = (cp && cp.civC) || (inputs.audit && inputs.audit.civilite) || inputs.clientCivilite || "";
+        const civJ = (cp && cp.civJ) || (inputs.audit && inputs.audit.conjoint && inputs.audit.conjoint.civilite) || "";
+        const prenomC = (cp && cp.prenomC) || inputs.clientPrenom || civTxt(civC, "Monsieur"), prenomJ = (cp && cp.prenomJ) || civTxt(civJ, civTxt(civC, "Monsieur") === "Monsieur" ? "Madame" : "Monsieur");
         const nom = `${inputs.clientNom || ""} ${inputs.clientPrenom || ""}`.trim();
         const nbEnf = inputs.nbBeneficiaires || 1;
-        setAcheterLouer(init || (a ? { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, couple, prenomC, prenomJ, nom, nbEnf } : { ville: (inputs.audit && inputs.audit.ville) || "", couple, prenomC, prenomJ, nom, nbEnf }));
+        setAcheterLouer(init || (a ? { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, couple, prenomC, prenomJ, civC, civJ, nom, nbEnf } : { ville: (inputs.audit && inputs.audit.ville) || "", couple, prenomC, prenomJ, civC, civJ, nom, nbEnf }));
       };
       useEffect(() => { if (step !== 5 && presAuto) setPresAuto(0); }, [step]);
       const versPresentation = () => { setPresAuto(Date.now()); setStep(5); };
@@ -6437,8 +6443,8 @@
         try { if (veutReplacer) venteNet = ncBiensImmo(d).filter(x => x.vente && x.net > 0).reduce((t, x) => t + x.net, 0); } catch (e) {}
         const liquidites = veutPlacer ? Math.max(0, courtTermeM - cibleBasM) : 0;
         const pRPal = ncProjetRP(d);
-        const acheterLouer = d.logement === "locataire" ? { locataire: true, loyer: ncInt(d.loyer), ville: d.ville || "", couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", projet: pRPal.chiffre, prix: pRPal.chiffre ? pRPal.budget : 0, apport: pRPal.apport, duree: pRPal.ans, taux: Math.round(pRPal.tx * 10000) / 100, horizon: d.horizon || "" } : null;
-        return { acheterLouer, couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
+        const acheterLouer = d.logement === "locataire" ? { locataire: true, loyer: ncInt(d.loyer), ville: d.ville || "", couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", civC: d.civilite || "", civJ: (cj || {}).civilite || "", projet: pRPal.chiffre, prix: pRPal.chiffre ? pRPal.budget : 0, apport: pRPal.apport, duree: pRPal.ans, taux: Math.round(pRPal.tx * 10000) / 100, horizon: d.horizon || "" } : null;
+        return { acheterLouer, couple: !!(enCouple && d.conjointQ === "oui"), prenomC: d.prenom || "", prenomJ: (cj || {}).prenom || "", civC: d.civilite || "", civJ: (cj || {}).civilite || "", per: !!(perPertinent && !foyerRetraite), envBas, envHaut, duree, dureeRetraite: !foyerRetraite && age != null && ageRet - age > 0, ageRet,
           courtTermeM, precaCible: cibleBasM, liquidites, venteNet, tmi: F.tmi, age, nbEnf, foyerRetraite };
       })();
       return {
@@ -8950,7 +8956,8 @@
         quotites: init && init.couple ? "100_100" : "100_0", notes: "", tvaNeuf: "20", avecNeuf: "non", nbBenef: String(init && init.nbEnf > 0 ? init.nbEnf : 1),
       }));
       const couple = !!(init && init.couple);
-      const pC = (init && init.prenomC) || "Monsieur", pJ = (init && init.prenomJ) || "Madame";
+      const civLib = (civ, prenom, defaut) => { const c = civ === "Mme" ? "Madame" : civ === "M." ? "Monsieur" : ""; return prenom && prenom !== "Monsieur" && prenom !== "Madame" ? (c ? c + " " + prenom : prenom) : (c || prenom || defaut); };
+      const pC = civLib(init && init.civC, init && init.prenomC, "Monsieur"), pJ = civLib(init && init.civJ, init && init.prenomJ, pC === "Madame" ? "Monsieur" : "Madame");
       const QUOT = couple
         ? [{ v: "100_100", l: "100 / 100" }, { v: "50_50", l: "50 / 50" }, { v: "70_30", l: "70 / 30 (" + pC + " / " + pJ + ")" }, { v: "30_70", l: "30 / 70" }, { v: "100_0", l: "100 % " + pC }, { v: "0_100", l: "100 % " + pJ }]
         : [{ v: "100_0", l: "100 % " + pC }];
@@ -9501,7 +9508,7 @@
           {syn && syn.simu && syn.simu.acheterLouer && onAcheterLouer ? (() => {
             const a = syn.simu.acheterLouer;
             const HOR = { "<5": 5, "5-10": 10, "10-15": 15, ">15": 20 };
-            const init = { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, horizonAns: HOR[a.horizon] || 15, couple: a.couple, prenomC: a.prenomC, prenomJ: a.prenomJ, nom: nomDossier, nbEnf: syn.simu.nbEnf };
+            const init = { ville: a.ville, prix: a.prix, loyer: a.loyer, apport: a.apport, duree: a.duree, taux: a.taux, horizonAns: HOR[a.horizon] || 15, couple: a.couple, prenomC: a.prenomC, prenomJ: a.prenomJ, civC: a.civC, civJ: a.civJ, nom: nomDossier, nbEnf: syn.simu.nbEnf };
             return (
               <div className="rounded-2xl bg-white border p-4 mt-4" data-nc-simu-carte="acheter-louer" style={{ borderColor: "#e7e5e4", borderTop: "4px solid #b45309", boxShadow: "0 1px 3px rgba(29,39,53,0.05)" }}>
                 <div className="text-[9.5px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b45309" }}>Résidence principale</div>
