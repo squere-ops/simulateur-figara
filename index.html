@@ -1172,7 +1172,8 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v291 (13/10 : 1) LE NEUF EN OPTION — par defaut l etude compare l ancien et la location (deux colonnes) ; le neuf s ajoute d un clic a l ecran 1 ou sous le tableau, et se retire. 2) APPORT DYNAMIQUE sur le resultat, a cote du curseur de duree : tout le tableau suit. 3) Ligne PATRIMOINE NET encadree (liseré or 3 px tout autour).)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v292 (13/10 : lignes « Transmis en cas de vie » et « En cas de deces » supprimees du comparatif (le CGP : « aucun interet ») ; 8 lignes ; asterisque deplace sur « Patrimoine net * ». Et : PATRIMOINE NET HORS FISCALITE dans les deux cas (capitaux bruts, netFisc ne sert plus qu a l information) ; pastille « Details » sous chaque patrimoine net qui ouvre le calcul ligne a ligne.)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v291 (13/10 : 1) LE NEUF EN OPTION — par defaut l etude compare l ancien et la location (deux colonnes) ; le neuf s ajoute d un clic a l ecran 1 ou sous le tableau, et se retire. 2) APPORT DYNAMIQUE sur le resultat, a cote du curseur de duree : tout le tableau suit. 3) Ligne PATRIMOINE NET encadree (liseré or 3 px tout autour).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v290 (13/10 : tableau comparatif plus joli — colonne de gauche en bandeau sable avec libelle + aide, intertitres dores « Chaque mois » / « A N ans », ligne budget avec liseré or, ligne patrimoine net sur fond marine, ecart « vs la meilleure » sous chaque patrimoine. Le CGP : « un tableau plus joli, surtout la colonne de menu a gauche ».)','color:#94a3b8');
         console.log('%cANCIEN BUILD v289 (13/10 : la pastille TVA 5,5 pct du neuf CONVERTIT le prix TTC (meme HT : × 1,055 / 1,2, arrondi a 100 €) et inversement ; avant elle ne faisait que documenter — le CGP : « le bouton ne fonctionne pas ». Aussi : champs de saisie LIBRES partout (prix ancien / neuf, loyer, surface, travaux — travaux avait seulement un curseur) ; les curseurs etendent leur maximum a la valeur saisie au lieu de la plafonner.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v288 (13/10 : Acheter ou louer. Budget mensuel : « cout logement ». ENCADRE VERT (#15803d) sur toute la colonne qui l emporte, badge « Meilleure » vert. Confirme au CGP : apres le credit, le budget commun retombe au loyer, le locataire devient le plus gros budget et tout se cale sur lui — il ne place plus rien, les proprietaires placent le loyer evite moins leurs charges.)','color:#94a3b8');
@@ -8753,6 +8754,8 @@
       const quot = (() => { const q = String(P.quotites || "100_0").split("_").map(x => parseFloat(x) || 0); return Math.max(0.01, (q[0] + (q[1] || 0)) / 100); })();
       const ANS = 30, N = ANS * 12;
       const mPlac = Math.pow(1 + tPlac, 1 / 12) - 1, mLiv = Math.pow(1 + tLiv, 1 / 12) - 1;
+      /* 13/10/2026 (CGP) : « le patrimoine net hors fiscalité dans les deux cas » — pat = capitaux BRUTS ;
+         netFisc ne sert plus qu à l information (impot, placeNet). */
       const netFisc = (cap, verse) => cap - Math.max(0, cap - verse - abatt) * fisc;
       /* ——— 12/10/2026 (CGP) : « encadrer le budget mensuel pour chaque solution… si achat dans le neuf,
          il va devoir sortir plus de trésorerie tous les mois, et cela a un impact dans les différentiels
@@ -8814,7 +8817,7 @@
           if (m % 12 === 0) {
             const yy = m / 12;
             const val = valBase * Math.pow(1 + reval, yy);
-            pts.push({ y: yy, pat: Math.round(val * (1 - revente) - crd + netFisc(place, verse)), coutM: Math.round(coutM),
+            pts.push({ y: yy, pat: Math.round(val * (1 - revente) - crd + place), coutM: Math.round(coutM),
               val: Math.round(val), crd: Math.round(crd), rev: Math.round(val * revente), capRemb: Math.round(emprunt2 - crd), placeNet: Math.round(netFisc(place, verse)), placeBrut: Math.round(place), placeVerse: Math.round(verse - surplus), cumCout: Math.round(cumCout) });
           }
         }
@@ -8834,7 +8837,7 @@
           cumLoyer += loyer0 * idx;
           place = place * (1 + mPlac); placeNP = placeNP * (1 + mLiv);
           if (placeEcart && ecart > 0) { place += ecart; verse += ecart; }
-          if (m % 12 === 0) pts.push({ y: m / 12, pat: Math.round(placeEcart ? netFisc(place, verse) : placeNP),
+          if (m % 12 === 0) pts.push({ y: m / 12, pat: Math.round(placeEcart ? place : placeNP),
             apport: Math.round(apport), ecarts: Math.round(verse - apport), gains: Math.round(place - verse), impot: Math.round(place - netFisc(place, verse)), cumLoyer: Math.round(cumLoyer), brut: Math.round(place), loyerM: Math.round(loyer0 * idx), ecartM: Math.round(Math.max(0, ecart)) });
         }
         return pts;
@@ -8953,6 +8956,7 @@
         : [{ v: "100_0", l: "100 % " + pC }];
       const [etape, setEtape] = useState(1);
       const [pres, setPres] = useState(false);
+      const [detail, setDetail] = useState(null); /* 13/10 : « donne-moi le calcul » — option dont on montre le détail */
       const set = (k, v) => setP(p => ({ ...p, [k]: v }));
       /* 13/10/2026 (CGP) : « le bouton TVA à 5,5 % ne fonctionne pas » — il ne faisait que documenter.
          Désormais il CONVERTIT le prix TTC du neuf : HT identique, TVA 20 % ↔ 5,5 %. */
@@ -9019,8 +9023,6 @@
         { k: "ancien", c: "#0f766e", titre: "Acheter dans l'ancien", sous: eur(R.ancien.prix) + (R.ancien.travaux > 0 ? " + " + eur(R.ancien.travaux) + " de travaux" : ""), pat: a.pat || 0 },
       ].concat(R.neuf.prix > 0 ? [{ k: "neuf", c: "#6d28d9", titre: "Acheter dans le neuf", sous: eur(R.neuf.prix) + (P.tvaNeuf === "5.5" ? " · TVA 5,5 %" : ""), pat: nn.pat || 0 }] : []);
       const cellAchat = (ref, pt, key) => {
-        const q = quotCap;
-        const transmisDeces = Math.round((pt.val || 0) - (pt.crd || 0) * (1 - q));
         const apresCredit = yH >= R.duree;
         const av = (pt.placeBrut || 0) > 0;
         switch (key) {
@@ -9030,8 +9032,6 @@
           case "ecart": return { v: eur(ref.ecartM1) + "/mois", sub: (ref.ecartM1 > 0 ? "= budget commun " + eur(R.budgetM1) + " − coût " + eur(ref.coutM1) : "option la plus chère : elle fixe le budget commun") + " · après le crédit (année " + (R.duree + 1) + ") : le loyer évité, charges déduites, ≈ " + eur(Math.round(R.loyerAn(R.duree) - chargesM(ref) * Math.pow(1 + nbP(P.irl) / 100, R.duree))) + "/mois placé" };
           case "budget": return { v: eur(R.budgetM1) + "/mois", sub: "coût logement " + eur(ref.coutM1) + (ref.ecartM1 > 0 ? " + assurance-vie " + eur(ref.ecartM1) : "") };
           case "placement": return { v: eur(pt.capRemb || 0) + " remboursés", sub: "valeur du bien " + eur(pt.val || 0) + (apresCredit ? " · crédit soldé" : " · reste dû " + eur(pt.crd || 0)) + (av ? " · assurance-vie " + eur(pt.placeBrut) + " (" + eur(pt.placeVerse || 0) + " versés)" : "") };
-          case "vie": return { v: eur(pt.pat || 0), sub: "valeur − capital restant dû − frais de revente " + P.revente + " %" + (av ? " + assurance-vie nette " + eur(pt.placeNet || 0) : "") };
-          case "deces": return { v: eur(transmisDeces + (av ? deces990(pt.placeBrut) : 0)), sub: (q >= 1 ? "crédit soldé par l'assurance emprunteur" : "assurance emprunteur à " + Math.round(q * 100) + " % du capital restant dû") + " · avant droits de succession" + (av ? " · + assurance-vie (990 I)" : "") };
           case "revenus": return { v: apresCredit ? eur(loyerN) + "/mois" : "après le crédit", sub: apresCredit ? "loyer évité, logement payé" : "loyer évité ≈ " + eur(Math.round(R.loyerAn(R.duree))) + "/mois à partir de l'année " + (R.duree + 1) };
         }
       };
@@ -9044,8 +9044,6 @@
           case "ecart": return { v: eur(mensAV) + "/mois", sub: (mensAV > 0 ? "= budget commun " + eur(R.budgetM1) + " − loyer " + eur(R.loyer0) : "le loyer est déjà l'option la plus chère") + " · après le crédit des acheteurs (année " + (R.duree + 1) + ") : plus rien à placer, le loyer continue" };
           case "budget": return { v: eur(R.budgetM1) + "/mois", sub: "loyer " + eur(R.loyer0) + " + assurance-vie " + eur(mensAV) };
           case "placement": return { v: eur(brut), sub: eur(R.apport) + " + " + eur(mensAV) + "/mois = " + eur((l.apport || 0) + (l.ecarts || 0)) + " versés + " + eur(l.gains || 0) + " d'intérêts (hypothèse de rendement)" };
-          case "vie": return { v: eur(net), sub: "retrait en une fois : fiscalité " + eur(l.impot || 0) + " · étalé sur 10 ans, l'abattement joue chaque année : fiscalité ≈ " + eur(fiscEtale(l, 10)) };
-          case "deces": return { v: eur(deces990(brut)), sub: "990 I CGI, hors succession · abattement 152 500 € × " + nbBenef + " bénéficiaire" + (nbBenef > 1 ? "s" : "") + ", puis 20 %" };
           case "revenus": return { v: eur(Math.round(net * (R.tPlac || 0.052) / 12)) + "/mois", sub: "capital préservé, à " + P.tPlac + " % (hypothèse de rendement)" };
         }
       };
@@ -9063,8 +9061,6 @@
         { k: "budget", l: "Budget mensuel", aide: "identique pour les trois", cadre: true },
         { sec: "À " + yH + " ans" },
         { k: "placement", l: "Ce qui a été constitué", aide: "capital placé ou remboursé" },
-        { k: "vie", l: "Transmis en cas de vie *", aide: "si l'on vend ou l'on retire" },
-        { k: "deces", l: "En cas de décès", aide: "ce que reçoivent les proches" },
         { k: "revenus", l: "Complément de revenus possible", aide: "chaque mois, sans entamer le capital" },
       ];
       const nCol = opts.length + 1;
@@ -9111,13 +9107,16 @@
               ))}
               <tr data-nc-al-ligne="patrimoine">
                 <td className="align-middle px-4 py-4" style={{ background: NAVY, borderLeft: "4px solid " + OR, borderTop: "3px solid " + OR, borderBottom: "3px solid " + OR }}>
-                  <div className="text-[9.5px] uppercase tracking-[0.18em] font-extrabold" style={{ color: OR }}>Patrimoine net</div>
+                  <div className="text-[9.5px] uppercase tracking-[0.18em] font-extrabold" style={{ color: OR }}>Patrimoine net *</div>
                   <div className="text-[12px] font-bold text-white">à {yH} ans</div>
                 </td>
                 {opts.map(o => (
                   <td key={o.k} className="px-4 py-4" style={{ background: o.pat === best ? VERT + "14" : o.c + "10", borderTop: "3px solid " + OR, borderBottom: "3px solid " + OR, borderRight: o.k === opts[opts.length - 1].k ? "3px solid " + OR : "none", ...colGagne(o, "bas") }}>
                     <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 30 : 26, color: o.c }}>{eur(o.pat)}</div>
-                    {o.pat === best ? <div className="text-[10px] font-bold mt-0.5" style={{ color: VERT }}>la plus favorable à {yH} ans</div> : <div className="text-[10px] mt-0.5" style={{ color: "#a8a29e" }}>{sg(o.pat - best)} vs la meilleure</div>}
+                    <div className="flex items-center justify-between gap-2 mt-0.5">
+                      {o.pat === best ? <div className="text-[10px] font-bold" style={{ color: VERT }}>la plus favorable à {yH} ans</div> : <div className="text-[10px]" style={{ color: "#a8a29e" }}>{sg(o.pat - best)} vs la meilleure</div>}
+                      <button type="button" onClick={() => setDetail(detail === o.k ? null : o.k)} className="text-[9.5px] font-extrabold px-2 py-0.5 rounded-full whitespace-nowrap" style={detail === o.k ? { background: o.c, color: "#fff", border: "1px solid " + o.c } : { background: "#fff", color: o.c, border: "1px solid " + o.c }} data-nc-al-detail-btn={o.k}>{detail === o.k ? "Fermer" : "Détails"}</button>
+                    </div>
                   </td>
                 ))}
               </tr>
@@ -9166,13 +9165,51 @@
           </div>
           {/* tableau comparatif, lecture horizontale */}
           {tableau}
+          {detail ? (() => {
+            const o = opts.find(x => x.k === detail); if (!o) return null;
+            const Lg = ({ l, v, op, fort }) => (
+              <div className="flex items-baseline justify-between gap-3 py-1" style={{ borderBottom: fort ? "none" : "1px dashed #e7e5e4" }}>
+                <span className={"text-[12px] " + (fort ? "font-extrabold" : "")} style={{ color: fort ? o.c : "#57534e" }}>{op ? <span className="inline-block w-4 font-extrabold" style={{ color: o.c }}>{op}</span> : <span className="inline-block w-4"></span>}{l}</span>
+                <span className={"tabular-nums whitespace-nowrap " + (fort ? "font-extrabold text-[15px]" : "font-bold text-[12.5px]")} style={{ color: fort ? o.c : NAVY }}>{v}</span>
+              </div>
+            );
+            const pct = (x) => String(x).replace(".", ",");
+            if (o.k === "location") {
+              const verse = (l.apport || 0) + (l.ecarts || 0);
+              return (
+                <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: o.c, borderLeft: "5px solid " + o.c }} data-nc-al-detail="location">
+                  <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: o.c }}>Comment est calculé le patrimoine net — {o.titre}, à {yH} ans</div>
+                  <Lg l={"Apport placé le jour 1"} v={eur(l.apport || 0)} />
+                  <Lg op="+" l={"Écarts de budget versés chaque mois pendant " + Math.min(yH, R.duree) + " ans (" + eur(R.ecartLocM1) + "/mois la première année, puis selon le budget commun)"} v={eur(l.ecarts || 0)} />
+                  <Lg l={"= total versé"} v={eur(verse)} />
+                  <Lg op="+" l={"Intérêts capitalisés à " + pct(P.tPlac) + " %/an (hypothèse de rendement)"} v={eur(l.gains || 0)} />
+                  <Lg fort l={"= Patrimoine net, hors fiscalité"} v={eur(o.pat)} />
+                  <div className="text-[10.5px] text-stone-500 mt-2 leading-relaxed">Les loyers payés ({eur(l.cumLoyer || 0)} cumulés) ne construisent rien : ils ne figurent pas dans le patrimoine, ils sont dans le budget. Pour mémoire, un retrait total en une fois après 8 ans coûterait {eur(l.impot || 0)} de fiscalité ({pct(P.fiscPlac)} % sur les gains au-delà de l'abattement) — non déduit ici.</div>
+                </div>
+              );
+            }
+            const ref = o.k === "neuf" ? R.neuf : R.ancien, pt = o.k === "neuf" ? nn : a;
+            const valBase = ref.prix + 0.5 * ref.travaux;
+            return (
+              <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: o.c, borderLeft: "5px solid " + o.c }} data-nc-al-detail={o.k}>
+                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold mb-2" style={{ color: o.c }}>Comment est calculé le patrimoine net — {o.titre}, à {yH} ans</div>
+                <Lg l={"Prix d'achat" + (ref.travaux > 0 ? " + moitié des travaux (" + eur(ref.travaux) + " × 50 %)" : "")} v={eur(valBase)} />
+                <Lg l={"Valeur du bien à " + yH + " ans, revalorisée " + pct(P.reval) + " %/an"} v={eur(pt.val || 0)} />
+                <Lg op="−" l={"Frais de revente " + pct(P.revente) + " %"} v={eur(pt.rev || 0)} />
+                <Lg op="−" l={"Capital restant dû sur le crédit (" + eur(ref.emprunt) + " empruntés, dont frais d'acquisition " + eur(ref.frais.total) + " et garantie " + eur(ref.garantie) + ")"} v={eur(pt.crd || 0)} />
+                <Lg op="+" l={"Assurance-vie alimentée par les écarts de budget (" + eur(pt.placeVerse || 0) + " versés + intérêts à " + pct(P.tPlac) + " %)"} v={eur(pt.placeBrut || 0)} />
+                <Lg fort l={"= Patrimoine net, hors fiscalité"} v={eur(o.pat)} />
+                <div className="text-[10.5px] text-stone-500 mt-2 leading-relaxed">Plus-value de la résidence principale exonérée. Frais d'acquisition et de garantie perdus : ils sont dans le capital emprunté, pas dans la valeur du bien. Les mensualités payées ({eur(pt.cumCout || 0)} cumulés) sont dans le budget, pas dans le patrimoine.</div>
+              </div>
+            );
+          })() : null}
           <div className="flex justify-end mb-2">
             {P.avecNeuf === "oui"
               ? <button type="button" onClick={() => set("avecNeuf", "non")} className="text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: "#fff", color: "#6d28d9", border: "1.5px solid #c4b5fd" }} data-nc-al-chip="avecNeuf:non-resultat">Retirer le neuf</button>
               : <button type="button" onClick={() => set("avecNeuf", "oui")} className="text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: "#faf5ff", color: "#6d28d9", border: "1.5px dashed #c4b5fd" }} data-nc-al-chip="avecNeuf:oui-resultat">+ Ajouter le neuf (option)</button>}
           </div>
           <div className="text-[10.5px] text-stone-500 mb-3 leading-relaxed" data-nc-al-asterisque="1">
-            * Fiscalité des retraits d'assurance-vie après 8 ans : abattement annuel de 4 600 € pour une personne seule, 9 200 € pour un couple, sur les gains ; au-delà 7,5 % + 17,2 % de prélèvements sociaux ({P.fiscPlac} %). Les trois options sortent la même trésorerie chaque mois : {eur(R.budgetM1)}, le coût de l'option la plus chère ({fixePar}) ; les autres placent l'écart sur l'assurance-vie. Après le crédit ({R.duree} ans), le locataire paie toujours son loyer et n'épargne plus ; les propriétaires n'ont plus de crédit et placent l'équivalent du loyer qu'ils n'ont plus à payer, charges déduites.
+            * Patrimoine net hors fiscalité, dans les deux cas. Pour mémoire, fiscalité des retraits d'assurance-vie après 8 ans : abattement annuel de 4 600 € pour une personne seule, 9 200 € pour un couple, sur les gains ; au-delà 7,5 % + 17,2 % de prélèvements sociaux ({P.fiscPlac} %). Les trois options sortent la même trésorerie chaque mois : {eur(R.budgetM1)}, le coût de l'option la plus chère ({fixePar}) ; les autres placent l'écart sur l'assurance-vie. Après le crédit ({R.duree} ans), le locataire paie toujours son loyer et n'épargne plus ; les propriétaires n'ont plus de crédit et placent l'équivalent du loyer qu'ils n'ont plus à payer, charges déduites.
           </div>
           {/* point mort et sensibilité, en deux lignes */}
           <div className="rounded-xl px-4 py-3 mb-3 text-[12px] leading-relaxed" style={{ background: "#f5f5f4", border: "1px solid #e7e5e4", color: "#1d2735" }} data-nc-al-ecart={(a.pat || 0) - (l.pat || 0)}>
