@@ -1172,7 +1172,9 @@
   <script type="text/babel">
         console.log('%cANCIEN BUILD v197 (03/09 : REFONTE DE « OU TROUVER L EPARGNE ». Constat du CGP : « pas logique, je coche le 3e bloc et j ai un affichage aussi sur celui du milieu ». DEUX defauts se cumulaient. (1) La rangee de trois tuiles du bas SEMBLAIT repondre aux trois cartes du haut, alors que la deuxieme etait le total des cartes 2 et 3 : un levier DECOCHE paraissait compter. (2) Les leviers melangeaient DEUX NATURES QUI NE S ADDITIONNENT PAS — des euros DISPONIBLES CHAQUE MOIS (delegation d assurance) et du CAPITAL A L HORIZON (arbitrage, redirection) ; la tuile « Ce que ca represente par mois » ramenait meme un capital au mois pour l ajouter a une tresorerie reelle. CORRECTION : deux FAMILLES separees, « Tresorerie liberee chaque mois » et « Meilleur rendement sur la duree », chacune avec SON total dans son bandeau et une phrase qui dit ce que ce total devient. La rangee de tuiles est supprimee. (3) UN LEVIER NON RETENU affiche desormais AU CONDITIONNEL ce qu il rapporterait — plus petit, en italique, en gris, avec la mention « si vous l activez » — pour que le client voie ce qu il laisse de cote, sans que ce montant entre dans aucun total. CONTROLE : t_gisements.js recalcule les deux totaux A PARTIR DE LA REGLE, coche la redirection SEULE et verifie que l arbitrage decoche n y entre pas ; il verifie aussi que la tresorerie reste en €/mois et que la tuile melangeante n est pas revenue. Sa capacite a echouer a ete prouvee par mutation du moteur. verif.sh passe de 9 a 10 etapes.)','font-weight:bold;color:#047857');
 
-        console.log('%cBUILD v289 (13/10 : la pastille TVA 5,5 pct du neuf CONVERTIT le prix TTC (meme HT : × 1,055 / 1,2, arrondi a 100 €) et inversement ; avant elle ne faisait que documenter — le CGP : « le bouton ne fonctionne pas ». Aussi : champs de saisie LIBRES partout (prix ancien / neuf, loyer, surface, travaux — travaux avait seulement un curseur) ; les curseurs etendent leur maximum a la valeur saisie au lieu de la plafonner.)','font-weight:bold;color:#047857');
+        console.log('%cBUILD v291 (13/10 : 1) LE NEUF EN OPTION — par defaut l etude compare l ancien et la location (deux colonnes) ; le neuf s ajoute d un clic a l ecran 1 ou sous le tableau, et se retire. 2) APPORT DYNAMIQUE sur le resultat, a cote du curseur de duree : tout le tableau suit. 3) Ligne PATRIMOINE NET encadree (liseré or 3 px tout autour).)','font-weight:bold;color:#047857');
+        console.log('%cANCIEN BUILD v290 (13/10 : tableau comparatif plus joli — colonne de gauche en bandeau sable avec libelle + aide, intertitres dores « Chaque mois » / « A N ans », ligne budget avec liseré or, ligne patrimoine net sur fond marine, ecart « vs la meilleure » sous chaque patrimoine. Le CGP : « un tableau plus joli, surtout la colonne de menu a gauche ».)','color:#94a3b8');
+        console.log('%cANCIEN BUILD v289 (13/10 : la pastille TVA 5,5 pct du neuf CONVERTIT le prix TTC (meme HT : × 1,055 / 1,2, arrondi a 100 €) et inversement ; avant elle ne faisait que documenter — le CGP : « le bouton ne fonctionne pas ». Aussi : champs de saisie LIBRES partout (prix ancien / neuf, loyer, surface, travaux — travaux avait seulement un curseur) ; les curseurs etendent leur maximum a la valeur saisie au lieu de la plafonner.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v288 (13/10 : Acheter ou louer. Budget mensuel : « cout logement ». ENCADRE VERT (#15803d) sur toute la colonne qui l emporte, badge « Meilleure » vert. Confirme au CGP : apres le credit, le budget commun retombe au loyer, le locataire devient le plus gros budget et tout se cale sur lui — il ne place plus rien, les proprietaires placent le loyer evite moins leurs charges.)','color:#94a3b8');
         console.log('%cANCIEN BUILD v287 (12/10 : Acheter ou louer. 1) Rappel « De quoi parle-t-on » en deux colonnes logiques : le bien a gauche (ancien puis neuf), le financement a droite. 2) BUDGET MENSUEL COMMUN encadre : le cout de l option la plus chere, mois par mois (en general le neuf) ; les options moins cheres placent l ecart sur l assurance-vie ; le badge « meilleure » se joue entre les trois a tresorerie identique. 3) Apres le credit : le locataire paie toujours son loyer et n epargne plus, les proprietaires placent le loyer evite moins les charges. 4) Un seul TABLEAU COMPARATIF a lecture horizontale (une ligne par notion, une colonne par option) remplace les trois blocs. 5) Transmis en cas de vie du locataire : fiscalite en une fois et etalee sur 10 ans (abattement annuel).)','color:#94a3b8');
         console.log('%cANCIEN BUILD v286 (12/10 : LE NEUF EST BEAUCOUP PLUS CHER. Le CGP, exemple Montmorency : T3 neuf « a partir de » 414 000 € (TVA 5,5 pct, RDC sur rue), 500 a 550 000 € en TVA 20 pct au calme, contre 280 000 € + travaux dans l ancien. Estimation du neuf hors Logisneuf : ancien × 1,5 (prix d entree) au lieu de × 1,3, toujours annoncee comme estimation. Pastilles TVA 20 pct / 5,5 pct sur la tuile neuf (5,5 : ANRU / QPV, plafonds de ressources ; equivalent a 20 pct affiche). Rappel du resultat mentionne la TVA. 36/36.)','color:#94a3b8');
@@ -8942,7 +8944,7 @@
         tf: String(init && init.loyer > 0 ? init.loyer : (vRef ? Math.round(vRef.loyer * surfInit) : 1000)), copro: "0", entretienAncien: "1", entretienNeuf: "0,5",
         reval: "1", revente: "5", irl: "2", tPlac: "5,2", fiscPlac: "24,7", abattement: init && init.couple ? "9200" : "4600", tLiv: "1,7",
         horizon: String(init && init.horizonAns > 0 ? init.horizonAns : 15),
-        quotites: init && init.couple ? "100_100" : "100_0", notes: "", tvaNeuf: "20", nbBenef: String(init && init.nbEnf > 0 ? init.nbEnf : 1),
+        quotites: init && init.couple ? "100_100" : "100_0", notes: "", tvaNeuf: "20", avecNeuf: "non", nbBenef: String(init && init.nbEnf > 0 ? init.nbEnf : 1),
       }));
       const couple = !!(init && init.couple);
       const pC = (init && init.prenomC) || "Monsieur", pJ = (init && init.prenomJ) || "Madame";
@@ -8966,11 +8968,13 @@
         const v = NC_AL_VILLES.find(x => x.v === ville); const m2 = parseFloat(String(surface).replace(",", ".")) || 0;
         setP(p => ({ ...p, ville, typo, surface: String(surface), ...(v && m2 > 0 ? { prixAncien: new Intl.NumberFormat("fr-FR").format(Math.round(v.prix * m2)), prixNeuf: new Intl.NumberFormat("fr-FR").format(Math.round(v.neuf * m2)), tf: String(Math.round(v.loyer * m2)), ...(p.loyerDossier ? {} : { loyer: String(Math.round(v.loyer * m2)) }) } : {}) }));
       };
-      const R = useMemo(() => ncAcheterLouer(P), [P]);
+      /* 13/10/2026 (CGP) : « le neuf qu en option, on ne compare que l achat dans l ancien vs la location ». */
+      const PX = useMemo(() => P.avecNeuf === "oui" ? P : { ...P, prixNeuf: "0" }, [P]);
+      const R = useMemo(() => ncAcheterLouer(PX), [PX]);
       try { window.__ncAlR = R; } catch (e) {} /* lu par le banc t_acheter_louer */
       const S2 = useMemo(() => ({
-        reval2: ncAcheterLouer({ ...P, reval: String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1) }),
-        plac3: ncAcheterLouer({ ...P, tPlac: "3" }),
+        reval2: ncAcheterLouer({ ...PX, reval: String((parseFloat(String(P.reval).replace(",", ".")) || 0) + 1) }),
+        plac3: ncAcheterLouer({ ...PX, tPlac: "3" }),
       }), [P]);
       const eur = (n) => ncNbsp(new Intl.NumberFormat("fr-FR").format(Math.round(n || 0))) + " €";
       const sg = (n) => (n >= 0 ? "+ " : "− ") + eur(Math.abs(n));
@@ -9046,29 +9050,39 @@
         }
       };
       const cell = (o, key) => o.k === "location" ? cellLoc(key) : cellAchat(o.k === "neuf" ? R.neuf : R.ancien, o.k === "neuf" ? nn : a, key);
+      /* 13/10/2026 (CGP) : « un tableau plus joli, surtout la colonne de menu à gauche ». Colonne de
+         gauche en bandeau sable : libellé + aide en dessous ; sections (chaque mois / à N ans) en
+         intertitres dorés ; lignes budget et patrimoine net en bandes pleines. */
+      const SABLE = "#f6f1e8", OR = "#b8924e", NAVY = "#1d2735";
       const LIGNES = [
-        { k: "apport", l: "Apport" },
-        { k: "mensuel", l: "Loyer ou crédit" },
-        { k: "charges", l: "Charges du logement" },
-        { k: "ecart", l: "À consacrer à l'assurance-vie" },
-        { k: "budget", l: "Budget mensuel", cadre: true },
-        { k: "placement", l: "Sur " + yH + " ans" },
-        { k: "vie", l: "Transmis en cas de vie *" },
-        { k: "deces", l: "En cas de décès" },
-        { k: "revenus", l: "Complément de revenus possible" },
+        { sec: "Chaque mois" },
+        { k: "apport", l: "Apport", aide: "au départ, une seule fois" },
+        { k: "mensuel", l: "Loyer ou crédit", aide: "ce que coûte le toit" },
+        { k: "charges", l: "Charges du logement", aide: "taxe foncière, copro, entretien" },
+        { k: "ecart", l: "À consacrer à l'assurance-vie", aide: "la différence avec le budget commun" },
+        { k: "budget", l: "Budget mensuel", aide: "identique pour les trois", cadre: true },
+        { sec: "À " + yH + " ans" },
+        { k: "placement", l: "Ce qui a été constitué", aide: "capital placé ou remboursé" },
+        { k: "vie", l: "Transmis en cas de vie *", aide: "si l'on vend ou l'on retire" },
+        { k: "deces", l: "En cas de décès", aide: "ce que reçoivent les proches" },
+        { k: "revenus", l: "Complément de revenus possible", aide: "chaque mois, sans entamer le capital" },
       ];
+      const nCol = opts.length + 1;
       const tableau = (
-        <div className="rounded-2xl bg-white border p-3 mb-2 overflow-x-auto" style={{ borderColor: "#e7e5e4" }} data-nc-al-comparatif="1">
+        <div className="rounded-2xl bg-white border mb-2 overflow-hidden" style={{ borderColor: "#e7e5e4" }} data-nc-al-comparatif="1">
           <table className="w-full" style={{ borderCollapse: "separate", borderSpacing: 0, tableLayout: "fixed" }}>
-            <colgroup><col style={{ width: "19%" }} />{opts.map(o => <col key={o.k} />)}</colgroup>
+            <colgroup><col style={{ width: "21%" }} />{opts.map(o => <col key={o.k} />)}</colgroup>
             <thead><tr>
-              <th className="text-left align-bottom px-2 pb-2 text-[9.5px] uppercase tracking-[0.14em] text-stone-400 font-extrabold" style={{ borderBottom: "1.5px solid #e7e5e4" }}>À {yH} ans</th>
+              <th className="text-left align-bottom px-4 pb-3 pt-4" style={{ background: SABLE, borderBottom: "1.5px solid #e7e5e4" }}>
+                <div className="text-[9.5px] uppercase tracking-[0.18em] font-extrabold" style={{ color: OR }}>Comparatif</div>
+                <div className="font-extrabold" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 20, color: NAVY }}>à {yH} ans</div>
+              </th>
               {opts.map(o => (
-                <th key={o.k} className="text-left align-top px-3 pt-2 pb-2" style={{ borderTop: "5px solid " + o.c, borderBottom: "1.5px solid #e7e5e4", borderRadius: "10px 10px 0 0", background: o.pat === best ? VERT + "0a" : "transparent", ...colGagne(o, "haut") }} data-nc-al-decomp={o.k} data-nc-al-option-pat={o.pat} data-nc-al-gagne={o.pat === best ? "1" : "0"}>
+                <th key={o.k} className="text-left align-top px-4 pt-3 pb-3" style={{ borderTop: "5px solid " + o.c, borderBottom: "1.5px solid #e7e5e4", background: o.pat === best ? VERT + "0a" : "#fff", ...colGagne(o, "haut") }} data-nc-al-decomp={o.k} data-nc-al-option-pat={o.pat} data-nc-al-gagne={o.pat === best ? "1" : "0"}>
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold" style={{ color: o.c }}>{o.titre}</div>
-                      <div className="text-[11px] text-stone-500 font-normal">{o.sous}</div>
+                      <div className="text-[10.5px] uppercase tracking-[0.14em] font-extrabold" style={{ color: o.c }}>{o.titre}</div>
+                      <div className="text-[11px] text-stone-500 font-normal mt-0.5">{o.sous}</div>
                     </div>
                     {o.pat === best ? <span className="text-[9px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-full text-white whitespace-nowrap" style={{ background: VERT }} data-nc-al-meilleure={o.k}>Meilleure</span> : null}
                   </div>
@@ -9076,22 +9090,34 @@
               ))}
             </tr></thead>
             <tbody>
-              {LIGNES.map(L => (
+              {LIGNES.map((L, idx) => L.sec ? (
+                <tr key={"sec" + idx} data-nc-al-section={L.sec}>
+                  <td className="px-4 pt-3 pb-1 text-[9.5px] uppercase tracking-[0.18em] font-extrabold" style={{ background: SABLE, color: OR }}>{L.sec}</td>
+                  {opts.map(o => <td key={o.k} className="pt-3 pb-1" style={{ background: o.pat === best ? VERT + "06" : "#fff", ...colGagne(o) }}></td>)}
+                </tr>
+              ) : (
                 <tr key={L.k} data-nc-al-ligne={L.k}>
-                  <td className={"align-top px-2 py-2 text-[11.5px] " + (L.cadre ? "font-extrabold" : "")} style={{ borderBottom: "1px solid #f0ede8", color: L.cadre ? "#1d2735" : "#57534e", background: L.cadre ? "#f5f5f4" : "transparent" }}>{L.l}</td>
+                  <td className="align-top px-4 py-2.5" style={{ background: L.cadre ? "#ece4d4" : SABLE, borderBottom: "1px solid #ebe3d3", borderLeft: L.cadre ? "4px solid " + OR : "4px solid transparent" }}>
+                    <div className={"text-[12px] leading-tight " + (L.cadre ? "font-extrabold" : "font-bold")} style={{ color: NAVY }}>{L.l}</div>
+                    {L.aide ? <div className="text-[10px] leading-snug mt-0.5" style={{ color: "#8a7f6b" }}>{L.aide}</div> : null}
+                  </td>
                   {opts.map(o => { const x = cell(o, L.k) || {}; return (
-                    <td key={o.k} className="align-top px-3 py-2" style={{ borderBottom: "1px solid #f0ede8", background: L.cadre ? o.c + "0d" : (o.pat === best ? VERT + "08" : "transparent"), boxShadow: L.cadre ? "inset 0 0 0 2px " + o.c : "none", ...colGagne(o) }}>
-                      <div className={"tabular-nums " + (L.cadre ? "font-extrabold text-[16px]" : "font-bold text-[13px]")} style={{ color: L.cadre ? o.c : "#1d2735" }}>{x.v}</div>
+                    <td key={o.k} className="align-top px-4 py-2.5" style={{ borderBottom: "1px solid #f0ede8", background: L.cadre ? o.c + "0d" : (o.pat === best ? VERT + "06" : "#fff"), boxShadow: L.cadre ? "inset 0 0 0 2px " + o.c : "none", ...colGagne(o) }}>
+                      <div className={"tabular-nums " + (L.cadre ? "font-extrabold text-[17px]" : "font-bold text-[13.5px]")} style={{ color: L.cadre ? o.c : NAVY }}>{x.v}</div>
                       {x.sub ? <div className="text-[10px] leading-snug mt-0.5" style={{ color: L.cadre ? o.c : "#a8a29e" }}>{x.sub}</div> : null}
                     </td>
                   ); })}
                 </tr>
               ))}
               <tr data-nc-al-ligne="patrimoine">
-                <td className="align-middle px-2 py-3 text-[9.5px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b8924e" }}>Patrimoine net à {yH} ans</td>
+                <td className="align-middle px-4 py-4" style={{ background: NAVY, borderLeft: "4px solid " + OR, borderTop: "3px solid " + OR, borderBottom: "3px solid " + OR }}>
+                  <div className="text-[9.5px] uppercase tracking-[0.18em] font-extrabold" style={{ color: OR }}>Patrimoine net</div>
+                  <div className="text-[12px] font-bold text-white">à {yH} ans</div>
+                </td>
                 {opts.map(o => (
-                  <td key={o.k} className="px-3 py-3" style={{ background: o.pat === best ? VERT + "14" : o.c + "10", borderRadius: "0 0 10px 10px", ...colGagne(o, "bas") }}>
-                    <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 30 : 25, color: o.c }}>{eur(o.pat)}</div>
+                  <td key={o.k} className="px-4 py-4" style={{ background: o.pat === best ? VERT + "14" : o.c + "10", borderTop: "3px solid " + OR, borderBottom: "3px solid " + OR, borderRight: o.k === opts[opts.length - 1].k ? "3px solid " + OR : "none", ...colGagne(o, "bas") }}>
+                    <div className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: pres ? 30 : 26, color: o.c }}>{eur(o.pat)}</div>
+                    {o.pat === best ? <div className="text-[10px] font-bold mt-0.5" style={{ color: VERT }}>la plus favorable à {yH} ans</div> : <div className="text-[10px] mt-0.5" style={{ color: "#a8a29e" }}>{sg(o.pat - best)} vs la meilleure</div>}
                   </td>
                 ))}
               </tr>
@@ -9109,7 +9135,7 @@
               <ul className="text-[13px] leading-relaxed" style={{ color: "#1d2735", listStyle: "disc", paddingLeft: 18, margin: 0 }} data-nc-al-rappel-col="bien">
                 <li>Résidence principale{P.ville ? " à " + P.ville : ""} — {P.typo}, {P.surface} m²</li>
                 <li>Ancien : <b>{eur(nbP(P.prixAncien))}</b>{nbP(P.travaux) > 0 ? " + " + eur(nbP(P.travaux)) + " de travaux" : ""}</li>
-                <li>Neuf : <b>{eur(nbP(P.prixNeuf))}</b>{P.tvaNeuf === "5.5" ? " (TVA 5,5 %)" : ""}{vRefCur && vRefCur.neufSrc !== "L" && Math.abs(nbP(P.prixNeuf) - vRefCur.neuf * nbP(P.surface)) < 1 ? " (estimation, à vérifier)" : ""}</li>
+                {P.avecNeuf === "oui" ? <li>Neuf : <b>{eur(nbP(P.prixNeuf))}</b>{P.tvaNeuf === "5.5" ? " (TVA 5,5 %)" : ""}{vRefCur && vRefCur.neufSrc !== "L" && Math.abs(nbP(P.prixNeuf) - vRefCur.neuf * nbP(P.surface)) < 1 ? " (estimation, à vérifier)" : ""}</li> : null}
               </ul>
               <ul className="text-[13px] leading-relaxed" style={{ color: "#1d2735", listStyle: "disc", paddingLeft: 18, margin: 0 }} data-nc-al-rappel-col="financement">
                 <li>Apport : <b>{eur(nbP(P.apport))}</b></li>
@@ -9119,17 +9145,32 @@
             </div>
             {P.notes && P.notes.trim() ? <div className="text-[12px] text-stone-600 mt-2" data-nc-al-notes="1"><b>Commentaires :</b> {P.notes}</div> : null}
           </div>
-          {/* curseur de durée */}
-          <div className="rounded-2xl bg-white border p-4 mb-3" style={{ borderColor: "#e7e5e4" }} data-nc-al-curseur-horizon="1">
-            <div className="flex items-end justify-between gap-3 mb-1">
-              <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b8924e" }}>Dans combien d'années je compare</div>
-              <div className="flex items-baseline gap-1"><span className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735" }} data-nc-al-horizon-val={yH}>{yH}</span><span className="text-[12px] text-stone-500">ans</span></div>
+          {/* curseurs de durée et d apport : tout le tableau suit (13/10 : « un apport dynamique qui modifie tout le reste ») */}
+          <div className="grid gap-3 mb-3" style={{ gridTemplateColumns: "1.4fr 1fr" }}>
+            <div className="rounded-2xl bg-white border p-4" style={{ borderColor: "#e7e5e4" }} data-nc-al-curseur-horizon="1">
+              <div className="flex items-end justify-between gap-3 mb-1">
+                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b8924e" }}>Dans combien d'années je compare</div>
+                <div className="flex items-baseline gap-1"><span className="font-extrabold tabular-nums" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735" }} data-nc-al-horizon-val={yH}>{yH}</span><span className="text-[12px] text-stone-500">ans</span></div>
+              </div>
+              <input type="range" min="1" max="30" step="1" value={yH} onChange={e => set("horizon", e.target.value)} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur="horizon" />
+              <div className="flex justify-between text-[9.5px] text-stone-400 mt-0.5"><span>1 an</span><span>10 ans</span><span>20 ans</span><span>30 ans</span></div>
             </div>
-            <input type="range" min="1" max="30" step="1" value={yH} onChange={e => set("horizon", e.target.value)} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur="horizon" />
-            <div className="flex justify-between text-[9.5px] text-stone-400 mt-0.5"><span>1 an</span><span>10 ans</span><span>20 ans</span><span>30 ans</span></div>
+            <div className="rounded-2xl bg-white border p-4" style={{ borderColor: "#e7e5e4" }} data-nc-al-curseur-apport="1">
+              <div className="flex items-end justify-between gap-3 mb-1">
+                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#b8924e" }}>Apport</div>
+                <div className="flex items-baseline gap-1"><input type="text" inputMode="decimal" value={P.apport} onChange={e => set("apport", e.target.value)} onBlur={e => { const v = nbP(e.target.value); set("apport", new Intl.NumberFormat("fr-FR").format(Math.round(v))); }} className="num text-right font-extrabold bg-transparent focus:outline-none" style={{ fontFamily: "'Lora', 'Playfair Display', serif", fontSize: 30, color: "#1d2735", width: 150, borderBottom: "1.5px solid #d6d3d1" }} data-nc-al="apportResultat" /><span className="text-[12px] text-stone-500">€</span></div>
+              </div>
+              <input type="range" min={0} max={Math.max(300000, nbP(P.apport))} step={5000} value={Math.max(0, nbP(P.apport))} onChange={e => set("apport", new Intl.NumberFormat("fr-FR").format(parseInt(e.target.value, 10)))} className="w-full" style={{ accentColor: "#1d2735" }} data-nc-al-curseur="apportResultat" />
+              <div className="flex justify-between text-[9.5px] text-stone-400 mt-0.5"><span>0</span><span>100 k€</span><span>200 k€</span><span>300 k€</span></div>
+            </div>
           </div>
           {/* tableau comparatif, lecture horizontale */}
           {tableau}
+          <div className="flex justify-end mb-2">
+            {P.avecNeuf === "oui"
+              ? <button type="button" onClick={() => set("avecNeuf", "non")} className="text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: "#fff", color: "#6d28d9", border: "1.5px solid #c4b5fd" }} data-nc-al-chip="avecNeuf:non-resultat">Retirer le neuf</button>
+              : <button type="button" onClick={() => set("avecNeuf", "oui")} className="text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ background: "#faf5ff", color: "#6d28d9", border: "1.5px dashed #c4b5fd" }} data-nc-al-chip="avecNeuf:oui-resultat">+ Ajouter le neuf (option)</button>}
+          </div>
           <div className="text-[10.5px] text-stone-500 mb-3 leading-relaxed" data-nc-al-asterisque="1">
             * Fiscalité des retraits d'assurance-vie après 8 ans : abattement annuel de 4 600 € pour une personne seule, 9 200 € pour un couple, sur les gains ; au-delà 7,5 % + 17,2 % de prélèvements sociaux ({P.fiscPlac} %). Les trois options sortent la même trésorerie chaque mois : {eur(R.budgetM1)}, le coût de l'option la plus chère ({fixePar}) ; les autres placent l'écart sur l'assurance-vie. Après le crédit ({R.duree} ans), le locataire paie toujours son loyer et n'épargne plus ; les propriétaires n'ont plus de crédit et placent l'équivalent du loyer qu'ils n'ont plus à payer, charges déduites.
           </div>
@@ -9219,7 +9260,9 @@
                 <input type="range" min={0} max={Math.max(100000, nbP(P.travaux))} step={1000} value={Math.max(0, nbP(P.travaux))} onChange={e => set("travaux", fmtN(parseInt(e.target.value, 10)))} className="w-full" style={{ accentColor: "#0f766e" }} data-nc-al-curseur="travaux" />
               </div>
             </NcAlTuilePrix>
+            {P.avecNeuf === "oui" ? (
             <NcAlTuilePrix P={P} set={set} surface={P.surface} onM2={setM2} titre="Acheter dans le neuf" c="#6d28d9" k="prixNeuf" m2={m2Neuf} estime={!!(vRefCur && vRefCur.neufSrc !== "L")} src={vRefCur ? (vRefCur.neufSrc === "L" ? "Logisneuf : " + fmtN(vRefCur.neuf) + " €/m² (prix promoteurs)" : "estimation ancien × 1,5 (prix d'entrée) — à vérifier sur un programme réel") : "prix à régler"}>
+              <button type="button" onClick={() => set("avecNeuf", "non")} className="mt-2 text-[10.5px] font-bold underline" style={{ color: "#6d28d9" }} data-nc-al-chip="avecNeuf:non">Retirer le neuf de la comparaison</button>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div>
                   <div className="text-[10px] uppercase tracking-[0.14em] font-extrabold text-stone-500 mb-1">TVA du neuf</div>
@@ -9233,6 +9276,13 @@
                 </div>
               </div>
             </NcAlTuilePrix>
+            ) : (
+              <button type="button" onClick={() => set("avecNeuf", "oui")} className="rounded-2xl p-4 text-left transition hover:bg-stone-50" style={{ border: "1.5px dashed #c4b5fd", borderTop: "5px solid #6d28d9", background: "#faf5ff" }} data-nc-al-chip="avecNeuf:oui">
+                <div className="text-[10px] uppercase tracking-[0.16em] font-extrabold" style={{ color: "#6d28d9" }}>Acheter dans le neuf — en option</div>
+                <div className="text-[13px] font-bold mt-2" style={{ color: "#1d2735" }}>+ Ajouter le neuf à la comparaison</div>
+                <div className="text-[11px] text-stone-500 mt-1 leading-snug">Par défaut, l'étude compare l'achat dans l'ancien et la location. Le neuf s'ajoute à la demande.</div>
+              </button>
+            )}
           </div>
 
           {/* ——— Louer un bien similaire ——— */}
