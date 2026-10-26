@@ -49,7 +49,7 @@ const ATTENDUS = {
   ],
   pacse: [
     ['les deux prénoms', /Claire[\s\S]*Maxime|Maxime[\s\S]*Claire/],
-    ['revenus du foyer 7 500 €', /7[\s  ]?500/],
+    ['revenus du foyer 7 775 € (Madame 2 650 + Monsieur 4 300 × 13 mois + bonus)', /7[\s  ]?775/],
     ['PACS', /pacs/i],
     ['deux enfants', /Jade|Noé/],
   ],
