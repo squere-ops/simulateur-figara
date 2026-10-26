@@ -13,7 +13,7 @@
       mot lu dans la synthèse — un champ mal nommé dans la fiche le rend muet).
    ═══════════════════════════════════════════════════════════════════════════ */
 const { chromium } = require('playwright');
-const { passerFenetres } = require('./_aide');
+const { passerFenetres, pourquoiBloque } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 
 let ko = 0;
@@ -137,6 +137,14 @@ const ATTENDUS = {
        le banc la franchit par « Continuer quand même » (elle a son propre banc). */
     { const bInc = page.locator('[data-nc-inco="1"] button:has-text("Continuer quand même")'); if (await bInc.count()) { await bInc.first().click(); await page.waitForTimeout(1600); } }
     await passerFenetres(page);
+    if (process.env.PW_DEBUG) {
+      console.log('BLOQUE?', JSON.stringify(await pourquoiBloque(page)));
+      console.log('ETAT:', JSON.stringify(await page.evaluate(() => {
+        const bs = Array.from(document.querySelectorAll('button'));
+        const t = (b) => b.innerText.trim().replace(/\s+/g, ' ');
+        return { ficheOuverte: bs.some(b => /Enregistrer et fermer/.test(t(b))), synth: bs.filter(b => /Synthèse/.test(t(b))).map(b => t(b) + (b.offsetParent ? '' : '(cachée)')), etapeActive: bs.filter(b => /text-white/.test(b.className) && /^[1-8] |^(État civil|Famille|Activité|Patrimoine|Fiscalité|Objectifs|Profil|Synthèse)/.test(t(b))).map(t), niveau: bs.filter(b => /Audit patrimonial complet|Fiche rapide/.test(t(b))).map(b => t(b).slice(0, 28) + (/border-red/.test(b.className) ? '[actif]' : '')), corps: document.body.innerText.replace(/\n+/g, ' | ').slice(-700) };
+      })));
+    }
     /* un éventuel garde-fou (capacité d'épargne) : on le signale, sans le contourner */
     const garde = await page.evaluate(() => /capacité d'épargne/i.test(document.body.innerText) && !document.querySelector('.nc-syn-zone'));
     if (garde) { KO(cle + ' : un garde-fou bloque l\'accès à la synthèse'); continue; }

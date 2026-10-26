@@ -23,7 +23,7 @@ async function passerFenetres(page, tours = 12) {
         }
         return null;
       };
-      let b = boite(/ENTRETIEN\s*[—–-]\s*QUELQUES QUESTIONS/i);
+      let b = boite(/ENTRETIEN\s*[—–-].{0,40}AVANT LA SYNTHÈSE/i);
       if (b) {
         const ouis = boutons(b).filter(x => txt(x) === 'Oui' && !/text-white|bg-/.test('') );
         // réponses pas encore données : les « Oui » non sélectionnés (aria-pressed ou classe)
@@ -49,4 +49,14 @@ async function passerFenetres(page, tours = 12) {
   if (process.env.PW_DEBUG) console.log('passerFenetres:', actions.join(' > ') || 'rien à franchir');
   return actions;
 }
-module.exports = { passerFenetres };
+// Pourquoi la synthèse ne s'ouvre pas : questions sans réponse signalées par l'application.
+async function pourquoiBloque(page) {
+  return page.evaluate(() => {
+    const vis = (el) => !!(el && el.offsetParent);
+    const msg = Array.from(document.querySelectorAll('div, span, p')).map(e => (e.innerText || '').trim()).find(t => /question[s]? sans réponse sur cette page/i.test(t) && t.length < 160) || '';
+    const manques = Array.from(document.querySelectorAll('[data-ncq="manque"]')).filter(vis).map(e => (e.innerText || '').trim().replace(/\s+/g, ' ').slice(0, 90));
+    const etapeActive = Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim().replace(/\s+/g, ' ')).find(t => /^[1-8] /.test(t) && false) || '';
+    return { msg, manques, zone: !!document.querySelector('.nc-syn-zone') };
+  });
+}
+module.exports = { passerFenetres, pourquoiBloque };
