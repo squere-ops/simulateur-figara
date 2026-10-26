@@ -16,7 +16,11 @@ node syn.js 2>&1 | tail -1 | grep -q "SYNTAX OK" && echo "│  ✓ SYNTAX OK" ||
 echo "├─ 2/20 · Régénération du banc local et du harnais"
 ./regen.sh >/dev/null 2>&1 && echo "│  ✓ test_local.html" || { echo "│  ✗ regen.sh"; KO=1; }
 if [ $HARNAIS -eq 1 ]; then python3 regen_proj.py >/dev/null 2>&1 && echo "│  ✓ _test_proj.html" || { echo "│  ✗ regen_proj.py"; KO=1; }; else harnais_manquant; fi
-pgrep -f "http.server 8899" >/dev/null || (setsid nohup python3 -m http.server 8899 >/dev/null 2>&1 & sleep 2)
+if ! curl -s -o /dev/null http://127.0.0.1:8899/test_local.html; then
+  nohup python3 -m http.server 8899 --bind 127.0.0.1 >/dev/null 2>&1 &
+  for i in 1 2 3 4 5; do sleep 1; curl -s -o /dev/null http://127.0.0.1:8899/test_local.html && break; done
+fi
+curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8899/test_local.html | grep -q 200 && echo "│  ✓ serveur local 8899" || { echo "│  ✗ serveur local 8899 injoignable — tout le reste échouera"; exit 1; }
 echo "├─ 3/20 · Banc de contrôle (dossiers types, moteurs, champs orphelins)"
 if [ $HARNAIS -eq 1 ]; then
 node t_controle.js > /tmp/_ctrl.txt 2>&1
