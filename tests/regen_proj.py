@@ -10,7 +10,12 @@ import io, re
 SRC = 'index.html'
 DST = '_test_proj.html'
 
+import os, sys
 s = io.open(SRC, encoding='utf-8').read()
+if not os.path.exists(DST):
+    print("HARNAIS MANQUANT : le gabarit _test_proj.html (tete vendors+helpers, pied dossier D) "
+          "n'est pas dans le depot — a reconstruire (voir TODO.md). Rien a regenerer.")
+    sys.exit(2)
 old = io.open(DST, encoding='utf-8').read()
 
 def grab(name):

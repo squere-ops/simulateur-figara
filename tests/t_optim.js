@@ -27,7 +27,7 @@ const dossier = (montantConjoint) => ({
 });
 
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const p = await b.newPage({ viewport: { width: 1300, height: 900 } });
   const errs = [];
   p.on('pageerror', e => { if (!/tailwind/.test(String(e))) errs.push(String(e).slice(0, 200)); });

@@ -5,7 +5,7 @@ const setNative = async (el, value) => el.evaluate((node, v) => {
 }, value);
 const jsClick = (page, re) => page.evaluate((src) => { const r = new RegExp(src, 'i'); const b = [...document.querySelectorAll('button')].find(e => e.offsetParent !== null && r.test(e.innerText.trim())); if (b) { b.click(); return true; } return false; }, re);
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const errs = [];
   page.on('pageerror', e => { if (!/tailwind/.test(String(e))) errs.push(String(e).slice(0, 200)); });

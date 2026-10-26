@@ -22,7 +22,7 @@ const OK = (m) => console.log('OK   — ' + m);
 const KO = (m) => { console.log('FAIL — ' + m); ko++; };
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1440, height: 950 } });
   await page.addInitScript(() => { window.__NC_FORCE_DEMO = true; });
   const errs = [];

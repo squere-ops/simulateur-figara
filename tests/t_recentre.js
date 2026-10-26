@@ -23,7 +23,7 @@ const KO = (m) => { console.log('FAIL — ' + m); ko++; };
 const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1440, height: 950 } });
   await page.addInitScript(() => { window.__NC_FORCE_DEMO = true; });
   const errs = [];

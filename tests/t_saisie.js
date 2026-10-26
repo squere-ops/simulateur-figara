@@ -10,7 +10,7 @@
 const { chromium } = require('playwright');
 
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const p = await b.newPage({ viewport: { width: 1300, height: 1000 } });
   const errs = [];
   p.on('pageerror', e => errs.push(String(e).slice(0, 200)));

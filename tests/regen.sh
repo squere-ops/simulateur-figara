@@ -1,7 +1,7 @@
 #!/bin/bash
 # Porte de syntaxe + CSS Tailwind réel + banc de test local
 set -e
-cd /home/claude/work
+cd "$(dirname "$0")"
 node syn.js | tail -1
 npx tailwindcss -c tailwind.config.js -i tw_in.css -o local/tailwind-real.css >/dev/null 2>&1
 python3 << 'PYEOF'

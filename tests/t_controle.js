@@ -165,7 +165,7 @@ const BANNIS = [
 ];
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const jsErr = [];
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) jsErr.push(String(e).slice(0, 200)); });

@@ -67,7 +67,7 @@ const ATTENDUS = {
 };
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
 
   /* ═══ 0 · PRODUCTION : AUCUN BOUTON ═══ */
   {

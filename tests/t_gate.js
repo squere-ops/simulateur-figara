@@ -7,7 +7,7 @@ const setNative = async (page, el, value) => {
   }, value);
 };
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
   await page.goto('http://localhost:8899/test_local.html?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1400);

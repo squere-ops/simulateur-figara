@@ -23,7 +23,7 @@ const repondreNonPartout = async (page) => {
 };
 (async () => {
   const FILE = process.argv[2] || 'test_local.html', OUT = process.argv[3] || '/tmp/biens.png';
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 1100 } });
   await page.goto('http://localhost:8899/' + FILE + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);

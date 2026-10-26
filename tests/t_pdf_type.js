@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 const cle = process.argv[2] || 'celib';
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
   await page.addInitScript(() => { window.__NC_FORCE_DEMO = true; });
   page.on('dialog', dl => dl.accept());

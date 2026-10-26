@@ -4,30 +4,43 @@
 #  Rien ne part au cabinet tant que cette commande n'est pas verte.
 #      ./verif.sh
 # ═══════════════════════════════════════════════════════════════════════
-cd /home/claude/work
+cd "$(dirname "$0")"
 KO=0
+INCOMPLET=0
+[ -d node_modules ] || { echo "node_modules absent : lancer  npm i && npx playwright install chromium && ./setup_local.sh"; exit 1; }
+[ -d local ] || ./setup_local.sh >/dev/null
+HARNAIS=1; [ -f _test_proj.html ] || HARNAIS=0
+harnais_manquant() { echo "│  ⚠ non vérifiable : le harnais _test_proj.html n'est pas dans le dépôt (voir TODO.md)"; INCOMPLET=1; }
 echo "┌─ 1/20 · Syntaxe"
 node syn.js 2>&1 | tail -1 | grep -q "SYNTAX OK" && echo "│  ✓ SYNTAX OK" || { echo "│  ✗ SYNTAXE CASSÉE"; KO=1; }
 echo "├─ 2/20 · Régénération du banc local et du harnais"
 ./regen.sh >/dev/null 2>&1 && echo "│  ✓ test_local.html" || { echo "│  ✗ regen.sh"; KO=1; }
-python3 regen_proj.py >/dev/null 2>&1 && echo "│  ✓ _test_proj.html" || { echo "│  ✗ regen_proj.py"; KO=1; }
+if [ $HARNAIS -eq 1 ]; then python3 regen_proj.py >/dev/null 2>&1 && echo "│  ✓ _test_proj.html" || { echo "│  ✗ regen_proj.py"; KO=1; }; else harnais_manquant; fi
 pgrep -f "http.server 8899" >/dev/null || (setsid nohup python3 -m http.server 8899 >/dev/null 2>&1 & sleep 2)
 echo "├─ 3/20 · Banc de contrôle (dossiers types, moteurs, champs orphelins)"
+if [ $HARNAIS -eq 1 ]; then
 node t_controle.js > /tmp/_ctrl.txt 2>&1
-if [ $? -eq 0 ]; then echo "│  ✓ $(tail -2 /tmp/_ctrl.txt | head -1)"; else echo "│  ✗ ÉCHEC — détail :"; grep '✗' /tmp/_ctrl.txt | sed 's/^/│    /'; KO=1; fi
+  if [ $? -eq 0 ]; then echo "│  ✓ $(tail -2 /tmp/_ctrl.txt | head -1)"; else echo "│  ✗ ÉCHEC — détail :"; grep '✗' /tmp/_ctrl.txt | sed 's/^/│    /'; KO=1; fi
+else harnais_manquant; fi
 echo "├─ 4/20 · Débordements et valeurs coupées, sur les trois volets"
 node t_deb_syn.js > /tmp/_deb.txt 2>&1
 grep -q "AUTO-TEST du detecteur : OK" /tmp/_deb.txt || { echo "│  ✗ le détecteur lui-même est aveugle"; KO=1; }
 if grep -q "TOTAL PROBLEMES : 0" /tmp/_deb.txt; then echo "│  ✓ aucun débordement, détecteur vérifié"; else echo "│  ✗ débordements :"; grep '\[' /tmp/_deb.txt | sed 's/^/│    /'; KO=1; fi
 echo "├─ 5/20 · Saisie réelle dans « Où trouver l'épargne » (frappe touche par touche)"
+if [ $HARNAIS -eq 1 ]; then
 node t_saisie.js > /tmp/_sai.txt 2>&1
-if [ $? -eq 0 ]; then echo "│  ✓ tous les champs répondent, aucun ne perd le focus"; else echo "│  ✗ champs inutilisables :"; grep '✗' /tmp/_sai.txt | sed 's/^/│    /'; KO=1; fi
+  if [ $? -eq 0 ]; then echo "│  ✓ tous les champs répondent, aucun ne perd le focus"; else echo "│  ✗ champs inutilisables :"; grep '✗' /tmp/_sai.txt | sed 's/^/│    /'; KO=1; fi
+else harnais_manquant; fi
 echo "├─ 6/20 · « Où trouver l'épargne » : un levier décoché ne compte dans aucun total"
+if [ $HARNAIS -eq 1 ]; then
 node t_gisements.js > /tmp/_gis.txt 2>&1
-if [ $? -eq 0 ]; then echo "│  ✓ deux familles séparées, totaux recalculés depuis la règle, potentiel au conditionnel"; else echo "│  ✗ gisements en défaut :"; grep '✗' /tmp/_gis.txt | sed 's/^/│    /'; KO=1; fi
+  if [ $? -eq 0 ]; then echo "│  ✓ deux familles séparées, totaux recalculés depuis la règle, potentiel au conditionnel"; else echo "│  ✗ gisements en défaut :"; grep '✗' /tmp/_gis.txt | sed 's/^/│    /'; KO=1; fi
+else harnais_manquant; fi
 echo "├─ 7/20 · Les sept régimes locatifs produisent leur avantage fiscal"
+if [ $HARNAIS -eq 1 ]; then
 node t_regimes.js > /tmp/_reg.txt 2>&1
-if [ $? -eq 0 ]; then echo "│  ✓ nu · meublé · Denormandie · Malraux · monument historique · LLI · Jeanbrun"; else echo "│  ✗ régimes en défaut :"; grep '✗' /tmp/_reg.txt | sed 's/^/│    /'; KO=1; fi
+  if [ $? -eq 0 ]; then echo "│  ✓ nu · meublé · Denormandie · Malraux · monument historique · LLI · Jeanbrun"; else echo "│  ✗ régimes en défaut :"; grep '✗' /tmp/_reg.txt | sed 's/^/│    /'; KO=1; fi
+else harnais_manquant; fi
 echo "├─ 8/20 · Optimisation du rattachement des enfants (union libre)"
 node t_optim.js > /tmp/_opt.txt 2>&1
 if [ $? -eq 0 ]; then echo "│  ✓ gain réel calculé, bouton présent, pas de gain annoncé à tort"; else echo "│  ✗ optimisation en défaut :"; grep '✗' /tmp/_opt.txt | sed 's/^/│    /'; KO=1; fi
@@ -81,5 +94,6 @@ echo "├─ 20/20 · LE DOCUMENT IMPRIMÉ — pages mesurées sur A4 ET Letter"
 node t_pdf_pages.js > /tmp/_pdf.txt 2>&1
 if [ $? -eq 0 ]; then echo "│  ✓ $(grep -c '^OK' /tmp/_pdf.txt) pages contrôlées, aucune page à moitié vide"; else echo "│  ✗ mise en page du PDF :"; grep '^FAIL' /tmp/_pdf.txt | sed 's/^/│    /'; KO=1; fi
 echo "└─────────────────────────────────────────────────────────"
-if [ $KO -eq 0 ]; then echo "   TOUT EST VERT — la livraison peut partir."; else echo "   ✗ NE PAS LIVRER."; fi
-exit $KO
+if [ $KO -ne 0 ]; then echo "   ✗ NE PAS LIVRER."; exit 1; fi
+if [ $INCOMPLET -ne 0 ]; then echo "   ⚠ INCOMPLET — rien de rouge, mais 5 étapes sur 20 ne sont pas vérifiables tant que le harnais n'est pas reconstruit."; exit 2; fi
+echo "   TOUT EST VERT — la livraison peut partir."; exit 0

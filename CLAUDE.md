@@ -13,6 +13,16 @@ Audit et synthèse (RDV 1), Analyse R2, Simulation. Déployé sur Vercel.
 - `TODO.md` — backlog : un seul item par session.
 - Branches : `main` (prod), `demo` (même code, projet Supabase différent).
 
+## Lancer les bancs (sur le Mac, dans le Terminal)
+```
+cd ~/Documents/GitHub/simulateur-figara/tests
+npm i && npx playwright install chromium && ./setup_local.sh   # une seule fois
+./verif.sh                                                     # 20 étapes
+```
+`verif.sh` démarre lui-même le serveur local (port 8899). Codes de sortie : 0 = tout vert,
+1 = rouge (ne pas livrer), 2 = incomplet (harnais `_test_proj.html` absent : 5 étapes non vérifiables).
+`tests/index.html` est un lien vers `../index.html` : les bancs testent toujours le fichier livré.
+
 ## Règles absolues (fixées par Sylvain)
 1. Ne jamais restaurer ni réintroduire ce qui a été supprimé sans accord explicite.
 2. Questionner au moindre doute : méthode, hypothèse, chiffre, présentation.

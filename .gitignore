@@ -15,7 +15,6 @@ Claude outputs/
 tests/node_modules/
 tests/local/
 tests/test_local.html
-tests/_test_proj.html
 tests/*.png
 tests/*.pdf
 .fuse_hidden*
