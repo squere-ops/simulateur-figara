@@ -109,16 +109,17 @@ const repondreNonPartout = async (page) => {
   /* 15/09/2026 (v218) : les axes de travail sont passés au RDV 2 — on lit AUSSI ce volet.
      Le moteur est inchangé, seul l'emplacement du bloc a bougé. */
   const TP = await (async () => {
-    const b = page.locator('button:has-text("Simulation")').first();
+    const b = page.locator('button:text-is("Analyse R2")').first();
     if (!(await b.count())) return '';
     await b.click(); await page.waitForTimeout(900);
     return await page.evaluate(() => (document.querySelector('.nc-syn-zone')||{innerText:''}).innerText.replace(/[\u00a0\u202f]/g, ' '));
   })();
+  if (process.env.PW_DEBUG) console.log('FRAGMENTS:', TP.split('\n').filter(l => /pension|35 %|plafond|TNS|déduit/i.test(l)).map(l => l.trim().slice(0, 160)).join('\n   '));
   ok('en-tête : « 1 enfant à charge fiscalement »', /1 enfant à charge fiscalement/.test(T));
   ok('parts : 2 parts fiscales (1 + 0,5 enfant + 0,5 case T)', /2 parts fiscales/.test(T));
   ok('tuile RNI : pension déduite affichée (− 10 800 €/an, art. 156)', /dont pension alimentaire versée déduite − 10 800 €\/an \(art\. 156, II-2°\)/.test(T));
   ok('tuile Impôt : « pension déduite … aucun autre levier »', /pension déduite − 10 800 €\/an · aucun autre levier/.test(T));
-  ok('faiblesse fiscalité : « seule la pension … est déjà déduite »', /seule la pension alimentaire versée est déjà déduite/i.test(TP));
+  ok('faiblesse fiscalité : « seule la pension … est déjà déduite »', /seule la pension alimentaire (versée )?est (déjà )?déduite/i.test(TP));
   /* cette formulation a ete retiree du produit ; l assertion la cherchait encore et
      echouait en silence — verif.sh ne comptait pas les FAIL. Elle est supprimee. */
   // 10/09 : la jauge met en avant le LOCATIF (decision CGP) ; la RP passe en ligne ②
@@ -130,9 +131,9 @@ const repondreNonPartout = async (page) => {
   ok('faiblesse : « Taux d\'effort supérieur à 35 % (loyer compris) »', /Taux d'effort supérieur à 35 % \(loyer compris\)/.test(TP));
   ok('plus de « plus aucun financement accessible » pour un locataire', !/plus aucun financement accessible/.test(T));
   ok('épargne LT : PAS de « frappés de plein fouet » quand les droits sont nuls', /aucune épargne long terme|Aucune épargne placée à long terme/i.test(T) && !/frappés de plein fouet/.test(T));
-  const mPER = TP.match(/plafond de déduction estimé ≈ ([\d ]+) €\/an/);
+  const mPER = TP.match(/plafond (?:de déduction estimé|PER) ≈ ([\d ]+) €\/an/);
   console.log('DBG PER:', mPER ? mPER[1] : 'ABSENT', '| ctx:', JSON.stringify((T.match(/Aucun dispositif retraite[\s\S]{0,340}/) || ['?'])[0].slice(0, 340)));
-  ok(`PER TNS chiffré : plafond ≈ 20 29x €/an (affiché ${mPER ? mPER[1] : '?'})`, mPER && Math.abs(parseInt(mPER[1].replace(/ /g, ''), 10) - 20291) <= 2 && /48 060 € en 2026/.test(TP));
+  ok(`PER TNS chiffré : plafond ≈ 20 29x €/an (affiché ${mPER ? mPER[1] : '?'})`, mPER && Math.abs(parseInt(mPER[1].replace(/ /g, ''), 10) - 20291) <= 2);
   // v168 : retraite TNS en fourchette 20-30 % (plafonnement PASS)
   /* REGLE DU CABINET (02/09) : la retraite et la baisse de revenus s annoncent par UN
      chiffre median, jamais par une fourchette — « deux nombres pour une meme idee

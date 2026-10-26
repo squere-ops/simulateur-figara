@@ -246,7 +246,7 @@ const repondreNonPartout = async (page) => {
   has('crédit auto (titre)', /Crédit auto — 350 €\/mois/);
   has('fin juin 2027 (paire)', /Fin\s*\n?\s*juin 2027/i);
   { /* 15/09/2026 (v218) : participation et objectifs sont passés au RDV 2 */
-    const bP = page.locator('button:has-text("Simulation")').first();
+    const bP = page.locator('button:text-is("Analyse R2")').first();
     let TP2 = '';
     if (await bP.count()) { await bP.click(); await page.waitForTimeout(900);
       TP2 = await page.evaluate(() => (document.querySelector('.nc-syn-zone') || { innerText: '' }).innerText); }

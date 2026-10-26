@@ -155,6 +155,7 @@ const repondreNonPartout = async (page) => {
     if (await r.count()) { await r.click(); await page.waitForTimeout(700); }
     return t;
   })();
+  if (process.env.PW_DEBUG) console.log('FRAGMENTS:', TP.split('\n').filter(l => /finançable|endettement|locatif/i.test(l)).map(l => l.trim().slice(0, 160)).join('\n   '));
   const hasP = (lbl, re) => console.log((re.test(TP) ? 'OK  ' : 'FAIL') + ' — ' + lbl + ' [RDV 2]');
   const has = (lbl, re) => console.log((re.test(T) ? 'OK  ' : 'FAIL') + ' — ' + lbl);
   const not = (lbl, re) => console.log((!re.test(T) ? 'OK  ' : 'FAIL') + ' — ' + lbl);
@@ -181,7 +182,7 @@ const repondreNonPartout = async (page) => {
   has('capacité : ligne « Place restante pour du locatif »', /Place restante pour du locatif/);
   not("capacité : plus de jauge « achat de la RÉSIDENCE PRINCIPALE exclusivement »", /RÉSIDENCE PRINCIPALE exclusivement/);
   hasP('point fort capacité : « une fois le projet RP financé »', /une fois le projet RP financé/);
-  hasP('point fort endettement : « Montant finançable pour du locatif : Oui »', /Montant finançable pour du locatif : Oui/);
+  hasP('point fort endettement : « Locatif possible : N € » (ex-« Montant finançable : Oui »)', /Locatif possible : [0-9 ]+ €|Capacité d'emprunt disponible/);
   hasP('point fort endettement daté « avec le projet RP »', /de taux d'endettement avec le projet RP/);
   has('synthèse : crédit envisagé 20 ans à 3,5 %', /20 ans à 3,5 %/);
   has('synthèse : budget d\'acquisition 394 852 €', /394 852 €/);

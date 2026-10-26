@@ -43,7 +43,7 @@ const ouvrirAudit = async (page) => {
 const ATTENDUS = {
   celib: [
     ['nom', /Julien FAURE|FAURE/],
-    ['revenus 3 900 €', /3[\s  ]?900/],
+    ['salaire 4 225 € (3 900 × 13 mois)', /4[\s  ]?225/],
     ['loyer 980 €', /980/],
     ['crédit auto', /auto|véhicule/i],
   ],
@@ -150,7 +150,7 @@ const ATTENDUS = {
     if (garde) { KO(cle + ' : un garde-fou bloque l\'accès à la synthèse'); continue; }
     let txt = await page.evaluate(() => (document.querySelector('.nc-syn-zone') || { innerText: '' }).innerText);
     /* RDV 2 pour les attendus qui n'y figurent qu'au second rendez-vous */
-    const s2 = page.locator('button:has-text("Simulation")').first();
+    const s2 = page.locator('button:text-is("Analyse R2")').first();
     if (await s2.count()) { await s2.click(); await page.waitForTimeout(1200); txt += '\n' + await page.evaluate(() => (document.querySelector('.nc-syn-zone') || { innerText: '' }).innerText); }
     const s1 = page.locator('button:has-text("Audit et synthèse")').first();
     if (await s1.count()) { await s1.click(); await page.waitForTimeout(800); }
@@ -165,7 +165,7 @@ const ATTENDUS = {
         continue;
       }
       if (re.test(txt)) OK(cle + ' : ' + lib);
-      else KO(cle + ' : « ' + lib + ' » absent de la synthèse — un champ de la fiche est mal nommé ou mal rempli');
+      else { KO(cle + ' : « ' + lib + ' » absent de la synthèse — un champ de la fiche est mal nommé ou mal rempli'); if (process.env.PW_DEBUG) console.log('   lignes revenus :', txt.split('\n').filter(l => /revenu|salaire|€/i.test(l)).slice(0, 12).map(l => l.trim().slice(0, 90)).join(' | ')); }
     }
   }
 
