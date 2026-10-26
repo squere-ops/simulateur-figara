@@ -9,6 +9,8 @@ KO=0
 INCOMPLET=0
 [ -d node_modules ] || { echo "node_modules absent : lancer  npm i && npx playwright install chromium && ./setup_local.sh"; exit 1; }
 [ -d local ] || ./setup_local.sh >/dev/null
+PY=${PY:-/Library/Frameworks/Python.framework/Versions/3.12/bin/python3}; [ -x "$PY" ] || PY=python3; export PY
+"$PY" -c "import fitz" 2>/dev/null || echo "│  ⚠ PyMuPDF absent pour l'étape 20 : $PY -m pip install pymupdf"
 HARNAIS=1; [ -f _test_proj.html ] || HARNAIS=0
 harnais_manquant() { echo "│  ⚠ non vérifiable : le harnais _test_proj.html n'est pas dans le dépôt (voir TODO.md)"; INCOMPLET=1; }
 echo "┌─ 1/20 · Syntaxe"

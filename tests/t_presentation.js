@@ -172,10 +172,12 @@ const repondreNonPartout = async (page) => {
     };
   });
 
+  /* 26/10/2026 : le volet « Simulation » (preco) n'est plus un document à chapitres — depuis
+     v273 il ouvre le simulateur avec les chiffres du dossier, et sa dernière page est à
+     concevoir (TODO.md). On ne le contrôle plus ici tant que cette refonte n'est pas livrée. */
   const volets = [
     { l: 'Audit et synthèse', v: 'constat' },
     { l: 'Analyse R2', v: 'proj' },
-    { l: 'Simulation', v: 'preco' },
   ];
 
   // ── état AVANT : sert de référence pour la sortie ──

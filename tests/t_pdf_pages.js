@@ -301,20 +301,12 @@ const repondreNonPartout = async (page) => {
   const { execSync } = require('child_process');
   let ko = global.__koLarge || 0;
   for (const fmt of ['A4', 'Letter']) {
-    execSync(`rm -f pg_${fmt}-*.png && pdftoppm -r 60 -png doc_${fmt}.pdf pg_${fmt}`);
-    const imgs = fs.readdirSync('.').filter(f => f.startsWith(`pg_${fmt}-`) && f.endsWith('.png')).sort();
-    console.log(`\n=== ${fmt} : ${imgs.length} pages`);
-    imgs.forEach((f, i) => {
-      const taux = parseInt(execSync(`python3 -c "
-from PIL import Image
-im=Image.open('${f}').convert('L'); w,h=im.size; px=im.load(); hmax=int(h*0.90); d=0
-for y in range(hmax-1,-1,-1):
-    for x in range(0,w,3):
-        if px[x,y]<242: d=y; break
-    if d: break
-print(round(d/hmax*100))
-"`).toString().trim(), 10);
-      const derniere = i === imgs.length - 1;
+    /* 26/10/2026 : rendu et mesure par PyMuPDF (pdf_pages.py) — pdftoppm/Pillow ne sont pas sur le Mac */
+    const PY = process.env.PY || 'python3';
+    const taux_pages = execSync(`${PY} pdf_pages.py doc_${fmt}.pdf`).toString().trim().split('\n').map(x => parseInt(x, 10));
+    console.log(`\n=== ${fmt} : ${taux_pages.length} pages`);
+    taux_pages.forEach((taux, i) => {
+      const derniere = i === taux_pages.length - 1;
       const bon = taux >= 60 || derniere;
       if (!bon) ko++;
       console.log(`${bon ? 'OK  ' : 'FAIL'} — page ${i + 1} remplie à ${taux} %${derniere ? ' (dernière page : tolérée)' : ''}`);
