@@ -17,10 +17,13 @@ Audit et synthèse (RDV 1), Analyse R2, Simulation. Déployé sur Vercel.
 ```
 cd ~/Documents/GitHub/simulateur-figara/tests
 npm i && npx playwright install chromium && ./setup_local.sh   # une seule fois
+/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pip install pymupdf   # étape 20 (PDF)
 ./verif.sh                                                     # 20 étapes
 ```
 `verif.sh` démarre lui-même le serveur local (port 8899). Codes de sortie : 0 = tout vert,
-1 = rouge (ne pas livrer), 2 = incomplet (harnais `_test_proj.html` absent : 5 étapes non vérifiables).
+1 = rouge (ne pas livrer), 2 = incomplet (étapes « non vérifiables » assumées, listées dans TODO.md). État au 26/10/2026 : 14 vertes, 0 rouge, 6 non vérifiables.
+Un banc qui rougit après une évolution de l'app est d'abord un banc à relire (libellé, volet, fenêtre nouvelle)
+avant d'être un bug : les fenêtres qui précèdent la synthèse se franchissent avec `tests/_aide.js`.
 `tests/index.html` est un lien vers `../index.html` : les bancs testent toujours le fichier livré.
 
 ## Règles absolues (fixées par Sylvain)
