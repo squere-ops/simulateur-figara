@@ -1,0 +1,4 @@
+# Seuls index.html et vercel.json sont mis en ligne. Tout le reste reste dans le dépôt.
+*
+!index.html
+!vercel.json
