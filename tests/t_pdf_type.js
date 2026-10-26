@@ -2,6 +2,7 @@
    Usage : node t_pdf_type.js celib   → doc_type_celib_A4.pdf, doc_type_celib_Letter.pdf
    Sert à relire, page par page, ce que le CGP obtient avec un client type. */
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 const cle = process.argv[2] || 'celib';
 (async () => {
@@ -23,6 +24,7 @@ const cle = process.argv[2] || 'celib';
   await page.waitForTimeout(700);
   await page.locator('[data-nc-client-type="' + cle + '"]').click(); await page.waitForTimeout(900);
   await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1800);
+  await passerFenetres(page);
 
   /* 21/09/2026 : la fenêtre des incohérences peut s'ouvrir en quittant les objectifs —
      le banc la franchit par « Continuer quand même » (elle a son propre banc). */

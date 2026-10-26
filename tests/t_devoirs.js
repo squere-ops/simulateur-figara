@@ -1,6 +1,7 @@
 // Reproduction du dossier TEST Jean (couple, RP + maison Bretagne NP, 2 AV, crédit auto)
 // puis vérification VISUELLE (Tailwind réel) + export PDF page par page.
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 
 const repondreNonPartout = async (page) => {
@@ -237,6 +238,7 @@ const repondreNonPartout = async (page) => {
   // ÉTAPE 7 — synthèse
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(900);
   console.log('APRES SYN CLICK:', (await page.evaluate(() => document.body.innerText.slice(-900))).replace(/\n+/g, ' | '));
   if (await page.evaluate(() => /un instant/i.test(document.body.innerText))) {
@@ -291,7 +293,7 @@ const repondreNonPartout = async (page) => {
   });
   console.log('QUOTITE renseignée:', rq1);
   await page.waitForTimeout(600);
-  { const b = mod2.locator('button:has-text("Synthèse")').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1500); } }
+  { const b = mod2.locator('button:has-text("Synthèse")').first(); if (await b.count()) { await b.click(); await passerFenetres(page); await page.waitForTimeout(1500); } }
   const T2 = await zoneTxt();
   chk(rq1 === 'ok' && !/quotités de votre assurance de prêt/i.test(T2), 'AUTO-TEST : quotité renseignée → ce devoir disparaît');
   chk(/Tableau d'amortissement et offre de prêt/i.test(T2), "le devoir de l'assurance de prêt, lui, reste");
@@ -419,7 +421,7 @@ const repondreNonPartout = async (page) => {
   chk(await estCochee(), 'AUTO-TEST : un clic coche la case');
 
   { const b = mod2.locator('button:has-text("État civil")').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(700); } }
-  { const b = mod2.locator('button:has-text("Synthèse")').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1400); } }
+  { const b = mod2.locator('button:has-text("Synthèse")').first(); if (await b.count()) { await b.click(); await passerFenetres(page); await page.waitForTimeout(1400); } }
   chk(await estCochee(), "l'état coché survit à un aller-retour dans le dossier");
 
   const dansLeClone = await page.evaluate(() => {

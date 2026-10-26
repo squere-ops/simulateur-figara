@@ -16,6 +16,7 @@
    locatif », apport déclaré 30 000 à 50 000 €.
    ═══════════════════════════════════════════════════════════════════════════ */
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 let ko = 0;
 const OK = (m) => console.log('OK   — ' + m);
@@ -44,6 +45,7 @@ const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
   /* ═══ 1 · LA FENÊTRE DES INCOHÉRENCES ═══ */
   console.log('\n═══ 1 · INCOHÉRENCES ═══');
   await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1200);
+  await passerFenetres(page);
   const inco = await page.evaluate(() => { const m = document.querySelector('[data-nc-inco="1"]'); return m ? m.innerText : null; });
   if (!inco) KO('aucune fenêtre d\'incohérences en quittant les objectifs');
   else {
@@ -56,6 +58,7 @@ const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
     const encore = await page.evaluate(() => !!document.querySelector('.nc-syn-zone'));
     if (encore) KO('« Corriger la saisie » a ouvert la synthèse au lieu de rester sur la saisie'); else OK('« Corriger la saisie » reste sur la saisie');
     await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1000);
+    await passerFenetres(page);
     await page.locator('[data-nc-inco="1"] button:has-text("Continuer quand même")').click(); await page.waitForTimeout(1800);
   }
 
@@ -136,6 +139,7 @@ const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
   else {
     await page.waitForTimeout(600);
     await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1200);
+    await passerFenetres(page);
     { const bInc = page.locator('[data-nc-inco="1"] button:has-text("Continuer quand même")'); if (await bInc.count()) { await bInc.first().click(); await page.waitForTimeout(1500); } }
     const r25 = await page.evaluate(() => { const e = document.querySelector('[data-nc-regle-25="1"]'); return e ? e.innerText : null; });
     if (!r25) KO('endettement au-dessus de 25 % : la règle « à valider avec le courtier en crédit » n\'apparaît pas');

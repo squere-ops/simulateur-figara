@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(node, v); node.dispatchEvent(new Event('input', { bubbles: true })); }, value);
 };
@@ -61,6 +62,7 @@ const repondreNonPartout = async (page) => {
   await page.waitForTimeout(400);
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(900);
   if (await page.evaluate(() => /un instant/i.test(document.body.innerText))) {
     const p35 = page.locator('button:has-text("300 – 500")').last();

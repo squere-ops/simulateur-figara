@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => {
@@ -30,6 +31,7 @@ const repondreNonPartout = async (page) => {
   const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
   const errs = [];
+  let ko = 0;
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) errs.push(String(e)); });
   await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
@@ -116,6 +118,7 @@ const repondreNonPartout = async (page) => {
   // ÉTAPE 7 — synthèse (garde-fou capacité en route)
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(800);
   const guard = await page.evaluate(() => /un instant/i.test(document.body.innerText));
   if (guard) {

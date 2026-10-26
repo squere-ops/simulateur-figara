@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => {
     Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(node, v);
@@ -65,6 +66,7 @@ const repondreNonPartout = async (page) => {
   ok('après ↓ : Réduire la fiscalité devient n° 1', /Réduire la fiscalité[\s\S]{0,40}priorité n° 1/i.test(t6));
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(900);
   if (await page.evaluate(() => /un instant/i.test(document.body.innerText))) {
     const p35 = page.locator('button:has-text("300 – 500")').last();

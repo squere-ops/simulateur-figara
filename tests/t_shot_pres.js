@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => {
@@ -212,6 +213,7 @@ const repondreNonPartout = async (page) => {
   // ÉTAPE 7 — synthèse (garde-fou capacité en route)
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(800);
   const guard = await page.evaluate(() => /un instant/i.test(document.body.innerText));
   if (guard) {

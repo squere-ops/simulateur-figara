@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => {
     const proto = HTMLInputElement.prototype;
@@ -34,6 +35,7 @@ const setNative = async (page, el, value) => {
   console.log((nbManque > 0 ? 'OK  ' : 'FAIL') + ` — ${nbManque} question(s) marquées manquantes`);
   // Clic direct sur un onglet lointain → bloqué aussi
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(600);
   t = await page.evaluate(() => document.body.innerText);
   ok('onglet Synthèse bloqué aussi (toujours étape 1)', /étape 1 \/ 8/.test(t));

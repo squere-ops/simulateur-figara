@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 
 const setNative = async (page, el, value) => {
   await el.evaluate((node, v) => {
@@ -146,6 +147,7 @@ const repondreNonPartout = async (page) => {
   // ÉTAPE 8 — synthèse
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(900);
   if (await page.evaluate(() => /un instant/i.test(document.body.innerText))) {
     const val = page.locator('button:has-text("Valider")').first();

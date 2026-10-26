@@ -16,6 +16,7 @@
    7. la phrase des 18 % précise « dont 9 % en épargne financière ».
    ═══════════════════════════════════════════════════════════════════════════ */
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 let ko = 0;
 const OK = (m) => console.log('OK   — ' + m);
@@ -40,6 +41,7 @@ const KO = (m) => { console.log('FAIL — ' + m); ko++; };
   await page.waitForTimeout(700);
   await page.locator('[data-nc-client-type="celib"]').click(); await page.waitForTimeout(900);
   await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1800);
+  await passerFenetres(page);
 
   /* 21/09/2026 : la fenêtre des incohérences peut s'ouvrir en quittant les objectifs —
      le banc la franchit par « Continuer quand même » (elle a son propre banc). */

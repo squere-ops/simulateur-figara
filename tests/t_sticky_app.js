@@ -1,6 +1,7 @@
 // Reproduction du dossier TEST Jean (couple, RP + maison Bretagne NP, 2 AV, crédit auto)
 // puis vérification VISUELLE (Tailwind réel) + export PDF page par page.
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 
 const repondreNonPartout = async (page) => {
@@ -166,6 +167,7 @@ const repondreNonPartout = async (page) => {
   // ÉTAPE 7 — synthèse
   await repondreNonPartout(page);
   await page.locator('button:has-text("Synthèse")').first().click();
+  await passerFenetres(page);
   await page.waitForTimeout(900);
   console.log('APRES SYN CLICK:', (await page.evaluate(() => document.body.innerText.slice(-900))).replace(/\n+/g, ' | '));
   if (await page.evaluate(() => /un instant/i.test(document.body.innerText))) {
