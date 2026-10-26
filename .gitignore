@@ -10,3 +10,13 @@ node_modules
 deploy.sh
 deces-variantes.html
 synthese-variantes.html
+# ajouts 26/10/2026
+Claude outputs/
+tests/node_modules/
+tests/local/
+tests/test_local.html
+tests/_test_proj.html
+tests/*.png
+tests/*.pdf
+.fuse_hidden*
+_to_delete/
