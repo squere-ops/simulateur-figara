@@ -92,12 +92,14 @@ echo "├─ 18/20 · Le conseiller corrige le document (objectifs recommandés,
 node t_doc_edits.js > /tmp/_de.txt 2>&1
 if [ $? -eq 0 ]; then echo "│  ✓ corriger, masquer, ajouter : à l'écran comme à l'impression, aucun bouton imprimé"; else echo "│  ✗ corrections du document en défaut :"; grep '^FAIL' /tmp/_de.txt | sed 's/^/│    /'; KO=1; fi
 echo "├─ 19/20 · Dossier Martin : lu après l'achat de la RP, recentré, incohérences signalées"
-node t_recentre.js > /tmp/_rec.txt 2>&1
-if [ $? -eq 0 ]; then echo "│  ✓ pas de capacité à 0 € en point fort, trésorerie jugée après l'apport, épargne immobilière comptée, document recentré, fenêtre des incohérences"; else echo "│  ✗ dossier Martin en défaut :"; grep '^FAIL' /tmp/_rec.txt | sed 's/^/│    /'; KO=1; fi
+# 26/10/2026 : le client type « Célibataire » n'est plus Thomas MARTIN (fixture avec deux
+# incohérences volontaires) mais Julien FAURE, sans incohérence. Ce banc n'a plus de dossier
+# à lire tant qu'un dossier de test n'est pas recréé (TODO.md). On le dit, on ne rougit pas à tort.
+echo "│  ⚠ sans objet : le dossier Martin n'existe plus dans l'application (remplacé par Faure) — banc à refaire sur un dossier de test, voir TODO.md"; INCOMPLET=1
 echo "├─ 20/20 · LE DOCUMENT IMPRIMÉ — pages mesurées sur A4 ET Letter"
 node t_pdf_pages.js > /tmp/_pdf.txt 2>&1
 if [ $? -eq 0 ]; then echo "│  ✓ $(grep -c '^OK' /tmp/_pdf.txt) pages contrôlées, aucune page à moitié vide"; else echo "│  ✗ mise en page du PDF :"; grep '^FAIL' /tmp/_pdf.txt | sed 's/^/│    /'; KO=1; fi
 echo "└─────────────────────────────────────────────────────────"
 if [ $KO -ne 0 ]; then echo "   ✗ NE PAS LIVRER."; exit 1; fi
-if [ $INCOMPLET -ne 0 ]; then echo "   ⚠ INCOMPLET — rien de rouge, mais 5 étapes sur 20 ne sont pas vérifiables tant que le harnais n'est pas reconstruit."; exit 2; fi
+if [ $INCOMPLET -ne 0 ]; then echo "   ⚠ INCOMPLET — rien de rouge, mais des étapes ne sont pas vérifiables (harnais _test_proj.html absent, dossier Martin disparu) — voir TODO.md."; exit 2; fi
 echo "   TOUT EST VERT — la livraison peut partir."; exit 0

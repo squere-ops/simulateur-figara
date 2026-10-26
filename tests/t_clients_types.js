@@ -37,35 +37,35 @@ const ouvrirAudit = async (page) => {
 };
 
 /* ce que chaque fiche doit faire sortir dans la synthèse (constat puis RDV 2) */
+/* 26/10/2026 : les quatre fiches ont été réécrites depuis le 23/09 (Faure, Roussel, Lambert,
+   Moreau — v266/v269). Les attentes suivent NC_CLIENTS_TYPES dans index.html : si une fiche
+   change, on met à jour ici en lisant le code, pas de mémoire. */
 const ATTENDUS = {
   celib: [
-    ['nom', /Thomas MARTIN|MARTIN/],
-    ['revenus 3 800 €', /3[\s  ]?800/],
-    ['loyer 950 €', /950/],
-    ['crédit auto', /auto/i],
+    ['nom', /Julien FAURE|FAURE/],
+    ['revenus 3 900 €', /3[\s  ]?900/],
+    ['loyer 980 €', /980/],
+    ['crédit auto', /auto|véhicule/i],
   ],
   pacse: [
-    ['les deux prénoms', /Julie[\s\S]*Nicolas|Nicolas[\s\S]*Julie/],
-    ['revenus du foyer 7 300 €', /7[\s  ]?300/],
+    ['les deux prénoms', /Claire[\s\S]*Maxime|Maxime[\s\S]*Claire/],
+    ['revenus du foyer 7 500 €', /7[\s  ]?500/],
     ['PACS', /pacs/i],
-    ['deux enfants', /Léa|Hugo/],
+    ['deux enfants', /Jade|Noé/],
   ],
   marie: [
-    ['les deux prénoms', /Philippe[\s\S]*Catherine|Catherine[\s\S]*Philippe/],
-    ['trois enfants', /Camille|Antoine|Chloé/],
-    /* la question bonus annonce la TMI CALCULÉE par le moteur (30 % pour ce foyer :
-       147 600 € sur 4 parts). La fiche validée disait 41 % à tort : le banc lit la
-       TMI du bloc fiscal et vérifie que la question dit la même chose. */
+    ['les deux prénoms', /Olivier[\s\S]*Isabelle|Isabelle[\s\S]*Olivier/],
+    ['trois enfants', /Manon|Hugo|Lina/],
     ['question bonus à la TMI du bloc fiscal', 'TMI'],
-    ['locatif 780 €', /780/],
+    ['locatif 690 €', /690/],
   ],
   veuf: [
-    ['nom', /Monique BERNARD|BERNARD/],
-    ['pension 2 400 €', /2[\s  ]?400/],
+    ['nom', /Jacqueline MOREAU|MOREAU/],
     ['veuve', /veu[fv]/i],
-    ['assurance-vie 180 000 €', /180[\s  ]?000/],
+    ['livret 22 950 €', /22[\s  ]?950/],
   ],
 };
+
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || undefined });
