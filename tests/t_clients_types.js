@@ -128,9 +128,18 @@ const ATTENDUS = {
     const b = page.locator('[data-nc-client-type="' + cle + '"]');
     if (!(await b.count())) { KO(cle + ' : bouton introuvable'); continue; }
     await b.click();
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(600);
+    /* 26/10/2026 : la confirmation « Remplacer le dossier en cours ? » est désormais une fenêtre
+       maison (plus un confirm() natif) — on clique « Remplacer ». */
+    { const r = page.locator('button:text-is("Remplacer")').first(); if (await r.count()) { await r.click(); await page.waitForTimeout(600); } }
+    await page.waitForTimeout(400);
+    await passerFenetres(page);
     const syn = page.locator('button:has-text("Synthèse")').first();
-    await syn.click();
+    try { await syn.click({ timeout: 8000 }); }
+    catch (e) {
+      console.log('CLIC SYNTHESE IMPOSSIBLE — écran :', (await page.evaluate(() => document.body.innerText)).replace(/\n+/g, ' | ').slice(-600));
+      KO(cle + ' : le bouton Synthèse est recouvert ou absent'); continue;
+    }
     await page.waitForTimeout(1600);
 
     /* 21/09/2026 : la fenêtre des incohérences peut s'ouvrir en quittant les objectifs —
