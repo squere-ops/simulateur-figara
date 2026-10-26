@@ -33,7 +33,10 @@ npm i && npx playwright install chromium && ./setup_local.sh   # une seule fois
 6. Livraison sobre : un commit propre, un message en français préfixé par le numéro de version (`vNNN : …`).
    Sylvain pousse lui-même (`git push`) — le trousseau macOS bloque le push depuis une session.
 7. Dans un bloc de commandes destiné au Terminal : uniquement des commandes, rien d'autre.
-8. Le mot « effort » est banni du constat. Les livrets rapportent 1,7 %.
+8. **Le dépôt est publié en ligne par Vercel** : tout fichier ajouté doit rester couvert par
+   `.vercelignore` (seuls `index.html` et `vercel.json` partent). Ne jamais mettre dans le dépôt
+   une donnée client réelle.
+9. Le mot « effort » est banni du constat. Les livrets rapportent 1,7 %.
 
 ## Rituel de session
 - Début : lire `TODO.md`, choisir UN item, l'annoncer.
