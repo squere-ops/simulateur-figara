@@ -123,7 +123,7 @@ const repondreNonPartout = async (page) => {
     const lab = Array.from(document.querySelectorAll('span')).find(e => /Assurance de prêt renégociée/i.test(e.textContent || ''));
     if (!lab) return 'libellé introuvable';
     const zone = lab.parentElement;
-    const b = Array.from(zone.querySelectorAll('button')).find(x => /je ne sais pas/i.test(x.textContent || ''));
+    const b = Array.from(zone.querySelectorAll('button')).find(x => /(je )?ne sai[st] pas/i.test(x.textContent || ''));
     if (!b) return 'bouton absent : ' + Array.from(zone.querySelectorAll('button')).map(x => x.textContent.trim()).join(' | ');
     b.click();
     return 'ok';
@@ -268,8 +268,8 @@ const repondreNonPartout = async (page) => {
   console.log('\n=== DEVOIRS, DOSSIER AVEC TROIS INCONNUES ===');
   console.log(T1.split('Pour préparer notre prochain rendez-vous')[1] ? T1.split('Pour préparer notre prochain rendez-vous')[1].slice(0, 900).replace(/\n+/g, ' | ') : 'BLOC ABSENT');
   chk(/Pour préparer notre prochain rendez-vous/i.test(T1), 'le bloc des devoirs est présent');
-  chk(/je ne sais pas/i.test(String(rq0)), "l'option de quotité s'intitule « Je ne sais pas » (lu : " + rq0 + ')');
-  chk(ra0 === 'ok', "« Assurance de prêt renégociée ? » propose « Je ne sais pas »");
+  chk(/(je )?ne sai[st] pas/i.test(String(rq0)), "l'option de quotité s'intitule « Ne sait pas » (libellé retenu le 26/10/2026 ; lu : " + rq0 + ')');
+  chk(ra0 === 'ok', "« Assurance de prêt renégociée ? » propose « Ne sait pas »");
   chk(/quotités de votre assurance de prêt/i.test(T1), 'la quotité inconnue ressort dans les devoirs');
   chk(/conditions particulières|certificat d'adhésion/i.test(T1), 'la pièce demandée pour la quotité est nommée');
   chk(/Tableau d'amortissement et offre de prêt/i.test(T1), "l'assurance de prêt inconnue demande le tableau d'amortissement et l'offre de prêt");
