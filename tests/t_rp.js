@@ -35,7 +35,7 @@ const repondreNonPartout = async (page) => {
   // console.error('[FIGARA] render error', ...) la trahit. 'pageerror' seul
   // laisse passer un écran "Une erreur technique est survenue" sans le voir.
   page.on('console', msg => { if (msg.type() === 'error' && /\[FIGARA\] render error/.test(msg.text())) errs.push('[FIGARA render error] ' + msg.text()); });
-  await page.goto('http://localhost:8899/test_local.html?etude=1', { waitUntil: 'networkidle' });
+  await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   if (await page.locator('text=Accéder au simulateur').count()) {
     const inps = page.locator('input');

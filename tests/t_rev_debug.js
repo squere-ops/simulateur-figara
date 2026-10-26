@@ -10,7 +10,7 @@ const jsClick = (page, re) => page.evaluate((src) => { const r = new RegExp(src,
   const errs = [];
   page.on('pageerror', e => { if (!/tailwind/.test(String(e))) errs.push(String(e).slice(0, 200)); });
   page.on('console', m => { if (m.type() === 'error' && /FIGARA\] render error/.test(m.text())) errs.push(m.text().slice(0, 200)); });
-  await page.goto('http://localhost:8899/test_local.html', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '', { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(4000); console.log('page chargée');
   const inps = page.locator('input:visible'); const n = await inps.count();
   for (let i = 0; i < Math.min(n, 2); i++) await setNative(inps.nth(i), 'Test');

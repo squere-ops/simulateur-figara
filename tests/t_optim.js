@@ -31,7 +31,7 @@ const dossier = (montantConjoint) => ({
   const p = await b.newPage({ viewport: { width: 1300, height: 900 } });
   const errs = [];
   p.on('pageerror', e => { if (!/tailwind/.test(String(e))) errs.push(String(e).slice(0, 200)); });
-  await p.goto('http://127.0.0.1:8899/test_local.html', { waitUntil: 'domcontentloaded' });
+  await p.goto((process.env.PW_PAGE || 'http://127.0.0.1:8899/test_local.html') + '', { waitUntil: 'domcontentloaded' });
   await p.waitForTimeout(3000);
 
   let ko = 0;

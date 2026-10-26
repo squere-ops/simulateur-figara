@@ -33,7 +33,7 @@ const repondreNonPartout = async (page) => {
   const page = await browser.newPage({ viewport: { width: 1400, height: 950 } });
   const errs = [];
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) errs.push(String(e)); });
-  await page.goto('http://localhost:8899/test_local.html?etude=1', { waitUntil: 'networkidle' });
+  await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
 
   if (await page.locator('text=Accéder au simulateur').count()) {

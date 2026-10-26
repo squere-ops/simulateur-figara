@@ -11,7 +11,7 @@ const cle = process.argv[2] || 'celib';
   page.on('dialog', dl => dl.accept());
   const errs = [];
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) errs.push(String(e)); });
-  await page.goto('http://localhost:8899/test_local.html?etude=1', { waitUntil: 'networkidle' });
+  await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1300);
   if (await page.locator('text=Accéder au simulateur').count()) {
     const inps = page.locator('input'); await setN(inps.nth(0), 'UP'); await setN(inps.nth(1), 'T');

@@ -24,7 +24,7 @@ const repondreNonPartout = async (page) => {
   const errs = [];
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) errs.push(String(e)); });
   page.on('console', m => { if (m.type()==='error') console.log('CONSOLE.ERROR:', m.text().slice(0,600)); });
-  await page.goto('http://localhost:8899/test_local.html?etude=1', { waitUntil: 'networkidle' });
+  await page.goto((process.env.PW_PAGE || 'http://localhost:8899/test_local.html') + '?etude=1', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   if (await page.locator('text=Accéder au simulateur').count()) {
     const inps = page.locator('input');

@@ -169,7 +169,7 @@ const BANNIS = [
   const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
   const jsErr = [];
   page.on('pageerror', e => { if (!/tailwind is not defined/.test(String(e))) jsErr.push(String(e).slice(0, 200)); });
-  await page.goto('http://127.0.0.1:8899/test_local.html', { waitUntil: 'domcontentloaded' });
+  await page.goto((process.env.PW_PAGE || 'http://127.0.0.1:8899/test_local.html') + '', { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(3000);
 
   /* le JOURNAL DE VERSION (console.log BUILD…) raconte les defauts corriges et
