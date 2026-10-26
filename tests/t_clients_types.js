@@ -13,6 +13,7 @@
       mot lu dans la synthèse — un champ mal nommé dans la fiche le rend muet).
    ═══════════════════════════════════════════════════════════════════════════ */
 const { chromium } = require('playwright');
+const { passerFenetres } = require('./_aide');
 const setN = async (el, v) => el.evaluate((n, val) => { const s = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; s.call(n, val); n.dispatchEvent(new Event('input', { bubbles: true })); }, v);
 
 let ko = 0;
@@ -135,6 +136,7 @@ const ATTENDUS = {
     /* 21/09/2026 : la fenêtre des incohérences peut s'ouvrir en quittant les objectifs —
        le banc la franchit par « Continuer quand même » (elle a son propre banc). */
     { const bInc = page.locator('[data-nc-inco="1"] button:has-text("Continuer quand même")'); if (await bInc.count()) { await bInc.first().click(); await page.waitForTimeout(1600); } }
+    await passerFenetres(page);
     /* un éventuel garde-fou (capacité d'épargne) : on le signale, sans le contourner */
     const garde = await page.evaluate(() => /capacité d'épargne/i.test(document.body.innerText) && !document.querySelector('.nc-syn-zone'));
     if (garde) { KO(cle + ' : un garde-fou bloque l\'accès à la synthèse'); continue; }

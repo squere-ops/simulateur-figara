@@ -140,7 +140,7 @@ const repondreNonPartout = async (page) => {
      passes au RDV 2 (onglet « Simulation et plan d action »). Les assertions de CONTENU les
      lisent donc dans ce volet — le moteur, lui, n a pas change. */
   const allerPreco = async () => {
-    const b = page.locator('button:has-text("Simulation")').first();
+    const b = page.locator('button:text-is("Analyse R2")').first();
     if (await b.count()) { await b.click(); await page.waitForTimeout(900); }
     return await page.evaluate(() => (document.querySelector('.nc-syn-zone') || { innerText: '' }).innerText.replace(/[\u00a0\u202f]/g, ' '));
   };

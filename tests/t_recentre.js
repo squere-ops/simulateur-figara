@@ -60,6 +60,7 @@ const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
     await page.locator('button:has-text("Synthèse")').first().click(); await page.waitForTimeout(1000);
     await passerFenetres(page);
     await page.locator('[data-nc-inco="1"] button:has-text("Continuer quand même")').click(); await page.waitForTimeout(1800);
+    await passerFenetres(page);
   }
 
   const zone = () => page.evaluate(() => {
@@ -92,7 +93,7 @@ const norm = (t) => String(t || '').replace(/[  ]/g, ' ');
 
   /* ═══ 3 · SECOND RENDEZ-VOUS : POINTS FORTS ET AXES ═══ */
   console.log('\n═══ 3 · POINTS FORTS ET AXES ═══');
-  const s2 = page.locator('button:has-text("Simulation")').first();
+  const s2 = page.locator('button:text-is("Analyse R2")').first();
   await s2.click(); await page.waitForTimeout(1300);
   const P = norm(await zone());
   const forts = bloc(P, 'Les points forts du dossier');

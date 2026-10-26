@@ -147,7 +147,7 @@ const repondreNonPartout = async (page) => {
   /* 15/09/2026 (v218) : points forts, axes et participation déclarée sont passés au RDV 2
      (onglet « Simulation et plan d'action »). On lit ce volet pour ces assertions. */
   const TP = await (async () => {
-    const b = page.locator('button:has-text("Simulation")').first();
+    const b = page.locator('button:text-is("Analyse R2")').first();
     if (!(await b.count())) return '';
     await b.click(); await page.waitForTimeout(900);
     const t = await page.evaluate(() => (document.querySelector('.nc-syn-zone') || { innerText: '' }).innerText.replace(/[\u00a0\u202f]/g, ' '));

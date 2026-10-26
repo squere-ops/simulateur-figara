@@ -62,7 +62,7 @@ const KO = (m) => { console.log('FAIL — ' + m); ko++; };
 
   /* 7 · 18 % dont 9 % */
   const T2 = T + '\n' + await (async () => {
-    const s2 = page.locator('button:has-text("Simulation")').first();
+    const s2 = page.locator('button:text-is("Analyse R2")').first();
     if (!(await s2.count())) return '';
     await s2.click(); await page.waitForTimeout(1200);
     const t = await zoneTxt();
